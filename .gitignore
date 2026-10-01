@@ -1,0 +1,19 @@
+# Dependencias y runtime
+node_modules/
+dist/
+build/
+__pycache__/
+*.pyc
+
+# Entorno y variables
+.env
+.env.local
+
+# IDEs y editores
+.vscode/
+.idea/
+*.swp
+
+# Sistema operativo
+.DS_Store
+Thumbs.db

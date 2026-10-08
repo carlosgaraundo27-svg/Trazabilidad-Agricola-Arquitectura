@@ -14,7 +14,7 @@ La estructura sigue el enfoque de **Architecture Decision Record (ADR)** indicad
 
 **Estado:** Aceptada
 
-**Drivers relacionados:** DA02, DA04
+**Driver relacionado:** DA04
 
 ### Contexto
 

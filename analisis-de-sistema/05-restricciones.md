@@ -1,9 +1,11 @@
 # Restricciones del Proyecto
 
-| ID | Clasificación | Restricción / Limitación |
-| :--- | :--- | :--- |
-| **RC01** | Operacional (Offline) | La aplicación móvil de campo debe ser capaz de funcionar y registrar datos sin conexión a internet, sincronizando los pre-lotes a posteriori. |
-| **RC02** | Presupuestal / Tecnológica | No se debe incluir en el alcance la integración activa con IoT (contenedores marítimos), contratos inteligentes o Blockchain para no sobrecomplejizar el prototipo. |
-| **RC03** | Alcance de Datos Públicos | La vista pública del código QR debe restringir estrictamente la exposición de datos personales de los productores o información financiera interna. |
-| **RC04** | Base de Datos | Se requiere el uso de PostgreSQL como motor transaccional (OLTP) y base para el Datamart analítico (OLAP). |
-| **RC05** | Despliegue | La solución debe ser "containerizada" utilizando Docker para asegurar la portabilidad entre entornos de desarrollo y el servidor Cloud. |
+Las restricciones establecen condiciones que limitan las alternativas arquitectónicas y tecnológicas que pueden seleccionarse para la solución.
+
+| ID | Clasificación | Definición de la restricción | Implicancia para la arquitectura |
+| :--- | :--- | :--- | :--- |
+| **RC01** | Operacional (Offline) | La aplicación móvil de campo debe registrar información aun cuando no exista conexión a internet. | Requiere almacenamiento local y sincronización posterior con el backend. |
+| **RC02** | Presupuestal / Tecnológica | El alcance no contempla integración activa con IoT de contenedores marítimos, contratos inteligentes ni Blockchain. | Se evita introducir infraestructura y complejidad que no son necesarias para el prototipo. |
+| **RC03** | Alcance de Datos Públicos | La consulta pública mediante QR no debe exponer datos personales de productores ni información financiera interna. | Obliga a diferenciar información pública de información interna y refuerza los controles de autorización y exposición. |
+| **RC04** | Base de Datos | PostgreSQL debe utilizarse como motor transaccional principal (OLTP) y como fuente para el procesamiento del Datamart analítico. | Condiciona la persistencia principal y las estrategias de integración con la capa analítica. |
+| **RC05** | Despliegue | La solución debe estar containerizada mediante Docker para facilitar su ejecución entre desarrollo y servidor Cloud. | Condiciona la estrategia de despliegue y favorece una infraestructura reproducible y portable. |

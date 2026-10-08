@@ -14,7 +14,7 @@ La estructura sigue el enfoque de **Architecture Decision Record (ADR)** indicad
 
 **Estado:** Aceptada
 
-**Driver relacionado:** DA01, DA04, DA05
+**Drivers relacionados:** DA02, DA04
 
 ### Contexto
 
@@ -143,7 +143,7 @@ REST permite separar las interfaces de usuario de la lógica del backend y facil
 
 **Estado:** Aceptada
 
-**Driver relacionado:** DA02 y DA04
+**Driver relacionado:** DA02 / RC04
 
 ### Contexto
 
@@ -268,6 +268,54 @@ La containerización permite estandarizar el entorno de ejecución y facilitar e
 
 ---
 
+## ADR-008 — Seguridad, autenticación y exposición controlada del QR
+
+**Estado:** Aceptada
+
+**Driver relacionado:** DA06
+
+### Contexto
+
+El sistema combina información operativa interna con una interfaz pública de consulta mediante código QR. Los requisitos de calidad establecen autenticación y autorización por roles, comunicaciones cifradas y restricciones sobre la información pública.
+
+### Decisión
+
+Aplicar una estrategia de seguridad basada en:
+
+- **HTTPS** para las comunicaciones.
+- **Autenticación** para usuarios internos.
+- **Autorización basada en roles (RBAC)** para las funciones administrativas y operativas.
+- **Separación del modelo público de trazabilidad** respecto de la información interna.
+- **Control de exposición de datos** para impedir que la consulta QR revele datos personales, financieros u otra información no autorizada.
+- Registro de acciones críticas para fines de auditoría.
+
+### Alternativas consideradas
+
+| Alternativa | Evaluación |
+|---|---|
+| Acceso público directo a los datos del lote | ❌ No garantiza control de exposición de información interna. |
+| Seguridad únicamente en la interfaz | ❌ No es suficiente; los controles deben aplicarse en el backend. |
+| Seguridad centralizada en backend + vista pública controlada | ✅ Permite aplicar las reglas de acceso independientemente del cliente. |
+
+### Justificación
+
+La consulta QR debe proporcionar trazabilidad útil al consumidor sin convertir el mecanismo público en un acceso a la información privada del sistema.
+
+### Consecuencias
+
+**Positivas**
+- Reduce la exposición de información sensible.
+- Centraliza los controles de acceso.
+- Mantiene separadas las vistas internas y públicas.
+- Refuerza la auditoría de acciones críticas.
+
+**Negativas**
+- Incrementa la complejidad de autenticación, autorización y gestión de sesiones o tokens.
+- Requiere mantener correctamente los roles y permisos.
+
+
+---
+
 ## 2. Matriz de trazabilidad de decisiones
 
 | Driver / Restricción | Decisión arquitectónica | Resultado |
@@ -277,6 +325,7 @@ La containerización permite estandarizar el entorno de ejecución y facilitar e
 | **DA03 - Consultas QR rápidas** | ADR-005 Redis | Carga pública de lectura desacoplada de PostgreSQL. |
 | **DA04 - Nuevos cultivos** | ADR-001 Monolito Modular + ADR-002 Clean Architecture | Módulos y dominio preparados para evolución. |
 | **DA05 - Separación analítica** | ADR-006 ETL + Datamart | OLTP separado de OLAP. |
+| **DA06 - Seguridad** | ADR-008 Seguridad y control de exposición | Acceso interno protegido y consulta QR limitada a información autorizada. |
 | **RC05 - Despliegue containerizado** | ADR-007 Docker | Portabilidad y despliegue consistente. |
 
 ---

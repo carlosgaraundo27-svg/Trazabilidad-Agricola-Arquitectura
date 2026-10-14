@@ -50,6 +50,7 @@ La documentación canónica está organizada según la Guía 04 en los directori
 | [Decisiones arquitectónicas](docs/02-arquitectura/03-decisiones-arquitectonicas.md) | ADR-001–ADR-008. |
 | [Componentes y requisitos](docs/02-arquitectura/04-componentes-arquitectonicos.md) | Diagrama de componentes y matriz requisito–componente–decisión. |
 | [Arquitectura técnica y despliegue](docs/02-arquitectura/05-arquitectura-tecnica-despliegue.md) | Nodos, contenedores, seguridad y stack propuesto. |
+| [Matriz de acceso y seguridad](docs/02-arquitectura/06-matriz-accesos-seguridad.md) | Roles, permisos y clasificación de datos; pendiente de aprobación. |
 | [Diseño interno](docs/03-diseno-de-software/01-diseno-interno.md) | Entidades, casos de uso, puertos, adaptadores y secuencias. |
 | [Modelo de datos conceptual](docs/03-diseno-de-software/02-modelo-datos-conceptual.md) | Entidades y relaciones principales. |
 | [Modelo C4](docs/04-modelo-c4/modelo-c4.md) | C1 Contexto, C2 Contenedores, C3 Componentes y vista C4 conceptual. |

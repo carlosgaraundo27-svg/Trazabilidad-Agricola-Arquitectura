@@ -25,9 +25,6 @@ export class Lote {
   ) {}
 
   registrarEvento(evento: EventoTrazabilidad): void {
-    if (this.estado === "CERRADO") {
-      throw new Error("No se permiten eventos ordinarios en un lote cerrado.");
-    }
     if (evento.loteId !== this.id) {
       throw new Error("El evento debe pertenecer al lote.");
     }
@@ -43,6 +40,8 @@ export class Lote {
   }
 }
 ~~~
+
+Este ejemplo valida que el evento pertenezca al lote. La regla definitiva sobre si un lote cerrado admite nuevos eventos debe definirse con el negocio; el requisito vigente protege expresamente la modificación ordinaria de eventos ya cerrados.
 
 ## 2. Puerto del repositorio
 

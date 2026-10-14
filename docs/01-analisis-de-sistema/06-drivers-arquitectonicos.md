@@ -26,7 +26,7 @@ Los **drivers arquitectónicos** son los requisitos, atributos de calidad o rest
 
 | Driver | Decisiones relacionadas |
 | :--- | :--- |
-| **DA01** | ADR-001, ADR-003 |
+| **DA01** | ADR-003 |
 | **DA02** | ADR-002, ADR-004 |
 | **DA03** | ADR-005 |
 | **DA04** | ADR-001, ADR-002 |

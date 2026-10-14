@@ -94,7 +94,9 @@ flowchart TB
 | Redis | Acelerar lecturas QR repetitivas; no es fuente de verdad. | RF-08 / DA03 / ADR-005 |
 | ETL + Datamart | Procesar datos para análisis sin cargar directamente la operación transaccional. | RF-12 / DA05 / ADR-006 |
 
-**Nota tecnológica:** la propuesta original deja NestJS o Spring Boot como opciones de backend y React/Tailwind o equivalente para web. Para diagramas y ejemplos se recomienda NestJS por coherencia con una solución TypeScript, pero la selección final debe ratificarse como decisión del equipo antes de implementar. Flutter y PostgreSQL sí están incluidos en la propuesta; Redis aparece como opción para la optimización de QR.
+**Nota tecnológica:** la propuesta original deja NestJS o Spring Boot como opciones de backend y React/Tailwind o equivalente para web; la franja de tecnologías de la ilustración de despliegue menciona Python/FastAPI, por lo que existe una inconsistencia pendiente de resolver. Para diagramas y ejemplos se recomienda NestJS por coherencia con una solución TypeScript, pero la selección final debe ratificarse como decisión del equipo antes de implementar. Flutter y PostgreSQL sí están incluidos en la propuesta; Redis aparece como opción para la optimización de QR.
+
+La interfaz pública QR se representa por separado para visibilizar su frontera de seguridad. Puede implementarse como una ruta/vista pública del frontend web compartido y no implica necesariamente un despliegue independiente.
 
 ## C3. Diagrama de componentes del backend
 

@@ -12,6 +12,7 @@ Repositorio del proyecto de Arquitectura de Software: **Trazabilidad y Gestión 
 - [Diseño interno](03-diseno-de-software/01-diseno-interno.md)
 - [Modelo de datos conceptual](03-diseno-de-software/02-modelo-datos-conceptual.md)
 - [Arquitectura técnica y despliegue](02-arquitectura/05-arquitectura-tecnica-despliegue.md)
+- [Matriz de acceso y seguridad](02-arquitectura/06-matriz-accesos-seguridad.md)
 - [Guion de exposición de 12 minutos](05-sprint01/exposicion-12-minutos.md)
 
 ## Estructura

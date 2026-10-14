@@ -61,7 +61,7 @@ flowchart TB
 | Componente | Responsabilidad | Requisitos / historias fuente | Drivers / restricciones | Decisiones |
 |---|---|---|---|---|
 | **App móvil de campo** | Capturar cosecha y conservar registros sin conexión. | RF-03, RF-04 / HU02 | DA01, RC01 | ADR-003; el almacenamiento local requiere decisión tecnológica detallada. |
-| **Portal web** | Interfaz para administración y operación del sistema. | RF-01, RF-02, RF-05, RF-06, RF-07, RF-10, RF-11, RF-12 | Seguridad, usabilidad | ADR-003, ADR-008 |
+| **Portal web** | Interfaz para administración y operación del sistema. | RF-01, RF-02, RF-05, RF-06, RF-07, RF-10, RF-11, RF-12, RF-13 / HU01, HU03, HU04, HU06, HU08, HU09 | Seguridad, usabilidad | ADR-003, ADR-008 |
 | **Consulta pública QR** | Mostrar únicamente trazabilidad autorizada. | RF-08, RF-09 / HU05, HU07 | DA03, DA06, RC03 | ADR-005, ADR-008 |
 | **API REST** | Recibir solicitudes, validar acceso y exponer casos de uso. | RF-01 a RF-13 / todas las HU que interactúan con el backend | DA01, DA06 | ADR-003, ADR-008 |
 | **Acceso y permisos** | Autenticar usuarios y autorizar acciones por rol. | RF-13; requisito no funcional Seguridad; RF-08 para vista QR | DA06, RC03 | ADR-008 |

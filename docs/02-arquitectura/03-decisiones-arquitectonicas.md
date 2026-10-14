@@ -14,7 +14,7 @@ La estructura sigue el enfoque de **Architecture Decision Record (ADR)** indicad
 
 **Estado:** Aceptada
 
-**Driver relacionado:** DA04
+**Drivers relacionados:** DA02, DA04
 
 ### Contexto
 
@@ -321,7 +321,7 @@ La consulta QR debe proporcionar trazabilidad útil al consumidor sin convertir 
 | Driver / Restricción | Decisión arquitectónica | Resultado |
 |---|---|---|
 | **DA01 - Operación desconectada** | ADR-003 API REST | App móvil sincroniza con backend. |
-| **DA02 - Inmutabilidad y auditoría** | ADR-002 Clean Architecture + ADR-004 PostgreSQL | Reglas de negocio centralizadas y persistencia transaccional. |
+| **DA02 - Inmutabilidad y auditoría** | ADR-001 Monolito Modular + ADR-002 Clean Architecture + ADR-004 PostgreSQL | Reglas de negocio centralizadas y persistencia transaccional. |
 | **DA03 - Consultas QR rápidas** | ADR-005 Redis | Carga pública de lectura desacoplada de PostgreSQL. |
 | **DA04 - Nuevos cultivos** | ADR-001 Monolito Modular + ADR-002 Clean Architecture | Módulos y dominio preparados para evolución. |
 | **DA05 - Separación analítica** | ADR-006 ETL + Datamart | OLTP separado de OLAP. |

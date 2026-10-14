@@ -71,6 +71,14 @@ Todavía no se debe afirmar que lo es. EQ-01 y EQ-04 son escenarios de diseño c
 
 No. Este Sprint entrega documentación técnica versionada de la arquitectura propuesta. Las tecnologías marcadas como recomendadas o pendientes no deben presentarse como código implementado.
 
+### 12. ¿Por qué el PDF inicial muestra FastAPI, pero el texto menciona NestJS o Spring Boot?
+
+La propuesta PDF tiene una inconsistencia de stack. En la documentación de Sprint 01 se registra NestJS como recomendación pendiente de ratificación; no se presenta como tecnología ya implementada. Antes del desarrollo debe aprobarse una sola alternativa y actualizar tablas, diagramas y ADR.
+
+### 13. Si es un Monolito Modular, ¿por qué hay varios módulos en el diagrama?
+
+Los módulos representan divisiones lógicas dentro del mismo backend. En el C2 se muestra una sola aplicación backend desplegable; el C3 descompone sus responsabilidades internas. Si cada módulo se desplegara de forma independiente, sería otra decisión que requeriría actualizar la arquitectura y explicar la complejidad añadida.
+
 ### 12. ¿Qué pasa si se añade un cultivo distinto?
 
 La modularidad y la separación del dominio buscan aislar reglas generales de trazabilidad respecto a reglas particulares del producto. La extensión a otros cultivos está planteada como evolución, no como obligación del prototipo inicial.

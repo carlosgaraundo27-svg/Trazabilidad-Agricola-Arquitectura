@@ -248,6 +248,7 @@ La regla de negocio permanece independiente del mecanismo utilizado para almacen
 | **DA03 - Consultas públicas rápidas** | Redis se incorpora mediante un puerto/adaptador sin contaminar el dominio con detalles de caché. |
 | **DA04 - Nuevos cultivos** | Las reglas de negocio se mantienen encapsuladas, permitiendo ampliar comportamientos sin depender de una tecnología concreta. |
 | **DA05 - Separación analítica** | La generación de información para el Datamart se trata como una preocupación externa al núcleo transaccional. |
+| **DA06 - Seguridad** | Los casos de uso internos se protegen mediante autorización en la entrada; la consulta QR expone una proyección pública limitada. |
 
 ## 9. Beneficios
 

@@ -52,7 +52,7 @@ flowchart TB
 | Servidor web | Entregar frontend y manejar HTTPS/proxy | Nginx | Referencia inicial |
 | Servidor de aplicación | API REST y módulos de negocio en una sola unidad desplegable | NestJS recomendado; Spring Boot era alternativa | Debe ratificarse por ADR antes de codificar |
 | Persistencia OLTP | Datos transaccionales, lotes e historial | PostgreSQL | Decisión documentada (ADR-004) |
-| Caché | Respuestas frecuentes QR | Redis | Decisión de arquitectura; inclusión física se valida en prueba (ADR-005) |
+| Caché | Respuestas frecuentes QR | Redis | Componente previsto en la arquitectura objetivo (ADR-005); se debe probar la política de expiración y el beneficio de rendimiento. Si se decide excluirlo del MVP, se actualizará la ADR. |
 | Proceso ETL | Transformar/extraer datos para analítica | Job programado; tecnología por decidir | Propuesto |
 | Datamart | Indicadores analíticos | Esquema lógico analítico PostgreSQL al inicio | Propuesto |
 | Contenedores | Repetibilidad del despliegue | Docker | Restricción RC05 / ADR-007 |

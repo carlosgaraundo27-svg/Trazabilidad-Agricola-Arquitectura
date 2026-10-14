@@ -79,7 +79,7 @@ La propuesta PDF tiene una inconsistencia de stack. En la documentación de Spri
 
 Los módulos representan divisiones lógicas dentro del mismo backend. En el C2 se muestra una sola aplicación backend desplegable; el C3 descompone sus responsabilidades internas. Si cada módulo se desplegara de forma independiente, sería otra decisión que requeriría actualizar la arquitectura y explicar la complejidad añadida.
 
-### 12. ¿Qué pasa si se añade un cultivo distinto?
+### 14. ¿Qué pasa si se añade un cultivo distinto?
 
 La modularidad y la separación del dominio buscan aislar reglas generales de trazabilidad respecto a reglas particulares del producto. La extensión a otros cultivos está planteada como evolución, no como obligación del prototipo inicial.
 

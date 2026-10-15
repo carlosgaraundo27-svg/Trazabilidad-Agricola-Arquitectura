@@ -4,6 +4,7 @@ Repositorio del proyecto de Arquitectura de Software: **Trazabilidad y Gestión 
 
 ## Documento principal
 
+- [README del Sprint 01](05-sprint01/README.md) — resumen, línea base de arquitectura, índice de entregables y decisiones pendientes.
 - [Propuesta técnica resumida y mapa de documentos](../README.md)
 - [Registro de alineamiento arquitectónico](02-arquitectura/00-registro-alineamiento.md)
 - [Escenarios de atributos de calidad](01-analisis-de-sistema/08-escenarios-atributos-calidad.md)
@@ -13,7 +14,6 @@ Repositorio del proyecto de Arquitectura de Software: **Trazabilidad y Gestión 
 - [Modelo de datos conceptual](03-diseno-de-software/02-modelo-datos-conceptual.md)
 - [Arquitectura técnica y despliegue](02-arquitectura/05-arquitectura-tecnica-despliegue.md)
 - [Matriz de acceso y seguridad](02-arquitectura/06-matriz-accesos-seguridad.md)
-- [Guion de exposición de 12 minutos](05-sprint01/exposicion-12-minutos.md)
 
 ## Estructura
 
@@ -21,9 +21,9 @@ Repositorio del proyecto de Arquitectura de Software: **Trazabilidad y Gestión 
 - **02-arquitectura/**: estilo, enfoque, ADR, matriz de componentes, despliegue y seguridad.
 - **03-diseno-de-software/**: entidades del dominio, interfaces, secuencias y modelo de datos conceptual.
 - **04-modelo-c4/**: contexto, contenedores, componentes y vista conceptual de código.
-- **05-sprint01/**: material de preparación para la exposición.
+- **05-sprint01/**: README específico del Sprint 01 con su resumen técnico y navegación documental.
 
-La estructura se organiza conforme a la Guía 04, que pide mantener la documentación en docs/ y separar de ella los ejemplos técnicos en tecnologia/.
+La estructura se organiza conforme a la Guía 04, que pide mantener la documentación en `docs/` y separar de ella los ejemplos técnicos en `tecnologia/`.
 
 ## Estado
 

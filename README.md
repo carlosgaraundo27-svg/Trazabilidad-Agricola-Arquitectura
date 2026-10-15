@@ -54,7 +54,6 @@ La documentación canónica está organizada según la Guía 04 en los directori
 | [Diseño interno](docs/03-diseno-de-software/01-diseno-interno.md) | Entidades, casos de uso, puertos, adaptadores y secuencias. |
 | [Modelo de datos conceptual](docs/03-diseno-de-software/02-modelo-datos-conceptual.md) | Entidades y relaciones principales. |
 | [Modelo C4](docs/04-modelo-c4/modelo-c4.md) | C1 Contexto, C2 Contenedores, C3 Componentes y vista C4 conceptual. |
-| [Exposición Sprint 01](docs/05-sprint01/exposicion-12-minutos.md) | Guion de 12 minutos, preguntas y trazabilidad de componentes. |
 | [Ejemplo Clean Architecture](tecnologia/ejemplo-clean-architecture.md) | Ejemplo didáctico de dominio, interfaz y caso de uso. |
 
 ## 5. Trazabilidad que debe mantenerse

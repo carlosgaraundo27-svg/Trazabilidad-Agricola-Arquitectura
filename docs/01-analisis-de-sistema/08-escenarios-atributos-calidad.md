@@ -115,7 +115,3 @@ La Guía 04 indica que un atributo expresado como “el sistema debe ser rápido
 | EQ-05 | Integridad / auditoría | Eventos cerrados protegidos y acciones críticas registradas. |
 | EQ-06 | Mantenibilidad | Cambios localizados, pruebas aprobadas y dependencias correctas. |
 | EQ-07 | Analítica | Reportes sin interferencia excesiva con OLTP. |
-
-## Nota para la exposición
-
-No se debe presentar ninguna cifra propuesta como un resultado ya obtenido. La formulación correcta es: “Esta es una meta medible propuesta para el prototipo; queda pendiente validarla con el equipo y comprobarla mediante pruebas”.

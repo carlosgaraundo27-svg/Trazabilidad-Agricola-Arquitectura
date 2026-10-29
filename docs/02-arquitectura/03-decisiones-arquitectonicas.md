@@ -85,7 +85,7 @@ Las dependencias deben dirigirse hacia el núcleo del dominio.
 |---|---|
 | **Capas simples sin regla explícita de dependencia** | ⚠️ Fácil de iniciar, pero permite que el negocio termine dependiendo de infraestructura. |
 | **Clean Architecture** | ✅ Mejor separación de negocio y tecnología. |
-| **Microservicios + arquitectura distribuida** | ❌ Excesivo para el alcance actual. |
+| **Arquitectura Hexagonal** | Alternativa compatible con el aislamiento del dominio mediante puertos y adaptadores; se mantiene Clean Architecture como enfoque declarado por su organización explícita de entidades y casos de uso. |
 
 ### Justificación
 
@@ -187,6 +187,8 @@ El atributo de calidad de rendimiento exige que estas consultas no sobrecarguen 
 
 Incorporar **Redis como caché** para la información pública de trazabilidad consultada mediante QR.
 
+La decisión está aceptada para la **arquitectura objetivo**; su implementación y beneficio todavía no están verificados. Antes de implementar se definirán expiración, invalidación y comportamiento ante fallos. Si se decide excluir Redis del MVP, se actualizarán esta ADR y las vistas relacionadas.
+
 ### Justificación
 
 La caché permite reducir consultas repetitivas contra PostgreSQL y separar parcialmente la carga pública de lectura de la carga transaccional.
@@ -222,14 +224,14 @@ Mantener **PostgreSQL como OLTP** y construir un **Datamart OLAP** alimentado me
 
 ### Justificación
 
-La separación evita que las consultas analíticas complejas interfieran directamente con las operaciones transaccionales.
+La separación organiza las consultas analíticas sobre un modelo específico y busca reducir su impacto sobre las operaciones transaccionales. Si el Datamart comienza en otro esquema de la misma instancia PostgreSQL, seguirá compartiendo CPU, memoria y disco con OLTP; no se garantiza aislamiento de recursos. El impacto del ETL y los reportes deberá comprobarse con EQ-07, y una instancia separada se evaluará si las mediciones lo justifican.
 
 ### Consecuencias
 
 **Positivas**
-- Separación de cargas.
+- Separación lógica de los modelos operativo y analítico.
 - Mejor soporte para indicadores y análisis histórico.
-- Menor impacto sobre las transacciones operativas.
+- Reducción esperada del impacto sobre las transacciones operativas, pendiente de medición.
 
 **Negativas**
 - Los datos analíticos pueden no ser instantáneos.

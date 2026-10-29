@@ -21,12 +21,12 @@ flowchart TB
     subgraph HOST["Servidor o entorno Cloud del prototipo"]
       WEB["Frontend web<br/>estático servido por Nginx"]
       API["Contenedor Docker<br/>API REST monolítica modular"]
-      WORKER["Proceso/contendor ETL<br/>programado"]
+      WORKER["Proceso/contenedor ETL<br/>programado"]
     end
 
     subgraph DATA["Persistencia y soporte"]
       PG[("PostgreSQL<br/>datos operativos")]
-      REDIS[("Redis<br/>caché opcional/según prueba")]
+      REDIS[("Redis<br/>caché QR / arquitectura objetivo")]
       DM[("Datamart lógico<br/>esquema analítico")]
       FILES["Almacenamiento de evidencias"]
     end
@@ -41,6 +41,7 @@ flowchart TB
     API --> FILES
     PG --> WORKER
     WORKER --> DM
+    API -->|"Lectura de reportes"| DM
 ~~~
 
 ## 3. Nodos propuestos
@@ -66,7 +67,7 @@ Para reducir complejidad en el prototipo:
 
 - Puede iniciarse con una aplicación backend en un contenedor Docker.
 - PostgreSQL conserva el almacén transaccional principal.
-- El Datamart puede empezar como esquema lógico separado en PostgreSQL, alimentado por ETL.
+- El Datamart puede empezar como esquema lógico separado en PostgreSQL, alimentado por ETL. En la misma instancia comparte recursos con OLTP; su impacto se validará mediante EQ-07.
 - Redis se conserva como componente previsto para consultas QR, con validación de su necesidad y política de expiración.
 - Los archivos adjuntos deben almacenarse fuera de las tablas transaccionales cuando el volumen y la operación lo justifiquen.
 - Los servicios externos solo se integran cuando estén dentro del alcance aprobado.
@@ -88,7 +89,7 @@ Para evitar mantener alternativas indefinidamente, se recomienda evaluar y aprob
 - Móvil: Flutter.
 - Backend: NestJS + TypeScript.
 - Datos: PostgreSQL.
-- Caché: Redis cuando la prueba de rendimiento QR lo justifique o el equipo apruebe mantenerlo desde el MVP.
+- Caché: Redis incluido en la arquitectura objetivo (ADR-005), con beneficio y políticas pendientes de validación. Su exclusión del MVP requerirá actualizar la ADR y los diagramas.
 - Analítica: proceso ETL y Datamart lógico sobre PostgreSQL en la primera iteración.
 - Despliegue: Docker y servidor Cloud académico.
 

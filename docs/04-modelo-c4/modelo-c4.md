@@ -77,6 +77,7 @@ flowchart TB
     API -->|"Consulta cacheada cuando aplica"| REDIS
     PG -->|"Extracción de eventos/datos elegidos"| ETL
     ETL --> DM
+    API -->|"Lectura de reportes / RF-12"| DM
     API --> MAPS
     API --> STORE
     API --> NOTIFY
@@ -87,14 +88,14 @@ flowchart TB
 | Contenedor | Responsabilidad | Requisitos relacionados |
 |---|---|---|
 | App móvil | Capturar cosecha en línea o sin conexión, guardar localmente y sincronizar. | RF-03, RF-04 / HU02 / DA01 |
-| Portal web | Facilitar operaciones administrativas, acopio, calidad, logística y reportes. | RF-01, RF-02, RF-05 a RF-07, RF-10 a RF-12 |
+| Portal web | Facilitar operaciones administrativas, acopio, calidad, logística y reportes. | RF-01, RF-02, RF-05 a RF-07, RF-10 a RF-13 |
 | Interfaz QR | Presentar información pública de un lote, en modo de solo lectura. | RF-08, RF-09 / HU07 / DA06 |
-| Backend REST | Aplicar seguridad, ejecutar casos de uso y coordinar módulos. | RF-01 a RF-12 / ADR-003, ADR-008 |
-| PostgreSQL OLTP | Guardar información transaccional y el historial operativo. | RF-01 a RF-11 / RC04 / ADR-004 |
+| Backend REST | Aplicar seguridad, ejecutar casos de uso y coordinar módulos. | RF-01 a RF-13 / ADR-003, ADR-008 |
+| PostgreSQL OLTP | Guardar información transaccional y el historial operativo. | RF-01 a RF-11, RF-13 / RC04 / ADR-004 |
 | Redis | Acelerar lecturas QR repetitivas; no es fuente de verdad. | RF-08 / DA03 / ADR-005 |
-| ETL + Datamart | Procesar datos para análisis sin cargar directamente la operación transaccional. | RF-12 / DA05 / ADR-006 |
+| ETL + Datamart | Procesar datos en un modelo analítico separado; el impacto sobre OLTP se verificará mediante EQ-07. | RF-12 / DA05 / ADR-006 |
 
-**Nota tecnológica:** la propuesta original deja NestJS o Spring Boot como opciones de backend y React/Tailwind o equivalente para web; la franja de tecnologías de la ilustración de despliegue menciona Python/FastAPI, por lo que existe una inconsistencia pendiente de resolver. Para diagramas y ejemplos se recomienda NestJS por coherencia con una solución TypeScript, pero la selección final debe ratificarse como decisión del equipo antes de implementar. Flutter y PostgreSQL sí están incluidos en la propuesta; Redis aparece como opción para la optimización de QR.
+**Nota tecnológica:** la propuesta original deja NestJS o Spring Boot como opciones de backend y React/Tailwind o equivalente para web; la franja de tecnologías de la ilustración de despliegue menciona Python/FastAPI, por lo que existe una inconsistencia pendiente de resolver. Para diagramas y ejemplos se recomienda NestJS por coherencia con una solución TypeScript, pero la selección final debe ratificarse como decisión del equipo antes de implementar. Flutter y PostgreSQL sí están incluidos en la propuesta; Redis está incluido en la arquitectura objetivo por ADR-005; su beneficio y políticas están pendientes de validación. Si se decide excluirlo del MVP, se actualizarán la ADR y las vistas relacionadas.
 
 La interfaz pública QR se representa por separado para visibilizar su frontera de seguridad. Puede implementarse como una ruta/vista pública del frontend web compartido y no implica necesariamente un despliegue independiente.
 
@@ -113,6 +114,7 @@ flowchart TB
       UC_QA["Casos de uso de Acopio y Calidad"]
       UC_LOG["Casos de uso de Inventario y Logística"]
       UC_REPORT["Casos de uso de Reportes"]
+      UC_ACCESS["Casos de uso de Usuarios, Roles y Permisos"]
       PORTS["Puertos / interfaces"]
     end
 
@@ -136,6 +138,7 @@ flowchart TB
     SECURITY --> UC_QA
     SECURITY --> UC_LOG
     SECURITY --> UC_REPORT
+    SECURITY --> UC_ACCESS
 
     UC_PROD --> ENTITIES
     UC_CROP --> ENTITIES
@@ -150,6 +153,7 @@ flowchart TB
     UC_QA --> PORTS
     UC_LOG --> PORTS
     UC_REPORT --> PORTS
+    UC_ACCESS --> PORTS
 
     PGADAPTER -.->|"implementa puertos"| PORTS
     CACHEADAPTER -.->|"implementa puerto de caché"| PORTS
@@ -197,6 +201,7 @@ classDiagram
       +fechaHora
       +actor
       +descripcionPublica
+      +publicable
     }
 
     TrazabilidadQRController --> ConsultarTrazabilidadPublica

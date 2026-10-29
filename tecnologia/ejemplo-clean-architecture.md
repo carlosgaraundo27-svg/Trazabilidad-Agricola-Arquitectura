@@ -13,7 +13,9 @@ export interface EventoTrazabilidad {
   tipo: string;
   fechaHora: Date;
   actorId: string;
-  descripcion: string;
+  descripcion: string; // Uso interno; no se publica automáticamente.
+  publicable: boolean;
+  descripcionPublica: string | null;
 }
 
 export class Lote {
@@ -81,15 +83,23 @@ export class ConsultarTrazabilidadPublica {
     return {
       codigoLote: lote.codigo,
       estado: lote.obtenerEstado(),
-      eventos: lote.obtenerEventos().map((evento) => ({
-        tipo: evento.tipo,
-        fechaHora: evento.fechaHora.toISOString(),
-        descripcion: evento.descripcion,
-      })),
+      eventos: lote.obtenerEventos()
+        .filter((evento) =>
+          evento.publicable === true &&
+          typeof evento.descripcionPublica === "string" &&
+          evento.descripcionPublica.trim().length > 0,
+        )
+        .map((evento) => ({
+          tipo: evento.tipo,
+          fechaHora: evento.fechaHora.toISOString(),
+          descripcion: evento.descripcionPublica!,
+        })),
     };
   }
 }
 ~~~
+
+La marca `publicable` y la descripción pública deben ser autorizadas en el backend; no se aceptan como una decisión libre del cliente. La descripción interna nunca se usa como respaldo si falta la pública. Este ejemplo supone que el código, estado, tipo y fecha devueltos pertenecen al conjunto de datos publicables aprobado. La implementación deberá validar esa política y almacenar en caché únicamente la proyección pública autorizada.
 
 ## 4. Adaptador de infraestructura
 

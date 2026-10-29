@@ -6,7 +6,7 @@
 | **HU02** | **Como** recolector, **quiero** registrar la cosecha desde una app móvil incluso sin internet, **para** generar el pre-lote y sincronizarlo después. |
 | **HU03** | **Como** operario de acopio, **quiero** registrar la recepción y el pesaje oficial, **para** consolidar los pre-lotes en un lote del sistema. |
 | **HU04** | **Como** responsable de calidad, **quiero** ingresar los parámetros de calidad, **para** determinar la clasificación o rechazo del lote. |
-| **HU05** | **Como** sistema, **quiero** generar un identificador único y un código QR por lote/pallet, **para** permitir su etiquetado e identificación física. |
+| **HU05** | **Como** operario autorizado de acopio o logística, **quiero** obtener un identificador único y un código QR generado por el sistema para cada lote/pallet, **para** etiquetarlo e identificarlo físicamente. |
 | **HU06** | **Como** encargado logístico, **quiero** registrar guía, vehículo y precinto, **para** controlar el despacho y el estado del inventario. |
 | **HU07** | **Como** consumidor, **quiero** escanear el código QR, **para** visualizar el origen y recorrido público autorizado de la palta. |
 | **HU08** | **Como** administrador/comprador autorizado, **quiero** visualizar indicadores de mermas y rendimiento, **para** analizar la eficiencia de la cadena logística. |

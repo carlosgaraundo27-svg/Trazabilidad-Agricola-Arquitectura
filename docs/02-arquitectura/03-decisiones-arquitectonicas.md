@@ -24,7 +24,7 @@ Al mismo tiempo, el sistema debe poder evolucionar hacia nuevos cultivos y mante
 
 ### Decisión
 
-Adoptar **Monolito Modular** como estilo arquitectónico principal.
+Adoptar **Monolito Modular** como estilo del backend dentro de una organización cliente-servidor. La definición incluye propiedad de datos por módulo, contratos internos y llamadas en proceso, según el [estilo arquitectónico](01-estilo-arquitectonico.md).
 
 El backend se desplegará como una unidad, pero internamente estará dividido en módulos funcionales con límites y responsabilidades claramente definidos.
 
@@ -220,7 +220,7 @@ Estas consultas analíticas pueden tener patrones de acceso diferentes a las ope
 
 ### Decisión
 
-Mantener **PostgreSQL como OLTP** y construir un **Datamart OLAP** alimentado mediante procesos ETL.
+Mantener **PostgreSQL como OLTP** y construir un **Datamart OLAP** alimentado mediante procesos ETL. Para la topología inicial propuesta, ambos son esquemas lógicos de una misma instancia PostgreSQL; el ETL es un proceso programado separado del backend de negocio.
 
 ### Justificación
 
@@ -324,9 +324,9 @@ La consulta QR debe proporcionar trazabilidad útil al consumidor sin convertir 
 |---|---|---|
 | **DA01 - Operación desconectada** | ADR-003 API REST | App móvil sincroniza con backend. |
 | **DA02 - Inmutabilidad y auditoría** | ADR-001 Monolito Modular + ADR-002 Clean Architecture + ADR-004 PostgreSQL | Reglas de negocio centralizadas y persistencia transaccional. |
-| **DA03 - Consultas QR rápidas** | ADR-005 Redis | Carga pública de lectura desacoplada de PostgreSQL. |
+| **DA03 - Consultas QR rápidas** | ADR-005 Redis | Reducción esperada de lecturas repetidas; PostgreSQL sigue siendo el respaldo. |
 | **DA04 - Nuevos cultivos** | ADR-001 Monolito Modular + ADR-002 Clean Architecture | Módulos y dominio preparados para evolución. |
-| **DA05 - Separación analítica** | ADR-006 ETL + Datamart | OLTP separado de OLAP. |
+| **DA05 - Separación analítica** | ADR-006 ETL + Datamart | Modelos OLTP/OLAP separados lógicamente; recursos compartidos al inicio. |
 | **DA06 - Seguridad** | ADR-008 Seguridad y control de exposición | Acceso interno protegido y consulta QR limitada a información autorizada. |
 | **RC05 - Despliegue containerizado** | ADR-007 Docker | Portabilidad y despliegue consistente. |
 
@@ -367,3 +367,7 @@ La propuesta final se resume en:
 > **Un Monolito Modular como estilo global, estructurado internamente mediante Clean Architecture, expuesto mediante API REST, con PostgreSQL como OLTP, Redis como caché para consultas QR, Datamart para OLAP y Docker para el despliegue.**
 
 Esta decisión responde directamente a los drivers identificados y mantiene la solución dentro del alcance razonable del proyecto.
+
+## 5. Precisión de las vistas — revisión 2026-11-06
+
+Las ADR aceptadas describen decisiones del diseño documental; no certifican aprobación docente ni ejecución. El portal W1 contiene operación y ruta pública QR; B1 contiene todos los módulos de negocio; J1 es el proceso ETL. Estas precisiones se reflejan en C2, C3 y despliegue. La tecnología final, los contratos offline, las reglas de consolidación y el ciclo de publicación de caché siguen pendientes según la [revisión previa a Sprint 2](../05-sprint01/revision-previa-sprint02.md).

@@ -8,7 +8,7 @@ Clean Architecture se utilizará como **enfoque arquitectónico interno** del ba
 
 Su función no es definir el despliegue global del sistema, sino establecer **cómo se organizan las responsabilidades y cómo se controlan las dependencias internas** de los módulos.
 
-La regla principal es que las dependencias del código deben dirigirse hacia el núcleo del negocio. Por ello, las reglas de trazabilidad no deben depender directamente de PostgreSQL, Redis, Angular, Flutter, Docker o de un proveedor externo concreto.
+La regla principal es que las dependencias del código deben dirigirse hacia el núcleo del negocio. Por ello, las reglas de trazabilidad no deben depender directamente de PostgreSQL, Redis, React, Flutter, Docker o de un proveedor externo concreto.
 
 ## 2. Objetivo
 
@@ -177,52 +177,23 @@ PostgreSQL / ORM directamente
 
 ~~~mermaid
 flowchart TB
-
-    subgraph PRESENTACION["PRESENTACIÓN / ADAPTADORES"]
-        APP["App móvil"]
-        WEB["Portal web"]
-        QR["Consulta QR"]
-        CTRL["Controladores REST / DTO / Adaptadores"]
+    subgraph B["Un módulo del backend — dependencias de código"]
+      C["Adaptador de entrada — controlador REST y DTO"]
+      U["Aplicación — casos de uso"]
+      P["Aplicación — puertos de salida"]
+      D["Dominio — entidades y reglas"]
+      A["Infraestructura — adaptadores PostgreSQL, Redis o proveedor"]
+      C -->|"invoca"| U
+      U -->|"aplica reglas"| D
+      U -->|"depende del contrato"| P
+      A -.->|"implementa contrato"| P
+      A -->|"mapea entidades"| D
     end
-
-    subgraph APLICACION["APLICACIÓN"]
-        UC["Casos de uso"]
-        PORTS["Puertos / Interfaces"]
-        UC --> PORTS
-    end
-
-    subgraph DOMINIO["DOMINIO - NÚCLEO DEL NEGOCIO"]
-        ENT["Entidades"]
-        RULES["Reglas de negocio"]
-        EVENTS["Eventos de trazabilidad"]
-    end
-
-    subgraph INFRA["INFRAESTRUCTURA"]
-        PG["PostgreSQL"]
-        REDIS["Redis"]
-        GPS["GPS / Mapas"]
-        STORE["Storage"]
-        NOTIF["Notificaciones"]
-        DM["Datamart"]
-    end
-
-    APP --> CTRL
-    WEB --> CTRL
-    QR --> CTRL
-
-    CTRL --> UC
-    UC --> ENT
-    UC --> RULES
-    UC --> EVENTS
-
-    INFRA -.->|"Implementa interfaces"| PORTS
-    PORTS -.-> PG
-    PORTS -.-> REDIS
-    PORTS -.-> GPS
-    PORTS -.-> STORE
-    PORTS -.-> NOTIF
-    PORTS -.-> DM
 ~~~
+
+**Leyenda:** flechas sólidas = dependencias de código; discontinua = implementación de una interfaz. Los puertos no dependen de PostgreSQL ni Redis. Los motores y los clientes son externos al módulo y no son capas de su código. La ejecución atraviesa las implementaciones inyectadas, pero esa secuencia no cambia la dirección de las dependencias.
+
+Las capas se organizan dentro de cada módulo. No se propone un único dominio global compartido sin propietarios. Los límites y contratos entre módulos se definen en el [estilo arquitectónico](01-estilo-arquitectonico.md).
 
 ## 7. Aplicación a la trazabilidad del lote
 

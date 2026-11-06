@@ -5,6 +5,8 @@
 **Entregable:** Documentación técnica de análisis, arquitectura y diseño  
 **Estado:** Propuesta arquitectónica documentada; la implementación y las metas de calidad no se consideran verificadas.
 
+**Revisión 2026-11-06:** consultar las [correcciones de estilo y C4 y los pendientes antes de Sprint 2](revision-previa-sprint02.md). La aprobación docente sigue pendiente.
+
 ## 1. Propósito del Sprint
 
 Este Sprint organiza y consolida la propuesta arquitectónica del sistema de trazabilidad agrícola. Define el problema que aborda la solución, sus actores y requisitos, los atributos de calidad y drivers arquitectónicos, las principales decisiones de arquitectura, los componentes, el despliegue objetivo y el diseño conceptual del software.
@@ -28,7 +30,7 @@ La propuesta busca centralizar la información del ciclo de vida del lote, contr
 | **Comunicación** | API REST sobre HTTPS para los clientes móviles, web y la consulta pública. |
 | **Persistencia operativa** | PostgreSQL como base transaccional principal (OLTP). |
 | **Consultas públicas QR** | Redis como caché propuesta; PostgreSQL continúa siendo la fuente transaccional de verdad. |
-| **Analítica** | Proceso ETL y Datamart lógico (OLAP), separados de las operaciones transaccionales. |
+| **Analítica** | Proceso ETL y Datamart lógico (OLAP), en esquemas separados de una misma instancia PostgreSQL inicial; comparten recursos físicos. |
 | **Despliegue** | Docker para estandarizar el entorno previsto. |
 | **Seguridad** | Autenticación de usuarios internos, autorización por roles y exposición controlada de la vista pública QR. |
 
@@ -137,6 +139,6 @@ La consulta del historial público se relaciona con RF-08/RF-09 y HU07. El rendi
 
 ## 9. Estado final del entregable
 
-El Sprint 01 establece una base documental coherente para continuar el diseño. La decisión global es **Monolito Modular**, estructurado internamente con **Clean Architecture**, comunicado por **API REST sobre HTTPS**, con **PostgreSQL** para operaciones, **Redis** como caché QR propuesta y un flujo separado de **ETL/Datamart** para analítica.
+El Sprint 01 organiza la base documental para revisión. El avance a Sprint 2 queda sujeto a la aceptación docente de las correcciones y al cierre de las decisiones críticas. La decisión global es **Monolito Modular**, estructurado internamente con **Clean Architecture**, comunicado por **API REST sobre HTTPS**, con **PostgreSQL** para operaciones, **Redis** como caché QR propuesta y un flujo separado de **ETL/Datamart** para analítica.
 
 La documentación deberá actualizarse cuando se ratifiquen las decisiones pendientes o cambie el diseño. Las metas de calidad se consideran objetivos por validar, no resultados ya medidos.

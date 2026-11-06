@@ -1,168 +1,108 @@
-# Estilo Arquitectónico
+# Estilo arquitectónico: monolito modular
 
-## 1. Estilo seleccionado
+**Estado:** diseño propuesto, basado en ADR-001 y ADR-002. Revisión: 2026-11-06. Las propiedades descritas deberán verificarse en la implementación.
 
-**Estilo arquitectónico principal: Monolito Modular.**
+## 1. Decisión y alcance
 
-La solución se propone como un **monolito modular**, donde los módulos funcionales del sistema se ejecutan dentro de una misma aplicación backend desplegable, pero mantienen responsabilidades claramente separadas.
+El sistema adopta una **organización cliente-servidor con un backend monolítico modular**, estructurado internamente mediante Clean Architecture. El monolito se refiere a la aplicación de negocio: sus siete módulos se compilan y despliegan juntos. La app móvil, el portal web, PostgreSQL, Redis y el proceso ETL tienen responsabilidades y ciclos de ejecución distintos.
 
-La organización interna se apoya complementariamente en una **estructura en capas** y una comunicación **cliente-servidor mediante API REST**. Por tanto, API REST y la organización en capas no se consideran el estilo principal, sino mecanismos de estructuración e integración que permiten materializar el estilo monolítico modular.
+| Dimensión | Decisión | Qué significa en este proyecto |
+|---|---|---|
+| Organización entre aplicaciones | Cliente-servidor | Móvil y web solicitan operaciones al backend; no acceden directamente a la base central. |
+| Estilo del backend | Monolito modular | Siete módulos de negocio dentro de una unidad desplegable. |
+| Organización interna | Clean Architecture | Casos de uso y dominio independientes de frameworks y adaptadores. |
+| Comunicación externa | API REST sobre HTTPS | Contratos entre clientes y backend; REST no define la modularidad interna. |
+| Comunicación entre módulos | Contratos internos y llamadas en proceso | Sin HTTP entre módulos ni un servidor por módulo. |
+| Persistencia | PostgreSQL compartido, con propiedad lógica por módulo | Compartir motor no autoriza escribir tablas de otro módulo. |
+| Operación | Docker | Un contenedor Docker no equivale necesariamente a un contenedor del modelo C4. |
 
-Este estilo es apropiado para el proyecto porque permite centralizar la trazabilidad de los lotes y mantener una consistencia transaccional sobre procesos estrechamente relacionados, evitando la complejidad operacional de distribuir prematuramente el sistema en microservicios.
+La denominación “monolito modular” es defendible cuando se explican los límites, contratos y reglas de colaboración. Dibujar cajas con nombres de módulos, por sí solo, no demuestra modularidad.
 
-## 2. Objetivo del estilo
+## 2. Vista del estilo
 
-El estilo arquitectónico busca:
-
-- Centralizar la gestión de la trazabilidad agrícola en una única plataforma.
-- Mantener separados los módulos funcionales para facilitar su evolución.
-- Permitir que la aplicación móvil de campo, el portal administrativo y la consulta pública mediante QR consuman los mismos servicios de negocio.
-- Garantizar una fuente transaccional central para productores, cosechas, lotes, calidad, inventario y despachos.
-- Aislar los componentes de soporte, como caché, almacenamiento, geolocalización, notificaciones y analítica.
-- Mantener una ruta de evolución futura hacia servicios independientes si el crecimiento del sistema lo justificara.
-
-## 3. Organización global propuesta
-
-### 3.1 Clientes / presentación
-
-- **App móvil de campo:** registro de cosecha, generación de pre-lotes y sincronización posterior cuando exista conexión.
-- **Portal web administrativo/operativo:** gestión de productores, acopio, calidad, inventario, logística y reportes.
-- **Consulta pública QR:** acceso de solo lectura a la información pública de trazabilidad de un lote o pallet.
-
-### 3.2 Backend monolítico modular
-
-El backend se despliega como una única aplicación, internamente organizada en módulos de dominio:
-
-- **Productores**
-- **Cosecha**
-- **Acopio y Calidad**
-- **Trazabilidad**
-- **Logística e Inventario**
-- **Reportes**
-
-El acceso de los clientes se realiza mediante una **API REST**, incluyendo los mecanismos necesarios de autenticación y autorización.
-
-### 3.3 Persistencia y soporte
-
-- **PostgreSQL:** almacenamiento transaccional principal (OLTP).
-- **Redis:** caché orientada principalmente a consultas frecuentes de trazabilidad pública mediante QR.
-- **Datamart:** almacenamiento analítico (OLAP) alimentado mediante procesos ETL para indicadores y reportes.
-
-### 3.4 Servicios externos
-
-- Geolocalización y mapas.
-- Almacenamiento de archivos e imágenes.
-- Servicios de notificaciones.
-
-## 4. Diagrama del estilo arquitectónico
+**Alcance:** colaboración de aplicaciones con el backend. El detalle de los siete módulos se encuentra en C3.
 
 ~~~mermaid
 flowchart TB
-
-    subgraph CLIENTES["CLIENTES / PRESENTACIÓN"]
-        APP["App móvil de campo<br/>Offline / Online"]
-        WEB["Portal web<br/>Administración y operaciones"]
-        QR["Consulta pública<br/>Código QR"]
+    M["App móvil de campo — captura y sincronización"]
+    W["Portal web — operación y vista pública QR"]
+    subgraph B["Backend monolítico modular — una unidad de despliegue"]
+      E["Adaptadores de entrada REST — validación y acceso"]
+      U["Casos de uso por módulo — coordinación"]
+      D["Dominio por módulo — reglas del lote"]
+      P["Puertos — contratos internos"]
+      A["Adaptadores de salida — persistencia e integraciones"]
+      E -->|"invoca"| U
+      U -->|"aplica reglas"| D
+      U -->|"depende de contratos"| P
+      A -.->|"implementa"| P
     end
-
-    subgraph BACKEND["MONOLITO MODULAR - BACKEND"]
-        API["API REST<br/>Autenticación / Autorización"]
-
-        subgraph MODULOS["MÓDULOS FUNCIONALES"]
-            PROD["Productores"]
-            COSECHA["Cosecha"]
-            ACOPIO["Acopio y Calidad"]
-            TRAZ["Trazabilidad"]
-            LOG["Logística e Inventario"]
-            REPORT["Reportes"]
-        end
-
-        API --> PROD
-        API --> COSECHA
-        API --> ACOPIO
-        API --> TRAZ
-        API --> LOG
-        API --> REPORT
-    end
-
-    subgraph PERSISTENCIA["PERSISTENCIA Y ANALÍTICA"]
-        PG["PostgreSQL<br/>OLTP"]
-        REDIS["Redis<br/>Caché QR"]
-        ETL["ETL / proceso analítico"]
-        DM["Datamart<br/>OLAP / BI"]
-    end
-
-    subgraph EXTERNOS["SERVICIOS EXTERNOS"]
-        GPS["GPS / Mapas"]
-        STORAGE["Almacenamiento de archivos"]
-        NOTIF["Email / SMS"]
-    end
-
-    APP -->|"HTTPS / API REST<br/>Sincronización"| API
-    WEB -->|"HTTPS / API REST"| API
-    QR -->|"HTTPS / Consulta pública"| API
-
-    PROD --> PG
-    COSECHA --> PG
-    ACOPIO --> PG
-    TRAZ --> PG
-    LOG --> PG
-    REPORT --> PG
-
-    TRAZ --> REDIS
-    API -->|"Consultas frecuentes"| REDIS
-
-    PG --> ETL
-    ETL --> DM
-    REPORT --> DM
-
-    COSECHA --> GPS
-    ACOPIO --> STORAGE
-    LOG --> NOTIF
+    DB[("PostgreSQL — datos operativos")]
+    R[("Redis — proyección pública temporal")]
+    M -->|"HTTPS / JSON"| E
+    W -->|"HTTPS / JSON"| E
+    A -->|"SQL mediante driver"| DB
+    A -->|"protocolo Redis"| R
 ~~~
 
-## 5. Correspondencia con los drivers arquitectónicos
+**Leyenda:** cajas = responsabilidades; cilindros = almacenes. Flecha sólida = uso o dependencia indicada; discontinua = implementación de interfaz. La flecha del adaptador al puerto es una dependencia de código, no el sentido de devolución de los datos. La infraestructura queda dentro del backend; los motores de datos quedan fuera. ETL y servicios proyectados se detallan en C2.
 
-| Driver | Respuesta del estilo arquitectónico |
-|---|---|
-| **DA01 - Operación desconectada en campo** | El cliente móvil mantiene operación local y posteriormente sincroniza con el backend mediante API REST. |
-| **DA02 - Inmutabilidad y auditoría del lote** | El módulo de Trazabilidad concentra las reglas relacionadas con eventos e historial, manteniendo el control desde el backend. |
-| **DA03 - Consultas públicas rápidas** | Redis se incorpora como componente de soporte para desacoplar las consultas QR frecuentes de la base transaccional. |
-| **DA04 - Extensibilidad a nuevos cultivos** | Los módulos mantienen responsabilidades separadas, permitiendo incorporar reglas y procesos sin convertir el backend en un bloque monolítico sin estructura. |
-| **DA05 - Separación analítica** | El OLTP permanece separado del procesamiento analítico mediante ETL y Datamart. |
-| **DA06 - Seguridad** | La API aplica autenticación y autorización para operaciones internas y limita los datos ofrecidos por QR. |
+## 3. Límites y propiedad de datos
 
-## 6. ¿Por qué no microservicios?
+Estos límites son una propuesta de diseño para revisión; no agregan funcionalidades al catálogo RF.
 
-Para el alcance actual, **no se selecciona microservicios como estilo principal** porque introduciría complejidad adicional en despliegue, observabilidad, comunicación entre servicios, consistencia distribuida y operación.
+| Módulo | Datos bajo su responsabilidad | Contrato que ofrece a otros módulos |
+|---|---|---|
+| Productores | Productor, parcela, certificación | Consultar origen y validar parcela para cosecha. |
+| Cosecha | Cosecha, pre-lote, identificación de captura | Registrar y sincronizar pre-lotes; consultar origen y disponibilidad. |
+| Acopio y Calidad | Recepción, pesaje, controles y decisión de calidad | Recibir producto, evaluar calidad y solicitar consolidación del lote. |
+| Trazabilidad | Lote consolidado, código QR, eventos e historial | Consolidar identidad, registrar hechos y consultar la proyección pública. |
+| Logística e Inventario | Pallet, movimientos, despacho y entrega | Consultar existencias y registrar movimientos; comunicar hechos del lote a Trazabilidad. |
+| Reportes | Definiciones de indicadores y consultas analíticas | Consultar el Datamart con permisos; no cambiar existencias ni estados del lote. |
+| Acceso y Permisos | Usuario, rol y asignación de permisos | Autenticar y evaluar permiso por operación y recurso. |
 
-El monolito modular permite obtener una separación interna suficiente para el proyecto y deja abierta una evolución futura: un módulo que requiera escalabilidad o independencia podría extraerse posteriormente como servicio, sin obligar a distribuir todo el sistema desde el inicio.
+**RF-04 se divide explícitamente:** Cosecha identifica el pre-lote; Trazabilidad identifica el lote consolidado; Acopio coordina su formación. La relación de mezcla/división y sus cantidades debe aprobarse antes de cerrar el esquema de datos.
 
-## 7. Ventajas para el proyecto
+Los estados de inventario pertenecen a Logística e Inventario. La decisión de calidad pertenece a Acopio y Calidad. Trazabilidad registra esos hechos y la vista del lote sin mantener otra fuente contradictoria del stock.
 
-- Menor complejidad de despliegue y operación.
-- Transacciones centralizadas sobre el ciclo de vida del lote.
-- Separación clara de responsabilidades.
-- Facilidad para realizar pruebas e integración.
-- Evolución progresiva del sistema.
-- Posibilidad de incorporar nuevos cultivos y procesos.
-- Compatibilidad con Docker y despliegue Cloud.
-- Integración sencilla con PostgreSQL, Redis y servicios externos.
+**Liquidaciones:** RF-12 solicita reportarlas, pero aún no define el origen de precios, descuentos ni aprobación del cálculo. Reportes puede mostrar resultados autorizados; el motor transaccional de liquidaciones requiere aclarar alcance y propietario antes de implementarlo.
 
-## 8. Limitaciones y medidas de control
+## 4. Reglas verificables de modularidad
 
-| Riesgo del monolito | Medida arquitectónica |
-|---|---|
-| Crecimiento excesivo del backend | Mantener módulos independientes y contratos claros. |
-| Alto acoplamiento entre módulos | Aplicar Clean Architecture como enfoque interno. |
-| Sobrecarga de PostgreSQL por consultas QR | Utilizar Redis para consultas de alta frecuencia. |
-| Crecimiento de necesidades analíticas | Mantener OLTP y Datamart separados. |
-| Necesidad futura de escalar un módulo | Diseñar módulos con límites claros para una eventual extracción a servicios independientes. |
+1. Cada módulo expone contratos de aplicación; los demás no importan sus controladores, adaptadores ORM ni repositorios concretos.
+2. Cada escritura se realiza mediante el módulo propietario. No se comparten entidades ORM como contratos públicos; se usan identificadores y DTO.
+3. Dentro del módulo: entrada → aplicación → dominio; los adaptadores de salida implementan interfaces interiores.
+4. Las dependencias entre módulos deben ser acíclicas. Ejemplo: Cosecha consulta Productores; Acopio coordina con Cosecha y Trazabilidad; Logística registra hechos mediante Trazabilidad. Trazabilidad no llama de vuelta a los módulos que lo invocan.
+5. Una operación que cambie datos operativos y registre su evento debe coordinar **una misma transacción PostgreSQL** mediante una unidad de trabajo. Si falla el evento obligatorio, se revierte la operación. El mecanismo de propagación del contexto transaccional queda por especificar en el diseño técnico.
+6. Notificaciones, caché y ETL no forman parte de la transacción de negocio. Se ejecutan después del commit; deben definirse reintentos, invalidación y observabilidad.
+7. No se asume entrega fiable solo por usar eventos en memoria. Si se requieren entregas garantizadas a un proceso externo, se evaluará un outbox mediante una ADR específica.
 
-## 9. Decisión final
+**Verificación futura:** reglas de imports, prueba de rollback operación/evento, prueba de integración de contratos y prueba de que el dominio funciona sin PostgreSQL ni Redis. Estas pruebas aún no han sido ejecutadas.
 
-La arquitectura global seleccionada es:
+## 5. Justificación y alternativas
 
-> **Monolito Modular**, organizado internamente mediante una estructura en capas, expuesto mediante **API REST**, con PostgreSQL como persistencia transaccional, Redis como caché para consultas QR y un flujo separado de analítica mediante Datamart.
+| Criterio | Monolito sin límites | Monolito modular seleccionado | Microservicios |
+|---|---|---|---|
+| Integridad de operación y evento | Transacción local, con riesgo de lógica dispersa | Transacción local coordinada y propiedad explícita | Requiere abordar consistencia y fallos distribuidos. |
+| Operación académica | Despliegue simple | Despliegue simple con disciplina de módulos | Más servicios, redes, registros y despliegues que mantener. |
+| Cambio de reglas de cultivo | Alto riesgo de afectar áreas ajenas | Reglas encapsuladas; extracción futura no automática | Aislamiento de servicio a costa de contratos distribuidos. |
+| Escalamiento | Se replica la aplicación | Se replica el backend completo | Puede escalar servicios por separado. |
+| Fallos | Pueden afectar toda la aplicación | Comparten proceso: la modularidad no aísla caídas | Aislamiento parcial, condicionado por dependencias. |
 
-El detalle de las dependencias y responsabilidades internas se define mediante el **enfoque de Clean Architecture**, documentado en el archivo correspondiente.
+La conectividad intermitente (DA01) justifica almacenamiento y sincronización en móvil; **no es una propiedad que el monolito resuelva por sí solo**. DA02 y DA04 sustentan transacciones y límites de módulos. DA03 motiva evaluar caché, DA05 el modelo analítico y DA06 controles de acceso en backend.
+
+## 6. Costes y límites de la decisión
+
+- Los módulos se publican juntos y comparten memoria/CPU del proceso backend.
+- Clean Architecture ayuda a controlar dependencias, pero exige contratos y revisión para evitar acoplamiento.
+- Redis reduce lecturas repetidas cuando existe una entrada válida; no garantiza rendimiento ni elimina el acceso a PostgreSQL.
+- El Datamart inicial comparte instancia PostgreSQL con OLTP: hay separación lógica, no aislamiento de CPU, memoria o disco.
+- Una futura extracción a microservicios requiere justificar carga, autonomía y consistencia; no basta mover carpetas.
+
+## 7. Correspondencia documental
+
+- [ADR-001 y ADR-002](03-decisiones-arquitectonicas.md): selección y consecuencias.
+- [Enfoque interno](02-enfoque-arquitectonico.md): dependencias de código.
+- [C1–C4](../04-modelo-c4/modelo-c4.md): ampliación progresiva del sistema.
+- [Despliegue](05-arquitectura-tecnica-despliegue.md): ubicación física para el prototipo.
+- [Revisión previa a Sprint 2](../05-sprint01/revision-previa-sprint02.md): decisiones y evidencias pendientes.

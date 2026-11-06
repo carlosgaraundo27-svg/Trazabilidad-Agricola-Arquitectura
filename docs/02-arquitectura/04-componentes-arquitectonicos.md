@@ -6,55 +6,11 @@ Este documento relaciona los componentes de la solución con los requisitos func
 
 **Estado:** diseño propuesto. La presencia de un componente en el diagrama no significa que su código esté implementado.
 
-## Diagrama de componentes del backend
+## Vista canónica de componentes del backend
 
-~~~mermaid
-flowchart TB
-    MOBILE["App móvil de campo"]
-    WEB["Portal web"]
-    QR["Consulta pública QR"]
+El [C3 del modelo C4](../04-modelo-c4/modelo-c4.md#4-c3--componentes-del-backend-b1) es la vista canónica. Incluye los siete módulos dentro del backend B1 y diferencia sus contratos de las dependencias de infraestructura. Esta página conserva la matriz de trazabilidad para evitar mantener dos diagramas contradictorios.
 
-    API["API REST<br/>Autenticación + autorización"]
-
-    subgraph BACKEND["Backend - Monolito Modular"]
-      AUTH["Acceso y permisos"]
-      PROD["Módulo Productores"]
-      COSECHA["Módulo Cosecha"]
-      ACOPIO["Módulo Acopio y Calidad"]
-      TRAZA["Módulo Trazabilidad"]
-      LOG["Módulo Logística e Inventario"]
-      REPORT["Módulo Reportes"]
-    end
-
-    PG[("PostgreSQL / OLTP")]
-    REDIS[("Redis / Caché QR")]
-    ETL["Proceso ETL"]
-    DM[("Datamart / OLAP")]
-    EXT["Adaptadores externos<br/>Mapas, archivos, notificaciones"]
-
-    MOBILE -->|"HTTPS / sincronización"| API
-    WEB -->|"HTTPS"| API
-    QR -->|"HTTPS / solo lectura"| API
-
-    API --> AUTH
-    API --> PROD
-    API --> COSECHA
-    API --> ACOPIO
-    API --> TRAZA
-    API --> LOG
-    API --> REPORT
-
-    PROD --> PG
-    COSECHA --> PG
-    ACOPIO --> PG
-    TRAZA --> PG
-    LOG --> PG
-    REPORT --> PG
-    TRAZA --> REDIS
-    API --> EXT
-    PG --> ETL --> DM
-    REPORT --> DM
-~~~
+API REST es el conjunto de adaptadores de entrada de B1, no otro servidor. La consulta QR es una ruta pública del portal W1. ETL es el proceso J1 fuera del backend. Los [límites y propietarios de datos](01-estilo-arquitectonico.md#3-límites-y-propiedad-de-datos) completan las responsabilidades de esta matriz.
 
 ## Matriz de trazabilidad de componentes
 

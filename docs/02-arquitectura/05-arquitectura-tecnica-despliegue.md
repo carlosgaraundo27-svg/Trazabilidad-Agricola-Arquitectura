@@ -10,39 +10,37 @@ No deben confundirse. Varios módulos lógicos pueden ejecutarse dentro de una m
 
 ~~~mermaid
 flowchart TB
-    subgraph USERS["Dispositivos de usuario"]
-      ANDROID["Dispositivo Android<br/>App móvil"]
-      BROWSER["Navegador web<br/>Portal / QR"]
+    subgraph DC["Dispositivo de campo"]
+      M["M1 — App móvil"]
+      L[("L1 — almacenamiento local")]
+      M -->|"lectura y escritura local"| L
     end
-
-    INTERNET["Internet / HTTPS"]
-    FW["Firewall / reglas de red"]
-
-    subgraph HOST["Servidor o entorno Cloud del prototipo"]
-      WEB["Frontend web<br/>estático servido por Nginx"]
-      API["Contenedor Docker<br/>API REST monolítica modular"]
-      WORKER["Proceso/contenedor ETL<br/>programado"]
+    N["Navegador — W1 portal y ruta pública QR"]
+    subgraph HOST["Host del prototipo — topología propuesta, capacidad por validar"]
+      RP["Nginx — frontend estático y proxy HTTPS"]
+      API["Docker: B1 — backend modular completo"]
+      ETL["Docker: J1 — job ETL programado"]
+      subgraph DB["Una instancia PostgreSQL — red privada"]
+        O[("O1 — esquema operativo")]
+        A[("A1 — esquema analítico")]
+      end
+      R[("Docker: K1 — Redis privado")]
+      RP -->|"reenvía API por red privada"| API
+      API -->|"opera / SQL"| O
+      API -->|"reportes / SQL"| A
+      API -->|"protocolo Redis"| R
+      ETL -->|"extrae / SQL"| O
+      ETL -->|"carga / SQL"| A
     end
-
-    subgraph DATA["Persistencia y soporte"]
-      PG[("PostgreSQL<br/>datos operativos")]
-      REDIS[("Redis<br/>caché QR / arquitectura objetivo")]
-      DM[("Datamart lógico<br/>esquema analítico")]
-      FILES["Almacenamiento de evidencias"]
-    end
-
-    ANDROID --> INTERNET
-    BROWSER --> INTERNET
-    INTERNET --> FW
-    FW --> WEB
-    FW --> API
-    API --> PG
-    API --> REDIS
-    API --> FILES
-    PG --> WORKER
-    WORKER --> DM
-    API -->|"Lectura de reportes"| DM
+    EXT["Servicios externos proyectados — mapas, archivos y avisos"]
+    M -->|"HTTPS / API"| RP
+    N -->|"HTTPS / frontend y API"| RP
+    API -.->|"HTTPS / APIs por definir"| EXT
 ~~~
+
+**Leyenda:** marcos = nodos o entorno físico; cajas = procesos/aplicaciones; cilindros = datos; flechas = conexiones iniciadas por el origen; discontinua = integración proyectada. Solo Nginx recibe tráfico público. Los siete módulos de negocio están dentro de B1, no en siete contenedores Docker.
+
+**Persistencia:** PostgreSQL requiere volumen persistente y copias con restauración comprobada. L1 debe sobrevivir al reinicio del móvil. Redis contiene datos reconstruibles; perder la caché no debe perder el historial. O1 y A1 comparten recursos físicos: esta topología no ofrece alta disponibilidad ni aislamiento analítico. No se han medido capacidad ni disponibilidad.
 
 ## 3. Nodos propuestos
 

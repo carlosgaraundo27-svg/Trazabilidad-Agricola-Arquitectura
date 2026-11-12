@@ -32,7 +32,11 @@ Docker funciona en la PowerShell del usuario según su comprobación `hello-worl
 
 El respaldo ocupa 3000 (app) y 55432 (PostgreSQL). El `.env` local del clon selecciona `APP_PORT=3002`; la DB Compose permanece privada. El override E2E publica solamente `127.0.0.1:55433`.
 
-Se solicitó ejecutar `node --env-file-if-exists=.env scripts/verify-compose.js` en la PowerShell normal y entregar su JSON de resultados. **El resultado de esa ejecución local sigue pendiente de recepción.** No se atribuyen a esta sesión contenedores levantados ni persistencia comprobada con el Docker local hasta recibir evidencia.
+Se revisaron los JSON generados en la PowerShell normal del usuario. El arranque terminó con `passed: true`; después de instalar el navegador compatible, el E2E terminó con código 0 (`1 passed`, 2.6 s). El reinicio del 2026-11-12 16:18:41 UTC terminó con `passed: true` y conservó el pre-lote `23d58b15-aec1-488f-841d-eec647d07c76` en las listas anterior y posterior. Es evidencia de Docker local en Windows, ejecutada por el usuario y revisada por el agente. El reinicio anterior con listas vacías no acredita persistencia de un registro y se conserva solo como antecedente.
+
+La repetición del agente verificó Playwright instalado/lockfile **1.65.0**, ejecutó su instalador local con `PLAYWRIGHT_BROWSERS_PATH` hacia `.arranque-runtime/playwright-browsers` y lanzó Chromium **158.0.8127.18**, revisión **1254**. Chromium y Headless Shell ya estaban presentes; el instalador terminó con código 0 sin nueva descarga. `package.json` y `package-lock.json` conservaron sus hashes; SHA-256 del lockfile: `d980659eac3732d646b928073539a9a1c241a59c62ec3d785548315a9c7dbb99`.
+
+Después se repitió `scripts/test-compose.js` desde el agente contra el Compose activo: código 0, `1 passed (1.5s)`. Esto verifica la interfaz real y SQL a través de los puertos publicados, sin requerir acceso al motor. La repetición de `verify-compose.js --test --restart` se detuvo en `docker version` con código 1 y acceso denegado a `npipe:////./pipe/docker_engine`, antes de ejecutar `down`. Se solicitó al usuario repetir ese reinicio para acreditar también la persistencia posterior a la nueva captura. [Evidencia de esta revisión](evidence/cierre/browser-windows/README.md).
 
 Los comandos reproducibles, seed no destructivo, recorrido UI y reinicio sin borrar volúmenes se describen en la [guía](../../tecnologia/arranque-windows.md). `verify-compose.js --restart` compara los IDs existentes antes/después; no vuelve a sembrar ni elimina registros.
 

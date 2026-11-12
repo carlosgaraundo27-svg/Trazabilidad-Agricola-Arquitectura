@@ -2,7 +2,7 @@
 
 Trabajar desde el clon `repo-github`; conservar `repo` como respaldo. Requisitos: Git, Node `>=24 <25`, npm y Docker Desktop con motor Linux y Compose v2/v5. No se necesita PostgreSQL instalado en Windows. Express 5 es el backend decidido en [ADR-009](../docs/02-arquitectura/07-decisiones-primer-recorrido.md).
 
-[Resultados actuales](../docs/05-sprint01/cierre-primer-recorrido.md): separar siempre ejecución nativa local, Compose local y Actions. Docker funciona en la terminal del usuario según `hello-world`; la sesión del agente recibe acceso denegado al motor y necesita resultados manuales para acreditar Docker local.
+[Resultados actuales](../docs/05-sprint01/cierre-primer-recorrido.md): separar siempre ejecución nativa local, Compose local y Actions. Los JSON del usuario ya acreditan arranque, E2E y persistencia en Docker Windows. El agente puede repetir el E2E por HTTP/SQL, pero sigue recibiendo acceso denegado al motor para detener y levantar contenedores.
 
 ## 1. Comprobar herramientas, motor y puertos
 
@@ -58,18 +58,24 @@ Para la demo rápida, ingresar como recolector y usar `Parcela demo Norte`; regi
 
 El override `compose.test.yaml` publica únicamente DB en `127.0.0.1:55433`, distinto de PostgreSQL nativo 55432. No usar este override para un despliegue público. La prueba crea productor, parcela y pre-lote ficticios, asigna la parcela al recolector y comprueba recarga, cuatro anchos y logout. Añade registros; no reinicializa ni limpia la DB de demo.
 
-En un checkout nuevo, instalar las dependencias del lockfile y el navegador requerido. En el clon revisado ya están instaladas; no hace falta repetir la instalación. Si se usa el navegador local de la sesión, establecer `PLAYWRIGHT_BROWSERS_PATH` hacia `arranque-runtime\playwright-browsers` del directorio hermano.
+En un checkout nuevo sin dependencias, ejecutar primero `npm.cmd ci --ignore-scripts`. Si solo falta el navegador, conservar Playwright y el lockfile: usar el instalador de la versión ya instalada en `node_modules`.
+
+En esta revisión, `@playwright/test`, `playwright` y `playwright-core` están en **1.65.0**; `browsers.json` requiere Chromium **158.0.8127.18**, revisión **1254**, incluido su Headless Shell. No actualizar paquetes para solucionar un navegador ausente.
+
+En la misma PowerShell usada para instalar y ejecutar, fijar una ruta absoluta común. La ruta utilizada en esta repetición es el directorio hermano **`.arranque-runtime`**, con punto inicial. Es distinto de `arranque-runtime`, usado en una sesión anterior. El test hereda `PLAYWRIGHT_BROWSERS_PATH`; instalar en otro directorio no resuelve una búsqueda en esta ruta.
 
 ```powershell
-# Solo si faltan dependencias o el navegador en este checkout:
-npm.cmd ci --ignore-scripts
+$env:PLAYWRIGHT_BROWSERS_PATH = [System.IO.Path]::GetFullPath((Join-Path (Get-Location).Path '..\.arranque-runtime\playwright-browsers'))
+node node_modules/@playwright/test/cli.js --version
 node node_modules/@playwright/test/cli.js install chromium
 
 node --env-file-if-exists=.env scripts/verify-compose.js --test
 node --env-file-if-exists=.env scripts/test-compose.js
 ```
 
-El segundo auxiliar apunta expresamente al frontend Compose y a su DB publicada por el override. `E2E_EXTERNAL_SERVER=true` omite la creación de un servidor Node adicional; no altera el test de recorrido. El JSON `.local/compose-e2e-*.json` registra su salida con credenciales redactadas. El navegador Chromium debe coincidir con el lockfile de Playwright.
+El instalador local instala tanto Chromium como el Headless Shell requerido por `headless: true`; si ya están presentes, termina sin descargarlos otra vez. Mantener la variable en esa terminal al ejecutar el test. No usar `@latest`, `npm update`, cambios de lockfile ni `--force` para este caso. La [documentación de Playwright](https://playwright.dev/docs/browsers#managing-browser-binaries) describe el uso de una misma ruta de binarios para instalación y ejecución.
+
+`scripts/test-compose.js` apunta expresamente al frontend Compose y a su DB publicada por el override. `E2E_EXTERNAL_SERVER=true` omite la creación de un servidor Node adicional; no altera el test de recorrido. El JSON `.local/compose-e2e-*.json` registra su salida con credenciales redactadas. Para comunicar resultados, enviar ese JSON y el de reinicio, nunca `.env` ni trazas que contengan sesiones.
 
 ## 5. Comprobar persistencia sin destruir volúmenes
 

@@ -1,0 +1,15 @@
+{
+  "checkedAt": "2026-11-12T16:25:47.137Z",
+  "playwright": "1.65.0",
+  "browserPath": "<WORKSPACE>\\.arranque-runtime\\playwright-browsers",
+  "installExit": 0,
+  "installOutput": "",
+  "chromiumExecutable": "<WORKSPACE>\\.arranque-runtime\\playwright-browsers\\chromium-1254\\chrome-win64\\chrome.exe",
+  "headlessExecutable": "<WORKSPACE>\\.arranque-runtime\\playwright-browsers\\chromium_headless_shell-1254\\chrome-headless-shell-win64\\chrome-headless-shell.exe",
+  "chromiumPresent": true,
+  "headlessPresent": true,
+  "launchedVersion": "158.0.8127.18",
+  "packageUnchanged": true,
+  "lockUnchanged": true,
+  "lockSha256": "d980659eac3732d646b928073539a9a1c241a59c62ec3d785548315a9c7dbb99"
+}

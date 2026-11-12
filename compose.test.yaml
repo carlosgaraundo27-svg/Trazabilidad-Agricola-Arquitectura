@@ -1,0 +1,4 @@
+# Solo para E2E contra la demo Compose; no cambia la red privada por defecto.
+services:
+  db:
+    ports: ["127.0.0.1:${COMPOSE_TEST_DB_PORT:-55433}:5432"]

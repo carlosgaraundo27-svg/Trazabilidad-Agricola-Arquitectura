@@ -1,0 +1,19 @@
+{
+  "action": "lifecycle",
+  "exitCode": 0,
+  "signal": null,
+  "timedOut": false,
+  "durationMs": 491,
+  "finishedAt": "2026-11-12T15:38:15.964Z"
+}
+
+{"event":"server_started","port":0}
+✔ servidor E2E termina por IPC y libera el puerto sin taskkill (381.2146ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 439.6974

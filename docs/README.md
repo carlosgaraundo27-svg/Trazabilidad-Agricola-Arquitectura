@@ -32,3 +32,11 @@ Este repositorio contiene una **propuesta arquitectónica y documentación de di
 ## Revisión antes de avanzar al Sprint 2
 
 La [revisión arquitectónica](05-sprint01/revision-previa-sprint02.md) registra las correcciones del estilo y C1–C4, los riesgos adicionales y los criterios pendientes de validación. El [modelo C4](04-modelo-c4/modelo-c4.md) es la fuente canónica de las vistas.
+
+## Primer recorrido implementado
+
+- [Especificación y aceptación](03-diseno-de-software/03-especificacion-primer-recorrido.md)
+- [Contrato OpenAPI](03-diseno-de-software/openapi.json)
+- [Decisiones y alcance ejecutable](02-arquitectura/07-decisiones-primer-recorrido.md)
+- [Evidencia y estado del PR #1](05-sprint01/evidencia-primer-recorrido.md)
+- [Entorno y pruebas](../tecnologia/primer-recorrido.md)

@@ -1,0 +1,28 @@
+{
+  "action": "lifecycle",
+  "exitCode": 1,
+  "signal": null,
+  "timedOut": false,
+  "durationMs": 5512,
+  "finishedAt": "2026-11-12T15:38:15.363Z"
+}
+
+{"event":"server_started","port":0}
+✖ servidor E2E termina por IPC y libera el puerto sin taskkill (5390.7921ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5452.2137
+
+✖ failing tests:
+
+test at tests\integration\server-lifecycle.test.js:7:1
+✖ servidor E2E termina por IPC y libera el puerto sin taskkill (5390.7921ms)
+  Error: El servidor E2E no cerró por IPC en 5 segundos.
+      at Timeout.<anonymous> (file:///<WORKSPACE>/repo-github/tests/e2e/global-setup.js:39:15)
+      at listOnTimeout (node:internal/timers:605:17)
+      at process.processTimers (node:internal/timers:541:7)

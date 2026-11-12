@@ -1,0 +1,12 @@
+✔ cantidad positiva decimal y fecha con zona (3.9239ms)
+✔ coordenadas y nombre tienen límites (0.7931ms)
+✔ roles deniegan por defecto y no heredan operaciones (0.117ms)
+✔ contraseñas con sal única y verificación sin texto plano (96.6342ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 167.5018

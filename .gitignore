@@ -8,6 +8,8 @@ __pycache__/
 # Entorno y variables
 .env
 .env.local
+.env.*
+!.env.example
 
 # IDEs y editores
 .vscode/
@@ -17,3 +19,11 @@ __pycache__/
 # Sistema operativo
 .DS_Store
 Thumbs.db
+node_modules/
+dist/
+.env
+*.log
+.local/
+playwright-report/
+test-results/
+.npm-cache/

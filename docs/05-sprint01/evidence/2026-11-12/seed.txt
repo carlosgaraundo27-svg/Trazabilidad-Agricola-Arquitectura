@@ -1,0 +1,15 @@
+{
+  "task": "seed",
+  "command": "npm.cmd run seed",
+  "cwd": "<WORKSPACE>\\repo",
+  "startedAt": "2026-11-12T14:42:49.215Z",
+  "finishedAt": "2026-11-12T14:42:49.746Z",
+  "exitCode": 0,
+  "signal": null
+}
+
+
+> trazabilidad-primer-recorrido@0.1.0 seed
+> node --env-file-if-exists=.env scripts/seed.js
+
+Seed ficticio aplicado; cuentas existentes conservadas.

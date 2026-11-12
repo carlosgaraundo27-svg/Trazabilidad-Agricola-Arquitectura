@@ -1,0 +1,177 @@
+{
+  "base": "38a85e38b647729d4a122d4b35e6f8297103a2a4",
+  "originalFiles": [
+    {
+      "path": ".gitignore",
+      "baseSha": "96a5ea15129a767f0dc011eb34b814894e3a875f",
+      "unchanged": false
+    },
+    {
+      "path": "README.md",
+      "baseSha": "d3575ee8d372cde28f3fc5f3feb5a2b2c9f02c05",
+      "unchanged": false
+    },
+    {
+      "path": "docs/01-analisis-de-sistema/01-actores.md",
+      "baseSha": "d066323d30be3656275d661e3f7bfb26e8914800",
+      "unchanged": true
+    },
+    {
+      "path": "docs/01-analisis-de-sistema/02-historias-del-usuario.md",
+      "baseSha": "cc8763f122c21b5039086411e4c81218f1b46d27",
+      "unchanged": true
+    },
+    {
+      "path": "docs/01-analisis-de-sistema/03-requisitos-funcionales.md",
+      "baseSha": "56b823307a812c8fc140c8cb41f5bf14c9ab556d",
+      "unchanged": true
+    },
+    {
+      "path": "docs/01-analisis-de-sistema/04-atributos-de-calidad.md",
+      "baseSha": "18853bd02098b6ef403b26ed7dac4e437ce34d6f",
+      "unchanged": true
+    },
+    {
+      "path": "docs/01-analisis-de-sistema/05-restricciones.md",
+      "baseSha": "85f08480d0436e2d58ee6167aee4c4dc70ba9095",
+      "unchanged": true
+    },
+    {
+      "path": "docs/01-analisis-de-sistema/06-drivers-arquitectonicos.md",
+      "baseSha": "dc46e829ae458a4a9a028b3488fdd7d02f2c77c9",
+      "unchanged": true
+    },
+    {
+      "path": "docs/01-analisis-de-sistema/08-escenarios-atributos-calidad.md",
+      "baseSha": "cddcfc34f386e4fe9aefa8ffe856da02bc60821f",
+      "unchanged": true
+    },
+    {
+      "path": "docs/02-arquitectura/00-registro-alineamiento.md",
+      "baseSha": "a1a9854af84a32c5a03f51ff4ed8cdd84d9a63a9",
+      "unchanged": true
+    },
+    {
+      "path": "docs/02-arquitectura/01-estilo-arquitectonico.md",
+      "baseSha": "ffd0804edbbcec4fa06401dfe10e534fcdbfa4b7",
+      "unchanged": true
+    },
+    {
+      "path": "docs/02-arquitectura/02-enfoque-arquitectonico.md",
+      "baseSha": "fbacc4fc756dff5b804b4410cb8078edf10def52",
+      "unchanged": true
+    },
+    {
+      "path": "docs/02-arquitectura/03-decisiones-arquitectonicas.md",
+      "baseSha": "e4a314ce4c0432a7bf1fa87fa942c8355af99ff8",
+      "unchanged": false
+    },
+    {
+      "path": "docs/02-arquitectura/04-componentes-arquitectonicos.md",
+      "baseSha": "0d7ee87c94a963ef600095e155ef7fe7472e242d",
+      "unchanged": true
+    },
+    {
+      "path": "docs/02-arquitectura/05-arquitectura-tecnica-despliegue.md",
+      "baseSha": "084d111772fd7ce322d4253b84cd8460ee1586b6",
+      "unchanged": false
+    },
+    {
+      "path": "docs/02-arquitectura/06-matriz-accesos-seguridad.md",
+      "baseSha": "09bb05b5e9a8a11570acc56eafeaa703353f8701",
+      "unchanged": true
+    },
+    {
+      "path": "docs/03-diseno-de-software/01-diseno-interno.md",
+      "baseSha": "e6fb66026faa605a4c41daf363605e4c71af4c19",
+      "unchanged": true
+    },
+    {
+      "path": "docs/03-diseno-de-software/02-modelo-datos-conceptual.md",
+      "baseSha": "3e1641d44a17f1ca0387bf5b7b4a4cc6f9307f66",
+      "unchanged": true
+    },
+    {
+      "path": "docs/04-modelo-c4/modelo-c4.md",
+      "baseSha": "2c1bc71c19ef261b3126372bbd3a3b5b76ca18e3",
+      "unchanged": false
+    },
+    {
+      "path": "docs/05-sprint01/README.md",
+      "baseSha": "835848c6287f6aa17c66a7c16aa3a935eb113b82",
+      "unchanged": true
+    },
+    {
+      "path": "docs/05-sprint01/revision-previa-sprint02.md",
+      "baseSha": "813275746b4b45d79c530b2af50678a31fa021c9",
+      "unchanged": true
+    },
+    {
+      "path": "docs/README.md",
+      "baseSha": "4c865ec121e37a360d2928146280a65856031053",
+      "unchanged": false
+    },
+    {
+      "path": "tecnologia/ejemplo-clean-architecture.md",
+      "baseSha": "d2ea429868f7725eff89b128b5fe88eb5db47fd8",
+      "unchanged": true
+    }
+  ],
+  "newFiles": [
+    ".dockerignore",
+    ".env.example",
+    ".github/workflows/ci.yml",
+    "compose.yaml",
+    "Dockerfile",
+    "docs/02-arquitectura/07-decisiones-primer-recorrido.md",
+    "docs/03-diseno-de-software/03-especificacion-primer-recorrido.md",
+    "docs/03-diseno-de-software/openapi.json",
+    "docs/05-sprint01/evidence/audit.json",
+    "docs/05-sprint01/evidence/build.txt",
+    "docs/05-sprint01/evidence/checks.txt",
+    "docs/05-sprint01/evidence/e2e.txt",
+    "docs/05-sprint01/evidence/format.txt",
+    "docs/05-sprint01/evidence/install.txt",
+    "docs/05-sprint01/evidence/integration-postgresql.txt",
+    "docs/05-sprint01/evidence/mutation.txt",
+    "docs/05-sprint01/evidence/primer-recorrido.png",
+    "docs/05-sprint01/evidence/README.md",
+    "docs/05-sprint01/evidence/unit.txt",
+    "docs/05-sprint01/evidencia-primer-recorrido.md",
+    "index.html",
+    "migrations/001_initial.down.sql",
+    "migrations/001_initial.up.sql",
+    "package-lock.json",
+    "package.json",
+    "playwright.config.js",
+    "scripts/check.js",
+    "scripts/container-start.js",
+    "scripts/e2e-server.js",
+    "scripts/migrate.js",
+    "scripts/seed.js",
+    "server/composition.js",
+    "server/db.js",
+    "server/http.js",
+    "server/main.js",
+    "server/modules/access/application.js",
+    "server/modules/access/domain.js",
+    "server/modules/access/password.js",
+    "server/modules/access/repository.js",
+    "server/modules/harvest/application.js",
+    "server/modules/harvest/domain.js",
+    "server/modules/harvest/repository.js",
+    "server/modules/producers/application.js",
+    "server/modules/producers/domain.js",
+    "server/modules/producers/repository.js",
+    "server/shared/errors.js",
+    "tecnologia/primer-recorrido.md",
+    "tests/e2e/first-journey.spec.js",
+    "tests/integration/api.test.js",
+    "tests/unit/domain.test.js",
+    "tests/unit/password.test.js",
+    "vite.config.js",
+    "web/api.js",
+    "web/main.jsx",
+    "web/style.css"
+  ]
+}

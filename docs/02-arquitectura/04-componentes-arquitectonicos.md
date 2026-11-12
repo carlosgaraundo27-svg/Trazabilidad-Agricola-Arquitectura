@@ -8,30 +8,30 @@ Este documento relaciona los componentes de la solución con los requisitos func
 
 ## Vista canónica de componentes del backend
 
-El [C3 del modelo C4](../04-modelo-c4/modelo-c4.md#4-c3--componentes-del-backend-b1) es la vista canónica. Incluye los siete módulos dentro del backend B1 y diferencia sus contratos de las dependencias de infraestructura. Esta página conserva la matriz de trazabilidad para evitar mantener dos diagramas contradictorios.
+El [C3 implementado](../04-modelo-c4/modelo-c4.md#4-c3--componentes-del-backend-b1) es la vista canónica del corte Express y contiene Acceso, Productores y Cosecha. El [C3 objetivo](../04-modelo-c4/modelo-c4-objetivo.md#4-c3--componentes-del-backend-b1) conserva los siete módulos proyectados. Esta página mantiene su matriz de trazabilidad del objetivo; las filas fuera de S/P/H no acreditan implementación.
 
 API REST es el conjunto de adaptadores de entrada de B1, no otro servidor. La consulta QR es una ruta pública del portal W1. ETL es el proceso J1 fuera del backend. Los [límites y propietarios de datos](01-estilo-arquitectonico.md#3-límites-y-propiedad-de-datos) completan las responsabilidades de esta matriz.
 
 ## Matriz de trazabilidad de componentes
 
-| Componente | Responsabilidad | Requisitos / historias fuente | Drivers / restricciones | Decisiones |
-|---|---|---|---|---|
-| **App móvil de campo** | Capturar cosecha y conservar registros sin conexión. | RF-03, RF-04 / HU02 | DA01, RC01 | ADR-003; el almacenamiento local requiere decisión tecnológica detallada. |
-| **Portal web** | Interfaz para administración y operación del sistema. | RF-01, RF-02, RF-05, RF-06, RF-07, RF-10, RF-11, RF-12, RF-13 / HU01, HU03, HU04, HU06, HU08, HU09 | Seguridad, usabilidad | ADR-003, ADR-008 |
-| **Consulta pública QR** | Mostrar únicamente trazabilidad autorizada. | RF-08, RF-09 / HU05, HU07 | DA03, DA06, RC03 | ADR-005, ADR-008 |
-| **API REST** | Recibir solicitudes, validar acceso y exponer casos de uso. | RF-01 a RF-13 / todas las HU que interactúan con el backend | DA01, DA06 | ADR-003, ADR-008 |
-| **Acceso y permisos** | Autenticar usuarios y autorizar acciones por rol. | RF-13; requisito no funcional Seguridad; RF-08 para vista QR | DA06, RC03 | ADR-008 |
-| **Módulo Productores** | Gestionar productores, asociaciones, parcelas y certificaciones. | RF-01, RF-02 / HU01 | DA04, DA06 | ADR-001, ADR-002, ADR-008 |
-| **Módulo Cosecha** | Registrar cosecha, pre-lotes e información del responsable. | RF-03, RF-04 / HU02 | DA01, RC01 | ADR-001, ADR-002, ADR-003 |
-| **Módulo Acopio y Calidad** | Registrar recepción, pesaje, atributos de calidad y clasificación. | RF-05, RF-06, RF-07 / HU03, HU04 | DA02 | ADR-001, ADR-002, ADR-004 |
-| **Módulo Trazabilidad** | Identificar lotes, registrar eventos e historial, generar y consultar QR. | RF-04, RF-08, RF-09 / HU05, HU07 | DA02, DA03, DA06, RC03 | ADR-002, ADR-005, ADR-008 |
-| **Módulo Logística e Inventario** | Mantener estados de stock, transporte, despacho y entrega. | RF-10, RF-11 / HU06 | DA02, DA06 | ADR-001, ADR-002, ADR-004 |
-| **Módulo Reportes** | Generar indicadores de mermas, rendimiento, tiempos y liquidaciones. | RF-12 / HU08 | DA05 | ADR-006 |
-| **PostgreSQL / OLTP** | Fuente transaccional de entidades y eventos del sistema. | RF-01 a RF-11; RF-12 como fuente de extracción | DA02, RC04 | ADR-004 |
-| **Redis / caché QR** | Reducir lecturas repetidas al almacén transaccional para consultas QR. | RF-08; escenario EQ-01 | DA03 | ADR-005 |
-| **ETL** | Transformar y trasladar datos seleccionados al modelo analítico. | RF-12 | DA05 | ADR-006 |
-| **Datamart / OLAP** | Almacenar estructura orientada a indicadores y reportes. | RF-12 / HU08 | DA05, RC04 | ADR-006 |
-| **Adaptadores externos** | Integrar mapas, almacenamiento de evidencias y notificaciones cuando se habiliten. | RF-01 georreferenciación; necesidades de soporte descritas en actores | Seguridad / mantenibilidad | Aplicación de puertos y adaptadores bajo ADR-002 |
+| Componente                        | Responsabilidad                                                                    | Requisitos / historias fuente                                                                      | Drivers / restricciones    | Decisiones                                                                |
+| --------------------------------- | ---------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -------------------------- | ------------------------------------------------------------------------- |
+| **App móvil de campo**            | Capturar cosecha y conservar registros sin conexión.                               | RF-03, RF-04 / HU02                                                                                | DA01, RC01                 | ADR-003; el almacenamiento local requiere decisión tecnológica detallada. |
+| **Portal web**                    | Interfaz para administración y operación del sistema.                              | RF-01, RF-02, RF-05, RF-06, RF-07, RF-10, RF-11, RF-12, RF-13 / HU01, HU03, HU04, HU06, HU08, HU09 | Seguridad, usabilidad      | ADR-003, ADR-008                                                          |
+| **Consulta pública QR**           | Mostrar únicamente trazabilidad autorizada.                                        | RF-08, RF-09 / HU05, HU07                                                                          | DA03, DA06, RC03           | ADR-005, ADR-008                                                          |
+| **API REST**                      | Recibir solicitudes, validar acceso y exponer casos de uso.                        | RF-01 a RF-13 / todas las HU que interactúan con el backend                                        | DA01, DA06                 | ADR-003, ADR-008                                                          |
+| **Acceso y permisos**             | Autenticar usuarios y autorizar acciones por rol.                                  | RF-13; requisito no funcional Seguridad; RF-08 para vista QR                                       | DA06, RC03                 | ADR-008                                                                   |
+| **Módulo Productores**            | Gestionar productores, asociaciones, parcelas y certificaciones.                   | RF-01, RF-02 / HU01                                                                                | DA04, DA06                 | ADR-001, ADR-002, ADR-008                                                 |
+| **Módulo Cosecha**                | Registrar cosecha, pre-lotes e información del responsable.                        | RF-03, RF-04 / HU02                                                                                | DA01, RC01                 | ADR-001, ADR-002, ADR-003                                                 |
+| **Módulo Acopio y Calidad**       | Registrar recepción, pesaje, atributos de calidad y clasificación.                 | RF-05, RF-06, RF-07 / HU03, HU04                                                                   | DA02                       | ADR-001, ADR-002, ADR-004                                                 |
+| **Módulo Trazabilidad**           | Identificar lotes, registrar eventos e historial, generar y consultar QR.          | RF-04, RF-08, RF-09 / HU05, HU07                                                                   | DA02, DA03, DA06, RC03     | ADR-002, ADR-005, ADR-008                                                 |
+| **Módulo Logística e Inventario** | Mantener estados de stock, transporte, despacho y entrega.                         | RF-10, RF-11 / HU06                                                                                | DA02, DA06                 | ADR-001, ADR-002, ADR-004                                                 |
+| **Módulo Reportes**               | Generar indicadores de mermas, rendimiento, tiempos y liquidaciones.               | RF-12 / HU08                                                                                       | DA05                       | ADR-006                                                                   |
+| **PostgreSQL / OLTP**             | Fuente transaccional de entidades y eventos del sistema.                           | RF-01 a RF-11; RF-12 como fuente de extracción                                                     | DA02, RC04                 | ADR-004                                                                   |
+| **Redis / caché QR**              | Reducir lecturas repetidas al almacén transaccional para consultas QR.             | RF-08; escenario EQ-01                                                                             | DA03                       | ADR-005                                                                   |
+| **ETL**                           | Transformar y trasladar datos seleccionados al modelo analítico.                   | RF-12                                                                                              | DA05                       | ADR-006                                                                   |
+| **Datamart / OLAP**               | Almacenar estructura orientada a indicadores y reportes.                           | RF-12 / HU08                                                                                       | DA05, RC04                 | ADR-006                                                                   |
+| **Adaptadores externos**          | Integrar mapas, almacenamiento de evidencias y notificaciones cuando se habiliten. | RF-01 georreferenciación; necesidades de soporte descritas en actores                              | Seguridad / mantenibilidad | Aplicación de puertos y adaptadores bajo ADR-002                          |
 
 ## Reglas de diseño derivadas
 

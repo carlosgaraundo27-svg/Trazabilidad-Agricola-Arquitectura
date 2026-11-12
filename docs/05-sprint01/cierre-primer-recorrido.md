@@ -45,4 +45,8 @@ El workflow separa dos jobs:
 
 Ambos usan Node 24 y PostgreSQL 18. Las credenciales Compose se generan en `.env` efímero y no se suben como artefacto. Los logs de los auxiliares redactan las credenciales. La limpieza usa `down` sin eliminar volúmenes.
 
-Estado remoto: pendiente de publicación y consulta del workflow. Este texto se actualizará con URL, SHA y conclusión real después de publicar el PR; la presencia de YAML no acredita un pipeline aprobado.
+Resultado consultado: [Actions #1, ejecución 43252832569](https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/43252832569), commit `e599c6ba070a412154bd4db1c222c00f8651ce12`, conclusión `success`. Los jobs `verify` y `compose` terminaron con `success`, sin pasos omitidos en las comprobaciones. [Resumen de API](evidence/cierre/ci-remota.json).
+
+En Compose remoto, app/DB quedaron saludables, migración `001` y seed aprobaron, el recorrido UI pasó en 2.0 segundos y el pre-lote `76d89dfa-539c-4d5f-89ed-5227e812558e` estuvo presente antes y después de `down` y `up`. Ambos auxiliares terminaron con `passed: true`; el volumen se conservó. [Extracto del log real](evidence/cierre/compose-ci.txt). Es evidencia de contenedores en Ubuntu/Actions, no del Docker local de Windows.
+
+[PR #2](https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/pull/2) abierto, sin fusionar, desde `chore/verificacion-primer-arranque` hacia la rama documental de #1. El árbol publicado coincide con el índice revisado. La actualización documental posterior a esta ejecución no cambia el código ejecutable; revisar también los checks del último SHA del PR.

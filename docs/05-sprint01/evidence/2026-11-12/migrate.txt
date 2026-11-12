@@ -1,0 +1,15 @@
+{
+  "task": "migrate",
+  "command": "npm.cmd run migrate",
+  "cwd": "<WORKSPACE>\\repo",
+  "startedAt": "2026-11-12T14:42:48.723Z",
+  "finishedAt": "2026-11-12T14:42:49.156Z",
+  "exitCode": 0,
+  "signal": null
+}
+
+
+> trazabilidad-primer-recorrido@0.1.0 migrate
+> node --env-file-if-exists=.env scripts/migrate.js
+
+Migración 001 aplicada/verificada.

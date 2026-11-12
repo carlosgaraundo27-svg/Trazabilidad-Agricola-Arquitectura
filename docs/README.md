@@ -27,8 +27,16 @@ La estructura se organiza conforme a la Guía 04, que pide mantener la documenta
 
 ## Estado
 
-Este repositorio contiene una **propuesta arquitectónica y documentación de diseño**. Los diagramas C4 y las clases mencionadas son representaciones propuestas; no demuestran por sí mismos que el sistema esté implementado o que las metas de calidad hayan sido verificadas.
+Este repositorio contiene el **primer recorrido implementado** (Acceso, Productores y Cosecha), su [C4 canónico](04-modelo-c4/modelo-c4.md) y la [arquitectura objetivo](04-modelo-c4/modelo-c4-objetivo.md) de las capacidades restantes. Las [evidencias de cierre](05-sprint01/cierre-primer-recorrido.md) distinguen pruebas locales, Compose Windows y Actions; los diagramas no sustituyen esa evidencia ni acreditan metas de calidad no medidas.
 
 ## Revisión antes de avanzar al Sprint 2
 
 La [revisión arquitectónica](05-sprint01/revision-previa-sprint02.md) registra las correcciones del estilo y C1–C4, los riesgos adicionales y los criterios pendientes de validación. El [modelo C4](04-modelo-c4/modelo-c4.md) es la fuente canónica de las vistas.
+
+## Primer recorrido implementado
+
+- [Especificación y aceptación](03-diseno-de-software/03-especificacion-primer-recorrido.md)
+- [Contrato OpenAPI](03-diseno-de-software/openapi.json)
+- [Decisiones y alcance ejecutable](02-arquitectura/07-decisiones-primer-recorrido.md)
+- [Evidencia y estado del PR #1](05-sprint01/evidencia-primer-recorrido.md)
+- [Entorno y pruebas](../tecnologia/primer-recorrido.md)

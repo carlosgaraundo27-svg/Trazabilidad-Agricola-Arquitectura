@@ -1,0 +1,31 @@
+{
+  "action": "integration",
+  "exitCode": 0,
+  "signal": null,
+  "timedOut": false,
+  "durationMs": 1750,
+  "finishedAt": "2026-11-12T15:39:16.620Z"
+}
+
+▶ integración HTTP + SQL del primer recorrido
+  ✔ credenciales, sesión, CSRF, origen y rol (40.5755ms)
+  ✔ alta de productor y parcela; aislamiento por organización (18.3157ms)
+  ✔ rechaza entradas inválidas sin escribir (18.3034ms)
+  ✔ captura, reintento concurrente, conflicto y persistencia (131.0768ms)
+  ✔ revocar asignación bloquea incluso reintento aceptado (5.509ms)
+  ✔ fallo real de auditoría revierte cosecha y pre-lote (16.3235ms)
+  ✔ CHECK y FK rechazan corrupción y otra organización (1.7548ms)
+  ✔ cuenta inactiva, sesión vencida y logout (8.3215ms)
+  ✔ errores HTTP seguros y límite de autenticación (369.8471ms)
+  ✔ migración down/up en base desechable (48.3604ms)
+✔ integración HTTP + SQL del primer recorrido (1011.1998ms)
+{"event":"server_started","port":0}
+✔ servidor E2E termina por IPC y libera el puerto sin taskkill (404.8964ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1698.489

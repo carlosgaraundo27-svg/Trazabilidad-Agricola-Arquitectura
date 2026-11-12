@@ -1,0 +1,6 @@
+{
+  "finishedAt": "2026-11-12T16:18:14.979Z",
+  "url": "http://localhost:3002",
+  "exitCode": 0,
+  "output": "\nRunning 1 test using 1 worker\n\n  ✓  1 tests\\e2e\\first-journey.spec.js:4:1 › administrador registra origen y recolector registra pre-lote en línea (933ms)\n\n  1 passed (2.6s)\n"
+}

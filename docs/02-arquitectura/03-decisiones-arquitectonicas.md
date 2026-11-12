@@ -371,3 +371,7 @@ Esta decisión responde directamente a los drivers identificados y mantiene la s
 ## 5. Precisión de las vistas — revisión 2026-11-06
 
 Las ADR aceptadas describen decisiones del diseño documental; no certifican aprobación docente ni ejecución. El portal W1 contiene operación y ruta pública QR; B1 contiene todos los módulos de negocio; J1 es el proceso ETL. Estas precisiones se reflejan en C2, C3 y despliegue. La tecnología final, los contratos offline, las reglas de consolidación y el ciclo de publicación de caché siguen pendientes según la [revisión previa a Sprint 2](../05-sprint01/revision-previa-sprint02.md).
+
+## Alcance ejecutable del primer recorrido — 2026-11-11
+
+El subconjunto implementado y la selección Express/React están precisados en [ADR-009/010](07-decisiones-primer-recorrido.md). Las vistas anteriores conservan la arquitectura objetivo, incluyendo componentes todavía proyectados.

@@ -1,0 +1,12 @@
+DROP TABLE access.audit;
+DROP TABLE harvest.pre_lots;
+DROP TABLE harvest.harvests;
+DROP TABLE access.parcel_assignments;
+DROP TABLE producers.parcels;
+DROP TABLE producers.producers;
+DROP TABLE access.sessions;
+DROP TABLE access.users;
+DROP TABLE access.organizations;
+DROP SCHEMA harvest;
+DROP SCHEMA producers;
+DROP SCHEMA access;

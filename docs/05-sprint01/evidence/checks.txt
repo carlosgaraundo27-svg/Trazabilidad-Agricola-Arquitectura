@@ -1,0 +1,5 @@
+
+> trazabilidad-primer-recorrido@0.1.0 check
+> node scripts/check.js
+
+Sintaxis de módulos, límites de imports, OpenAPI y enlaces locales: OK

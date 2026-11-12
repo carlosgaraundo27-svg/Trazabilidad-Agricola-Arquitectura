@@ -1,0 +1,6 @@
+
+Running 1 test using 1 worker
+
+  ok 1 tests\e2e\first-journey.spec.js:4:1 › administrador registra origen y recolector registra pre-lote en línea (19.3s)
+
+  1 passed (20.3s)

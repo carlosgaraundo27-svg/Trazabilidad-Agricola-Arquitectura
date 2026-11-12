@@ -1,0 +1,19 @@
+{
+  "action": "e2e",
+  "exitCode": 0,
+  "signal": null,
+  "timedOut": false,
+  "durationMs": 2689,
+  "finishedAt": "2026-11-12T15:39:17.889Z"
+}
+
+{"event":"server_started","port":3001}
+
+Running 1 test using 1 worker
+
+(node:20536) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+{"requestId":"0cfcd997-54c7-40ce-aab5-722bc327fae8","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+  ✓  1 tests\e2e\first-journey.spec.js:4:1 › administrador registra origen y recolector registra pre-lote en línea (1.3s)
+
+  1 passed (2.3s)

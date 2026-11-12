@@ -1,0 +1,127 @@
+{
+  "startedAt": "2026-11-12T16:12:25.073Z",
+  "mode": "start",
+  "test": true,
+  "commands": [
+    {
+      "args": ["version"],
+      "exitCode": 0,
+      "output": "Client:\n Version:           29.9.3\n API version:       1.56\n Go version:        go1.26.10\n Git commit:        5457199\n Built:             Tue Nov  3 21:46:10 2026\n OS/Arch:           windows/amd64\n Context:           desktop-linux\n\nServer: Docker Desktop 4.99.0 (245822)\n Engine:\n  Version:          29.9.3\n  API version:      1.56 (minimum version 1.40)\n  Go version:       go1.26.10\n  Git commit:       70efc0e\n  Built:            Tue Nov  3 21:41:42 2026\n  OS/Arch:          linux/amd64\n  Experimental:     false\n containerd:\n  Version:          v2.4.2\n  GitCommit:        b7a25261e029d68978bbf290df0a62fc819b3c51\n runc:\n  Version:          1.5.2\n  GitCommit:        v1.5.2-0-g29dd3dc2\n docker-init:\n  Version:          0.19.0\n  GitCommit:        de40ad0\n"
+    },
+    {
+      "args": ["info", "--format", "{{.OSType}}"],
+      "exitCode": 0,
+      "output": "linux\n"
+    },
+    {
+      "args": [
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "compose.test.yaml",
+        "config",
+        "--quiet"
+      ],
+      "exitCode": 0,
+      "output": ""
+    },
+    {
+      "args": [
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "compose.test.yaml",
+        "up",
+        "--build",
+        "-d",
+        "--wait",
+        "--wait-timeout",
+        "180"
+      ],
+      "exitCode": 0,
+      "output": "#1 [internal] load local bake definitions\n#1 reading from stdin 585B 0.0s done\n#1 DONE 0.0s\n\n#2 [internal] load build definition from Dockerfile\n#2 transferring dockerfile: 500B done\n#2 DONE 0.0s\n\n#3 [internal] load metadata for docker.io/library/node:24-alpine\n#3 DONE 1.7s\n\n#4 [internal] load .dockerignore\n#4 transferring context: 127B done\n#4 DONE 0.0s\n\n#5 [internal] load build context\n#5 transferring context: 139.45kB 0.0s done\n#5 DONE 0.0s\n\n#6 [build 1/7] FROM docker.io/library/node:24-alpine@sha256:116b800c3754b440ee0aa3ed2f20f5bf3d99a554bfd9adeea09ea8017f6e85f5\n#6 resolve docker.io/library/node:24-alpine@sha256:116b800c3754b440ee0aa3ed2f20f5bf3d99a554bfd9adeea09ea8017f6e85f5 0.0s done\n#6 sha256:7bb632bc9bd793a348866a7dd7920cf89dfc87205c6d38cda182ea6d8065b8e5 442B / 442B 0.1s done\n#6 sha256:86781d25d3989ead8f09c45716da0159c1dd0be2c753a51f15b6c60f4b9a97db 0B / 57.42MB 0.3s\n#6 sha256:7eb569707982863466c2b0bcfddda86fb4842fccfaec088d1354f6a29e2856bb 0B / 1.26MB 0.2s\n#6 sha256:881fc932939efef04ca120ad44bbd2c0917851eb247aa4995428afb1e80ede17 0B / 3.85MB 0.2s\n#6 sha256:86781d25d3989ead8f09c45716da0159c1dd0be2c753a51f15b6c60f4b9a97db 4.19MB / 57.42MB 0.6s\n#6 sha256:7eb569707982863466c2b0bcfddda86fb4842fccfaec088d1354f6a29e2856bb 1.26MB / 1.26MB 0.5s done\n#6 sha256:881fc932939efef04ca120ad44bbd2c0917851eb247aa4995428afb1e80ede17 1.05MB / 3.85MB 0.5s\n#6 sha256:86781d25d3989ead8f09c45716da0159c1dd0be2c753a51f15b6c60f4b9a97db 7.34MB / 57.42MB 0.8s\n#6 sha256:881fc932939efef04ca120ad44bbd2c0917851eb247aa4995428afb1e80ede17 3.85MB / 3.85MB 0.6s done\n#6 extracting sha256:881fc932939efef04ca120ad44bbd2c0917851eb247aa4995428afb1e80ede17 0.0s done\n#6 sha256:86781d25d3989ead8f09c45716da0159c1dd0be2c753a51f15b6c60f4b9a97db 11.53MB / 57.42MB 1.1s\n#6 sha256:86781d25d3989ead8f09c45716da0159c1dd0be2c753a51f15b6c60f4b9a97db 14.68MB / 57.42MB 1.2s\n#6 sha256:86781d25d3989ead8f09c45716da0159c1dd0be2c753a51f15b6c60f4b9a97db 17.83MB / 57.42MB 1.4s\n#6 sha256:86781d25d3989ead8f09c45716da0159c1dd0be2c753a51f15b6c60f4b9a97db 23.07MB / 57.42MB 1.7s\n#6 sha256:86781d25d3989ead8f09c45716da0159c1dd0be2c753a51f15b6c60f4b9a97db 27.26MB / 57.42MB 2.0s\n#6 sha256:86781d25d3989ead8f09c45716da0159c1dd0be2c753a51f15b6c60f4b9a97db 30.41MB / 57.42MB 2.1s\n#6 sha256:86781d25d3989ead8f09c45716da0159c1dd0be2c753a51f15b6c60f4b9a97db 34.60MB / 57.42MB 2.4s\n#6 sha256:86781d25d3989ead8f09c45716da0159c1dd0be2c753a51f15b6c60f4b9a97db 37.75MB / 57.42MB 2.6s\n#6 sha256:86781d25d3989ead8f09c45716da0159c1dd0be2c753a51f15b6c60f4b9a97db 42.99MB / 57.42MB 2.9s\n#6 sha256:86781d25d3989ead8f09c45716da0159c1dd0be2c753a51f15b6c60f4b9a97db 48.23MB / 57.42MB 3.2s\n#6 sha256:86781d25d3989ead8f09c45716da0159c1dd0be2c753a51f15b6c60f4b9a97db 52.43MB / 57.42MB 3.5s\n#6 sha256:86781d25d3989ead8f09c45716da0159c1dd0be2c753a51f15b6c60f4b9a97db 55.57MB / 57.42MB 3.6s\n#6 sha256:86781d25d3989ead8f09c45716da0159c1dd0be2c753a51f15b6c60f4b9a97db 57.42MB / 57.42MB 3.7s done\n#6 extracting sha256:86781d25d3989ead8f09c45716da0159c1dd0be2c753a51f15b6c60f4b9a97db\n#6 extracting sha256:86781d25d3989ead8f09c45716da0159c1dd0be2c753a51f15b6c60f4b9a97db 0.5s done\n#6 DONE 4.3s\n\n#6 [build 1/7] FROM docker.io/library/node:24-alpine@sha256:116b800c3754b440ee0aa3ed2f20f5bf3d99a554bfd9adeea09ea8017f6e85f5\n#6 extracting sha256:7eb569707982863466c2b0bcfddda86fb4842fccfaec088d1354f6a29e2856bb 0.0s done\n#6 extracting sha256:7bb632bc9bd793a348866a7dd7920cf89dfc87205c6d38cda182ea6d8065b8e5 done\n#6 DONE 4.3s\n\n#7 [build 2/7] WORKDIR /app\n#7 DONE 0.2s\n\n#8 [build 3/7] COPY package*.json ./\n#8 DONE 0.0s\n\n#9 [build 4/7] RUN npm ci --ignore-scripts\n#9 ...\n\n#10 [stage-1 4/8] RUN npm ci --omit=dev --ignore-scripts\n#10 1.649 \n#10 1.649 added 88 packages, and audited 89 packages in 1s\n#10 1.649 \n#10 1.649 33 packages are looking for funding\n#10 1.649   run `npm fund` for details\n#10 1.649 \n#10 1.649 found 0 vulnerabilities\n#10 1.651 npm notice\n#10 1.651 npm notice New major version of npm available! 11.19.1 -> 12.2.2\n#10 1.651 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.2\n#10 1.651 npm notice To update run: npm install -g npm@12.2.2\n#10 1.651 npm notice\n#10 DONE 1.9s\n\n#9 [build 4/7] RUN npm ci --ignore-scripts\n#9 3.246 \n#9 3.246 added 124 packages, and audited 125 packages in 3s\n#9 3.246 \n#9 3.246 47 packages are looking for funding\n#9 3.246   run `npm fund` for details\n#9 3.247 \n#9 3.247 found 0 vulnerabilities\n#9 3.248 npm notice\n#9 3.248 npm notice New major version of npm available! 11.19.1 -> 12.2.2\n#9 3.248 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.2\n#9 3.248 npm notice To update run: npm install -g npm@12.2.2\n#9 3.248 npm notice\n#9 DONE 3.4s\n\n#11 [build 5/7] COPY index.html vite.config.js ./\n#11 DONE 0.0s\n\n#12 [build 6/7] COPY web ./web\n#12 DONE 0.0s\n\n#13 [build 7/7] RUN npm run build\n#13 0.203 \n#13 0.203 > trazabilidad-primer-recorrido@0.1.0 build\n#13 0.203 > vite build\n#13 0.203 \n#13 0.345 vite v8.3.8 building client environment for production...\n#13 0.358 transforming...\n#13 0.404 ✓ 16 modules transformed.\n#13 0.427 rendering chunks...\n#13 0.453 computing gzip size...\n#13 0.456 dist/index.html                   0.41 kB │ gzip:  0.30 kB\n#13 0.456 dist/assets/index-CKNSUq4x.css    3.22 kB │ gzip:  1.22 kB\n#13 0.456 dist/assets/index-T4Y_GFXf.js   229.27 kB │ gzip: 71.65 kB\n#13 0.456 \n#13 0.456 ✓ built in 110ms\n#13 DONE 0.5s\n\n#14 [stage-1 5/8] COPY --from=build /app/dist ./dist\n#14 DONE 0.0s\n\n#15 [stage-1 6/8] COPY server ./server\n#15 DONE 0.0s\n\n#16 [stage-1 7/8] COPY scripts ./scripts\n#16 DONE 0.0s\n\n#17 [stage-1 8/8] COPY migrations ./migrations\n#17 DONE 0.0s\n\n#18 exporting to image\n#18 exporting layers\n#18 exporting layers 0.5s done\n#18 exporting manifest sha256:1be6404c7808c403f0d19de60b629049cc64e1141d39df0eb530a4cc8f932277 done\n#18 exporting config sha256:d390093b7a6b26d1a9a190d821aedb85061393c1a3937f8419d6b1f0f54dc15b done\n#18 exporting attestation manifest sha256:d45e9ddbdc071d108cd201bb4301cac66d7317f128bbb52f186d3813e98ad974 0.0s done\n#18 exporting manifest list sha256:74951c971044350f936e4781cbaf7f8cce54ad3843425dfaccce65c13d4b8921 done\n#18 naming to docker.io/library/repo-github-app:latest done\n#18 unpacking to docker.io/library/repo-github-app:latest\n#18 unpacking to docker.io/library/repo-github-app:latest 0.8s done\n#18 DONE 1.3s\n\n#19 resolving provenance for metadata file\n#19 DONE 0.0s\n Image postgres:18 Pulling \n e9dd37612d7b Pulling fs layer 0B\n fcd0e9514062 Pulling fs layer 0B\n eac25292b613 Pulling fs layer 0B\n a28de24f57c0 Pulling fs layer 0B\n bcc75ab4e010 Pulling fs layer 0B\n 7e0f86eb8508 Pulling fs layer 0B\n 2a59118cca0e Pulling fs layer 0B\n 6d141360b363 Pulling fs layer 0B\n fc6c21aca07c Pulling fs layer 0B\n da434b32d480 Pulling fs layer 0B\n cbe0afc9eb7b Pulling fs layer 0B\n 37fb86c2a767 Pulling fs layer 0B\n 369949eb0229 Pulling fs layer 0B\n eac25292b613 Download complete 0B\n e9dd37612d7b Download complete 0B\n 369949eb0229 Downloading 1.049MB\n a28de24f57c0 Download complete 0B\n 6d141360b363 Download complete 0B\n fc6c21aca07c Download complete 0B\n 369949eb0229 Downloading 2.097MB\n 2a59118cca0e Download complete 0B\n 369949eb0229 Downloading 4.194MB\n fcd0e9514062 Downloading 1.049MB\n 369949eb0229 Downloading 5.243MB\n 369949eb0229 Download complete 0B\n bcc75ab4e010 Download complete 0B\n fcd0e9514062 Downloading 2.097MB\n fcd0e9514062 Downloading 4.194MB\n 37fb86c2a767 Downloading 1.049MB\n da434b32d480 Downloading 1.049MB\n fcd0e9514062 Downloading 5.243MB\n da434b32d480 Downloading 3.146MB\n fcd0e9514062 Downloading 6.291MB\n 37fb86c2a767 Downloading 3.146MB\n 37fb86c2a767 Downloading 5.243MB\n da434b32d480 Downloading 5.243MB\n fcd0e9514062 Downloading 8.389MB\n 37fb86c2a767 Downloading 6.291MB\n da434b32d480 Downloading 6.291MB\n fcd0e9514062 Downloading 10.49MB\n 37fb86c2a767 Downloading 7.34MB\n da434b32d480 Download complete 0B\n fcd0e9514062 Downloading 11.53MB\n 37fb86c2a767 Downloading 9.437MB\n fcd0e9514062 Downloading 13.63MB\n fcd0e9514062 Downloading 14.68MB\n 37fb86c2a767 Downloading 10.49MB\n fcd0e9514062 Downloading 15.73MB\n 7e0f86eb8508 Download complete 0B\n 37fb86c2a767 Downloading 11.53MB\n cbe0afc9eb7b Download complete 0B\n fcd0e9514062 Downloading 17.83MB\n 37fb86c2a767 Downloading 13.63MB\n 37fb86c2a767 Downloading 14.68MB\n fcd0e9514062 Downloading 18.87MB\n 37fb86c2a767 Downloading 15.73MB\n 2f3707deb487 Download complete 0B\n fcd0e9514062 Downloading 19.92MB\n fcd0e9514062 Downloading 22.02MB\n 37fb86c2a767 Downloading 17.83MB\n fcd0e9514062 Downloading 23.07MB\n 37fb86c2a767 Downloading 18.87MB\n a82d2da6710e Downloading 2.097MB\n fcd0e9514062 Downloading 24.12MB\n 37fb86c2a767 Downloading 19.92MB\n 37fb86c2a767 Downloading 22.02MB\n a82d2da6710e Downloading 3.146MB\n fcd0e9514062 Downloading 25.17MB\n a82d2da6710e Downloading 4.194MB\n fcd0e9514062 Downloading 26.21MB\n 37fb86c2a767 Downloading 23.07MB\n a82d2da6710e Download complete 0B\n fcd0e9514062 Downloading 28.31MB\n 37fb86c2a767 Downloading 24.12MB\n 37fb86c2a767 Downloading 25.17MB\n fcd0e9514062 Downloading 29.36MB\n 37fb86c2a767 Downloading 27.26MB\n fcd0e9514062 Downloading 30.41MB\n fcd0e9514062 Downloading 31.46MB\n 37fb86c2a767 Downloading 28.31MB\n fcd0e9514062 Downloading 33.55MB\n 37fb86c2a767 Download complete 0B\n 37fb86c2a767 Extracting 1B\n fcd0e9514062 Downloading 34.6MB\n 37fb86c2a767 Extracting 1B\n fcd0e9514062 Downloading 36.7MB\n 37fb86c2a767 Extracting 1B\n fcd0e9514062 Downloading 37.75MB\n 37fb86c2a767 Extracting 1B\n fcd0e9514062 Downloading 39.85MB\n e9dd37612d7b Pull complete 0B\n 369949eb0229 Extracting 1B\n 37fb86c2a767 Pull complete 0B\n fcd0e9514062 Downloading 40.89MB\n 369949eb0229 Pull complete 0B\n da434b32d480 Extracting 1B\n 7e0f86eb8508 Pull complete 0B\n fcd0e9514062 Downloading 41.94MB\n a28de24f57c0 Pull complete 0B\n 6d141360b363 Pull complete 0B\n bcc75ab4e010 Pull complete 0B\n da434b32d480 Pull complete 0B\n fcd0e9514062 Downloading 44.04MB\n fcd0e9514062 Downloading 46.14MB\n fcd0e9514062 Downloading 47.19MB\n fcd0e9514062 Downloading 49.28MB\n fcd0e9514062 Downloading 50.33MB\n fcd0e9514062 Downloading 52.43MB\n fcd0e9514062 Downloading 53.48MB\n fcd0e9514062 Downloading 55.57MB\n fcd0e9514062 Downloading 57.67MB\n fcd0e9514062 Downloading 58.72MB\n fcd0e9514062 Downloading 60.82MB\n fcd0e9514062 Downloading 61.87MB\n fcd0e9514062 Downloading 63.96MB\n fcd0e9514062 Downloading 66.06MB\n fcd0e9514062 Downloading 67.11MB\n fcd0e9514062 Downloading 69.21MB\n fcd0e9514062 Downloading 71.3MB\n fcd0e9514062 Downloading 72.35MB\n fcd0e9514062 Downloading 74.45MB\n fcd0e9514062 Downloading 75.5MB\n fcd0e9514062 Downloading 77.59MB\n fcd0e9514062 Downloading 78.64MB\n fcd0e9514062 Downloading 80.74MB\n fcd0e9514062 Downloading 82.84MB\n fcd0e9514062 Downloading 83.89MB\n fcd0e9514062 Downloading 85.98MB\n fcd0e9514062 Downloading 87.03MB\n fcd0e9514062 Downloading 89.13MB\n fcd0e9514062 Downloading 90.18MB\n fcd0e9514062 Downloading 92.27MB\n fcd0e9514062 Downloading 93.32MB\n fcd0e9514062 Downloading 95.42MB\n fcd0e9514062 Downloading 96.47MB\n fcd0e9514062 Downloading 98.57MB\n fcd0e9514062 Downloading 100.7MB\n fcd0e9514062 Downloading 101.7MB\n fcd0e9514062 Downloading 103.8MB\n fcd0e9514062 Downloading 104.9MB\n fcd0e9514062 Downloading 107MB\n fcd0e9514062 Downloading 109.1MB\n fcd0e9514062 Downloading 110.1MB\n fcd0e9514062 Downloading 112.2MB\n fcd0e9514062 Downloading 113.2MB\n fcd0e9514062 Download complete 0B\n fcd0e9514062 Extracting 1B\n fcd0e9514062 Extracting 1B\n fcd0e9514062 Extracting 1B\n fcd0e9514062 Extracting 1B\n fcd0e9514062 Extracting 1B\n fcd0e9514062 Extracting 1B\n fcd0e9514062 Extracting 1B\n fcd0e9514062 Extracting 1B\n fcd0e9514062 Extracting 1B\n fcd0e9514062 Extracting 1B\n eac25292b613 Pull complete 0B\n fc6c21aca07c Pull complete 0B\n 2a59118cca0e Pull complete 0B\n cbe0afc9eb7b Pull complete 0B\n fcd0e9514062 Pull complete 0B\n Image postgres:18 Pulled \n Image repo-github-app Building \n Image repo-github-app Built \n Network repo-github_default Creating \n Volume repo-github_pgdata Creating \n Network repo-github_default Creating \n Volume repo-github_pgdata Creating \n Volume repo-github_pgdata Created \n Volume repo-github_pgdata Created \n Network repo-github_default Created \n Network repo-github_default Created \n Container repo-github-db-1 Creating \n Container repo-github-db-1 Created \n Container repo-github-app-1 Creating \n Container repo-github-app-1 Created \n Container repo-github-db-1 Starting \n Container repo-github-db-1 Started \n Container repo-github-db-1 Waiting \n Container repo-github-db-1 Healthy \n Container repo-github-app-1 Starting \n Container repo-github-app-1 Started \n Container repo-github-db-1 Waiting \n Container repo-github-app-1 Waiting \n Container repo-github-db-1 Healthy \n Container repo-github-app-1 Healthy \n"
+    },
+    {
+      "args": [
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "compose.test.yaml",
+        "ps"
+      ],
+      "exitCode": 0,
+      "output": "NAME                IMAGE             COMMAND                  SERVICE   CREATED          STATUS                    PORTS\nrepo-github-app-1   repo-github-app   \"docker-entrypoint.s…\"   app       11 seconds ago   Up 5 seconds (healthy)    127.0.0.1:3002->3000/tcp\nrepo-github-db-1    postgres:18       \"docker-entrypoint.s…\"   db        11 seconds ago   Up 11 seconds (healthy)   127.0.0.1:55433->5432/tcp\n"
+    },
+    {
+      "args": [
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "compose.test.yaml",
+        "exec",
+        "-T",
+        "db",
+        "psql",
+        "-U",
+        "demo",
+        "-d",
+        "trazabilidad",
+        "-c",
+        "SELECT version FROM public.schema_migrations"
+      ],
+      "exitCode": 0,
+      "output": " version \n---------\n 001\n(1 row)\n\n"
+    },
+    {
+      "args": [
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "compose.test.yaml",
+        "exec",
+        "-T",
+        "app",
+        "node",
+        "scripts/seed.js"
+      ],
+      "exitCode": 0,
+      "output": "Seed ficticio aplicado; cuentas existentes conservadas.\n"
+    },
+    {
+      "args": [
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "compose.test.yaml",
+        "exec",
+        "-T",
+        "db",
+        "psql",
+        "-U",
+        "demo",
+        "-d",
+        "trazabilidad",
+        "-t",
+        "-A",
+        "-c",
+        "SELECT COALESCE(json_agg(id ORDER BY id), '[]'::json) FROM harvest.pre_lots"
+      ],
+      "exitCode": 0,
+      "output": "[]\n"
+    }
+  ],
+  "after": [],
+  "url": "http://localhost:3002",
+  "health": {
+    "status": "ok"
+  },
+  "frontendStatus": 200,
+  "passed": true,
+  "finishedAt": "2026-11-12T16:13:11.413Z"
+}

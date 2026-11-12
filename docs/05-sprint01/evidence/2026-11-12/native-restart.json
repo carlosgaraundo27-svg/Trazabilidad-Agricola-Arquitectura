@@ -1,0 +1,8 @@
+{
+  "oldAppPid": 21612,
+  "newAppPid": 19804,
+  "oldPostgresPid": 24240,
+  "newPostgresPid": 24092,
+  "postgresCleanStop": true,
+  "finishedAt": "2026-11-12T14:47:34.721Z"
+}

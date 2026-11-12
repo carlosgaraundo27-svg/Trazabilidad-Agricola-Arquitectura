@@ -1,0 +1,62 @@
+{
+  "scope": "Only corrected quantity schema versus unchanged Zod validation",
+  "samples": [
+    {
+      "quantity": "0",
+      "accepted": false
+    },
+    {
+      "quantity": "0.0",
+      "accepted": false
+    },
+    {
+      "quantity": "0.00",
+      "accepted": false
+    },
+    {
+      "quantity": "0.000",
+      "accepted": false
+    },
+    {
+      "quantity": "0.001",
+      "accepted": true
+    },
+    {
+      "quantity": "1",
+      "accepted": true
+    },
+    {
+      "quantity": "1.0",
+      "accepted": true
+    },
+    {
+      "quantity": "1.234",
+      "accepted": true
+    },
+    {
+      "quantity": "999999999.999",
+      "accepted": true
+    },
+    {
+      "quantity": "-1",
+      "accepted": false
+    },
+    {
+      "quantity": "01",
+      "accepted": false
+    },
+    {
+      "quantity": "1.2345",
+      "accepted": false
+    },
+    {
+      "quantity": "1000000000",
+      "accepted": false
+    },
+    {
+      "quantity": "NaN",
+      "accepted": false
+    }
+  ],
+  "runtimeTestsRepeated": false
+}

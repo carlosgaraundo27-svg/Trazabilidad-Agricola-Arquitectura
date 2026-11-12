@@ -1,0 +1,40 @@
+{
+  "mode": "create",
+  "startedAt": "2026-11-12T14:46:37.304Z",
+  "url": "http://localhost:3000",
+  "consoleErrors": [],
+  "failedRequests": [],
+  "expectedResponses": [
+    {
+      "url": "http://localhost:3000/api/v1/auth/me",
+      "status": 401
+    }
+  ],
+  "browser": "158.0.8127.18",
+  "health": {
+    "status": "ok"
+  },
+  "frontendStatus": 200,
+  "producer": "Productor verificación c4b7c65a",
+  "parcel": "Parcela verificación c4b7c65a",
+  "producerStatus": 201,
+  "producerId": "8605ede6-f37f-4f2f-ae06-4eedf637e0d3",
+  "parcelStatus": 201,
+  "parcelId": "4ae41e8f-f830-4844-9fa4-a46db7b4ba52",
+  "assignment": "Existing documented SQL fixture; assignment management has no UI",
+  "preLotId": "db3b6a63-40ff-4ab5-b7be-cf1992e9b5b8",
+  "survivedReload": true,
+  "persistedRow": {
+    "id": "db3b6a63-40ff-4ab5-b7be-cf1992e9b5b8",
+    "parcel_id": "4ae41e8f-f830-4844-9fa4-a46db7b4ba52",
+    "quantity": "125.500",
+    "unit": "kg"
+  },
+  "migrations": [
+    {
+      "version": "001"
+    }
+  ],
+  "passed": true,
+  "finishedAt": "2026-11-12T14:46:38.757Z"
+}

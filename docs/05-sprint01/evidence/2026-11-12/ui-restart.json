@@ -1,0 +1,22 @@
+{
+  "mode": "restart",
+  "startedAt": "2026-11-12T14:47:45.025Z",
+  "url": "http://localhost:3000",
+  "consoleErrors": [],
+  "failedRequests": [],
+  "expectedResponses": [
+    {
+      "url": "http://localhost:3000/api/v1/auth/me",
+      "status": 401
+    }
+  ],
+  "browser": "158.0.8127.18",
+  "health": {
+    "status": "ok"
+  },
+  "frontendStatus": 200,
+  "preLotId": "db3b6a63-40ff-4ab5-b7be-cf1992e9b5b8",
+  "survivedBackendRestart": true,
+  "passed": true,
+  "finishedAt": "2026-11-12T14:47:45.865Z"
+}

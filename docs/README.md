@@ -27,7 +27,7 @@ La estructura se organiza conforme a la Guía 04, que pide mantener la documenta
 
 ## Estado
 
-Este repositorio contiene una **propuesta arquitectónica y documentación de diseño**. Los diagramas C4 y las clases mencionadas son representaciones propuestas; no demuestran por sí mismos que el sistema esté implementado o que las metas de calidad hayan sido verificadas.
+Este repositorio contiene el **primer recorrido implementado** (Acceso, Productores y Cosecha), su [C4 canónico](04-modelo-c4/modelo-c4.md) y la [arquitectura objetivo](04-modelo-c4/modelo-c4-objetivo.md) de las capacidades restantes. Las [evidencias de cierre](05-sprint01/cierre-primer-recorrido.md) distinguen pruebas locales, Compose Windows y Actions; los diagramas no sustituyen esa evidencia ni acreditan metas de calidad no medidas.
 
 ## Revisión antes de avanzar al Sprint 2
 

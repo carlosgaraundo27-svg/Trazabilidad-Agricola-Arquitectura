@@ -1308,11 +1308,12 @@
           },
           "harvestedAt": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+          "description": "Fecha/hora ISO 8601 con zona, no posterior a la hora del servidor; se normaliza a UTC."
           },
           "quantity": {
             "type": "string",
-            "pattern": "^(?:0|[1-9][0-9]{0,8})(?:\\.[0-9]{1,3})?$",
+            "pattern": "^(?=.*[1-9])(?:0|[1-9][0-9]{0,8})(?:\\.[0-9]{1,3})?$",
             "description": "Positiva, máximo técnico 999999999.999; respuesta normalizada a tres decimales."
           },
           "unit": {
@@ -1499,7 +1500,7 @@
           },
           "quantity": {
             "type": "string",
-            "pattern": "^(?:0|[1-9][0-9]{0,8})(?:\\.[0-9]{1,3})?$",
+            "pattern": "^(?=.*[1-9])(?:0|[1-9][0-9]{0,8})\\.[0-9]{3}$",
             "description": "Positiva, máximo técnico 999999999.999; respuesta normalizada a tres decimales."
           },
           "unit": {

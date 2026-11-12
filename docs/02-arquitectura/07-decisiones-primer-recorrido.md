@@ -6,7 +6,7 @@ Fecha: 2026-11-11. Complementa las ADR existentes; no cambia su estado académic
 
 Estado: aceptado como decisión técnica del primer recorrido el 2026-11-12. La aceptación académica de la entrega y las reglas de negocio pendientes se evalúan por separado.
 
-Node 24 + Express 5 + JavaScript ESM, React/Vite y pg. Frente a NestJS/TypeScript recomendado en C2, Express permite comprobar el recorrido con un adaptador pequeño, sin convertir módulos en servicios. El coste es menor ayuda estática de tipos y necesidad de contratos, validación e imports verificados. Se conserva PostgreSQL y Clean Architecture; no se crea un ORM ni framework propio. Versiones exactas en lockfile.
+Node 24 + Express 5 + JavaScript ESM, React/Vite y pg. Frente a NestJS/TypeScript recomendado en la arquitectura objetivo conservada, Express permite comprobar el recorrido con un adaptador pequeño, sin convertir módulos en servicios. El coste es menor ayuda estática de tipos y necesidad de contratos, validación e imports verificados. Se conserva PostgreSQL y Clean Architecture; no se crea un ORM ni framework propio. Versiones exactas en lockfile.
 
 B1 implementa S Acceso y Permisos, P Productores y H Cosecha, un único proceso. W1 se compila por separado y B1 sirve sus estáticos para operar en un solo origen. O1 es PostgreSQL. Los restantes componentes de C3, M1/L1, K1 y J1/A1 permanecen en la arquitectura objetivo. Este corte en línea no sustituye el alcance completo offline ni la proyección QR de C4.
 

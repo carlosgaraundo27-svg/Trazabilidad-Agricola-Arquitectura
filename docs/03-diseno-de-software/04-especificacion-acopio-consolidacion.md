@@ -1,4 +1,4 @@
-﻿# Especificación: Acopio del prototipo académico
+# Especificación: Acopio del prototipo académico
 
 Actualización 2026-11-14. **D1–D7 adoptadas por el usuario solo para el prototipo académico. Sin validación de responsable agrícola ni aprobación docente.** Autoriza implementación y PR de Acopio sin fusionar. Borrador original conservado en el historial (`ab1906d`); las recomendaciones anteriores permanecen en [continuidad](../05-sprint01/continuidad-acopio-decisiones.md).
 

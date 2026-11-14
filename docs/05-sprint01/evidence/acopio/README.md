@@ -1,4 +1,4 @@
-﻿# Evidencias de Acopio académico — 2026-11-14
+# Evidencias de Acopio académico — 2026-11-14
 
 Datos exclusivamente ficticios. [Informe y límites](../../acopio-implementacion.md).
 

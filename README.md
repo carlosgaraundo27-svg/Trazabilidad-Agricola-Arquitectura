@@ -4,7 +4,7 @@
 **Curso:** Arquitectura de Software (IS-488) — UNSCH, 2026-II  
 **Tipo de entrega:** Arquitectura, primer recorrido y Acopio académico ejecutables
 
-**Estado:** Demostración local de autenticación, productor, parcela y pre-lote; los restantes módulos siguen como arquitectura objetivo.
+**Estado:** Prototipo académico de origen/cosecha y Acopio: recepción, pesaje, revisión y consolidación. Calidad, despacho y demás capacidades siguen como arquitectura objetivo, sin validación agrícola ni aprobación docente.
 
 ## 1. Problema y objetivo
 

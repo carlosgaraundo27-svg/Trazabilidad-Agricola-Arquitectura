@@ -1,4 +1,4 @@
-﻿# Acopio: implementación académica y continuidad
+# Acopio: implementación académica y continuidad
 
 Fecha: 2026-11-14. D1–D7 adoptadas por el usuario solo para prototipo académico. **Sin validación agrícola ni aprobación docente.** Se implementó recepción, pesaje, revisión independiente, confirmación/habilitación y consolidación. Calidad y despacho siguen fuera del corte.
 
@@ -9,7 +9,7 @@ Fecha: 2026-11-14. D1–D7 adoptadas por el usuario solo para prototipo académi
 - [Actions #5](https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/43605686557): verify y compose success en esa nueva cabeza. Sin conflictos ni checks fallidos omitidos. PR #2 integrado con merge `94d3eab1a92856334b4a371d65718ba130088f4c`.
 - `feat/acopio` se creó sobre ese main y recibió mediante merge `docs/especificacion-acopio`, conservando ab1906d, d29d056 y 62c37da. La rama documental original permanece local e intacta.
 
-El push por Git fue bloqueado por el almacén de credenciales Windows; las operaciones remotas se realizan por el conector GitHub, sin force-push. Se mantienen los commits locales originales y se verifica igualdad de árboles al publicar. El PR de Acopio no se fusiona.
+El push por Git fue bloqueado por el almacén de credenciales Windows; las operaciones remotas se realizan por el conector GitHub, sin force-push. La publicación conserva mensajes, padres equivalentes y árboles de cada incremento, pero genera nuevos SHA. Los commits locales originales se conservan en `feat/acopio-local`; `feat/acopio` se sincroniza con la cadena publicada. El mapeo queda en `.local/publication-map.json` dentro de `repo-acopio/`, sin credenciales. Se verifica igualdad de árboles antes de cambiar a la rama publicada. El PR de Acopio no se fusiona.
 
 ## Implementación
 
@@ -36,7 +36,7 @@ Los fallos HTTP de escenarios negativos son esperados; no se contabilizan como �
 
 [Evidencia saneada](evidence/acopio/README.md). Integración y E2E usan bases nuevas separadas en un cluster nativo dedicado (loopback 55434), ajeno a la demo anterior. La demo y sus dos pre-lotes no se migraron ni modificaron. No se presentan los resultados nativos como Docker Windows. La CI del PR comprobará verify/compose sobre la publicación; registrar su estado real en el PR.
 
-Calidad est?tica y build: sintaxis/imports/enlaces, formato y build aprobados; npm audit report? cero vulnerabilidades. Migraci?n 001, dependencias/lockfile y workflow existentes sin cambios.
+Calidad estática y build: sintaxis/imports/enlaces, formato y build aprobados; npm audit reportó cero vulnerabilidades. Migración 001, dependencias/lockfile y workflow existentes sin cambios.
 
 ## Continuidad
 

@@ -14,8 +14,8 @@ La revisión mejora la documentación. **No equivale a aprobación de la docente
 | Hallazgo en la base | Corrección | Evidencia |
 |---|---|---|
 | Monolito modular descrito principalmente como lista de módulos; Acceso y Permisos ausente en algunas listas. | Siete módulos, propietarios de datos, contratos internos, límites transaccionales y costes de la decisión. | [Estilo](../02-arquitectura/01-estilo-arquitectonico.md). |
-| C2 usa un marco de despliegue y muestra QR como posible aplicación separada sin resolverlo. | Frontera del sistema; QR como ruta de W1; almacén local L1; ETL J1; O1/A1 lógicos. | [C2](../04-modelo-c4/modelo-c4.md#3-c2--contenedores-de-s1). |
-| C3 mezcla módulos, capas, entidades y ETL, dificultando reconocer el backend. | Componentes de grano grueso dentro de B1, contratos y salidas por módulo. | [C3](../04-modelo-c4/modelo-c4.md#4-c3--componentes-del-backend-b1). |
+| C2 usa un marco de despliegue y muestra QR como posible aplicación separada sin resolverlo. | Frontera del sistema; QR como ruta de W1; almacén local L1; ETL J1; O1/A1 lógicos. | [C2](../04-modelo-c4/modelo-c4-objetivo.md#3-c2--contenedores-de-s1). |
+| C3 mezcla módulos, capas, entidades y ETL, dificultando reconocer el backend. | Componentes de grano grueso dentro de B1, contratos y salidas por módulo. | [C3](../04-modelo-c4/modelo-c4-objetivo.md#4-c3--componentes-del-backend-b1). |
 | Los niveles no mantienen una ampliación explícita. | S1 → B1 → T1 → consulta QR; propósito, audiencia y leyenda en cada nivel. | [Modelo C4](../04-modelo-c4/modelo-c4.md). |
 | Flechas desde puertos a PostgreSQL/Redis contradicen la inversión de dependencias. | Adaptadores implementan interfaces interiores; separación entre dependencia y ejecución. | [Enfoque](../02-arquitectura/02-enfoque-arquitectonico.md). |
 | Diagrama de componentes duplicado y API fuera del backend. | C3 como vista canónica; matriz de requisitos conserva su función. | [Componentes](../02-arquitectura/04-componentes-arquitectonicos.md). |

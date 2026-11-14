@@ -1,0 +1,259 @@
+:root {
+  font-family:
+    Inter,
+    Segoe UI,
+    Arial,
+    sans-serif;
+  color: #24372d;
+  background: #f5f4ed;
+  --green: #1e4939;
+  --muted: #536258;
+  --line: #cbd2c7;
+  --surface: #fff;
+  --accent: #e5ebdf;
+  font-synthesis: none;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+header {
+  background: var(--green);
+  color: white;
+  padding: 1.25rem max(1rem, calc((100vw - 1120px) / 2));
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+.brand {
+  font-weight: 800;
+  color: white;
+  text-decoration: none;
+  letter-spacing: 0.12em;
+}
+.brand span {
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.identity {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.875rem;
+}
+main {
+  max-width: 1120px;
+  min-height: 80vh;
+  margin: auto;
+  padding: 2rem 1rem 4rem;
+}
+h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  margin: 0.75rem 0 1rem;
+}
+h2 {
+  font-size: 1.25rem;
+  margin: 0 0 1.5rem;
+}
+p {
+  line-height: 1.6;
+}
+.eyebrow {
+  font-size: 0.75rem;
+  letter-spacing: 0.13em;
+  font-weight: 700;
+  color: var(--muted);
+}
+.columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+section section,
+.columns > section,
+.login form {
+  background: var(--surface);
+  padding: 1.5rem;
+  border: 1px solid var(--line);
+  border-radius: 0.25rem;
+}
+form {
+  display: grid;
+  gap: 1.25rem;
+}
+label {
+  display: grid;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+input,
+select {
+  font: inherit;
+  color: inherit;
+  min-height: 2.75rem;
+  padding: 0.75rem;
+  border: 1px solid #8c9b90;
+  border-radius: 0.2rem;
+  background: white;
+  width: 100%;
+  min-width: 0;
+}
+button {
+  font: inherit;
+  font-weight: 600;
+  background: var(--green);
+  color: white;
+  border: 1px solid var(--green);
+  padding: 0.875rem 1.25rem;
+  border-radius: 0.2rem;
+  cursor: pointer;
+  min-height: 2.75rem;
+}
+button:hover {
+  filter: brightness(1.15);
+}
+button:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+.secondary {
+  color: white;
+  background: transparent;
+  border-color: #b9cbbb;
+  padding: 0.5rem 1rem;
+}
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 3px solid #b46b21;
+  outline-offset: 3px;
+}
+.coordinates {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.muted,
+small {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+.login {
+  max-width: 30rem;
+  margin: 2rem auto;
+}
+.login form {
+  margin: 2rem 0;
+}
+.register {
+  margin-top: 2rem;
+  padding: 1.5rem 0;
+}
+.columns .register {
+  margin-top: 0;
+}
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+li {
+  display: grid;
+  gap: 0.5rem;
+  border-top: 1px solid var(--line);
+  padding: 1rem 0;
+  overflow-wrap: anywhere;
+}
+li span {
+  font-size: 0.875rem;
+}
+.count {
+  font-size: 0.875rem;
+  background: var(--accent);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.2rem;
+}
+code {
+  display: block;
+  overflow-wrap: anywhere;
+  font-size: 0.875rem;
+}
+.confirmation {
+  border-left: 4px solid var(--green);
+  padding: 1.5rem;
+  background: var(--accent);
+  margin: 1.5rem 0;
+}
+.confirmation h2 {
+  margin-bottom: 0.5rem;
+}
+[role="alert"]:not(:empty) {
+  color: #8d2421;
+  background: #fff1ec;
+  padding: 1rem;
+  border-left: 3px solid #8d2421;
+}
+[role="alert"]:empty,
+[role="status"]:empty {
+  display: none;
+}
+footer {
+  padding: 1.5rem;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.75rem;
+  border-top: 1px solid var(--line);
+}
+.skip {
+  position: absolute;
+  left: 1rem;
+  top: -5rem;
+  background: white;
+  color: var(--green);
+  padding: 1rem;
+  z-index: 5;
+}
+.skip:focus {
+  top: 1rem;
+}
+@media (max-width: 700px) {
+  .columns {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .identity {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5rem;
+  }
+  .identity span {
+    font-size: 0.7rem;
+  }
+  .brand span {
+    display: block;
+    margin-top: 0.25rem;
+  }
+  header {
+    padding: 1rem;
+  }
+  main {
+    padding-top: 1.5rem;
+  }
+  .columns > section {
+    padding: 1rem;
+  }
+  .coordinates {
+    grid-template-columns: 1fr;
+  }
+  .login {
+    margin-top: 1rem;
+  }
+}

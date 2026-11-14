@@ -1,0 +1,35 @@
+{
+  "task": "e2e",
+  "command": "npm.cmd run test:e2e -- --output=../verificacion-20261112/test-results",
+  "cwd": "<WORKSPACE>\\repo",
+  "startedAt": "2026-11-12T14:40:29.563Z",
+  "finishedAt": "2026-11-12T14:40:30.294Z",
+  "exitCode": 1,
+  "signal": null
+}
+
+
+> trazabilidad-primer-recorrido@0.1.0 test:e2e
+> node --env-file-if-exists=.env node_modules/@playwright/test/cli.js test --output=../verificacion-20261112/test-results
+
+[WebServer] (node:21740) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] <WORKSPACE>\repo\node_modules\pg-pool\index.js:45
+[WebServer]     Error.captureStackTrace(err)
+[WebServer]           ^
+[WebServer]
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:55432
+[WebServer]     at <WORKSPACE>\repo\node_modules\pg-pool\index.js:45:11
+[WebServer]     at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+[WebServer]     at async Object.transaction (file:///<WORKSPACE>/repo/server/db.js:27:22)
+[WebServer]     at async migrate (file:///<WORKSPACE>/repo/scripts/migrate.js:5:3)
+[WebServer]     at async file:///<WORKSPACE>/repo/scripts/e2e-server.js:8:3 {
+[WebServer]   errno: -4078,
+[WebServer]   code: 'ECONNREFUSED',
+[WebServer]   syscall: 'connect',
+[WebServer]   address: '127.0.0.1',
+[WebServer]   port: 55432
+[WebServer] }
+[WebServer]
+[WebServer] Node.js v24.16.0
+Error: Process from config.webServer was not able to start. Exit code: 1

@@ -1,0 +1,146 @@
+{
+  "startedAt": "2026-11-12T16:18:28.330Z",
+  "mode": "restart",
+  "test": true,
+  "commands": [
+    {
+      "args": ["version"],
+      "exitCode": 0,
+      "output": "Client:\n Version:           29.9.3\n API version:       1.56\n Go version:        go1.26.10\n Git commit:        5457199\n Built:             Tue Nov  3 21:46:10 2026\n OS/Arch:           windows/amd64\n Context:           desktop-linux\n\nServer: Docker Desktop 4.99.0 (245822)\n Engine:\n  Version:          29.9.3\n  API version:      1.56 (minimum version 1.40)\n  Go version:       go1.26.10\n  Git commit:       70efc0e\n  Built:            Tue Nov  3 21:41:42 2026\n  OS/Arch:          linux/amd64\n  Experimental:     false\n containerd:\n  Version:          v2.4.2\n  GitCommit:        b7a25261e029d68978bbf290df0a62fc819b3c51\n runc:\n  Version:          1.5.2\n  GitCommit:        v1.5.2-0-g29dd3dc2\n docker-init:\n  Version:          0.19.0\n  GitCommit:        de40ad0\n"
+    },
+    {
+      "args": ["info", "--format", "{{.OSType}}"],
+      "exitCode": 0,
+      "output": "linux\n"
+    },
+    {
+      "args": [
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "compose.test.yaml",
+        "config",
+        "--quiet"
+      ],
+      "exitCode": 0,
+      "output": ""
+    },
+    {
+      "args": [
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "compose.test.yaml",
+        "exec",
+        "-T",
+        "db",
+        "psql",
+        "-U",
+        "demo",
+        "-d",
+        "trazabilidad",
+        "-t",
+        "-A",
+        "-c",
+        "SELECT COALESCE(json_agg(id ORDER BY id), '[]'::json) FROM harvest.pre_lots"
+      ],
+      "exitCode": 0,
+      "output": "[\"23d58b15-aec1-488f-841d-eec647d07c76\"]\n"
+    },
+    {
+      "args": [
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "compose.test.yaml",
+        "down"
+      ],
+      "exitCode": 0,
+      "output": " Container repo-github-app-1 Stopping \n Container repo-github-app-1 Stopped \n Container repo-github-app-1 Removing \n Container repo-github-app-1 Removed \n Container repo-github-db-1 Stopping \n Container repo-github-db-1 Stopped \n Container repo-github-db-1 Removing \n Container repo-github-db-1 Removed \n Network repo-github_default Removing \n Network repo-github_default Removed \n"
+    },
+    {
+      "args": [
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "compose.test.yaml",
+        "up",
+        "-d",
+        "--wait",
+        "--wait-timeout",
+        "180"
+      ],
+      "exitCode": 0,
+      "output": " Network repo-github_default Creating \n Network repo-github_default Creating \n Network repo-github_default Created \n Network repo-github_default Created \n Container repo-github-db-1 Creating \n Container repo-github-db-1 Created \n Container repo-github-app-1 Creating \n Container repo-github-app-1 Created \n Container repo-github-db-1 Starting \n Container repo-github-db-1 Started \n Container repo-github-db-1 Waiting \n Container repo-github-db-1 Healthy \n Container repo-github-app-1 Starting \n Container repo-github-app-1 Started \n Container repo-github-app-1 Waiting \n Container repo-github-db-1 Waiting \n Container repo-github-db-1 Healthy \n Container repo-github-app-1 Healthy \n"
+    },
+    {
+      "args": [
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "compose.test.yaml",
+        "ps"
+      ],
+      "exitCode": 0,
+      "output": "NAME                IMAGE             COMMAND                  SERVICE   CREATED          STATUS                    PORTS\nrepo-github-app-1   repo-github-app   \"docker-entrypoint.s…\"   app       11 seconds ago   Up 5 seconds (healthy)    127.0.0.1:3002->3000/tcp\nrepo-github-db-1    postgres:18       \"docker-entrypoint.s…\"   db        11 seconds ago   Up 11 seconds (healthy)   127.0.0.1:55433->5432/tcp\n"
+    },
+    {
+      "args": [
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "compose.test.yaml",
+        "exec",
+        "-T",
+        "db",
+        "psql",
+        "-U",
+        "demo",
+        "-d",
+        "trazabilidad",
+        "-c",
+        "SELECT version FROM public.schema_migrations"
+      ],
+      "exitCode": 0,
+      "output": " version \n---------\n 001\n(1 row)\n\n"
+    },
+    {
+      "args": [
+        "compose",
+        "-f",
+        "compose.yaml",
+        "-f",
+        "compose.test.yaml",
+        "exec",
+        "-T",
+        "db",
+        "psql",
+        "-U",
+        "demo",
+        "-d",
+        "trazabilidad",
+        "-t",
+        "-A",
+        "-c",
+        "SELECT COALESCE(json_agg(id ORDER BY id), '[]'::json) FROM harvest.pre_lots"
+      ],
+      "exitCode": 0,
+      "output": "[\"23d58b15-aec1-488f-841d-eec647d07c76\"]\n"
+    }
+  ],
+  "before": ["23d58b15-aec1-488f-841d-eec647d07c76"],
+  "after": ["23d58b15-aec1-488f-841d-eec647d07c76"],
+  "url": "http://localhost:3002",
+  "health": {
+    "status": "ok"
+  },
+  "frontendStatus": 200,
+  "passed": true,
+  "finishedAt": "2026-11-12T16:18:41.844Z"
+}

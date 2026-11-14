@@ -1,0 +1,19 @@
+{
+  "action": "build",
+  "exitCode": 0,
+  "signal": null,
+  "timedOut": false,
+  "durationMs": 283,
+  "finishedAt": "2026-11-12T15:32:46.314Z"
+}
+
+vite v8.3.8 building client environment for production...
+transforming...
+✓ 16 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.41 kB │ gzip:  0.30 kB
+dist/assets/index-CKNSUq4x.css    3.22 kB │ gzip:  1.22 kB
+dist/assets/index-T4Y_GFXf.js   229.27 kB │ gzip: 71.65 kB
+
+✓ built in 83ms

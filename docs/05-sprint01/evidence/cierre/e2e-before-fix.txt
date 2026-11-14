@@ -1,0 +1,34 @@
+{
+  "action": "e2e",
+  "exitCode": null,
+  "signal": "SIGKILL",
+  "timedOut": true,
+  "durationMs": 20049,
+  "finishedAt": "2026-11-12T15:33:07.307Z"
+}
+
+2026-11-12T15:32:47.598Z pw:webserver HTTP GET: http://127.0.0.1:3001/health
+2026-11-12T15:32:47.602Z pw:webserver Error while checking if http://127.0.0.1:3001/health is available: connect ECONNREFUSED 127.0.0.1:3001
+2026-11-12T15:32:47.602Z pw:webserver Starting WebServer process node --env-file-if-exists=.env scripts/e2e-server.js...
+2026-11-12T15:32:47.610Z pw:webserver Process started
+2026-11-12T15:32:47.610Z pw:webserver Waiting for availability...
+2026-11-12T15:32:47.611Z pw:webserver HTTP GET: http://127.0.0.1:3001/health
+2026-11-12T15:32:47.614Z pw:webserver Error while checking if http://127.0.0.1:3001/health is available: connect ECONNREFUSED 127.0.0.1:3001
+2026-11-12T15:32:47.614Z pw:webserver Waiting 100ms
+[WebServer] (node:11620) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+2026-11-12T15:32:47.725Z pw:webserver HTTP GET: http://127.0.0.1:3001/health
+2026-11-12T15:32:47.726Z pw:webserver Error while checking if http://127.0.0.1:3001/health is available: connect ECONNREFUSED 127.0.0.1:3001
+2026-11-12T15:32:47.726Z pw:webserver Waiting 250ms
+[WebServer] {"event":"server_started","port":3001}
+2026-11-12T15:32:47.978Z pw:webserver HTTP GET: http://127.0.0.1:3001/health
+2026-11-12T15:32:48.138Z pw:webserver HTTP Status: 200
+2026-11-12T15:32:48.138Z pw:webserver WebServer available
+
+Running 1 test using 1 worker
+
+(node:10804) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] {"requestId":"464984a5-cc52-47d1-9822-523bf869ce5f","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+  ✓  1 tests\e2e\first-journey.spec.js:4:1 › administrador registra origen y recolector registra pre-lote en línea (1.3s)
+2026-11-12T15:32:50.027Z pw:webserver Terminating the WebServer

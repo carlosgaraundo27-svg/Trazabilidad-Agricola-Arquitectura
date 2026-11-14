@@ -1,0 +1,16 @@
+{
+  "task": "format",
+  "command": "npm.cmd run format:check",
+  "cwd": "<WORKSPACE>\\repo",
+  "startedAt": "2026-11-12T14:39:02.806Z",
+  "finishedAt": "2026-11-12T14:39:03.458Z",
+  "exitCode": 0,
+  "signal": null
+}
+
+
+> trazabilidad-primer-recorrido@0.1.0 format:check
+> prettier --check server web scripts tests *.js *.json .github/workflows/ci.yml compose.yaml
+
+Checking formatting...
+All matched files use Prettier code style!

@@ -1,0 +1,26 @@
+{
+  "task": "unit",
+  "command": "npm.cmd test",
+  "cwd": "<WORKSPACE>\\repo",
+  "startedAt": "2026-11-12T14:39:00.136Z",
+  "finishedAt": "2026-11-12T14:39:01.156Z",
+  "exitCode": 0,
+  "signal": null
+}
+
+
+> trazabilidad-primer-recorrido@0.1.0 test
+> node --test tests/unit/*.test.js
+
+✔ cantidad positiva decimal y fecha con zona (4.1455ms)
+✔ coordenadas y nombre tienen límites (0.6197ms)
+✔ roles deniegan por defecto y no heredan operaciones (0.2017ms)
+✔ contraseñas con sal única y verificación sin texto plano (97.2491ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 665.2375

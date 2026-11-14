@@ -1,0 +1,20 @@
+▶ integración HTTP + SQL del primer recorrido
+  ✔ credenciales, sesión, CSRF, origen y rol (39.1763ms)
+  ✔ alta de productor y parcela; aislamiento por organización (18.7424ms)
+  ✔ rechaza entradas inválidas sin escribir (15.6618ms)
+  ✔ captura, reintento concurrente, conflicto y persistencia (44.1887ms)
+  ✔ revocar asignación bloquea incluso reintento aceptado (4.9909ms)
+  ✔ fallo real de auditoría revierte cosecha y pre-lote (7.217ms)
+  ✔ CHECK y FK rechazan corrupción y otra organización (1.7321ms)
+  ✔ cuenta inactiva, sesión vencida y logout (7.0562ms)
+  ✔ errores HTTP seguros y límite de autenticación (356.6077ms)
+  ✔ migración down/up en base desechable (35.9978ms)
+✔ integración HTTP + SQL del primer recorrido (759.5574ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 998.0924

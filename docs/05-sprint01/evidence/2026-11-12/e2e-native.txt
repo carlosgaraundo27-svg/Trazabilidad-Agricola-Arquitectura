@@ -1,0 +1,24 @@
+{
+  "task": "e2e",
+  "command": "npm.cmd run test:e2e -- --output=../verificacion-20261112/test-results",
+  "cwd": "<WORKSPACE>\\repo",
+  "startedAt": "2026-11-12T14:42:49.366Z",
+  "finishedAt": "2026-11-12T14:46:46.340Z",
+  "exitCode": 0,
+  "signal": null
+}
+
+
+> trazabilidad-primer-recorrido@0.1.0 test:e2e
+> node --env-file-if-exists=.env node_modules/@playwright/test/cli.js test --output=../verificacion-20261112/test-results
+
+[WebServer] (node:15540) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:19772) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests\e2e\first-journey.spec.js:4:1 › administrador registra origen y recolector registra pre-lote en línea (1.5s)
+
+  1 passed (3.9m)

@@ -1,0 +1,33 @@
+{
+  "source": ".local/compose-restart-1794501559371.json",
+  "finishedAt": "2026-11-12T16:39:19.371Z",
+  "passed": true,
+  "before": [
+    "23d58b15-aec1-488f-841d-eec647d07c76",
+    "5e7ec274-a266-431a-94d3-f4b346638d98"
+  ],
+  "after": [
+    "23d58b15-aec1-488f-841d-eec647d07c76",
+    "5e7ec274-a266-431a-94d3-f4b346638d98"
+  ],
+  "beforeCount": 2,
+  "afterCount": 2,
+  "missing": [],
+  "added": [],
+  "duplicateBefore": false,
+  "duplicateAfter": false,
+  "sameSet": true,
+  "allCommandsSucceeded": true,
+  "downArguments": [
+    "compose",
+    "-f",
+    "compose.yaml",
+    "-f",
+    "compose.test.yaml",
+    "down"
+  ],
+  "health": {
+    "status": "ok"
+  },
+  "frontendStatus": 200
+}

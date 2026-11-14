@@ -1,0 +1,15 @@
+{
+  "task": "check",
+  "command": "npm.cmd run check",
+  "cwd": "<WORKSPACE>\\repo",
+  "startedAt": "2026-11-12T14:39:01.059Z",
+  "finishedAt": "2026-11-12T14:39:02.761Z",
+  "exitCode": 0,
+  "signal": null
+}
+
+
+> trazabilidad-primer-recorrido@0.1.0 check
+> node scripts/check.js
+
+Sintaxis de módulos, límites de imports, OpenAPI y enlaces locales: OK

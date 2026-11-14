@@ -1,0 +1,29 @@
+Recorded from tool executions on 2026-11-12. Credentials omitted.
+
+Command: docker version
+Exit code: 1
+WARNING: Error loading config file: open <USER_HOME>\.docker\config.json: Acceso denegado.
+Client: 29.9.3; API 1.56; Context: default; OS/Arch: windows/amd64
+permission denied while trying to connect to the docker API at npipe:////./pipe/docker_engine
+
+Command: docker info --format '{{.OSType}}'
+Exit code: 1
+WARNING: Error loading config file: open <USER_HOME>\.docker\config.json: Acceso denegado.
+permission denied while trying to connect to the docker API at npipe:////./pipe/docker_engine
+
+Command: docker compose config --quiet
+Exit code: 0
+WARNING: Error loading config file: open <USER_HOME>\.docker\config.json: Acceso denegado.
+WARNING: Error loading config file: open <USER_HOME>\.docker\config.json: Acceso denegado.
+
+Command: docker compose up --build -d --wait
+Exit code: 1
+WARNING: Error loading config file: open <USER_HOME>\.docker\config.json: Acceso denegado.
+WARNING: Error loading config file: open <USER_HOME>\.docker\config.json: Acceso denegado.
+permission denied while trying to connect to the docker API at npipe:////./pipe/docker_engine
+
+No permissions, policies, groups or global settings were changed.
+Manual check in a normal PowerShell of the same user:
+docker version
+docker info --format '{{.OSType}}'
+Expected: Client and Server without error, OSType linux.

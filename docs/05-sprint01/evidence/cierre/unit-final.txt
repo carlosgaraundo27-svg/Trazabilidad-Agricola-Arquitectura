@@ -1,0 +1,21 @@
+{
+  "action": "unit",
+  "exitCode": 0,
+  "signal": null,
+  "timedOut": false,
+  "durationMs": 226,
+  "finishedAt": "2026-11-12T15:39:14.812Z"
+}
+
+✔ cantidad positiva decimal y fecha con zona (4.1368ms)
+✔ coordenadas y nombre tienen límites (0.6547ms)
+✔ roles deniegan por defecto y no heredan operaciones (0.0835ms)
+✔ contraseñas con sal única y verificación sin texto plano (100.9645ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 174.8376

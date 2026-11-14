@@ -8,7 +8,7 @@ No deben confundirse. Varios módulos lógicos pueden ejecutarse dentro de una m
 
 ## 2. Diagrama de despliegue propuesto
 
-~~~mermaid
+```mermaid
 flowchart TB
     subgraph DC["Dispositivo de campo"]
       M["M1 — App móvil"]
@@ -36,7 +36,7 @@ flowchart TB
     M -->|"HTTPS / API"| RP
     N -->|"HTTPS / frontend y API"| RP
     API -.->|"HTTPS / APIs por definir"| EXT
-~~~
+```
 
 **Leyenda:** marcos = nodos o entorno físico; cajas = procesos/aplicaciones; cilindros = datos; flechas = conexiones iniciadas por el origen; discontinua = integración proyectada. Solo Nginx recibe tráfico público. Los siete módulos de negocio están dentro de B1, no en siete contenedores Docker.
 
@@ -44,18 +44,18 @@ flowchart TB
 
 ## 3. Nodos propuestos
 
-| Nodo | Responsabilidad | Tecnología de referencia | Estado |
-|---|---|---|---|
-| Cliente de campo | Captura local y sincronización | Flutter + almacenamiento local | Propuesto en la propuesta técnica |
-| Cliente web | Operaciones administrativas y consulta QR | React/Tailwind o equivalente | Selección final pendiente |
-| Servidor web | Entregar frontend y manejar HTTPS/proxy | Nginx | Referencia inicial |
-| Servidor de aplicación | API REST y módulos de negocio en una sola unidad desplegable | NestJS recomendado; Spring Boot era alternativa | Debe ratificarse por ADR antes de codificar |
-| Persistencia OLTP | Datos transaccionales, lotes e historial | PostgreSQL | Decisión documentada (ADR-004) |
-| Caché | Respuestas frecuentes QR | Redis | Componente previsto en la arquitectura objetivo (ADR-005); se debe probar la política de expiración y el beneficio de rendimiento. Si se decide excluirlo del MVP, se actualizará la ADR. |
-| Proceso ETL | Transformar/extraer datos para analítica | Job programado; tecnología por decidir | Propuesto |
-| Datamart | Indicadores analíticos | Esquema lógico analítico PostgreSQL al inicio | Propuesto |
-| Contenedores | Repetibilidad del despliegue | Docker | Restricción RC05 / ADR-007 |
-| Servicios externos | Mapas, archivos y notificaciones | Proveedor por seleccionar | Integraciones proyectadas |
+| Nodo                   | Responsabilidad                                       | Tecnología de referencia                      | Estado                                                                                                                                                                                    |
+| ---------------------- | ----------------------------------------------------- | --------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Cliente de campo       | Captura local y sincronización                        | Flutter + almacenamiento local                | Propuesto en la propuesta técnica                                                                                                                                                         |
+| Cliente web            | Formularios del primer recorrido; QR sigue proyectado | React 19 / Vite 8                             | Implementado para S/P/H; ver ADR-009 y C4 actual.                                                                                                                                         |
+| Servidor web           | Entregar archivos compilados y API del corte local    | Express 5; proxy TLS Nginx proyectado         | El corte sirve ambos desde B1. Nginx no forma parte de Compose actual.                                                                                                                    |
+| Servidor de aplicación | API REST y S/P/H en una unidad desplegable            | Node 24 / Express 5 / JavaScript ESM          | Decisión aceptada para este corte en ADR-009. Los restantes módulos siguen proyectados.                                                                                                   |
+| Persistencia OLTP      | Datos transaccionales, lotes e historial              | PostgreSQL                                    | Decisión documentada (ADR-004)                                                                                                                                                            |
+| Caché                  | Respuestas frecuentes QR                              | Redis                                         | Componente previsto en la arquitectura objetivo (ADR-005); se debe probar la política de expiración y el beneficio de rendimiento. Si se decide excluirlo del MVP, se actualizará la ADR. |
+| Proceso ETL            | Transformar/extraer datos para analítica              | Job programado; tecnología por decidir        | Propuesto                                                                                                                                                                                 |
+| Datamart               | Indicadores analíticos                                | Esquema lógico analítico PostgreSQL al inicio | Propuesto                                                                                                                                                                                 |
+| Contenedores           | Repetibilidad del despliegue                          | Docker                                        | Restricción RC05 / ADR-007                                                                                                                                                                |
+| Servicios externos     | Mapas, archivos y notificaciones                      | Proveedor por seleccionar                     | Integraciones proyectadas                                                                                                                                                                 |
 
 ## 4. Topología para el prototipo
 
@@ -79,7 +79,7 @@ Para reducir complejidad en el prototipo:
 - Separar permisos de base de datos por responsabilidad cuando la tecnología y el tiempo lo permitan.
 - Registrar errores operativos y acciones críticas evitando capturar secretos o datos sensibles en logs.
 
-## 6. Stack: recomendación sujeta a ratificación
+## 6. Stack de la arquitectura objetivo: referencia histórica
 
 Para evitar mantener alternativas indefinidamente, se recomienda evaluar y aprobar un stack coherente:
 
@@ -91,4 +91,8 @@ Para evitar mantener alternativas indefinidamente, se recomienda evaluar y aprob
 - Analítica: proceso ETL y Datamart lógico sobre PostgreSQL en la primera iteración.
 - Despliegue: Docker y servidor Cloud académico.
 
-La elección de NestJS es una recomendación técnica para compartir TypeScript con el frontend y facilitar la organización modular, no un hecho ya implementado. La decisión final debe registrarse en ADR y mantenerse coherente entre documentación, código y presentación.
+NestJS fue una recomendación de la arquitectura objetivo. La decisión técnica actual para el primer recorrido es Node 24 + Express 5 + JavaScript ESM, React/Vite y PostgreSQL 18, aceptada en [ADR-009](07-decisiones-primer-recorrido.md). La [vista C4 implementada](../04-modelo-c4/modelo-c4.md) documenta los procesos y componentes existentes. Una migración futura requeriría otro ADR.
+
+## Alcance ejecutable del primer recorrido — 2026-11-11
+
+El subconjunto implementado y la selección Express/React están precisados en [ADR-009/010](07-decisiones-primer-recorrido.md). Las vistas anteriores conservan la arquitectura objetivo, incluyendo componentes todavía proyectados.

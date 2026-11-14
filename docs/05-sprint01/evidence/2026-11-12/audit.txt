@@ -1,0 +1,11 @@
+{
+  "task": "audit",
+  "command": "npm.cmd audit --audit-level=high",
+  "cwd": "<WORKSPACE>\\repo",
+  "startedAt": "2026-11-12T14:39:46.376Z",
+  "finishedAt": "2026-11-12T14:39:47.646Z",
+  "exitCode": 0,
+  "signal": null
+}
+
+found 0 vulnerabilities

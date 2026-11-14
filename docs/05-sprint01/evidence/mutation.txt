@@ -1,0 +1,32 @@
+✖ cantidad positiva decimal y fecha con zona (3.6701ms)
+✔ coordenadas y nombre tienen límites (0.6591ms)
+✔ roles deniegan por defecto y no heredan operaciones (0.0682ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 2
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 110.9823
+
+✖ failing tests:
+
+test at tests\unit\domain.test.js:9:1
+✖ cantidad positiva decimal y fecha con zona (3.6701ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  true !== false
+
+      at TestContext.<anonymous> (file:///<WORKSPACE>/repo/tests/unit/domain.test.js:18:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.start (node:internal/test_runner/test:1177:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

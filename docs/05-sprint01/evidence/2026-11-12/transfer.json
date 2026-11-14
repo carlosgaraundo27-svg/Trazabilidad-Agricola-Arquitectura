@@ -1,0 +1,267 @@
+{
+  "base": "38a85e38b647729d4a122d4b35e6f8297103a2a4",
+  "branch": "chore/verificacion-primer-arranque",
+  "overwritesReviewed": [
+    ".gitignore",
+    "README.md",
+    "docs/02-arquitectura/03-decisiones-arquitectonicas.md",
+    "docs/02-arquitectura/05-arquitectura-tecnica-despliegue.md",
+    "docs/04-modelo-c4/modelo-c4.md",
+    "docs/README.md"
+  ],
+  "transferred": [
+    {
+      "file": ".dockerignore",
+      "status": "local-only"
+    },
+    {
+      "file": ".env.example",
+      "status": "local-only"
+    },
+    {
+      "file": ".github/workflows/ci.yml",
+      "status": "local-only"
+    },
+    {
+      "file": ".gitignore",
+      "status": "modified"
+    },
+    {
+      "file": "Dockerfile",
+      "status": "local-only"
+    },
+    {
+      "file": "README.md",
+      "status": "modified"
+    },
+    {
+      "file": "compose.yaml",
+      "status": "local-only"
+    },
+    {
+      "file": "docs/02-arquitectura/03-decisiones-arquitectonicas.md",
+      "status": "modified"
+    },
+    {
+      "file": "docs/02-arquitectura/05-arquitectura-tecnica-despliegue.md",
+      "status": "modified"
+    },
+    {
+      "file": "docs/02-arquitectura/07-decisiones-primer-recorrido.md",
+      "status": "local-only"
+    },
+    {
+      "file": "docs/03-diseno-de-software/03-especificacion-primer-recorrido.md",
+      "status": "local-only"
+    },
+    {
+      "file": "docs/03-diseno-de-software/openapi.json",
+      "status": "local-only"
+    },
+    {
+      "file": "docs/04-modelo-c4/modelo-c4.md",
+      "status": "modified"
+    },
+    {
+      "file": "docs/05-sprint01/evidence/README.md",
+      "status": "local-only"
+    },
+    {
+      "file": "docs/05-sprint01/evidence/audit.json",
+      "status": "local-only"
+    },
+    {
+      "file": "docs/05-sprint01/evidence/build.txt",
+      "status": "local-only"
+    },
+    {
+      "file": "docs/05-sprint01/evidence/checks.txt",
+      "status": "local-only"
+    },
+    {
+      "file": "docs/05-sprint01/evidence/e2e.txt",
+      "status": "local-only"
+    },
+    {
+      "file": "docs/05-sprint01/evidence/format.txt",
+      "status": "local-only"
+    },
+    {
+      "file": "docs/05-sprint01/evidence/install.txt",
+      "status": "local-only"
+    },
+    {
+      "file": "docs/05-sprint01/evidence/integration-postgresql.txt",
+      "status": "local-only"
+    },
+    {
+      "file": "docs/05-sprint01/evidence/mutation.txt",
+      "status": "local-only"
+    },
+    {
+      "file": "docs/05-sprint01/evidence/primer-recorrido.png",
+      "status": "local-only"
+    },
+    {
+      "file": "docs/05-sprint01/evidence/source-review.json",
+      "status": "local-only"
+    },
+    {
+      "file": "docs/05-sprint01/evidence/unit.txt",
+      "status": "local-only"
+    },
+    {
+      "file": "docs/05-sprint01/evidencia-primer-recorrido.md",
+      "status": "local-only"
+    },
+    {
+      "file": "docs/README.md",
+      "status": "modified"
+    },
+    {
+      "file": "index.html",
+      "status": "local-only"
+    },
+    {
+      "file": "migrations/001_initial.down.sql",
+      "status": "local-only"
+    },
+    {
+      "file": "migrations/001_initial.up.sql",
+      "status": "local-only"
+    },
+    {
+      "file": "package-lock.json",
+      "status": "local-only"
+    },
+    {
+      "file": "package.json",
+      "status": "local-only"
+    },
+    {
+      "file": "playwright.config.js",
+      "status": "local-only"
+    },
+    {
+      "file": "scripts/check.js",
+      "status": "local-only"
+    },
+    {
+      "file": "scripts/container-start.js",
+      "status": "local-only"
+    },
+    {
+      "file": "scripts/e2e-server.js",
+      "status": "local-only"
+    },
+    {
+      "file": "scripts/migrate.js",
+      "status": "local-only"
+    },
+    {
+      "file": "scripts/seed.js",
+      "status": "local-only"
+    },
+    {
+      "file": "server/composition.js",
+      "status": "local-only"
+    },
+    {
+      "file": "server/db.js",
+      "status": "local-only"
+    },
+    {
+      "file": "server/http.js",
+      "status": "local-only"
+    },
+    {
+      "file": "server/main.js",
+      "status": "local-only"
+    },
+    {
+      "file": "server/modules/access/application.js",
+      "status": "local-only"
+    },
+    {
+      "file": "server/modules/access/domain.js",
+      "status": "local-only"
+    },
+    {
+      "file": "server/modules/access/password.js",
+      "status": "local-only"
+    },
+    {
+      "file": "server/modules/access/repository.js",
+      "status": "local-only"
+    },
+    {
+      "file": "server/modules/harvest/application.js",
+      "status": "local-only"
+    },
+    {
+      "file": "server/modules/harvest/domain.js",
+      "status": "local-only"
+    },
+    {
+      "file": "server/modules/harvest/repository.js",
+      "status": "local-only"
+    },
+    {
+      "file": "server/modules/producers/application.js",
+      "status": "local-only"
+    },
+    {
+      "file": "server/modules/producers/domain.js",
+      "status": "local-only"
+    },
+    {
+      "file": "server/modules/producers/repository.js",
+      "status": "local-only"
+    },
+    {
+      "file": "server/shared/errors.js",
+      "status": "local-only"
+    },
+    {
+      "file": "tecnologia/arranque-windows.md",
+      "status": "local-only"
+    },
+    {
+      "file": "tecnologia/primer-recorrido.md",
+      "status": "local-only"
+    },
+    {
+      "file": "tests/e2e/first-journey.spec.js",
+      "status": "local-only"
+    },
+    {
+      "file": "tests/integration/api.test.js",
+      "status": "local-only"
+    },
+    {
+      "file": "tests/unit/domain.test.js",
+      "status": "local-only"
+    },
+    {
+      "file": "tests/unit/password.test.js",
+      "status": "local-only"
+    },
+    {
+      "file": "vite.config.js",
+      "status": "local-only"
+    },
+    {
+      "file": "web/api.js",
+      "status": "local-only"
+    },
+    {
+      "file": "web/main.jsx",
+      "status": "local-only"
+    },
+    {
+      "file": "web/style.css",
+      "status": "local-only"
+    }
+  ],
+  "envCopiedIgnored": true
+}

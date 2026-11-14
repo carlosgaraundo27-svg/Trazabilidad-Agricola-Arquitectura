@@ -1,0 +1,10 @@
+{
+  "checkedAt": "2026-11-12T16:50:11.291Z",
+  "base": "38a85e38b647729d4a122d4b35e6f8297103a2a4",
+  "head": "6feaa68148f5821212b11b0e212011bc1cd5db5f",
+  "commitsReviewed": 3,
+  "uniqueBlobsReviewed": 139,
+  "forbiddenPaths": [],
+  "credentialFindings": [],
+  "privatePathFindings": []
+}

@@ -1,0 +1,23 @@
+2026-11-12T15:55:22.6935725Z  Container trazabilidad-agricola-arquitectura-db-1 Healthy
+2026-11-12T15:55:22.6937417Z  Container trazabilidad-agricola-arquitectura-db-1 Healthy
+2026-11-12T15:55:22.6937747Z  Container trazabilidad-agricola-arquitectura-app-1 Healthy
+2026-11-12T15:55:22.7937776Z trazabilidad-agricola-arquitectura-app-1   trazabilidad-agricola-arquitectura-app   "docker-entrypoint.s…"   app       11 seconds ago   Up 5 seconds (healthy)    127.0.0.1:3002->3000/tcp
+2026-11-12T15:55:22.7939257Z trazabilidad-agricola-arquitectura-db-1    postgres:18                              "docker-entrypoint.s…"   db        11 seconds ago   Up 11 seconds (healthy)   127.0.0.1:55433->5432/tcp
+2026-11-12T15:55:22.7939948Z docker compose -f compose.yaml -f compose.test.yaml exec -T db psql -U demo -d trazabilidad -c SELECT version FROM public.schema_migrations
+2026-11-12T15:55:23.1166297Z Seed ficticio aplicado; cuentas existentes conservadas.
+2026-11-12T15:55:23.1167505Z docker compose -f compose.yaml -f compose.test.yaml exec -T db psql -U demo -d trazabilidad -t -A -c SELECT COALESCE(json_agg(id ORDER BY id), '[]'::json) FROM harvest.pre_lots
+2026-11-12T15:55:23.2839616Z {"passed":true,"url":"http://localhost:3002","evidence":".local/compose-start-1794498923282.json"}
+2026-11-12T15:55:25.7514610Z   1 passed (2.0s)
+2026-11-12T15:55:25.9059768Z docker compose -f compose.yaml -f compose.test.yaml exec -T db psql -U demo -d trazabilidad -t -A -c SELECT COALESCE(json_agg(id ORDER BY id), '[]'::json) FROM harvest.pre_lots
+2026-11-12T15:55:26.0141417Z ["76d89dfa-539c-4d5f-89ed-5227e812558e"]
+2026-11-12T15:55:26.0142325Z docker compose -f compose.yaml -f compose.test.yaml down
+2026-11-12T15:55:37.7986813Z  Container trazabilidad-agricola-arquitectura-db-1 Healthy
+2026-11-12T15:55:37.7988188Z  Container trazabilidad-agricola-arquitectura-db-1 Healthy
+2026-11-12T15:55:37.7988461Z  Container trazabilidad-agricola-arquitectura-app-1 Healthy
+2026-11-12T15:55:37.8610960Z trazabilidad-agricola-arquitectura-app-1   trazabilidad-agricola-arquitectura-app   "docker-entrypoint.s…"   app       11 seconds ago   Up 5 seconds (healthy)    127.0.0.1:3002->3000/tcp
+2026-11-12T15:55:37.8612561Z trazabilidad-agricola-arquitectura-db-1    postgres:18                              "docker-entrypoint.s…"   db        11 seconds ago   Up 11 seconds (healthy)   127.0.0.1:55433->5432/tcp
+2026-11-12T15:55:37.8613543Z docker compose -f compose.yaml -f compose.test.yaml exec -T db psql -U demo -d trazabilidad -c SELECT version FROM public.schema_migrations
+2026-11-12T15:55:37.9690967Z docker compose -f compose.yaml -f compose.test.yaml exec -T db psql -U demo -d trazabilidad -t -A -c SELECT COALESCE(json_agg(id ORDER BY id), '[]'::json) FROM harvest.pre_lots
+2026-11-12T15:55:38.0857485Z ["76d89dfa-539c-4d5f-89ed-5227e812558e"]
+2026-11-12T15:55:38.1375533Z {"passed":true,"url":"http://localhost:3002","evidence":".local/compose-restart-1794498938136.json"}
+2026-11-12T15:55:38.3481332Z docker compose -f compose.yaml -f compose.test.yaml down

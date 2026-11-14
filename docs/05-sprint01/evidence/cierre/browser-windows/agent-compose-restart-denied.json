@@ -1,0 +1,15 @@
+{
+  "startedAt": "2026-11-12T16:25:50.851Z",
+  "mode": "restart",
+  "test": true,
+  "commands": [
+    {
+      "args": ["version"],
+      "exitCode": 1,
+      "output": "Client:\n Version:           29.9.3\n API version:       1.56\n Go version:        go1.26.10\n Git commit:        5457199\n Built:             Tue Nov  3 21:46:10 2026\n OS/Arch:           windows/amd64\n Context:           default\nWARNING: Error loading config file: open <USER_HOME>\\.docker\\config.json: Acceso denegado.\npermission denied while trying to connect to the docker API at npipe:////./pipe/docker_engine\n"
+    }
+  ],
+  "passed": false,
+  "error": "Docker exited with code 1",
+  "finishedAt": "2026-11-12T16:25:50.904Z"
+}

@@ -1,179 +1,100 @@
-# Borrador: recepción en acopio y consolidación del lote
+﻿# Especificación: Acopio del prototipo académico
 
-Fecha: 2026-11-12. Estado: **propuesta para decisión del usuario; no aprobada para implementar**. Base técnica: primer recorrido del PR #2, commit `ba006eb`. Rama local separada: `docs/especificacion-acopio`. Este documento no añade código, tablas, roles ni rutas al primer recorrido.
+Actualización 2026-11-14. **D1–D7 adoptadas por el usuario solo para el prototipo académico. Sin validación de responsable agrícola ni aprobación docente.** Autoriza implementación y PR de Acopio sin fusionar. Borrador original conservado en el historial (`ab1906d`); las recomendaciones anteriores permanecen en [continuidad](../05-sprint01/continuidad-acopio-decisiones.md).
 
-## 1. Objetivo y alcance
+## 1. Alcance
 
-Permitir que un operario autorizado reciba producto identificado por pre-lote, registre su pesaje de recepción y forme un lote consolidado conservando el origen y las cantidades aportadas. El resultado debe permitir responder qué se recibió, cuánto se pesó, de dónde proviene cada aporte, quién lo confirmó y qué cantidad permanece sin consolidar.
+Recepción completa, pesaje individual, revisión independiente de diferencias, confirmación, habilitación y consolidación con composición/origen. HU03/RF-05, RF-04 y parte de RF-09/DA02. Fuera: calidad, despacho, inventario/pallets, liquidación, QR, offline, reparto parcial, división, reapertura y corrección de hechos cerrados. Se conserva Node 24/Express 5, React/Vite y PostgreSQL 18, sesión/CSRF, denegación por defecto y auditoría transaccional. Migración 001 intacta; ninguna prueba sobre la demo existente.
 
-Trazabilidad: HU03/RF-05 para recepción y pesaje, RF-04 para identidad del lote y una parte acotada de RF-09/DA02 para eventos y conservación del origen. No se pretende completar HU04 de calidad, QR, inventario, pallets, transporte, liquidación ni captura offline.
+## 2. Decisiones adoptadas
 
-### Supuestos explícitos del borrador
+| ID  | Regla para el prototipo                                                                                                                                               |
+| --- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| D1  | Una recepción completa por pre-lote. Referencia obligatoria, recortada y única por centro; sensible a mayúsculas, sin reinicio automático de numeración.              |
+| D2  | Pesaje individual en kg con bruto y tara registrados, neto calculado y decimales exactos; sin neto directo ni atribución de pesada conjunta.                          |
+| D3  | Mismo productor, parcela, fecha local de cosecha, organización y centro de recepción. Consumir todo el saldo habilitado seleccionado.                                 |
+| D4  | Conservar declaración y medición. Toda diferencia requiere aprobación autorizada de una persona distinta del capturador. Sin tolerancia automática ni merma inferida. |
+| D5  | Excluir reparto parcial, división y reapertura.                                                                                                                       |
+| D6  | Habilitar el neto confirmado completo antes de calidad: H = R. Lote pendiente de calidad; no habilita despacho.                                                       |
+| D7  | Concesiones por acción y centro; operario normal y responsable independiente para discrepancias; proteger hechos/eventos cerrados.                                    |
 
-- Operación web en línea dentro del monolito Node 24/Express 5, con React/Vite y PostgreSQL 18; se conserva el lockfile.
-- Se reutilizan sesión, CSRF, organización y auditoría. El actor nunca procede del body.
-- La cantidad declarada en cosecha permanece intacta; el pesaje de recepción es un hecho nuevo, no una corrección silenciosa de la cosecha.
-- No se consolidan organizaciones distintas en este recorrido. La mezcla entre productores, parcelas o fechas dentro de una organización está pendiente de decisión.
-- Recepción y consolidación no equivalen a aprobación de calidad ni habilitan despacho. Si el negocio exige calidad aprobada antes de consolidar, debe resolverse su inclusión antes de implementar.
-- Pesaje manual registrado por un usuario autorizado. Integración automática con balanzas y certificación metrológica/legal quedan fuera del alcance.
+Supuestos técnicos, sin atribuirlos a una balanza o al negocio real:
 
-## 2. Mapa de capacidades y responsabilidades propuesto
+- Fecha local derivada en servidor con zona IANA `America/Lima`; conservar instante original. No usar zona del navegador ni de sesión SQL.
+- Captura como cadena decimal hasta tres decimales en kg; bruto máximo técnico `999999999.999`; `bruto > tara >= 0`, neto positivo. Rechazar precisión adicional sin redondeo silencioso. Aritmética de milésimas con enteros exactos y SQL `numeric(12,3)`.
+- Máximo técnico de 100 recepciones distintas por consolidación; total exacto `numeric(15,3)`. No es umbral agrícola.
+- Declaración en `unidad` y pesaje en kg no son comparables: conservar ambos, `differenceKg=null`, motivo `different_unit`, revisión independiente obligatoria. No convertir ni afirmar equivalencia física.
+- Centros/cuentas/permisos de demostración mediante fixtures ficticios explícitos, sin UI administrativa. Conservar roles actuales: ninguno hereda acciones de Acopio; concesiones explícitas permiten funciones de operario/responsable.
 
-Se mantienen las fronteras de la [arquitectura objetivo](../02-arquitectura/01-estilo-arquitectonico.md). Los nombres físicos nuevos son candidatos, sujetos a revisión; no son módulos ya implementados.
+## 3. Responsabilidades y origen
 
-| Capacidad / componente         | Propiedad y contrato                                                                                       | Dependencias permitidas                                              |
-| ------------------------------ | ---------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| `access` / S, existente        | Sesión, autorización, ámbito de organización/centro y auditoría                                            | Contratos propios                                                    |
-| `harvest` / H, existente       | Pre-lote, cosecha y origen declarado; contrato nuevo propuesto para consultar un origen autorizado         | Productores y Acceso, como en el corte actual                        |
-| `traceability` / T1, propuesto | ID del lote, aportes por origen, eventos e historial de consolidación; consulta de cantidades ya asignadas | Persistencia propia y contratos comunes; no llama de vuelta a Acopio |
-| `intake` / Q Acopio, propuesto | Recepciones, pesajes, cierre y coordinación de la consolidación                                            | Acceso, contrato de Cosecha y contrato de Trazabilidad               |
+Acceso posee centros/concesiones, sesión y auditoría; Cosecha expone origen por contrato y consulta Productores para parcela/productor; Acopio posee recepción, medición y revisión y coordina la consolidación; Trazabilidad posee lotes, aportes y eventos de consolidación. Q → H/S/T1; H no depende de Q, T1 no llama de vuelta a Q. Composición inyecta contratos y la misma transacción PostgreSQL. Sin imports directos entre implementaciones ni escrituras en tablas ajenas.
 
-La dirección es Q → H/S/T1; H no depende de Q y T1 no consulta de vuelta a Q. Los módulos participan en una unidad de trabajo PostgreSQL cuando una confirmación necesita atomicidad. No se crean microservicios ni acceso directo a repositorios de otro módulo.
+Recepción conserva snapshot con IDs de pre-lote, cosecha, parcela, productor, organización, cantidad/unidad declaradas, instante/fecha local y nombres mínimos. Cada aporte conserva recepción, origen, cantidad, actor/fecha. Nunca sobrescribir la cosecha ni sustituir origen por última selección UI. Saldo derivado de aportes, sin inventario mutable adicional.
 
-La asignación de centros de acopio y el mantenimiento de usuarios no tienen UI en el primer recorrido. La propuesta para este corte es usar fixtures ficticios explícitos hasta decidir su administración; ningún permiso se deduce de una ubicación enviada por el cliente.
+## 4. Flujo y permisos
 
-## 3. Flujo funcional y estados propuestos
+1. `intake:read`: seleccionar centro autorizado y consultar orígenes de su organización.
+2. `intake:receive`: registrar referencia, pre-lote, bruto/tara y evidencia. Actor/fecha del servidor. Estado `weighed` si declaración kg coincide exactamente; `pending_review` si difiere o las dimensiones son distintas. Pesaje registrado ineditable.
+3. `intake:review`: motivo obligatorio, aprobador distinto de `capturedBy` aun con ambos permisos; `pending_review` → `weighed`. No modifica pesos ni elimina diferencia.
+4. `intake:confirm`: `weighed` → `confirmed`; pendiente de revisión no se confirma. Aprobar no sustituye confirmar.
+5. `lot:consolidate`: seleccionar recepciones confirmadas compatibles. Body sin cantidades parciales. Lote `consolidated`, `qualityStatus=pending_quality`, `dispatchAuthorized=false` y aportes completos.
+6. Consulta autorizada recupera composición, eventos y saldos desde DB tras recargar/reiniciar.
 
-1. El operario identifica un pre-lote accesible y ve su ID, parcela/productor de origen, fecha de cosecha, cantidad declarada y unidad original.
-2. Abre una recepción en un centro autorizado, con referencia operativa/ticket y fecha/hora. Se valida que el pre-lote exista en su organización.
-3. Registra pesaje y los datos necesarios para justificarlo. Una recepción en borrador puede modificarse solo con permiso, control de versión y auditoría.
-4. Confirma la recepción cuando origen y pesaje estén completos y se haya aplicado la política aprobada para discrepancias. Los datos confirmados dejan de ser editables ordinariamente.
-5. Selecciona recepciones habilitadas, indica aportes y confirma un lote. Trazabilidad genera identidad única y conserva cada vínculo de origen/cantidad; Acopio coordina permisos y saldos.
-6. Consulta el lote y reconstruye sus aportes hasta la recepción, pre-lote, cosecha, parcela y productor.
+R = neto recibido; antes de confirmar H = 0; al confirmar H = R; A = aportes; S = H − A >= 0. Consumo completo deja S = 0. Pendiente de calidad no significa calidad aprobada ni despacho.
 
-Estados candidatos de recepción: `borrador` → `recibida`. Estado candidato del lote: `borrador` → `consolidado`. La elegibilidad, aprobación o corrección de esos estados depende de D6/D7. La cantidad pendiente de consolidar se deriva de los aportes; no se añade otra fuente de stock ni se reemplaza el estado `registrado` del pre-lote original.
+Cada concesión es usuario/organización/centro/acción. Sin concesión no hay acceso, incluso admin/collector. Revalidar sesión activa y concesión en cada comando/reintento dentro de transacción; bloqueos coordinan revocación y escritura. Otro centro no puede leer/operar recurso. UUID no concede permisos. Sin sesión 401, acción denegada/autoaprobación 403, recurso inaccesible 404. Errores estructurados y JSON estricto, sin SQL/credenciales ni contactos/comercio innecesarios.
 
-No se habilitan correcciones de registros cerrados, anulaciones o división de lotes consolidados hasta definir sus permisos, efectos cuantitativos y eventos compensatorios. No se elimina historia ni se reutilizan IDs para representar otro origen.
+## 5. Atomicidad, idempotencia e inmutabilidad
 
-## 4. Permisos propuestos, pendientes de D7
+Idempotency-Key UUID por actor en recibir/aprobar/confirmar/consolidar. Mismo comando normalizado devuelve mismos IDs/resultado sin otro evento; clave con otro contenido u operación 409. Revalidar permisos antes de replay, aun con saldo consumido. Referencia única por centro y recepción única por pre-lote impiden duplicado físico con otra clave.
 
-La base actual solo admite roles `admin`, `collector` y `viewer`; un rol de acopio requeriría una migración aprobada que conserve las cuentas existentes. Esta matriz describe permisos futuros, no concesiones actuales.
+Bloquear recepciones en orden estable; aporte único por recepción respalda consumo completo. Dos comandos distintos no consumen el mismo saldo. Lote/aportes/evento/auditoría en una transacción; cualquier fallo revierte todo. Igual atomicidad para recibir/revisar/confirmar y su evento. Restricciones/triggers SQL respaldan inmutabilidad de mediciones, revisiones y hechos cerrados; sin DELETE ordinario ni rutas de edición/división/reapertura.
 
-| Actor                                                | Lectura                                                                        | Escrituras propuestas                                                                             |
-| ---------------------------------------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------- |
-| Operario de acopio                                   | Origen mínimo, recepciones y lotes de su organización y centros asignados      | Abrir recepción y pesar/editar borrador; confirmar y consolidar solo si D7 lo autoriza            |
-| Supervisor de acopio, si se aprueba                  | Mismo ámbito autorizado y evidencias de discrepancias                          | Aprobar excepciones/correcciones según D7; no editar historia sin una operación auditada definida |
-| Recolector                                           | Propuesta: estado mínimo de recepción relacionado con sus parcelas autorizadas | Ningún permiso de pesaje, consolidación, mezcla o división por ser recolector                     |
-| Administrador actual                                 | Conserva su alcance del primer recorrido                                       | No hereda automáticamente operaciones de acopio ni aprobación de excepciones                      |
-| Anónimo, lector sin autorización u otra organización | Sin acceso operativo                                                           | Denegación por defecto                                                                            |
+## 6. Contrato HTTP
 
-Cada escritura y reintento revalida sesión activa, rol, organización, centro y origen. No basta conocer un UUID. La corrección de un pesaje cerrado, una mezcla excepcional y una división necesitan permisos explícitos separados. Las consultas filtran antes de responder; no se exponen contactos, notas internas ni datos de otro ámbito.
+Base `/api/v1`, sesión/CSRF existentes. Masa como cadena decimal; salida con tres decimales. Colecciones paginadas `limit=100` y offset. Consultas filtradas por centro autorizado.
 
-## 5. Pesaje y cantidades
+| Método/ruta                                | Contrato                                                                        |
+| ------------------------------------------ | ------------------------------------------------------------------------------- |
+| GET `/intake/centers`                      | Centros y acciones concedidas del usuario.                                      |
+| GET `/intake/origins?centerId=…&offset=…`  | Pre-lotes y declaración/origen de su organización.                              |
+| GET `/intake/receipts?centerId=…&offset=…` | Recepciones, pesaje, revisión, estado, eventos y saldo derivado.                |
+| POST `/intake/receipts`                    | `{centerId,preLotId,reference,grossKg,tareKg,evidence}`.                        |
+| POST `/intake/receipts/:id/reviews`        | `{note}`, revisión independiente.                                               |
+| POST `/intake/receipts/:id/confirmation`   | `{}`, confirmación.                                                             |
+| GET `/lots?centerId=…&offset=…`            | Lotes con composición/eventos/total/calidad.                                    |
+| POST `/lots`                               | `{centerId,receiptIds}`, IDs distintos normalizados en orden; consumo completo. |
 
-### Datos mínimos candidatos
+POST: 201 nuevo, 200 replay. 400 clave inválida; 401 sesión; 403 permiso; 404 recurso inaccesible; 409 duplicado/clave/estado/consumo; 422 medición, mezcla o entrada inválida. No rutas de calidad/despacho/corrección.
 
-Identificador de recepción; pre-lote(s) y origen autorizado; centro; referencia/ticket; fecha/hora de recepción y pesaje con zona; usuario responsable; unidad; valores medidos; balanza o justificación de captura manual; estado y eventos. Datos de conductor, DNI/RUC, precios o información comercial no forman parte de este recorrido.
+## 7. Criterios de aceptación
 
-Si se registra **bruto y tara**, debe cumplirse bruto > tara ≥ 0 y neto = bruto − tara > 0, expresados en la misma unidad y resolución. Debe decidirse si también se permite capturar neto directamente y qué evidencia se exige (D2). El usuario no puede enviar un neto contradictorio con los valores de los que se deriva.
+Requisitos verificables; no resultados ya ejecutados.
 
-Propuesta técnica para comparar aportes: masa en kg y decimales exactos; tres decimales es un candidato compatible con el corte anterior, sujeto a la resolución de la balanza y regla de redondeo de D2. No usar coma flotante binaria como autoridad del saldo, redondeos silenciosos o tolerancias inventadas. Los límites máximos y la precisión de las sumas deben quedar cerrados antes del esquema físico.
+| ID    | Caso                                                       | Resultado                                                                                      |
+| ----- | ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| AC-01 | PA declara 100; bruto 105, tara 5 kg                       | Neto 100.000 exacto, declaración intacta, evento y auditoría.                                  |
+| AC-02 | Sin sesión/acción, otro centro/organización                | Rechazo sin escritura ni filtración; replay también revalida permisos.                         |
+| AC-03 | Bruto 0.300, tara 0.100                                    | Neto 0.200; rechazar neto enviado y precisión >3 decimales.                                    |
+| AC-04 | Tara negativa, tara >= bruto, cero/no finito/exceso        | 422 sin recepción/evento.                                                                      |
+| AC-05 | PD declara 20 unidades y recibe 18 kg                      | Conservar dimensiones; diferencia numérica nula y revisión obligatoria.                        |
+| AC-06 | PA declara 100 y recibe 98 o 103 kg                        | Diferencia firmada intacta, revisión pendiente; sin merma/tolerancia.                          |
+| AC-07 | RA 100 + RB 40, compatibles y confirmadas                  | Lote 140.000 con dos aportes/orígenes, pendiente calidad, sin despacho.                        |
+| AC-08 | Distinto productor/parcela/fecha local/organización/centro | No lote ni consumo parcial; UI explica restricción.                                            |
+| AC-09 | Capturador intenta aprobar su discrepancia                 | 403; otra persona con concesión correcta puede aprobar con motivo.                             |
+| AC-10 | Sin revisión requerida o sin confirmación                  | No consolidación ni confirmación indebida; H=0 antes de confirmar.                             |
+| AC-11 | Dos comandos consumen mismas recepciones                   | Uno gana, otro 409; sin doble masa/evento.                                                     |
+| AC-12 | Replay concurrente/tras perder respuesta                   | Mismos IDs, un efecto; cambio payload/operación con clave 409.                                 |
+| AC-13 | Falla evento/auditoría/aporte                              | Rollback completo y saldo preservado.                                                          |
+| AC-14 | Modificar/borrar hechos cerrados, repartir/reabrir         | Rechazo en servidor y restricciones SQL; historia conservada.                                  |
+| AC-15 | Referencia repetida en centro o pre-lote recibido          | 409 con otra clave; referencia igual en otro centro no duplica por sí sola.                    |
+| AC-16 | UI completa y consulta tras recarga/reinicio               | Teclado/móvil, carga/vacío/error/éxito; composición, revisión y saldo desde DB sin nuevo seed. |
 
-Los pre-lotes actuales admiten `kg` y `unidad`. Si el origen declara unidades y se recibe una masa, ambos hechos se conservan por separado. No convertir unidades a kg por un factor implícito ni comparar ambas dimensiones como si fueran equivalentes. La cantidad oficial debe provenir de medición o de una regla expresamente aprobada.
+Pruebas unitarias: masa, fecha local, compatibilidad. Integración HTTP/PostgreSQL real: ámbito, estados, unicidad, idempotencia, revocación, triggers, rollback y concurrencia. E2E real: recorrido y negativos solicitados. Bases desechables independientes para integración/E2E; preservar demo/volúmenes y checks existentes.
 
-### Declarado frente a recibido
+## 8. Validaciones pendientes
 
-Una diferencia entre cosecha declarada y neto medido es una **discrepancia registrada**, no merma automática. D4 decide tolerancia, aprobación y efecto. No se sobrescribe la declaración para hacer coincidir cifras ni se rechaza por defecto todo pesaje mayor que una estimación sin acordar esa regla.
+Responsable agrícola: entregas/tickets reales, pesaje/balanza, compatibilidad física, discrepancias/merma, reparto, relación calidad-consolidación y responsabilidades. Docente: suficiencia del corte académico/simplificaciones y avance de Sprint. No se atribuye a ninguno la adopción del usuario.
 
-Si una pesada agrupa varios pre-lotes, el total no permite deducir por sí solo cuántos kg provienen de cada uno. Se necesita pesaje individual u otra política de atribución aprobada en D2. No repartir proporcionalmente por cantidades declaradas, partes iguales o tamaño aparente sin decisión del negocio.
-
-### Balance de consolidación
-
-Para cada recepción confirmada, definir:
-
-- R: neto medido de recepción.
-- H: cantidad habilitada para consolidar según la política aprobada, con 0 ≤ H ≤ R.
-- A: suma de aportes ya confirmados en lotes.
-- S = H − A: saldo pendiente de consolidación, con S ≥ 0.
-
-H = R solo puede adoptarse expresamente si el negocio permite consolidar todo el neto sin una etapa previa de calidad (D6). R − H no se etiqueta automáticamente como descarte o merma. La cantidad de un lote es la suma exacta de sus aportes; cada aporte es positivo y nunca excede el saldo de su recepción.
-
-Dos transacciones concurrentes no pueden consumir el mismo saldo dos veces. El propietario de los aportes es Trazabilidad; Acopio obtiene el saldo mediante contrato y coordina el bloqueo/confirmación en la misma transacción. Un total derivado no se mantiene como otro inventario mutable independiente.
-
-## 6. Conservación del origen y cambios cerrados
-
-Cada aporte conserva referencias estables a lote, recepción, pre-lote, cosecha, parcela y productor, su organización, cantidad/unidad aportada y actor/fecha del evento. Se consulta la versión histórica pertinente del origen; no se sustituyen referencias por un nombre concatenado ni por el último productor de una selección UI.
-
-El primer recorrido permanece intacto: pesar o consolidar no modifica cantidad declarada, unidad, fecha, responsable, clave de idempotencia o parcela del pre-lote. Los datos recibidos se preservan aun cuando una relación deje de estar habilitada para operaciones nuevas; la lectura histórica sigue su propia autorización.
-
-Si se permite dividir un pre-lote entre lotes, cada asignación y saldo debe quedar registrado sin duplicar masa. Si se permite dividir un lote ya mezclado, se necesita una política explícita para la composición de sus hijos: no es válido copiar el total de cada origen a todos los hijos ni afirmar proporciones físicas que nunca se midieron. Se conserva el vínculo con el padre y la regla aplicada. D3/D5 deciden si estas operaciones forman parte de este incremento.
-
-## 7. Confirmaciones, errores e idempotencia
-
-Los comandos propuestos son abrir/confirmar recepción, registrar pesaje y consolidar lote. Sus rutas y DTO finales se fijarán después de aprobar cardinalidades y permisos; no se amplía ahora OpenAPI ni se crean migraciones.
-
-- Mantener los errores estructurados del proyecto: 401 sin sesión, 403 sin permiso, 404 para origen no accesible, 409 para conflicto de versión/clave/saldo y 422 para medición o entrada inválida. No revelar SQL, credenciales o existencia de datos ajenos.
-- Idempotency-Key por actor para las confirmaciones. Mismo contenido normalizado recupera el mismo resultado; distinto contenido con la misma clave produce conflicto. Se revalida autorización antes de responder al reintento.
-- La idempotencia técnica no detecta por sí sola dos comandos con claves distintas para la misma entrega física. D1 define la identidad operativa de la recepción y el tratamiento de duplicados.
-- Una consolidación confirma identidad de lote, aportes, eventos y auditoría en la misma unidad de trabajo. Ante fallo, no queda un lote parcial ni un saldo consumido sin su historia.
-- No hay `DELETE` ordinario de eventos/recepciones cerradas. Una corrección aprobada deberá conservar el valor previo, motivo, autor y compensación cuantitativa; no se implementa antes de D7.
-
-## 8. Criterios de aceptación propuestos
-
-Estos criterios son verificables después de aprobar las decisiones aplicables. No se presentan como pruebas ya ejecutadas.
-
-| ID    | Dado / acción                                                                 | Resultado exigido                                                                                                                                             |
-| ----- | ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| AC-01 | Usuario autorizado y pre-lote de su ámbito                                    | Abre recepción con IDs de origen y actor de sesión; conserva la declaración original                                                                          |
-| AC-02 | Rol sin permiso, centro no asignado u origen ajeno                            | Rechazo seguro, sin escritura ni filtración de datos                                                                                                          |
-| AC-03 | Bruto 125 kg y tara 5 kg                                                      | Neto exacto 120 kg; un neto enviado distinto se rechaza; resolución según D2                                                                                  |
-| AC-04 | Tara negativa, tara ≥ bruto, cantidad no finita, cero o precisión no admitida | Error de validación, sin recepción confirmada ni aportes                                                                                                      |
-| AC-05 | Pre-lote declarado en unidades y recepción medida en kg                       | Ambos valores y dimensiones permanecen; no aparece un factor de conversión inventado                                                                          |
-| AC-06 | Diferencia entre declarado y medido                                           | Se conserva y aplica la política D4; no se convierte automáticamente en merma                                                                                 |
-| AC-07 | Dos recepciones elegibles con aportes medidos 70 y 30 kg                      | Lote de 100 kg con ambos orígenes y sus aportes exactos, solo si D3 permite esa mezcla                                                                        |
-| AC-08 | Regla D3 prohíbe la combinación seleccionada                                  | No se crea lote ni se consume saldo; la UI explica la restricción sin alterar el origen                                                                       |
-| AC-09 | Recepción con H = 100 kg y parcialidad aprobada                               | Aportar 60 deja S = 40; se rechaza una asignación adicional de 50                                                                                             |
-| AC-10 | Parcialidad no aprobada                                                       | No se ofrece ni acepta una asignación parcial; se aplica la regla de consumo completo definida                                                                |
-| AC-11 | Dos confirmaciones concurrentes intentan aportar 60 kg desde un saldo de 100  | Solo una puede consumir ese saldo; ninguna combinación produce A > H                                                                                          |
-| AC-12 | Reintento tras pérdida de respuesta                                           | Misma clave/datos devuelve los mismos IDs sin duplicar recepción, lote, aporte o evento; cambio de contenido produce conflicto                                |
-| AC-13 | Fallo al escribir auditoría/evento/aporte                                     | Rollback completo de la confirmación y saldo conservado                                                                                                       |
-| AC-14 | Intento de modificar origen o pesaje cerrado                                  | Rechazo; una futura corrección autorizada conserva historia y compensaciones aprobadas                                                                        |
-| AC-15 | Consulta del lote después de reiniciar app y DB                               | Se recuperan IDs, aportes, origen y cantidades sin depender de un nuevo seed                                                                                  |
-| AC-16 | Recorrido desde la UI                                                         | Operario recibe, pesa y consolida; confirmación muestra IDs y consulta permite recorrer origen y saldos. Estados vacío/carga/error/éxito y acceso por teclado |
-
-AC-07/08, AC-09/10 y cualquier división se concretarán con ejemplos aprobados; no se implementan opciones incompatibles para elegir silenciosamente una en producción.
-
-## 9. Decisiones que bloquean la implementación
-
-| ID                     | Decisión del usuario                                                                                                                                                | Efecto de no decidir                                                                                     |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| D1 — Recepción         | ¿Cada pre-lote llega una sola vez o admite varias entregas? ¿Qué ticket/referencia distingue una entrega y evita duplicados?                                        | No se fija cardinalidad, unicidad operativa ni regla de recepción parcial                                |
-| D2 — Pesaje            | ¿Pesaje individual por pre-lote o remesa conjunta? ¿Bruto/tara obligatorios o neto directo? ¿Resolución, redondeo y atribución por origen si la pesada es conjunta? | No se fija el modelo de medición ni se inventan kg por origen                                            |
-| D3 — Mezcla            | ¿Puede un lote combinar parcelas, productores o fechas? ¿Qué incompatibilidades lo impiden? ¿Puede consolidarse solo una parte del saldo?                           | No se cierra elegibilidad ni consumo completo/parcial; no se habilita mezcla genérica                    |
-| D4 — Discrepancias     | ¿Qué diferencia declarado/medido se tolera? ¿Quién autoriza excedentes/déficits? ¿Cómo se registra merma real y qué evidencia la respalda?                          | No se aplican tolerancias, descuentos ni mermas por defecto                                              |
-| D5 — División          | ¿Se admite repartir un pre-lote y también dividir/reabrir un lote consolidado? Si ya está mezclado, ¿qué composición se atribuye a cada hijo y con qué base?        | División de lotes cerrados queda fuera; no se asume proporcionalidad ni se duplican aportes              |
-| D6 — Habilitación      | ¿Basta recepción/pesaje o se necesita calidad aprobada antes de consolidar? ¿Qué cantidad H queda habilitada?                                                       | No se iguala H a R automáticamente ni se inventa aceptación de calidad                                   |
-| D7 — Permisos y cierre | ¿Quién confirma recepción, consolida, aprueba excepciones y corrige? ¿Se requiere una segunda persona? ¿Cómo se autoriza centro/organización?                       | No se conceden roles nuevos ni permiso implícito al administrador; correcciones cerradas no se habilitan |
-
-Aprobar primero este mapa de responsabilidades y las decisiones D1–D7 con ejemplos de recepción, mezcla y reparto. Después se podrá cerrar el contrato API, las transiciones y el esquema físico. La relación muchos-a-muchos del [modelo conceptual](02-modelo-datos-conceptual.md) no sustituye esa aprobación.
-
-## 10. Estructura, estilo y comprobaciones futuras
-
-Estructura candidata: `server/modules/intake/` y `server/modules/traceability/`, con dominio/aplicación/repositorio como los módulos actuales; ensamblado en `server/composition.js`, adaptadores en `server/http.js`, UI en `web/` y migraciones aditivas en `migrations/`. Los contratos de origen y aportes deben aprobarse antes de escribir SQL. No se modifica retroactivamente la migración `001` ya aplicada.
-
-Estilo ya presente en `producers/application.js`, que debe conservarse al extender el sistema:
-
-```javascript
-return unitOfWork(async (tx) => {
-  const result = await repository.createProducer(tx, actor, input);
-  await access.audit(tx, actor, "producer:create", result.id);
-  return result;
-});
-```
-
-Pruebas futuras: unitarias para pesaje/políticas aprobadas; integración PostgreSQL real para ámbito, idempotencia, concurrencia, restricciones y rollback; E2E de recepción-pesaje-consolidación; persistencia con Compose conservando volúmenes. Las suites usarán bases desechables separadas de la demo. No se fijan porcentajes de cobertura o metas de rendimiento no acordadas.
-
-Comandos existentes que se usarán cuando haya implementación autorizada; **no ejecutados para redactar este borrador**:
-
-```powershell
-npm.cmd run check
-npm.cmd run format:check
-npm.cmd test
-npm.cmd run build
-# DATABASE_URL de pruebas dedicada y TEST_ALLOW_DB_WRITE=true:
-npm.cmd run test:integration
-# Otra base E2E dedicada y Chromium compatible:
-npm.cmd run test:e2e
-```
-
-Límites: siempre conservar origen, autorización, cantidades y auditoría; decidir antes de implementar roles, mezcla/división, pesaje y corrección; nunca sobrescribir cosechas, eliminar historia, convertir unidades implícitamente, versionar secretos ni probar migraciones destructivas sobre datos existentes. No se inicia planificación detallada ni código de este recorrido hasta aprobar el borrador.
+Actualizar OpenAPI, C4 implementado/objetivo, fixtures, guías y evidencia real. Migración 002 aditiva, sin alterar cuentas/cosechas/pre-lotes existentes. PR de Acopio abierto, sin fusionar.

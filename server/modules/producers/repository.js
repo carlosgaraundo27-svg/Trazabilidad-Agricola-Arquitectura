@@ -1,5 +1,13 @@
 export function producersRepository() {
   return {
+    async intakeOrigins(tx, actor, parcelIds) {
+      return (
+        await tx.query(
+          'SELECT r.id AS "parcelId",r.producer_id AS "producerId",p.name AS "producerName",r.name AS "parcelName" FROM producers.parcels r JOIN producers.producers p ON p.id=r.producer_id AND p.organization_id=r.organization_id WHERE r.id=ANY($1::uuid[]) AND r.organization_id=$2',
+          [parcelIds, actor.organizationId],
+        )
+      ).rows;
+    },
     async intakeOrigin(tx, actor, parcelId) {
       return (
         await tx.query(

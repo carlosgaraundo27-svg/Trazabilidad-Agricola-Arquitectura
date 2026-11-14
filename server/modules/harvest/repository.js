@@ -16,7 +16,10 @@ export function harvestRepository() {
     async intakeOrigins(tx, actor, offset) {
       return (
         await tx.query(
-          "SELECT id FROM harvest.pre_lots WHERE organization_id=$1 ORDER BY id LIMIT 100 OFFSET $2",
+          select.replace(
+            " FROM ",
+            ',p.organization_id AS "organizationId" FROM ',
+          ) + " WHERE p.organization_id=$1 ORDER BY p.id LIMIT 100 OFFSET $2",
           [actor.organizationId, offset],
         )
       ).rows;

@@ -543,9 +543,79 @@ test("Acopio HTTP y PostgreSQL: integridad y ámbito", async (t) => {
     },
   );
   await t.test(
+    "fallo de auditoría al consolidar revierte lote, aportes, evento y request",
+    async () => {
+      const r = (await receive(await prelot())).body;
+      await confirm(r);
+      const key = crypto.randomUUID();
+      const before = Number(
+        (await db.query("SELECT count(*) AS n FROM traceability.lots")).rows[0]
+          .n,
+      );
+      await db.query(
+        "ALTER TABLE access.audit ADD CONSTRAINT test_lot_audit CHECK(action<>'lot:consolidate') NOT VALID",
+      );
+      try {
+        assert.equal((await consolidate([r], op, key)).status, 500);
+        assert.equal(
+          Number(
+            (await db.query("SELECT count(*) AS n FROM traceability.lots"))
+              .rows[0].n,
+          ),
+          before,
+        );
+        assert.equal(
+          Number(
+            (
+              await db.query(
+                "SELECT count(*) AS n FROM traceability.contributions WHERE receipt_id=$1",
+                [r.id],
+              )
+            ).rows[0].n,
+          ),
+          0,
+        );
+        assert.equal(
+          Number(
+            (
+              await db.query(
+                "SELECT count(*) AS n FROM intake.requests WHERE request_key=$1",
+                [key],
+              )
+            ).rows[0].n,
+          ),
+          0,
+        );
+        const list = await call(
+          "/intake/receipts?centerId=" + intakeIds.center,
+          "GET",
+          undefined,
+          op,
+        );
+        assert.equal(
+          list.body.items.find((x) => x.id === r.id).availableKg,
+          "100.000",
+        );
+      } finally {
+        await db.query(
+          "ALTER TABLE access.audit DROP CONSTRAINT test_lot_audit",
+        );
+      }
+      assert.equal((await consolidate([r], op, key)).status, 201);
+    },
+  );
+  await t.test(
     "SQL protege hechos cerrados, autoaprobación y aporte completo",
     async () => {
       const r = (await receive(await prelot(), "98", dual)).body;
+      await assert.rejects(
+        () =>
+          db.query(
+            "INSERT INTO intake.events(id,receipt_id,organization_id,actor_id,kind,payload) VALUES($1,$2,$3,$4,'reviewed','{}')",
+            [crypto.randomUUID(), r.id, ids.otherOrg, ids.otherCollector],
+          ),
+        { code: "23503" },
+      );
       await assert.rejects(
         () =>
           db.query(
@@ -565,6 +635,22 @@ test("Acopio HTTP y PostgreSQL: integridad y ámbito", async (t) => {
       const lot = (await consolidate([r])).body;
       await assert.rejects(
         () =>
+          db.query(
+            "INSERT INTO intake.events(id,receipt_id,organization_id,actor_id,kind,payload) VALUES($1,$2,$3,$4,'received','{}')",
+            [crypto.randomUUID(), r.id, ids.otherOrg, ids.otherCollector],
+          ),
+        (e) => ["23503", "23505"].includes(e.code),
+      );
+      await assert.rejects(
+        () =>
+          db.query(
+            "INSERT INTO traceability.events(id,lot_id,organization_id,actor_id,kind,payload) VALUES($1,$2,$3,$4,'consolidated','{}')",
+            [crypto.randomUUID(), lot.id, ids.otherOrg, ids.otherCollector],
+          ),
+        (e) => ["23503", "23505"].includes(e.code),
+      );
+      await assert.rejects(
+        () =>
           db.query("UPDATE intake.receipts SET gross_kg=150 WHERE id=$1", [
             r.id,
           ]),
@@ -574,6 +660,9 @@ test("Acopio HTTP y PostgreSQL: integridad y ámbito", async (t) => {
         () => db.query("DELETE FROM intake.events WHERE receipt_id=$1", [r.id]),
         { code: "23514" },
       );
+      await assert.rejects(() => db.query("TRUNCATE traceability.events"), {
+        code: "23514",
+      });
       await assert.rejects(
         () =>
           db.query(

@@ -11,9 +11,20 @@ export function harvestService({ repository, unitOfWork, access, producers }) {
     },
     async intakeOrigins(tx, actor, offset) {
       const rows = await repository.intakeOrigins(tx, actor, offset);
-      return Promise.all(
-        rows.map((row) => this.intakeOrigin(tx, actor, row.id)),
+      const origins = new Map(
+        (
+          await producers.intakeOrigins(
+            tx,
+            actor,
+            rows.map((r) => r.parcelId),
+          )
+        ).map((r) => [r.parcelId, r]),
       );
+      return rows.map((row) => {
+        const origin = origins.get(row.parcelId);
+        if (!origin) throw missing();
+        return { ...row, ...origin };
+      });
     },
     async create(actor, input, key) {
       access.authorize(actor, "prelot:create");

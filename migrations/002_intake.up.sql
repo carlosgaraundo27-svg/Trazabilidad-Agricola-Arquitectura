@@ -32,7 +32,7 @@ CREATE TABLE intake.receipts(
  CHECK((origin->>'unit'='kg' AND difference_kg IS NOT NULL AND difference_kg=gross_kg-tare_kg-(origin->>'quantity')::numeric AND
    ((difference_kg=0 AND review_reason IS NULL) OR (difference_kg<>0 AND review_reason='quantity_difference')))
    OR (origin->>'unit'='unidad' AND difference_kg IS NULL AND review_reason='different_unit')),
- UNIQUE(center_id,reference), UNIQUE(id,organization_id,center_id),
+ UNIQUE(center_id,reference), UNIQUE(id,organization_id,center_id), UNIQUE(id,organization_id),
  FOREIGN KEY(center_id,organization_id) REFERENCES access.centers(id,organization_id),
  FOREIGN KEY(pre_lot_id,organization_id) REFERENCES harvest.pre_lots(id,organization_id),
  FOREIGN KEY(captured_by,organization_id) REFERENCES access.users(id,organization_id)
@@ -54,9 +54,10 @@ CREATE TABLE intake.confirmations(
 );
 -- statement
 CREATE TABLE intake.events(
- id uuid PRIMARY KEY, receipt_id uuid NOT NULL REFERENCES intake.receipts,
+ id uuid PRIMARY KEY, receipt_id uuid NOT NULL,
  organization_id uuid NOT NULL, actor_id uuid NOT NULL, kind text NOT NULL CHECK(kind IN ('received','reviewed','confirmed')),
  payload jsonb NOT NULL, occurred_at timestamptz NOT NULL DEFAULT now(), UNIQUE(receipt_id,kind),
+ FOREIGN KEY(receipt_id,organization_id) REFERENCES intake.receipts(id,organization_id),
  FOREIGN KEY(actor_id,organization_id) REFERENCES access.users(id,organization_id)
 );
 -- statement
@@ -73,7 +74,7 @@ CREATE TABLE traceability.lots(
  producer_id uuid NOT NULL, parcel_id uuid NOT NULL, local_harvest_date date NOT NULL,
  status text NOT NULL DEFAULT 'consolidated' CHECK(status='consolidated'),
  quality_status text NOT NULL DEFAULT 'pending_quality' CHECK(quality_status='pending_quality'),
- created_by uuid NOT NULL, created_at timestamptz NOT NULL DEFAULT now(), UNIQUE(id,organization_id,center_id),
+ created_by uuid NOT NULL, created_at timestamptz NOT NULL DEFAULT now(), UNIQUE(id,organization_id,center_id), UNIQUE(id,organization_id),
  FOREIGN KEY(center_id,organization_id) REFERENCES access.centers(id,organization_id),
  FOREIGN KEY(producer_id,organization_id) REFERENCES producers.producers(id,organization_id),
  FOREIGN KEY(parcel_id,organization_id) REFERENCES producers.parcels(id,organization_id),
@@ -95,9 +96,10 @@ CREATE TABLE traceability.contributions(
 CREATE INDEX contributions_lot ON traceability.contributions(lot_id);
 -- statement
 CREATE TABLE traceability.events(
- id uuid PRIMARY KEY, lot_id uuid NOT NULL UNIQUE REFERENCES traceability.lots,
+ id uuid PRIMARY KEY, lot_id uuid NOT NULL UNIQUE,
  organization_id uuid NOT NULL, actor_id uuid NOT NULL, kind text NOT NULL CHECK(kind='consolidated'),
  payload jsonb NOT NULL, occurred_at timestamptz NOT NULL DEFAULT now(),
+ FOREIGN KEY(lot_id,organization_id) REFERENCES traceability.lots(id,organization_id),
  FOREIGN KEY(actor_id,organization_id) REFERENCES access.users(id,organization_id)
 );
 -- statement
@@ -167,3 +169,19 @@ CREATE TRIGGER lots_immutable BEFORE UPDATE OR DELETE ON traceability.lots FOR E
 CREATE TRIGGER contributions_immutable BEFORE UPDATE OR DELETE ON traceability.contributions FOR EACH ROW EXECUTE FUNCTION intake.immutable_fact();
 -- statement
 CREATE TRIGGER trace_events_immutable BEFORE UPDATE OR DELETE ON traceability.events FOR EACH ROW EXECUTE FUNCTION intake.immutable_fact();
+-- statement
+CREATE TRIGGER receipts_no_truncate BEFORE TRUNCATE ON intake.receipts FOR EACH STATEMENT EXECUTE FUNCTION intake.immutable_fact();
+-- statement
+CREATE TRIGGER reviews_no_truncate BEFORE TRUNCATE ON intake.reviews FOR EACH STATEMENT EXECUTE FUNCTION intake.immutable_fact();
+-- statement
+CREATE TRIGGER confirmations_no_truncate BEFORE TRUNCATE ON intake.confirmations FOR EACH STATEMENT EXECUTE FUNCTION intake.immutable_fact();
+-- statement
+CREATE TRIGGER intake_events_no_truncate BEFORE TRUNCATE ON intake.events FOR EACH STATEMENT EXECUTE FUNCTION intake.immutable_fact();
+-- statement
+CREATE TRIGGER requests_no_truncate BEFORE TRUNCATE ON intake.requests FOR EACH STATEMENT EXECUTE FUNCTION intake.immutable_fact();
+-- statement
+CREATE TRIGGER lots_no_truncate BEFORE TRUNCATE ON traceability.lots FOR EACH STATEMENT EXECUTE FUNCTION intake.immutable_fact();
+-- statement
+CREATE TRIGGER contributions_no_truncate BEFORE TRUNCATE ON traceability.contributions FOR EACH STATEMENT EXECUTE FUNCTION intake.immutable_fact();
+-- statement
+CREATE TRIGGER trace_events_no_truncate BEFORE TRUNCATE ON traceability.events FOR EACH STATEMENT EXECUTE FUNCTION intake.immutable_fact();

@@ -15,9 +15,10 @@ export const kg = (value) => {
     sign + absolute / 1000n + "." + String(absolute % 1000n).padStart(3, "0")
   );
 };
+const massPattern = /^(?:0|[1-9][0-9]{0,8})(?:\.[0-9]{1,3})?$/;
 const mass = z
   .string()
-  .regex(/^(?:0|[1-9][0-9]{0,8})(?:\.[0-9]{1,3})?$/)
+  .regex(massPattern)
   .transform((value) => kg(milliKg(value)));
 export const receiptInput = z
   .object({
@@ -30,7 +31,10 @@ export const receiptInput = z
   })
   .strict()
   .refine(
-    (value) => milliKg(value.grossKg) > milliKg(value.tareKg),
+    (value) =>
+      !massPattern.test(value.grossKg) ||
+      !massPattern.test(value.tareKg) ||
+      milliKg(value.grossKg) > milliKg(value.tareKg),
     "Bruto debe superar tara.",
   );
 export const reviewInput = z

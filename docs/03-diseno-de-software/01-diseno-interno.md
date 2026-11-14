@@ -23,8 +23,9 @@ Este documento transforma la arquitectura en una guía de diseño interno. La ar
 | Cosecha | Registrar cosecha, generar pre-lote, sincronizar registros pendientes. | RF-03, RF-04 |
 | Acopio y Calidad | Registrar recepción y pesaje; registrar parámetros; clasificar o rechazar lote. | RF-05, RF-06, RF-07 |
 | Trazabilidad | Generar código e identificador, registrar eventos, consultar historial, construir vista pública QR. | RF-04, RF-08, RF-09 |
-| Inventario y Logística | Cambiar estado de inventario, asociar pallet, registrar transporte y despacho/entrega. | RF-10, RF-11 |
-| Reportes | Calcular mermas, rendimientos, tiempos logísticos y liquidaciones. | RF-12 |
+| Logística e Inventario | Cambiar estado de inventario, asociar pallet, registrar transporte y despacho/entrega. | RF-10, RF-11 |
+| Reportes | Consultar indicadores y liquidaciones autorizadas; la fuente y reglas del cálculo comercial siguen pendientes. | RF-12 |
+| Acceso y Permisos | Gestionar usuarios y roles; autenticar y autorizar operaciones por recurso. | RF-13 |
 
 ## 4. Entidades del dominio
 
@@ -74,25 +75,25 @@ Los contratos se definen hacia el interior. PostgreSQL, Redis y proveedores exte
 
 ~~~mermaid
 sequenceDiagram
-    actor Recolector
-    participant App as App móvil
-    participant Local as Almacenamiento local
-    participant API as API REST
-    participant UC as Caso de uso SincronizarPreLotes
-    participant DB as PostgreSQL
-
-    Recolector->>App: Registrar cosecha sin conexión
-    App->>Local: Guardar pre-lote pendiente con ID local
-    Local-->>App: Confirmar guardado local
-    Note over App,Local: El usuario puede continuar sin internet
-    App->>API: Enviar lote pendiente al recuperar conexión
-    API->>UC: Validar y procesar solicitud
-    UC->>DB: Registrar pre-lote de forma idempotente
-    DB-->>UC: Confirmación / ID del servidor
-    UC-->>API: Resultado de sincronización
-    API-->>App: Confirmación por registro
-    App->>Local: Marcar sincronizado
+    actor R as Recolector
+    participant M as App movil
+    participant L as Almacen local
+    participant B as Backend B1
+    participant O as PostgreSQL OLTP
+    R->>M: Registrar cosecha
+    M->>L: Guardar registro e ID estable
+    L-->>M: Confirmar persistencia local
+    Note over M,L: Pendiente no significa aceptado por el servidor
+    M->>B: Sincronizar con el mismo ID y contenido
+    B->>B: Autenticar, autorizar y validar
+    B->>O: Transaccion: deduplicar y registrar
+    O-->>B: Commit o resultado ya aceptado
+    B-->>M: Confirmacion por registro
+    M->>L: Marcar sincronizado
+    Note over M,B: Si se pierde la respuesta, reenviar el mismo ID
 ~~~
+
+Estas secuencias representan ejecución en tiempo de ejecución; no son diagramas de dependencias de código. B1 encapsula controladores, casos de uso y adaptadores.
 
 ### Consideraciones de sincronización
 
@@ -105,27 +106,27 @@ sequenceDiagram
 
 ~~~mermaid
 sequenceDiagram
-    actor Visitante
-    participant QR as Interfaz QR
-    participant API as Controlador REST
-    participant UC as ConsultarTrazabilidadPublica
-    participant Cache as QRCache
-    participant Repo as TrazabilidadRepository
-
-    Visitante->>QR: Escanear código
-    QR->>API: Consultar código QR
-    API->>UC: Ejecutar caso de uso
-    UC->>Cache: Buscar proyección pública
-    alt Caché válida
-      Cache-->>UC: Datos públicos cacheados
-    else Sin caché válida
-      UC->>Repo: Obtener historial autorizado
-      Repo-->>UC: Datos del lote y eventos
-      UC->>Cache: Guardar proyección con expiración
+    actor V as Visitante
+    participant W as Portal W1
+    participant B as Consulta QR en B1
+    participant K as Redis K1
+    participant O as PostgreSQL O1
+    V->>W: Abrir QR
+    W->>B: HTTPS con codigo
+    B->>B: Validar codigo y politica publica
+    B->>K: Consultar proyeccion
+    alt Entrada valida
+      K-->>B: DTO publico
+    else Ausente o cache no disponible
+      B->>O: Leer lote y eventos
+      O-->>B: Datos o ausencia
+      B->>B: Aplicar lista de campos y eventos publicables
+      opt Redis disponible y publicacion autorizada
+        B->>K: Guardar solo DTO publico con expiracion
+      end
     end
-    UC-->>API: DTO público filtrado
-    API-->>QR: Respuesta de solo lectura
-    QR-->>Visitante: Mostrar origen y recorrido autorizados
+    B-->>W: DTO publico o error sin datos internos
+    W-->>V: Mostrar resultado
 ~~~
 
 ## 9. Diseño de seguridad y autorización

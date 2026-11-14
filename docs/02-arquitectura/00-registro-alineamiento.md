@@ -63,3 +63,7 @@ El PDF indica 13 semanas como duración estimada en la ficha inicial, mientras l
 ## Regla de actualización
 
 Cuando se confirme una decisión, actualizar a la vez su ADR, arquitectura técnica, diagramas C2/C3, matriz de componentes y guion de exposición. La documentación debe distinguir siempre entre **propuesto**, **aprobado**, **implementado** y **verificado**.
+
+## 9. Revisión de estilo y C4 — 2026-11-06
+
+La especificación del monolito modular incorpora siete módulos, propiedad de datos, contratos y reglas transaccionales. W1 es un portal con ruta pública QR; B1 es el backend único; J1 es el proceso ETL. O1 y A1 son almacenes lógicos sobre una instancia PostgreSQL inicial. El diagrama de Clean Architecture corrige la dirección de implementación hacia los puertos. El [registro de revisión](../05-sprint01/revision-previa-sprint02.md) separa estas correcciones de la aprobación académica y las reglas de negocio aún pendientes.

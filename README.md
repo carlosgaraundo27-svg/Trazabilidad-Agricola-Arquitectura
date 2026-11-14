@@ -13,7 +13,7 @@ La propuesta centraliza la información del proceso en torno al **lote agrícola
 
 ## 2. Decisión arquitectónica principal
 
-- **Estilo global:** Monolito Modular.
+- **Estilo del backend:** Monolito Modular dentro de una organización cliente-servidor.
 - **Organización complementaria:** estructura en capas.
 - **Comunicación:** API REST sobre HTTPS entre clientes y backend.
 - **Enfoque interno:** Clean Architecture.
@@ -45,6 +45,7 @@ La documentación canónica está organizada según la Guía 04 en los directori
 | [Drivers arquitectónicos](docs/01-analisis-de-sistema/06-drivers-arquitectonicos.md) | DA01–DA06, prioridad y trazabilidad. |
 | [Escenarios medibles de calidad](docs/01-analisis-de-sistema/08-escenarios-atributos-calidad.md) | EQ-01–EQ-07; metas propuestas pendientes de validación. |
 | [Registro de alineamiento](docs/02-arquitectura/00-registro-alineamiento.md) | Resuelve diferencias entre la propuesta inicial y la línea actual. |
+| [Revisión previa a Sprint 2](docs/05-sprint01/revision-previa-sprint02.md) | Correcciones de estilo/C4, prioridades y criterios de cierre pendientes de validación docente. |
 | [Estilo arquitectónico](docs/02-arquitectura/01-estilo-arquitectonico.md) | Monolito Modular y justificación. |
 | [Enfoque arquitectónico](docs/02-arquitectura/02-enfoque-arquitectonico.md) | Clean Architecture y regla de dependencias. |
 | [Decisiones arquitectónicas](docs/02-arquitectura/03-decisiones-arquitectonicas.md) | ADR-001–ADR-008. |

@@ -27,7 +27,7 @@ La estructura se organiza conforme a la Guía 04, que pide mantener la documenta
 
 ## Estado
 
-Este repositorio contiene el **primer recorrido implementado** (Acceso, Productores y Cosecha), su [C4 canónico](04-modelo-c4/modelo-c4.md) y la [arquitectura objetivo](04-modelo-c4/modelo-c4-objetivo.md) de las capacidades restantes. Las [evidencias de cierre](05-sprint01/cierre-primer-recorrido.md) distinguen pruebas locales, Compose Windows y Actions; los diagramas no sustituyen esa evidencia ni acreditan metas de calidad no medidas.
+Este repositorio contiene el **primer recorrido y Acopio académico implementados** (Acceso, Productores, Cosecha, recepción y consolidación), su [C4 canónico](04-modelo-c4/modelo-c4.md) y la [arquitectura objetivo](04-modelo-c4/modelo-c4-objetivo.md) de las capacidades restantes. Las [evidencias de cierre](05-sprint01/cierre-primer-recorrido.md) distinguen pruebas locales, Compose Windows y Actions; los diagramas no sustituyen esa evidencia ni acreditan metas de calidad no medidas.
 
 ## Revisión antes de avanzar al Sprint 2
 
@@ -40,3 +40,10 @@ La [revisión arquitectónica](05-sprint01/revision-previa-sprint02.md) registra
 - [Decisiones y alcance ejecutable](02-arquitectura/07-decisiones-primer-recorrido.md)
 - [Evidencia y estado del PR #1](05-sprint01/evidencia-primer-recorrido.md)
 - [Entorno y pruebas](../tecnologia/primer-recorrido.md)
+
+## Acopio académico
+
+- [Especificación y criterios D1–D7](03-diseno-de-software/04-especificacion-acopio-consolidacion.md)
+- [ADR-011 y validaciones pendientes](02-arquitectura/08-decisiones-acopio.md)
+- [Guía de ejecución](../tecnologia/acopio.md)
+- [Evidencias y continuidad](05-sprint01/acopio-implementacion.md)

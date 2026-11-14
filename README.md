@@ -2,7 +2,7 @@
 
 **Proyecto:** Diseño de una arquitectura de software para la trazabilidad y gestión comercial de la cadena de suministro de palta Hass en una organización agrícola peruana.  
 **Curso:** Arquitectura de Software (IS-488) — UNSCH, 2026-II  
-**Tipo de entrega:** Arquitectura y primer recorrido ejecutable — Sprint 01
+**Tipo de entrega:** Arquitectura, primer recorrido y Acopio académico ejecutables
 
 **Estado:** Demostración local de autenticación, productor, parcela y pre-lote; los restantes módulos siguen como arquitectura objetivo.
 
@@ -88,3 +88,7 @@ Esta es la URL para entregar el Sprint 01:
 ## Primer recorrido en línea
 
 Se implementó autenticación, registro de productor/parcela y captura de pre-lote, con permisos por organización y asignación, PostgreSQL, React y pruebas. Consultar [arranque reproducible](tecnologia/arranque-windows.md), [especificación](docs/03-diseno-de-software/03-especificacion-primer-recorrido.md) y [evidencia de cierre](docs/05-sprint01/cierre-primer-recorrido.md). Express es la decisión de backend según [ADR-009/010](docs/02-arquitectura/07-decisiones-primer-recorrido.md).
+
+## Acopio académico — 2026-11-14
+
+D1–D7 fueron adoptadas por el usuario exclusivamente para este prototipo, sin validación de responsable agrícola ni aprobación docente. Recepción completa, pesaje exacto, revisión independiente, confirmación y consolidación conservan origen y cantidades. El lote queda pendiente de calidad, sin despacho. Ver [especificación](docs/03-diseno-de-software/04-especificacion-acopio-consolidacion.md), [decisiones](docs/02-arquitectura/08-decisiones-acopio.md), [guía](tecnologia/acopio.md) y [evidencias](docs/05-sprint01/acopio-implementacion.md).

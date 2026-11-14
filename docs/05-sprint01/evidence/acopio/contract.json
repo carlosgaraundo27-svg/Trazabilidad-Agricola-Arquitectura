@@ -1,0 +1,8 @@
+{
+  "openapi": "3.1.0",
+  "paths": 13,
+  "samplesChecked": 99,
+  "schemaValidation": true,
+  "formatValidation": "SwaggerParser estructura; Ajv sin validación de formatos, fechas/UUID verificadas por servidor y pruebas",
+  "finishedAt": "2026-11-14T15:06:31.183Z"
+}

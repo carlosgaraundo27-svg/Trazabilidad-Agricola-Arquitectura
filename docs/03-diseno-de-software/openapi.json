@@ -1,9 +1,9 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "Trazabilidad agrícola - primer recorrido",
-    "version": "0.1.0",
-    "description": "Demostración en línea. Permisos por rol, organización y parcela en la especificación. Campos desconocidos se rechazan."
+    "title": "Trazabilidad agrícola - primer recorrido y Acopio académico",
+    "version": "0.2.0",
+    "description": "Prototipo académico: primer recorrido y D1–D7 adoptadas por el usuario, sin validación agrícola ni aprobación docente. Acopio requiere concesiones por acción/centro; calidad y despacho fuera del corte. Campos desconocidos se rechazan."
   },
   "servers": [
     {
@@ -51,10 +51,7 @@
                       "const": 100
                     }
                   },
-                  "required": [
-                    "items",
-                    "limit"
-                  ]
+                  "required": ["items", "limit"]
                 }
               }
             }
@@ -322,10 +319,7 @@
                       "const": 100
                     }
                   },
-                  "required": [
-                    "items",
-                    "limit"
-                  ]
+                  "required": ["items", "limit"]
                 }
               }
             }
@@ -593,10 +587,7 @@
                       "const": 100
                     }
                   },
-                  "required": [
-                    "items",
-                    "limit"
-                  ]
+                  "required": ["items", "limit"]
                 }
               }
             }
@@ -1214,9 +1205,7 @@
                       "const": "ok"
                     }
                   },
-                  "required": [
-                    "status"
-                  ]
+                  "required": ["status"]
                 }
               }
             }
@@ -1233,9 +1222,1032 @@
                       "const": "unavailable"
                     }
                   },
-                  "required": [
-                    "status"
-                  ]
+                  "required": ["status"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/intake/centers": {
+      "get": {
+        "summary": "Centros y concesiones explícitas del usuario; ningún rol hereda Acopio",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Centros autorizados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/IntakeCenter"
+                      }
+                    }
+                  },
+                  "required": ["items"]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Clave Idempotency-Key UUID inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sin sesión activa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acción/centro no autorizado o autoaprobación",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso inaccesible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Duplicado físico, estado, consumo o clave incompatible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Entrada, medición o mezcla incompatible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Fallo interno; transacción revertida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/intake/origins": {
+      "get": {
+        "summary": "Consultar orígenes para recepción",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "centerId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000000,
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Página del centro autorizado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "maxItems": 100,
+                      "items": {
+                        "$ref": "#/components/schemas/IntakeCandidate"
+                      }
+                    },
+                    "limit": {
+                      "const": 100
+                    }
+                  },
+                  "required": ["items", "limit"]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Clave Idempotency-Key UUID inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sin sesión activa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acción/centro no autorizado o autoaprobación",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso inaccesible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Duplicado físico, estado, consumo o clave incompatible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Entrada, medición o mezcla incompatible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Fallo interno; transacción revertida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/intake/receipts": {
+      "get": {
+        "summary": "Recepciones, revisión y saldos derivados",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "centerId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000000,
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Página del centro autorizado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "maxItems": 100,
+                      "items": {
+                        "$ref": "#/components/schemas/Receipt"
+                      }
+                    },
+                    "limit": {
+                      "const": 100
+                    }
+                  },
+                  "required": ["items", "limit"]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Clave Idempotency-Key UUID inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sin sesión activa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acción/centro no autorizado o autoaprobación",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso inaccesible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Duplicado físico, estado, consumo o clave incompatible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Entrada, medición o mezcla incompatible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Fallo interno; transacción revertida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Registrar recepción completa con pesaje individual",
+        "description": "D1–D7 adoptadas solo para prototipo académico; sin aprobación docente ni validación agrícola. Misma clave por actor y comando normalizado: replay 200; contenido/operación diferente: 409. Revalida sesión y acción/centro antes del replay.",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReceiptInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Resultado idéntico de reintento autorizado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Receipt"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Operación, evento y auditoría confirmados atómicamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Receipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Clave Idempotency-Key UUID inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sin sesión activa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acción/centro no autorizado o autoaprobación",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso inaccesible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Duplicado físico, estado, consumo o clave incompatible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Entrada, medición o mezcla incompatible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Fallo interno; transacción revertida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/intake/receipts/{id}/reviews": {
+      "post": {
+        "summary": "Aprobar discrepancia por otra persona autorizada",
+        "description": "D1–D7 adoptadas solo para prototipo académico; sin aprobación docente ni validación agrícola. Misma clave por actor y comando normalizado: replay 200; contenido/operación diferente: 409. Revalida sesión y acción/centro antes del replay.",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Resultado idéntico de reintento autorizado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Receipt"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Operación, evento y auditoría confirmados atómicamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Receipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Clave Idempotency-Key UUID inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sin sesión activa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acción/centro no autorizado o autoaprobación",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso inaccesible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Duplicado físico, estado, consumo o clave incompatible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Entrada, medición o mezcla incompatible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Fallo interno; transacción revertida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/intake/receipts/{id}/confirmation": {
+      "post": {
+        "summary": "Confirmar recepción y habilitar su neto completo",
+        "description": "D1–D7 adoptadas solo para prototipo académico; sin aprobación docente ni validación agrícola. Misma clave por actor y comando normalizado: replay 200; contenido/operación diferente: 409. Revalida sesión y acción/centro antes del replay.",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfirmationInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Resultado idéntico de reintento autorizado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Receipt"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Operación, evento y auditoría confirmados atómicamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Receipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Clave Idempotency-Key UUID inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sin sesión activa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acción/centro no autorizado o autoaprobación",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso inaccesible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Duplicado físico, estado, consumo o clave incompatible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Entrada, medición o mezcla incompatible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Fallo interno; transacción revertida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/lots": {
+      "get": {
+        "summary": "Consultar lotes y composición histórica",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "centerId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000000,
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Página del centro autorizado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "maxItems": 100,
+                      "items": {
+                        "$ref": "#/components/schemas/Lot"
+                      }
+                    },
+                    "limit": {
+                      "const": 100
+                    }
+                  },
+                  "required": ["items", "limit"]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Clave Idempotency-Key UUID inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sin sesión activa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acción/centro no autorizado o autoaprobación",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso inaccesible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Duplicado físico, estado, consumo o clave incompatible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Entrada, medición o mezcla incompatible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Fallo interno; transacción revertida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Consolidar saldos completos compatibles; pendiente de calidad y sin despacho",
+        "description": "D1–D7 adoptadas solo para prototipo académico; sin aprobación docente ni validación agrícola. Misma clave por actor y comando normalizado: replay 200; contenido/operación diferente: 409. Revalida sesión y acción/centro antes del replay.",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LotInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Resultado idéntico de reintento autorizado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Lot"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Operación, evento y auditoría confirmados atómicamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Lot"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Clave Idempotency-Key UUID inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sin sesión activa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acción/centro no autorizado o autoaprobación",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso inaccesible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Duplicado físico, estado, consumo o clave incompatible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Entrada, medición o mezcla incompatible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Fallo interno; transacción revertida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -1263,9 +2275,7 @@
             "maxLength": 120
           }
         },
-        "required": [
-          "name"
-        ]
+        "required": ["name"]
       },
       "ParcelInput": {
         "type": "object",
@@ -1291,12 +2301,7 @@
             "maximum": 180
           }
         },
-        "required": [
-          "producerId",
-          "name",
-          "latitude",
-          "longitude"
-        ]
+        "required": ["producerId", "name", "latitude", "longitude"]
       },
       "PreLotInput": {
         "type": "object",
@@ -1309,7 +2314,7 @@
           "harvestedAt": {
             "type": "string",
             "format": "date-time",
-          "description": "Fecha/hora ISO 8601 con zona, no posterior a la hora del servidor; se normaliza a UTC."
+            "description": "Fecha/hora ISO 8601 con zona, no posterior a la hora del servidor; se normaliza a UTC."
           },
           "quantity": {
             "type": "string",
@@ -1318,18 +2323,10 @@
           },
           "unit": {
             "type": "string",
-            "enum": [
-              "kg",
-              "unidad"
-            ]
+            "enum": ["kg", "unidad"]
           }
         },
-        "required": [
-          "parcelId",
-          "harvestedAt",
-          "quantity",
-          "unit"
-        ]
+        "required": ["parcelId", "harvestedAt", "quantity", "unit"]
       },
       "LoginInput": {
         "type": "object",
@@ -1346,10 +2343,7 @@
             "maxLength": 256
           }
         },
-        "required": [
-          "email",
-          "password"
-        ]
+        "required": ["email", "password"]
       },
       "User": {
         "type": "object",
@@ -1369,19 +2363,10 @@
           },
           "role": {
             "type": "string",
-            "enum": [
-              "admin",
-              "collector",
-              "viewer"
-            ]
+            "enum": ["admin", "collector", "viewer"]
           }
         },
-        "required": [
-          "id",
-          "organizationId",
-          "email",
-          "role"
-        ]
+        "required": ["id", "organizationId", "email", "role"]
       },
       "Error": {
         "type": "object",
@@ -1402,16 +2387,10 @@
                 "format": "uuid"
               }
             },
-            "required": [
-              "code",
-              "message",
-              "requestId"
-            ]
+            "required": ["code", "message", "requestId"]
           }
         },
-        "required": [
-          "error"
-        ]
+        "required": ["error"]
       },
       "Producer": {
         "type": "object",
@@ -1431,11 +2410,7 @@
             "format": "date-time"
           }
         },
-        "required": [
-          "id",
-          "name",
-          "createdAt"
-        ]
+        "required": ["id", "name", "createdAt"]
       },
       "Parcel": {
         "type": "object",
@@ -1505,16 +2480,11 @@
           },
           "unit": {
             "type": "string",
-            "enum": [
-              "kg",
-              "unidad"
-            ]
+            "enum": ["kg", "unidad"]
           },
           "status": {
             "type": "string",
-            "enum": [
-              "registrado"
-            ]
+            "enum": ["registrado"]
           },
           "createdBy": {
             "type": "string",
@@ -1549,9 +2519,680 @@
             "description": "Enviar como X-CSRF-Token en escrituras."
           }
         },
+        "required": ["user", "csrfToken"]
+      },
+      "IntakeOrigin": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "harvestId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "parcelId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "producerId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "organizationId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "producerName": {
+            "type": "string"
+          },
+          "parcelName": {
+            "type": "string"
+          },
+          "harvestedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "localHarvestDate": {
+            "type": "string",
+            "format": "date",
+            "description": "Fecha de cosecha derivada del instante en America/Lima."
+          },
+          "quantity": {
+            "type": "string",
+            "pattern": "^(?:0|[1-9][0-9]{0,8})\\.[0-9]{3}$"
+          },
+          "unit": {
+            "type": "string",
+            "enum": ["kg", "unidad"]
+          }
+        },
         "required": [
-          "user",
-          "csrfToken"
+          "id",
+          "harvestId",
+          "parcelId",
+          "producerId",
+          "organizationId",
+          "producerName",
+          "parcelName",
+          "harvestedAt",
+          "localHarvestDate",
+          "quantity",
+          "unit"
+        ]
+      },
+      "IntakeCandidate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "harvestId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "parcelId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "producerId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "organizationId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "producerName": {
+            "type": "string"
+          },
+          "parcelName": {
+            "type": "string"
+          },
+          "harvestedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "localHarvestDate": {
+            "type": "string",
+            "format": "date",
+            "description": "Fecha de cosecha derivada del instante en America/Lima."
+          },
+          "quantity": {
+            "type": "string",
+            "pattern": "^(?:0|[1-9][0-9]{0,8})\\.[0-9]{3}$"
+          },
+          "unit": {
+            "type": "string",
+            "enum": ["kg", "unidad"]
+          },
+          "status": {
+            "const": "registrado"
+          },
+          "createdBy": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "harvestId",
+          "parcelId",
+          "producerId",
+          "organizationId",
+          "producerName",
+          "parcelName",
+          "harvestedAt",
+          "localHarvestDate",
+          "quantity",
+          "unit",
+          "status",
+          "createdBy",
+          "createdAt"
+        ]
+      },
+      "IntakeCenter": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "actions": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "enum": [
+                "intake:read",
+                "intake:receive",
+                "intake:review",
+                "intake:confirm",
+                "lot:consolidate"
+              ]
+            }
+          }
+        },
+        "required": ["id", "name", "actions"]
+      },
+      "ReceiptInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "centerId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "preLotId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "reference": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "description": "Recortada; única por centro, sensible a mayúsculas."
+          },
+          "grossKg": {
+            "type": "string",
+            "pattern": "^(?:0|[1-9][0-9]{0,8})(?:\\.[0-9]{1,3})?$",
+            "description": "Supuesto técnico del prototipo: hasta 3 decimales, máximo 999999999.999 kg; no resolución certificada de una balanza. Sin redondeo implícito."
+          },
+          "tareKg": {
+            "type": "string",
+            "pattern": "^(?:0|[1-9][0-9]{0,8})(?:\\.[0-9]{1,3})?$",
+            "description": "Supuesto técnico del prototipo: hasta 3 decimales, máximo 999999999.999 kg; no resolución certificada de una balanza. Sin redondeo implícito."
+          },
+          "evidence": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        },
+        "required": [
+          "centerId",
+          "preLotId",
+          "reference",
+          "grossKg",
+          "tareKg",
+          "evidence"
+        ],
+        "description": "Recepción completa e individual. Bruto > tara >= 0; neto calculado, no admitido en body."
+      },
+      "ReviewInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "note": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        },
+        "required": ["note"]
+      },
+      "ConfirmationInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {},
+        "required": []
+      },
+      "LotInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "centerId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "receiptIds": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 100,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        },
+        "required": ["centerId", "receiptIds"],
+        "description": "Recepciones confirmadas compatibles del mismo centro/origen/fecha local; consumo completo. Orden de IDs normalizado. No cantidades parciales."
+      },
+      "ReceiptReview": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "approvedBy": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "approvedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "note": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        },
+        "required": ["id", "approvedBy", "approvedAt", "note"]
+      },
+      "IntakeEvent": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "kind": {
+            "type": "string",
+            "enum": ["received", "reviewed", "confirmed"]
+          },
+          "actorId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "occurredAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "payload": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "netKg": {
+                    "type": "string",
+                    "pattern": "^(?:0|[1-9][0-9]{0,8})\\.[0-9]{3}$"
+                  },
+                  "differenceKg": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "pattern": "^-?(?:0|[1-9][0-9]{0,8})\\.[0-9]{3}$"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "reviewReason": {
+                    "type": ["string", "null"],
+                    "enum": ["quantity_difference", "different_unit", null]
+                  }
+                },
+                "required": ["netKg", "differenceKg", "reviewReason"]
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "note": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 500
+                  }
+                },
+                "required": ["note"]
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "netKg": {
+                    "type": "string",
+                    "pattern": "^(?:0|[1-9][0-9]{0,8})\\.[0-9]{3}$"
+                  }
+                },
+                "required": ["netKg"]
+              }
+            ]
+          }
+        },
+        "required": ["id", "kind", "actorId", "occurredAt", "payload"]
+      },
+      "Receipt": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "organizationId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "centerId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "preLotId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "reference": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "origin": {
+            "$ref": "#/components/schemas/IntakeOrigin"
+          },
+          "grossKg": {
+            "type": "string",
+            "pattern": "^(?:0|[1-9][0-9]{0,8})\\.[0-9]{3}$"
+          },
+          "tareKg": {
+            "type": "string",
+            "pattern": "^(?:0|[1-9][0-9]{0,8})\\.[0-9]{3}$"
+          },
+          "netKg": {
+            "type": "string",
+            "pattern": "^(?:0|[1-9][0-9]{0,8})\\.[0-9]{3}$"
+          },
+          "differenceKg": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^-?(?:0|[1-9][0-9]{0,8})\\.[0-9]{3}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "reviewReason": {
+            "type": ["string", "null"],
+            "enum": ["quantity_difference", "different_unit", null]
+          },
+          "evidence": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "capturedBy": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "capturedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["weighed", "pending_review", "confirmed"]
+          },
+          "review": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ReceiptReview"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "confirmedBy": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "confirmedAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "events": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IntakeEvent"
+            }
+          },
+          "enabledKg": {
+            "type": "string",
+            "pattern": "^(?:0|[1-9][0-9]{0,8})\\.[0-9]{3}$"
+          },
+          "consumedKg": {
+            "type": "string",
+            "pattern": "^(?:0|[1-9][0-9]{0,8})\\.[0-9]{3}$"
+          },
+          "availableKg": {
+            "type": "string",
+            "pattern": "^(?:0|[1-9][0-9]{0,8})\\.[0-9]{3}$"
+          },
+          "lotId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "organizationId",
+          "centerId",
+          "preLotId",
+          "reference",
+          "origin",
+          "grossKg",
+          "tareKg",
+          "netKg",
+          "differenceKg",
+          "reviewReason",
+          "evidence",
+          "capturedBy",
+          "capturedAt",
+          "status",
+          "review",
+          "confirmedBy",
+          "confirmedAt",
+          "events",
+          "enabledKg",
+          "consumedKg",
+          "availableKg",
+          "lotId"
+        ],
+        "description": "Declarado y medido se conservan. Diferencia de unidades: differenceKg=null y revisión independiente. H=neto solo tras confirmar; disponible=H−aportes. Ninguna diferencia se clasifica automáticamente como merma."
+      },
+      "Contribution": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "receiptId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "amountKg": {
+            "type": "string",
+            "pattern": "^(?:0|[1-9][0-9]{0,8})\\.[0-9]{3}$"
+          },
+          "origin": {
+            "$ref": "#/components/schemas/IntakeOrigin"
+          },
+          "createdBy": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "receiptId",
+          "amountKg",
+          "origin",
+          "createdBy",
+          "createdAt"
+        ]
+      },
+      "LotEvent": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "kind": {
+            "const": "consolidated"
+          },
+          "actorId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "occurredAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "payload": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "totalKg": {
+                "type": "string",
+                "pattern": "^(?:0|[1-9][0-9]{0,11})\\.[0-9]{3}$"
+              },
+              "receiptIds": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 100,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "required": ["totalKg", "receiptIds"]
+          }
+        },
+        "required": ["id", "kind", "actorId", "occurredAt", "payload"]
+      },
+      "Lot": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "organizationId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "centerId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "producerId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "parcelId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "localHarvestDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "status": {
+            "const": "consolidated"
+          },
+          "qualityStatus": {
+            "const": "pending_quality"
+          },
+          "dispatchAuthorized": {
+            "const": false
+          },
+          "createdBy": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "totalKg": {
+            "type": "string",
+            "pattern": "^(?:0|[1-9][0-9]{0,11})\\.[0-9]{3}$"
+          },
+          "contributions": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/Contribution"
+            }
+          },
+          "events": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 1,
+            "items": {
+              "$ref": "#/components/schemas/LotEvent"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "organizationId",
+          "centerId",
+          "producerId",
+          "parcelId",
+          "localHarvestDate",
+          "status",
+          "qualityStatus",
+          "dispatchAuthorized",
+          "createdBy",
+          "createdAt",
+          "totalKg",
+          "contributions",
+          "events"
         ]
       }
     }

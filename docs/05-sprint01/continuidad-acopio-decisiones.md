@@ -1,4 +1,6 @@
-# Continuidad: integración pendiente y decisiones de acopio
+# Continuidad histórica: recomendaciones de Acopio
+
+**Actualización 2026-11-14:** este registro conserva el estado anterior a la adopción del usuario. D1–D7 ya fueron adoptadas exclusivamente para el prototipo, #1/#2 integrados con autorización y la implementación continúa en `feat/acopio`. Leer [continuidad actual](acopio-implementacion.md) y [especificación vigente](../03-diseno-de-software/04-especificacion-acopio-consolidacion.md). No interpretar las recomendaciones históricas de abajo como el estado actual.
 
 Fecha: 2026-11-14 (America/Lima). Estado: **preparación para respuesta del usuario; D1–D7 sin aprobar y sin implementación**. El usuario da por recibida la validación del primer recorrido y la conservación de los dos pre-lotes tras el reinicio. Esa recepción de evidencia no implica aceptación docente, autorización de fusión ni aprobación de reglas agrícolas.
 

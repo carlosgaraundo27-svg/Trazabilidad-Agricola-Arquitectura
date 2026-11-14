@@ -1,0 +1,16 @@
+✔ cantidad positiva decimal y fecha con zona (4.1031ms)
+✔ coordenadas y nombre tienen límites (0.6151ms)
+✔ roles deniegan por defecto y no heredan operaciones (0.078ms)
+✔ pesaje exacto, normalización y diferencia conservada (2.5478ms)
+✔ rechaza mediciones inválidas, neto enviado y redondeo implícito (0.5235ms)
+✔ fecha de cosecha local fija en Lima, incluso cerca de medianoche UTC (9.6911ms)
+✔ compatibilidad exige todos los ámbitos y no acepta IDs duplicados (0.6087ms)
+✔ contraseñas con sal única y verificación sin texto plano (87.5002ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 159.3669

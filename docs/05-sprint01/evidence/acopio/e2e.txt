@@ -1,0 +1,30 @@
+{"event":"server_started","port":3011}
+
+Running 7 tests using 1 worker
+
+{"requestId":"f259b588-8846-4687-99cd-77ef628495b2","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+  ✓  1 tests\e2e\first-journey.spec.js:4:1 › administrador registra origen y recolector registra pre-lote en línea (991ms)
+{"requestId":"c2ad9f6d-9f5d-4c6a-9281-9044970867d9","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+  ✓  2 tests\e2e\intake.spec.js:62:1 › Acopio: recepción y consolidación exacta con consulta persistente (1.1s)
+{"requestId":"843a3f7e-bb73-4907-85c4-48c8ead18bc4","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+{"requestId":"29a4f866-3cf3-44d4-9298-d2cdc4f13949","method":"POST","status":422,"code":"INCOMPATIBLE_ORIGINS"}
+  ✓  3 tests\e2e\intake.spec.js:100:1 › Acopio: mezcla incompatible se explica sin consumir (883ms)
+{"requestId":"c379ec03-e580-4fc7-a199-2907c9f06e9f","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+{"requestId":"32f9479c-bf17-430a-964b-b8b8f0f31385","method":"POST","status":403,"code":"SELF_APPROVAL"}
+{"requestId":"eb5c410e-1053-4881-8cba-64b558161970","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+{"requestId":"3e83b0ae-71ef-425f-b25b-9d2b0dc37180","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+  ✓  4 tests\e2e\intake.spec.js:121:1 › Acopio: discrepancia bloqueada, autoaprobación rechazada y revisión por otra persona (1.1s)
+{"requestId":"fbc351f4-66a5-425e-b9ab-b1c73b77156b","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+{"requestId":"08de735b-fbed-4481-8ac9-9754e06f7290","method":"POST","status":403,"code":"CENTER_FORBIDDEN"}
+  ✓  5 tests\e2e\intake.spec.js:178:1 › Acopio: cuenta de otro centro no ve ni opera Norte (352ms)
+{"requestId":"d7d5940e-98e9-4e7e-9237-c3eaa6d68dde","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+{"requestId":"4a041b0f-bbca-47df-8699-ee692dbdc9aa","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+{"requestId":"1d252c50-c088-4411-8e51-1f7d77df4670","method":"POST","status":409,"code":"INTAKE_CONFLICT"}
+  ✓  6 tests\e2e\intake.spec.js:207:1 › Acopio: dos interfaces concurrentes no consumen dos veces (1.1s)
+{"requestId":"53afabcc-54fc-4f00-91a3-1a846e73546f","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+  ✓  7 tests\e2e\intake.spec.js:263:1 › Acopio: respuesta perdida y reintento desde el formulario no duplican recepción (680ms)
+
+  7 passed (7.3s)
+.env not found. Continuing without it.
+(node:27976) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

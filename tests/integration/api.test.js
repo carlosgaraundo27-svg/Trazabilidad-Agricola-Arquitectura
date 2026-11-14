@@ -343,11 +343,23 @@ test("integración HTTP + SQL del primer recorrido", async (t) => {
   });
   await t.test("migración down/up en base desechable", async () => {
     const { readFile } = await import("node:fs/promises");
+    const intakeDown = await readFile(
+      new URL("../../migrations/002_intake.down.sql", import.meta.url),
+      "utf8",
+    );
     const sql = await readFile(
       new URL("../../migrations/001_initial.down.sql", import.meta.url),
       "utf8",
     );
     await db.transaction(async (tx) => {
+      for (const statement of intakeDown
+        .split(";")
+        .map((s) => s.trim())
+        .filter(Boolean))
+        await tx.query(statement);
+      await tx.query("DELETE FROM public.schema_migrations WHERE version=$1", [
+        "002",
+      ]);
       for (const statement of sql
         .split(";")
         .map((s) => s.trim())

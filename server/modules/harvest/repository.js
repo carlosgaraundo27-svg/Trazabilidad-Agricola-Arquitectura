@@ -2,6 +2,25 @@ const select =
   'SELECT p.id,p.harvest_id AS "harvestId",h.parcel_id AS "parcelId",h.harvested_at AS "harvestedAt",h.quantity::text AS quantity,h.unit,p.status,p.actor_id AS "createdBy",p.created_at AS "createdAt" FROM harvest.pre_lots p JOIN harvest.harvests h ON h.id=p.harvest_id';
 export function harvestRepository() {
   return {
+    async intakeOrigin(tx, actor, id) {
+      return (
+        await tx.query(
+          select.replace(
+            " FROM ",
+            ',p.organization_id AS "organizationId" FROM ',
+          ) + " WHERE p.id=$1 AND p.organization_id=$2 FOR SHARE OF p,h",
+          [id, actor.organizationId],
+        )
+      ).rows[0];
+    },
+    async intakeOrigins(tx, actor, offset) {
+      return (
+        await tx.query(
+          "SELECT id FROM harvest.pre_lots WHERE organization_id=$1 ORDER BY id LIMIT 100 OFFSET $2",
+          [actor.organizationId, offset],
+        )
+      ).rows;
+    },
     async lockKey(tx, actor, key) {
       await tx.query("SELECT pg_advisory_xact_lock(hashtext($1))", [
         actor.id + key,

@@ -1,6 +1,12 @@
 import { missing } from "../../shared/errors.js";
 export function producersService({ repository, unitOfWork, access }) {
   return {
+    // Internal contract: Acopio has already checked its explicit center grant.
+    async intakeOrigin(tx, actor, parcelId) {
+      const origin = await repository.intakeOrigin(tx, actor, parcelId);
+      if (!origin) throw missing();
+      return origin;
+    },
     async createProducer(actor, input) {
       access.authorize(actor, "producer:create");
       return unitOfWork(async (tx) => {

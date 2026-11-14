@@ -7,6 +7,7 @@ import path from "node:path";
 import { AppError } from "./shared/errors.js";
 import { producerInput, parcelInput } from "./modules/producers/domain.js";
 import { preLotInput, requestKey } from "./modules/harvest/domain.js";
+import { intakeRouter } from "./intake-http.js";
 const loginInput = z
   .object({
     email: z
@@ -163,6 +164,7 @@ export function createApp({
     );
     res.status(result.replayed ? 200 : 201).json(result.item);
   });
+  api.use(intakeRouter(services));
   app.use("/api/v1", api);
   app.use("/api", (req, res, next) =>
     next(new AppError(404, "NOT_FOUND", "Ruta no disponible.")),

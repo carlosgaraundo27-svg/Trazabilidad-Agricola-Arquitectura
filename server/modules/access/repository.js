@@ -1,5 +1,21 @@
 export function accessRepository() {
   return {
+    async centerGrant(tx, actor, centerId, action) {
+      return (
+        await tx.query(
+          "SELECT g.action FROM access.center_grants g JOIN access.centers c ON c.id=g.center_id AND c.organization_id=g.organization_id JOIN access.users u ON u.id=g.user_id AND u.organization_id=g.organization_id JOIN access.sessions s ON s.user_id=u.id WHERE g.user_id=$1 AND g.organization_id=$2 AND g.center_id=$3 AND g.action=$4 AND u.active AND s.token_hash=$5 AND s.expires_at>now() FOR SHARE OF g,c,u,s",
+          [actor.id, actor.organizationId, centerId, action, actor.sessionHash],
+        )
+      ).rows[0];
+    },
+    async centers(tx, actor) {
+      return (
+        await tx.query(
+          "SELECT c.id,c.name,array_agg(g.action ORDER BY g.action) AS actions FROM access.centers c JOIN access.center_grants g ON g.center_id=c.id AND g.organization_id=c.organization_id WHERE g.user_id=$1 AND g.organization_id=$2 GROUP BY c.id,c.name ORDER BY c.id",
+          [actor.id, actor.organizationId],
+        )
+      ).rows;
+    },
     async findUser(tx, email) {
       return (
         await tx.query("SELECT * FROM access.users WHERE email=$1", [email])

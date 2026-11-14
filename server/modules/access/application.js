@@ -52,6 +52,7 @@ export function accessService({ repository, unitOfWork, passwords }) {
       return unitOfWork(async (tx) => {
         const actor = await repository.session(tx, digest(token));
         if (!actor) throw denied();
+        Object.defineProperty(actor, "sessionHash", { value: digest(token) });
         return actor;
       });
     },
@@ -60,5 +61,16 @@ export function accessService({ repository, unitOfWork, passwords }) {
     },
     scope: (tx, actor, lock) => repository.assignments(tx, actor, lock),
     audit: (tx, actor, action, id) => repository.audit(tx, actor, action, id),
+    async requireCenter(tx, actor, centerId, action) {
+      if (!(await repository.centerGrant(tx, actor, centerId, action)))
+        throw new AppError(
+          403,
+          "CENTER_FORBIDDEN",
+          "Acción o centro no autorizado.",
+        );
+    },
+    async centers(actor) {
+      return unitOfWork((tx) => repository.centers(tx, actor));
+    },
   };
 }

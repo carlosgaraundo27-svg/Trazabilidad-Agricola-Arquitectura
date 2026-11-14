@@ -5,6 +5,10 @@ import { producersRepository } from "./modules/producers/repository.js";
 import { producersService } from "./modules/producers/application.js";
 import { harvestRepository } from "./modules/harvest/repository.js";
 import { harvestService } from "./modules/harvest/application.js";
+import { intakeService } from "./modules/intake/application.js";
+import { intakeRepository } from "./modules/intake/repository.js";
+import { traceabilityService } from "./modules/traceability/application.js";
+import { traceabilityRepository } from "./modules/traceability/repository.js";
 export function compose(db) {
   const unitOfWork = (fn) => db.transaction(fn);
   const access = accessService({
@@ -23,5 +27,15 @@ export function compose(db) {
     access,
     producers,
   });
-  return { access, producers, harvest };
+  const traceability = traceabilityService({
+    repository: traceabilityRepository(),
+  });
+  const intake = intakeService({
+    repository: intakeRepository(),
+    unitOfWork,
+    access,
+    harvest,
+    traceability,
+  });
+  return { access, producers, harvest, intake };
 }

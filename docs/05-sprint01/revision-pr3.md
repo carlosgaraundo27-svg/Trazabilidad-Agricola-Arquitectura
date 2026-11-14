@@ -27,6 +27,8 @@ Escrituras: operación, evento, auditoría y resultado idempotente usan la misma
 
 La hipótesis inicial de terminadores de línea en kg se descartó al reproducirla: el patrón existente los rechaza. No se cambió el pesaje ni se presenta esa hipótesis como error corregido.
 
+La primera CI de la corrección, [Actions #8](https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/43611910150), aprobó unitarias/integración/build y compose, pero falló un E2E: el helper navegaba al nuevo login después de hacer clic en logout, antes de terminar la revocación y la transición de pantalla. Se exige ahora que la pantalla de inicio de sesión esté visible antes de continuar. No se ampliaron timeouts ni se quitaron aserciones. Las lecturas que compiten con revocaciones pueden abortar transitoriamente con 40001 y respuesta segura genérica; no se añaden reintentos de escritura ni se relaja la autorización.
+
 Base técnica: [aislamiento PostgreSQL](https://www.postgresql.org/docs/18/transaction-iso.html) y [SET TRANSACTION](https://www.postgresql.org/docs/18/sql-set-transaction.html). El snapshot aplica solo a esa transacción, sin modificar la configuración de sesión del pool.
 
 ## Verificación proporcional

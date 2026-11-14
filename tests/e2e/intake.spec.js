@@ -11,6 +11,9 @@ async function login(page, email) {
 }
 async function logout(page) {
   await page.getByRole("button", { name: "Cerrar sesión" }).click();
+  await expect(
+    page.getByRole("heading", { name: "Iniciar sesión" }),
+  ).toBeVisible();
 }
 async function createOrigin(
   quantity = "100",

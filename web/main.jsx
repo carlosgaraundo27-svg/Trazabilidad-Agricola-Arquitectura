@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { createRoot } from "react-dom/client";
 import { api, listAll, setSession } from "./api.js";
 import "./style.css";
+import { Workspace } from "./Workspace.jsx";
 function Field({ label, ...props }) {
   return (
     <label>
@@ -418,12 +419,18 @@ function App() {
           <p role="status">Verificando sesión…</p>
         ) : !session ? (
           <Login onLogin={acceptSession} />
-        ) : session.user.role === "admin" ? (
-          <Admin />
-        ) : session.user.role === "collector" ? (
-          <Harvest />
         ) : (
-          <p>Tu cuenta no tiene operaciones habilitadas en este recorrido.</p>
+          <Workspace
+            key={session.user.id}
+            user={session.user}
+            origin={
+              session.user.role === "admin" ? (
+                <Admin />
+              ) : session.user.role === "collector" ? (
+                <Harvest />
+              ) : null
+            }
+          />
         )}
       </main>
       <footer>Origen verificable · Demostración con datos ficticios</footer>

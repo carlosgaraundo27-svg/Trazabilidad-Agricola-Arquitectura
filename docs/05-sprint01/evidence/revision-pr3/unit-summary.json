@@ -1,0 +1,7 @@
+{
+  "command": "node --test tests/unit/intake.test.js",
+  "passed": 5,
+  "failed": 0,
+  "skipped": 0,
+  "scope": "Archivo de validadores/compatibilidad de Acopio; no repetición de suites ajenas"
+}

@@ -28,3 +28,7 @@ Entregas múltiples, neto directo, mezcla entre orígenes distintos, asignación
 La simplificación puede no representar una planta real: el responsable agrícola debe validar tickets, medición, compatibilidad, discrepancias/merma, reparto, calidad y responsables antes de uso real. La docente debe evaluar suficiencia del alcance y avance académico. Calidad, despacho, administración productiva de cuentas y recuperación operativa permanecen pendientes.
 
 Fuentes técnicas contrastadas: [numeric exacto](https://www.postgresql.org/docs/18/datatype-numeric.html), [bloqueos de fila y transacción](https://www.postgresql.org/docs/18/explicit-locking.html), [restricciones y FK](https://www.postgresql.org/docs/18/ddl-constraints.html). Estas fuentes respaldan mecanismos de PostgreSQL, no reglas agrícolas.
+
+## Revisión técnica del PR #3
+
+UUID de Acopio normalizados a minúsculas antes de comparar, deduplicar, ordenar y calcular hash/lock; la referencia comercial conserva su caso. La lectura compuesta de recepción/saldo usa un snapshot REPEATABLE READ desde antes de su primera consulta. No cambia las reglas D1–D7 ni los bloqueos de escritura. [Hallazgos y regresiones](../05-sprint01/revision-pr3.md).

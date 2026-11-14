@@ -14,10 +14,33 @@ test("Acopio HTTP y PostgreSQL: integridad y ámbito", async (t) => {
   await migrate(db);
   await migrate(db);
   await seed(db, password);
-  const server = createApp({ db, services: compose(db), log: () => {} }).listen(
-    0,
-    "127.0.0.1",
-  );
+  let afterReceiptRead;
+  const observedDb = {
+    ...db,
+    transaction: (fn) =>
+      db.transaction((tx) =>
+        fn({
+          async query(sql, args) {
+            const result = await tx.query(sql, args);
+            if (
+              afterReceiptRead &&
+              sql.includes("FROM intake.receipts r LEFT JOIN") &&
+              sql.includes("ORDER BY r.id LIMIT")
+            ) {
+              const hook = afterReceiptRead;
+              afterReceiptRead = null;
+              await hook();
+            }
+            return result;
+          },
+        }),
+      ),
+  };
+  const server = createApp({
+    db,
+    services: compose(observedDb),
+    log: () => {},
+  }).listen(0, "127.0.0.1");
   await new Promise((resolve) => server.once("listening", resolve));
   t.after(async () => {
     await new Promise((resolve) => server.close(resolve));
@@ -113,6 +136,129 @@ test("Acopio HTTP y PostgreSQL: integridad y ámbito", async (t) => {
       auth,
       key,
     );
+  await t.test(
+    "consulta de saldo conserva un snapshot al confirmar y consumir en paralelo",
+    async () => {
+      const r = (await receive(await prelot())).body;
+      let interleaved = false;
+      afterReceiptRead = async () => {
+        interleaved = true;
+        assert.equal((await confirm(r)).status, 201);
+        assert.equal((await consolidate([r])).status, 201);
+      };
+      const listed = await call(
+        "/intake/receipts?centerId=" + intakeIds.center,
+        "GET",
+        undefined,
+        op,
+      );
+      assert.equal(listed.status, 200);
+      assert.equal(interleaved, true);
+      const before = listed.body.items.find((x) => x.id === r.id);
+      assert.deepEqual(
+        [
+          before.status,
+          before.enabledKg,
+          before.consumedKg,
+          before.availableKg,
+          before.lotId,
+        ],
+        ["weighed", "0.000", "0.000", "0.000", null],
+      );
+      const current = (
+        await call(
+          "/intake/receipts?centerId=" + intakeIds.center,
+          "GET",
+          undefined,
+          op,
+        )
+      ).body.items.find((x) => x.id === r.id);
+      assert.deepEqual(
+        [
+          current.status,
+          current.enabledKg,
+          current.consumedKg,
+          current.availableKg,
+        ],
+        ["confirmed", "100.000", "100.000", "0.000"],
+      );
+    },
+  );
+  await t.test(
+    "UUID equivalentes en centro, origen, ruta y clave conservan idempotencia",
+    async () => {
+      const center = "a" + crypto.randomUUID().slice(1),
+        key = "b" + crypto.randomUUID().slice(1),
+        p = await prelot();
+      await db.query("INSERT INTO access.centers VALUES($1,$2,$3)", [
+        center,
+        ids.org,
+        "Centro ficticio de canonicalización",
+      ]);
+      for (const action of [
+        "intake:read",
+        "intake:receive",
+        "intake:confirm",
+        "lot:consolidate",
+      ])
+        await db.query("INSERT INTO access.center_grants VALUES($1,$2,$3,$4)", [
+          intakeIds.operator,
+          center,
+          ids.org,
+          action,
+        ]);
+      const initial = await receive(p, "100", op, key, {
+        centerId: center,
+        preLotId: p.id,
+      });
+      assert.equal(initial.status, 201);
+      const replay = await receive(p, "100", op, key.toUpperCase(), {
+        centerId: center.toUpperCase(),
+        preLotId: p.id.toUpperCase(),
+      });
+      assert.equal(replay.status, 200);
+      assert.deepEqual(replay.body, initial.body);
+      const r = initial.body,
+        ck = "c" + crypto.randomUUID().slice(1);
+      assert.equal(
+        (await confirm({ ...r, id: r.id.toUpperCase() }, op, ck.toUpperCase()))
+          .status,
+        201,
+      );
+      assert.equal((await confirm(r, op, ck)).status, 200);
+      assert.equal(
+        (
+          await consolidate(
+            [r, { ...r, id: r.id.toUpperCase() }],
+            op,
+            crypto.randomUUID(),
+            center,
+          )
+        ).status,
+        422,
+      );
+      const lk = "d" + crypto.randomUUID().slice(1);
+      const lot = await consolidate(
+        [{ ...r, id: r.id.toUpperCase() }],
+        op,
+        lk.toUpperCase(),
+        center.toUpperCase(),
+      );
+      assert.equal(lot.status, 201);
+      assert.deepEqual((await consolidate([r], op, lk, center)).body, lot.body);
+      const next = await prelot(),
+        concurrentKey = "e" + crypto.randomUUID().slice(1);
+      const concurrent = await Promise.all([
+        receive(next, "100", op, concurrentKey, { centerId: center }),
+        receive(next, "100", op, concurrentKey.toUpperCase(), {
+          centerId: center.toUpperCase(),
+          preLotId: next.id.toUpperCase(),
+        }),
+      ]);
+      assert.deepEqual(concurrent.map((x) => x.status).sort(), [200, 201]);
+      assert.equal(concurrent[0].body.id, concurrent[1].body.id);
+    },
+  );
   await t.test(
     "recibe, confirma y consolida composición exacta sin calidad ni despacho",
     async () => {

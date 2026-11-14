@@ -6,14 +6,15 @@ import {
   reviewInput,
   confirmationInput,
   centerPageInput,
+  uuidInput,
 } from "./modules/intake/domain.js";
 import { lotInput } from "./modules/traceability/domain.js";
 
 export function intakeRouter(services) {
   const router = Router();
-  const params = z.object({ id: z.uuid() }).strict();
+  const params = z.object({ id: uuidInput }).strict();
   const key = (req) => {
-    const parsed = z.uuid().safeParse(req.get("Idempotency-Key"));
+    const parsed = uuidInput.safeParse(req.get("Idempotency-Key"));
     if (!parsed.success)
       throw new AppError(
         400,

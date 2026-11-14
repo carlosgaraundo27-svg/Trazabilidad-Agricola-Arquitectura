@@ -1329,7 +1329,8 @@
               }
             }
           }
-        }
+        },
+        "description": " UUID de Acopio normalizados a minúsculas antes de comparar/deduplicar/hash/lock; referencias comerciales conservan su caso."
       }
     },
     "/api/v1/intake/origins": {
@@ -1456,7 +1457,8 @@
               }
             }
           }
-        }
+        },
+        "description": " UUID de Acopio normalizados a minúsculas antes de comparar/deduplicar/hash/lock; referencias comerciales conservan su caso."
       }
     },
     "/api/v1/intake/receipts": {
@@ -1583,11 +1585,12 @@
               }
             }
           }
-        }
+        },
+        "description": " UUID de Acopio normalizados a minúsculas antes de comparar/deduplicar/hash/lock; referencias comerciales conservan su caso. Página de recepción/saldo procedente de un snapshot transaccional consistente."
       },
       "post": {
         "summary": "Registrar recepción completa con pesaje individual",
-        "description": "D1–D7 adoptadas solo para prototipo académico; sin aprobación docente ni validación agrícola. Misma clave por actor y comando normalizado: replay 200; contenido/operación diferente: 409. Revalida sesión y acción/centro antes del replay.",
+        "description": "D1–D7 adoptadas solo para prototipo académico; sin aprobación docente ni validación agrícola. Misma clave por actor y comando normalizado: replay 200; contenido/operación diferente: 409. Revalida sesión y acción/centro antes del replay. UUID de Acopio normalizados a minúsculas antes de comparar/deduplicar/hash/lock; referencias comerciales conservan su caso.",
         "security": [
           {
             "sessionCookie": []
@@ -1719,7 +1722,7 @@
     "/api/v1/intake/receipts/{id}/reviews": {
       "post": {
         "summary": "Aprobar discrepancia por otra persona autorizada",
-        "description": "D1–D7 adoptadas solo para prototipo académico; sin aprobación docente ni validación agrícola. Misma clave por actor y comando normalizado: replay 200; contenido/operación diferente: 409. Revalida sesión y acción/centro antes del replay.",
+        "description": "D1–D7 adoptadas solo para prototipo académico; sin aprobación docente ni validación agrícola. Misma clave por actor y comando normalizado: replay 200; contenido/operación diferente: 409. Revalida sesión y acción/centro antes del replay. UUID de Acopio normalizados a minúsculas antes de comparar/deduplicar/hash/lock; referencias comerciales conservan su caso.",
         "security": [
           {
             "sessionCookie": []
@@ -1860,7 +1863,7 @@
     "/api/v1/intake/receipts/{id}/confirmation": {
       "post": {
         "summary": "Confirmar recepción y habilitar su neto completo",
-        "description": "D1–D7 adoptadas solo para prototipo académico; sin aprobación docente ni validación agrícola. Misma clave por actor y comando normalizado: replay 200; contenido/operación diferente: 409. Revalida sesión y acción/centro antes del replay.",
+        "description": "D1–D7 adoptadas solo para prototipo académico; sin aprobación docente ni validación agrícola. Misma clave por actor y comando normalizado: replay 200; contenido/operación diferente: 409. Revalida sesión y acción/centro antes del replay. UUID de Acopio normalizados a minúsculas antes de comparar/deduplicar/hash/lock; referencias comerciales conservan su caso.",
         "security": [
           {
             "sessionCookie": []
@@ -2122,11 +2125,12 @@
               }
             }
           }
-        }
+        },
+        "description": " UUID de Acopio normalizados a minúsculas antes de comparar/deduplicar/hash/lock; referencias comerciales conservan su caso."
       },
       "post": {
         "summary": "Consolidar saldos completos compatibles; pendiente de calidad y sin despacho",
-        "description": "D1–D7 adoptadas solo para prototipo académico; sin aprobación docente ni validación agrícola. Misma clave por actor y comando normalizado: replay 200; contenido/operación diferente: 409. Revalida sesión y acción/centro antes del replay.",
+        "description": "D1–D7 adoptadas solo para prototipo académico; sin aprobación docente ni validación agrícola. Misma clave por actor y comando normalizado: replay 200; contenido/operación diferente: 409. Revalida sesión y acción/centro antes del replay. UUID de Acopio normalizados a minúsculas antes de comparar/deduplicar/hash/lock; referencias comerciales conservan su caso.",
         "security": [
           {
             "sessionCookie": []

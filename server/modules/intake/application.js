@@ -94,6 +94,7 @@ export function intakeService({
     },
     async list(actor, { centerId, offset }) {
       return unitOfWork(async (tx) => {
+        await repository.readSnapshot(tx);
         await access.requireCenter(tx, actor, centerId, "intake:read");
         return decorate(
           tx,

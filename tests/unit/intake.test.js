@@ -20,6 +20,29 @@ const input = {
   tareKg: "0.1",
   evidence: "Ticket ficticio",
 };
+test("normaliza UUID antes de comparar y detectar recepciones duplicadas", () => {
+  const id = "abcdefab-abcd-4abc-8abc-abcdefabcdef";
+  assert.equal(
+    receiptInput.parse({
+      ...input,
+      centerId: id.toUpperCase(),
+      preLotId: id.toUpperCase(),
+    }).centerId,
+    id,
+  );
+  assert.equal(
+    lotInput.parse({
+      centerId: id.toUpperCase(),
+      receiptIds: [id.toUpperCase()],
+    }).receiptIds[0],
+    id,
+  );
+  assert.equal(
+    lotInput.safeParse({ centerId, receiptIds: [id, id.toUpperCase()] })
+      .success,
+    false,
+  );
+});
 test("pesaje exacto, normalización y diferencia conservada", () => {
   const parsed = receiptInput.parse(input);
   assert.equal(parsed.reference, "T-1");

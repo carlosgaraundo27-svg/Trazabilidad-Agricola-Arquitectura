@@ -1,9 +1,10 @@
 import { z } from "zod";
+const uuidInput = z.uuid().transform((value) => value.toLowerCase());
 export const lotInput = z
   .object({
-    centerId: z.uuid(),
+    centerId: uuidInput,
     receiptIds: z
-      .array(z.uuid())
+      .array(uuidInput)
       .min(1)
       .max(100)
       .refine(

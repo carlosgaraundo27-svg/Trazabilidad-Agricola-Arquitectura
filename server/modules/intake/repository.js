@@ -9,6 +9,9 @@ const select = `SELECT r.id,r.organization_id AS "organizationId",r.center_id AS
  FROM intake.receipts r LEFT JOIN intake.reviews v ON v.receipt_id=r.id LEFT JOIN intake.confirmations c ON c.receipt_id=r.id`;
 export function intakeRepository() {
   return {
+    async readSnapshot(tx) {
+      await tx.query("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ");
+    },
     async lockRequest(tx, actor, key) {
       await tx.query("SELECT pg_advisory_xact_lock(hashtextextended($1,0))", [
         "intake:" + actor.id + ":" + key,

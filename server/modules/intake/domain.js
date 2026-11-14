@@ -20,10 +20,11 @@ const mass = z
   .string()
   .regex(massPattern)
   .transform((value) => kg(milliKg(value)));
+export const uuidInput = z.uuid().transform((value) => value.toLowerCase());
 export const receiptInput = z
   .object({
-    centerId: z.uuid(),
-    preLotId: z.uuid(),
+    centerId: uuidInput,
+    preLotId: uuidInput,
     reference: z.string().trim().min(1).max(120),
     grossKg: mass,
     tareKg: mass,
@@ -43,7 +44,7 @@ export const reviewInput = z
 export const confirmationInput = z.object({}).strict();
 export const centerPageInput = z
   .object({
-    centerId: z.uuid(),
+    centerId: uuidInput,
     offset: z.coerce.number().int().min(0).max(1000000).default(0),
   })
   .strict();

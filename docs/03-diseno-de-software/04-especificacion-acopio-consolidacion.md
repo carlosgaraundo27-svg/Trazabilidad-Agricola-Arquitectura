@@ -49,6 +49,8 @@ Cada concesión es usuario/organización/centro/acción. Sin concesión no hay a
 
 Idempotency-Key UUID por actor en recibir/aprobar/confirmar/consolidar. Mismo comando normalizado devuelve mismos IDs/resultado sin otro evento; clave con otro contenido u operación 409. Revalidar permisos antes de replay, aun con saldo consumido. Referencia única por centro y recepción única por pre-lote impiden duplicado físico con otra clave.
 
+Los UUID de Acopio (body, query, rutas y clave) se normalizan a minúsculas antes de comparar, deduplicar, ordenar, bloquear o calcular hash. La referencia comercial conserva su caso. La consulta compuesta de recepción/saldo usa un snapshot transaccional consistente; no combina un estado anterior con aportes de un instante posterior.
+
 Bloquear recepciones en orden estable; aporte único por recepción respalda consumo completo. Dos comandos distintos no consumen el mismo saldo. Lote/aportes/evento/auditoría en una transacción; cualquier fallo revierte todo. Igual atomicidad para recibir/revisar/confirmar y su evento. Restricciones/triggers SQL respaldan inmutabilidad de mediciones, revisiones y hechos cerrados; sin DELETE ordinario ni rutas de edición/división/reapertura.
 
 ## 6. Contrato HTTP

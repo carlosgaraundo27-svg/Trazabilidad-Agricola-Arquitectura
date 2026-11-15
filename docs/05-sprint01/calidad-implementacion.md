@@ -2,6 +2,8 @@
 
 2026-11-15. Q1–Q9 y obligatoriedad de originales por recepción adoptadas por el usuario; **sin aprobación docente ni validación agrícola**. Base main `829f79e` (merge de #3 preservando commits). Rama `feat/calidad`; especificación documental anterior conservada en `docs/especificacion-calidad` y en el historial. [Especificación](../03-diseno-de-software/05-especificacion-calidad-lote.md), [ADR-012](../02-arquitectura/09-decisiones-calidad.md), [guía](../../tecnologia/calidad.md), [OpenAPI](../03-diseno-de-software/openapi.json), [C4](../04-modelo-c4/modelo-c4.md).
 
+[PR #4](https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/pull/4) abierto sin fusionar; la descripción registra la cabeza y los checks remotos vigentes consultados.
+
 ## Resultado y límites
 
 Persistencia, API y UI permiten listar lotes, crear evaluación única, guardar/consultar draft, registrar mediciones y cerrar con decisión humana justificada. Permisos por centro/organización, versión y bloqueo del registro serializan escritura/cierre. Operación, evento con antes/después, auditoría y resultado idempotente usan la misma transacción. Closed e historia se protegen contra modificación/borrado/truncate ordinarios. Calidad no modifica masa, aportes, consolidación ni stock y `dispatchAuthorized=false` con cualquier resultado.

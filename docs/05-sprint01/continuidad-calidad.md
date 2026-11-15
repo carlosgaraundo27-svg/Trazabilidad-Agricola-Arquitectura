@@ -16,7 +16,7 @@ No hay procedimiento histórico habilitado. Una incorporación desde evidencia o
 
 13 unitarias, 42 resultados integración HTTP/PostgreSQL y 12 E2E Chromium aprobados sin omisiones; build, check y formato comprobados. OpenAPI validado contra 238 muestras reales. Mutación del guard de originales detectada, restauración con 15 resultados Calidad aprobados. Reinicio sin seed conserva hashes y conteos de ocho tablas. [Índice de evidencia](evidence/calidad/README.md). Revisión independiente sin bloqueo de integridad nuevo; hallazgos de precisión/accesibilidad y cobertura de tres resultados corregidos y probados.
 
-La publicación y URL/cabeza/checks del PR se registrarán en el PR y en el índice de evidencia al abrirlo. Las pruebas locales no se presentan como CI de una cabeza remota. No fusionar el PR de Calidad.
+[PR #4 de Calidad](https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/pull/4) abierto y sin fusionar. Publicación por conector con igualdad de árboles de cada incremento, conservando la secuencia y los originales locales; mapa de SHA en .local/quality-publication-map.json. La descripción del PR es la fuente del estado vivo de cabeza/checks, que se comprueban sobre esa cabeza; las pruebas locales no se presentan como CI remota. No fusionar el PR de Calidad.
 
 ## Entorno local conservado
 

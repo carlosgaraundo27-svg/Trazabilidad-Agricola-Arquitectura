@@ -2,6 +2,7 @@ import { AppError } from "../../shared/errors.js";
 import { compatibleOrigins } from "./domain.js";
 export function traceabilityService({ repository }) {
   return {
+    qualityLot: (tx, actor, id) => repository.qualityLot(tx, actor, id),
     consumed: (tx, actor, centerId, ids) =>
       repository.consumed(tx, actor, centerId, ids),
     list: (tx, actor, centerId, offset) =>

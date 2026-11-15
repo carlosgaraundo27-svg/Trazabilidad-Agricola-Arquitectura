@@ -1,6 +1,14 @@
 const select = `SELECT l.id,l.organization_id AS "organizationId",l.center_id AS "centerId",l.producer_id AS "producerId",l.parcel_id AS "parcelId",l.local_harvest_date::text AS "localHarvestDate",l.status,l.quality_status AS "qualityStatus",false AS "dispatchAuthorized",l.created_by AS "createdBy",l.created_at AS "createdAt", (SELECT COALESCE(sum(a.amount_kg),0)::numeric(15,3)::text FROM traceability.contributions a WHERE a.lot_id=l.id) AS "totalKg", COALESCE((SELECT jsonb_agg(jsonb_build_object('id',a.id,'receiptId',a.receipt_id,'amountKg',a.amount_kg::text,'origin',a.origin,'createdBy',a.actor_id,'createdAt',a.created_at) ORDER BY a.receipt_id) FROM traceability.contributions a WHERE a.lot_id=l.id),'[]'::jsonb) AS contributions, COALESCE((SELECT jsonb_agg(jsonb_build_object('id',e.id,'kind',e.kind,'actorId',e.actor_id,'occurredAt',e.occurred_at,'payload',e.payload) ORDER BY e.id) FROM traceability.events e WHERE e.lot_id=l.id),'[]'::jsonb) AS events FROM traceability.lots l`;
 export function traceabilityRepository() {
   return {
+    async qualityLot(tx, actor, id) {
+      return (
+        await tx.query(select + " WHERE l.organization_id=$1 AND l.id=$2", [
+          actor.organizationId,
+          id,
+        ])
+      ).rows[0];
+    },
     async consumed(tx, actor, centerId, ids) {
       return (
         await tx.query(

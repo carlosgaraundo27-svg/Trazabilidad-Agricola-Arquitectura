@@ -1,0 +1,14 @@
+
+> trazabilidad-primer-recorrido@0.1.0 build
+> vite build
+
+vite v8.3.8 building client environment for production...
+transforming...
+✓ 31 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.41 kB │ gzip:  0.29 kB
+dist/assets/index-CdtFjT23.css    5.64 kB │ gzip:  1.73 kB
+dist/assets/index-BV_R8d2M.js   257.12 kB │ gzip: 78.50 kB
+
+✓ built in 83ms

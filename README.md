@@ -2,9 +2,9 @@
 
 **Proyecto:** Diseño de una arquitectura de software para la trazabilidad y gestión comercial de la cadena de suministro de palta Hass en una organización agrícola peruana.  
 **Curso:** Arquitectura de Software (IS-488) — UNSCH, 2026-II  
-**Tipo de entrega:** Arquitectura, primer recorrido y Acopio académico ejecutables
+**Tipo de entrega:** Arquitectura, primer recorrido, Acopio y Calidad académicos ejecutables
 
-**Estado:** Prototipo académico de origen/cosecha y Acopio: recepción, pesaje, revisión y consolidación. Calidad, despacho y demás capacidades siguen como arquitectura objetivo, sin validación agrícola ni aprobación docente.
+**Estado:** Prototipo académico de origen/cosecha y Acopio: recepción, pesaje, revisión y consolidación. Calidad incorpora evaluación manual y cierre protegido con originales de recepción completos. Despacho y demás capacidades siguen como arquitectura objetivo. Sin validación agrícola ni aprobación docente.
 
 ## 1. Problema y objetivo
 
@@ -92,3 +92,7 @@ Se implementó autenticación, registro de productor/parcela y captura de pre-lo
 ## Acopio académico — 2026-11-14
 
 D1–D7 fueron adoptadas por el usuario exclusivamente para este prototipo, sin validación de responsable agrícola ni aprobación docente. Recepción completa, pesaje exacto, revisión independiente, confirmación y consolidación conservan origen y cantidades. El lote queda pendiente de calidad, sin despacho. Ver [especificación](docs/03-diseno-de-software/04-especificacion-acopio-consolidacion.md), [decisiones](docs/02-arquitectura/08-decisiones-acopio.md), [guía](tecnologia/acopio.md) y [evidencias](docs/05-sprint01/acopio-implementacion.md).
+
+## Calidad académica — 2026-11-15
+
+Q1–Q9 adoptadas por el usuario: captura por lote, pesos individuales g/fruto, materia seca %, conteos y temperaturas con procedencia; resultado manual justificado. El cierre exige original documentada de cada recepción. Históricos incompletos permanecen en draft, sin completar valores automáticamente. Calidad no altera cantidades ni autoriza despacho. Ver [especificación](docs/03-diseno-de-software/05-especificacion-calidad-lote.md), [ADR-012](docs/02-arquitectura/09-decisiones-calidad.md), [guía](tecnologia/calidad.md) y [evidencia](docs/05-sprint01/calidad-implementacion.md). RF-06/RF-07 tienen cobertura parcial frente al alcance productivo.

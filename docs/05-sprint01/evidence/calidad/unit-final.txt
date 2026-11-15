@@ -1,0 +1,25 @@
+
+> trazabilidad-primer-recorrido@0.1.0 test
+> node --test tests/unit/*.test.js
+
+✔ cantidad positiva decimal y fecha con zona (3.7157ms)
+✔ coordenadas y nombre tienen límites (0.6242ms)
+✔ roles deniegan por defecto y no heredan operaciones (0.0805ms)
+✔ normaliza UUID antes de comparar y detectar recepciones duplicadas (2.1807ms)
+✔ pesaje exacto, normalización y diferencia conservada (0.5032ms)
+✔ rechaza mediciones inválidas, neto enviado y redondeo implícito (0.3297ms)
+✔ fecha de cosecha local fija en Lima, incluso cerca de medianoche UTC (9.975ms)
+✔ compatibilidad exige todos los ámbitos y no acepta IDs duplicados (0.2697ms)
+✔ contraseñas con sal única y verificación sin texto plano (90.7655ms)
+✔ captura exacta con unidades explícitas y temperatura negativa sin umbral agrícola (4.4281ms)
+✔ unidades, magnitudes y precisión inválidas no se convierten ni redondean (1.471ms)
+✔ conteos contradictorios, frutos duplicados, fuentes ambiguas y fechas futuras rechazados (2.0523ms)
+✔ draft vacío conserva faltantes y porcentaje informativo usa mitad hacia arriba exacta (0.4989ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 170.1845

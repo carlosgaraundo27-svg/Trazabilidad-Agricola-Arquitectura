@@ -1,0 +1,31 @@
+✖ Calidad HTTP/PostgreSQL: captura autorizada persistida y auditada (377.9003ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 595.1308
+
+✖ failing tests:
+
+test at tests\integration\quality.test.js:10:1
+✖ Calidad HTTP/PostgreSQL: captura autorizada persistida y auditada (377.9003ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  422 !== 201
+  
+      at makeLot (file:///C:/Users/leona/Documents/Proyect_Final_Arquitectura/repo-calidad/tests/integration/quality.test.js:88:14)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (file:///C:/Users/leona/Documents/Proyect_Final_Arquitectura/repo-calidad/tests/integration/quality.test.js:113:15)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 422,
+    expected: 201,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+

@@ -1,32 +1,25 @@
-﻿# Continuidad: implementación de Calidad en progreso
+﻿# Continuidad: Calidad académica implementada
 
-2026-11-15. Q1–Q9 adoptadas por el usuario exclusivamente para el prototipo académico. Sin aprobación docente ni validación agrícola. [Especificación actualizada](../03-diseno-de-software/05-especificacion-calidad-lote.md), [ADR-012](../02-arquitectura/09-decisiones-calidad.md).
+2026-11-15. Q1–Q9 y cierre con original de cada recepción adoptadas por el usuario, sin aprobación docente ni validación agrícola. [Especificación](../03-diseno-de-software/05-especificacion-calidad-lote.md), [ADR-012](../02-arquitectura/09-decisiones-calidad.md), [guía](../../tecnologia/calidad.md), [implementación/evidencia](calidad-implementacion.md).
 
-## Integración de Acopio y conservación
+PR #3 se integró con merge 829f79e976967097554543c51855135e0e1c193b, preservando commits tras revisar d09d8be y verify/compose success en Actions #9. main local/origin sincronizado en esa base al crear feat/calidad en repo-calidad/. La especificación documental original 0481740 permanece en docs/especificacion-calidad y repo-calidad-spec/; cherry-pick 399733a la conserva también en la nueva rama. No se fuerzan integraciones ni se fusionará Calidad.
 
-PR #3 integrado con merge commit 829f79e976967097554543c51855135e0e1c193b, conservando los 13 commits. Cabeza d09d8be comprobada nuevamente: mergeable, sin reviews/hilos y verify/compose success en Actions #9 (43612344618). Segunda revisión focalizada sin bloqueos nuevos; cinco unitarias Acopio aprobadas. La autorización del usuario de esta sesión permite esta integración. No se forzó ni se usó squash/rebase.
+## Regla resuelta y comportamiento
 
-main local actualizado a origin/main 829f79e. Nueva rama feat/calidad en repo-calidad/, creada desde main; cherry-pick 399733a conserva la especificación documental original (0481740). La rama docs/especificacion-calidad y el worktree repo-calidad-spec/ permanecen intactos. Git de red funciona con `git -c http.sslBackend=openssl fetch origin`; la configuración global no se cambió. Mutaciones de GitHub se realizaron por conector.
+Cada recepción aportante exige original documentada en °C, instante, procedencia y responsable de registro. Nueva captura opcional aditiva en recepción, con observador/método y actor/fecha del servidor; original, recepción, evento y auditoría atómicos. Omitirla conserva recepción válida pero bloquea Calidad. Originales inmutables; migración 004 no rellena históricos y rechaza incorporaciones después del evento received. Calidad solo captura posteriores, que nunca sustituyen originales.
 
-## Regla pendiente y trabajo que depende de ella
+Una evaluación por lote, draft editable con versión y closed protegido. El backend bloquea cualquier resultado si falta una original; la UI identifica exactamente referencias/IDs pendientes. Cierre con datos completos, decisión humana y motivo obligatorio, lock/version y transacción que incluye evento con originales, auditoría y clave. Permisos por acción/centro y sesión revalidados antes del replay. D4 de discrepancias conserva otra persona autorizada. Sin cambios en masa, aportes, inventario ni despacho. RF-06/RF-07 parciales frente al objetivo productivo.
 
-El usuario debe definir **si cerrar exige temperatura documentada de cada recepción aportante, o si permite cerrar con lectura posterior completa dejando explícita la cobertura parcial de RF-06 cuando falten originales**. Pregunta enviada mediante consulta asíncrona; sin respuesta aún. El paso del tiempo no es decisión. No implementar la política de cierre ni declarar completado el incremento antes de recibirla. Nunca fabricar temperaturas. Cada original ya se vincula por sourceReceiptId a una recepción del lote; posteriores quedan separados, sin promedio/reemplazo.
+No hay procedimiento histórico habilitado. Una incorporación desde evidencia original requiere diseño y autorización explícitos, evidencia conservada y hecho adicional auditado; no SQL informal, sobreescritura ni desactivar triggers. Si no existe evidencia, no se inventa dato y el cierre sigue bloqueado.
 
-El endpoint de cierre no está implementado todavía; el formulario y OpenAPI están preparados para el recorrido final, sin publicar ni declarar contrato ejecutado de cierre. Faltan implementación/pruebas de cierre, concurrencia de cierre, protección closed verificada end-to-end, contrato con muestras reales, C4 final, instrucciones finales y PR de Calidad. No hay PR de Calidad abierto ni publicado. La autorización para abrirlo sin fusionar sigue vigente.
+## Verificación y publicación
 
-## Incrementos implementados y comprobados
+13 unitarias, 42 resultados integración HTTP/PostgreSQL y 12 E2E Chromium aprobados sin omisiones; build, check y formato comprobados. OpenAPI validado contra 238 muestras reales. Mutación del guard de originales detectada, restauración con 15 resultados Calidad aprobados. Reinicio sin seed conserva hashes y conteos de ocho tablas. [Índice de evidencia](evidence/calidad/README.md). Revisión independiente sin bloqueo de integridad nuevo; hallazgos de precisión/accesibilidad y cobertura de tres resultados corregidos y probados.
 
-- Dominio: unidades g/fruto, %, frutos, °C; decimales hasta dos posiciones, conteos coherentes, fecha/observador/procedencia/método por observación, porcentaje informativo con enteros exactos. Sin categorías ni umbrales agrícolas.
-- Migración 003 aditiva, sin cambiar 001/002: calidad propia dentro de Q, evaluación única por lote, versión, eventos antes/después y claves idempotentes. Triggers de inmutabilidad de historia y de closed.
-- API draft: listado por centro, creación, consulta y reemplazo de captura con versión. Permiso/sesión revalidados antes del replay; lectura de captura e historia bajo bloqueo compartido. Referencias/etapas/momentos de temperaturas verificadas contra lote T1 por contrato.
-- UI: listado paginado, captura incompleta sin ceros ficticios, mediciones, reintento con misma intención, consulta del servidor y resultado preparado. Acopio etiqueta pending_quality como histórico al consolidar. Componente separado para cada grupo de observaciones. Corrección de milisegundos y actualización de lista tras creación concurrente.
+La publicación y URL/cabeza/checks del PR se registrarán en el PR y en el índice de evidencia al abrirlo. Las pruebas locales no se presentan como CI de una cabeza remota. No fusionar el PR de Calidad.
 
-Pruebas hasta este punto: 13 unitarias completas, 8 resultados integración Calidad PostgreSQL real, 2 E2E Chromium de draft, replay, conflicto de creación, aislamiento de centro y móvil/teclado. Build, check (sintaxis/imports/OpenAPI/enlaces) y format:check aprobados. Fallos SQL reales en eventos/auditoría prueban rollback del draft. Un ensayo rojo reproduce pérdida de milisegundos antes de corregir. No son evidencias de cierre aún. [Evidencias parciales](evidence/calidad/README.md).
+## Entorno local conservado
 
-## Entorno de continuación
+Cluster dedicado .acopio-runtime/pg-data, puerto 55434; bases nuevas quality_int_* y quality_e2e_* en .local/quality-databases.json. Reiniciado sin seed para persistencia, logs quality-restart.*. Sin tocar demo ni bases anteriores de Acopio. Credencial local ignorada; node_modules junction al snapshot existente, sin cambios de dependencias/lockfile. Runner ignorado .local/quality-db.mjs permite integración, e2e o script con entorno dedicado y salida redactada. E2E sirve dist: compilar tras cambios UI. Fixtures internos evitan consumir login HTTP; límite productivo intacto.
 
-Cluster nativo de pruebas existente .acopio-runtime/pg-data iniciado en 55434, oculto, logs quality.stdout.log/quality.stderr.log. pg_ctl falló por restricted token (87); postgres.exe directo inició correctamente. Se crearon bases nuevas exclusivas quality_int_* y quality_e2e_*; nombres en repo-calidad/.local/quality-databases.json, credencial leída del archivo ignorado existente. Sin seed ni cambios sobre demo o bases Acopio anteriores. node_modules es junction al snapshot repo/node_modules; dependencias/lockfile sin cambios lógicos.
-
-Runner ignorado .local/quality-db.mjs: `node .local/quality-db.mjs integration tests/integration/quality.test.js`, `node .local/quality-db.mjs e2e tests/e2e/quality.spec.js`; servidor E2E sirve dist, ejecutar build tras cambiar UI. Los logs se guardan redactados en .local/results/. El checkout de Windows introduce CRLF; normalizar a LF para format:check sin cambios lógicos, revisar diff antes de commit. La última normalización solo afecta representación local; no versionar cambios ajenos.
-
-Retomar la misma rama, resolver exclusivamente la regla pendiente con la respuesta del usuario y completar los pasos autorizados. No fusionar el PR de Calidad.
+Historial local de incrementos preservado. Publicación mediante conector debe contrastar árboles con los commits locales y conservar mapa de SHA si difieren, sin force-push. Git fetch funciona con -c http.sslBackend=openssl; no se cambió configuración global. Los checkouts CRLF de Windows se normalizan a LF solo para formato, verificando que no haya cambios lógicos ajenos.

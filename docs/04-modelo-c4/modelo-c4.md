@@ -1,12 +1,12 @@
-# Modelo C4 — Primer recorrido y Acopio académico
+# Modelo C4 — Primer recorrido, Acopio y Calidad académicos
 
-Revisión 2026-11-14. Estas vistas representan Acceso, Productores, Cosecha/pre-lotes, Acopio y consolidación en Trazabilidad, con Express 5, React/Vite y PostgreSQL 18. Acopio responde a D1–D7 adoptadas por el usuario solo para prototipo académico: sin validación agrícola ni aprobación docente. [ADR-009/010](../02-arquitectura/07-decisiones-primer-recorrido.md) registra las decisiones. La [arquitectura objetivo](modelo-c4-objetivo.md) conserva las vistas anteriores de offline, QR, Redis, ETL y demás módulos propuestos; no se presentan como implementados.
+Revisión 2026-11-15. Estas vistas representan Acceso, Productores, Cosecha/pre-lotes, Acopio, Calidad manual y consolidación en Trazabilidad, con Express 5, React/Vite y PostgreSQL 18. Acopio responde a D1–D7 adoptadas por el usuario solo para prototipo académico: sin validación agrícola ni aprobación docente. [ADR-009/010](../02-arquitectura/07-decisiones-primer-recorrido.md) registra las decisiones. La [arquitectura objetivo](modelo-c4-objetivo.md) conserva las vistas anteriores de offline, QR, Redis, ETL y demás módulos propuestos; no se presentan como implementados.
 
 Los identificadores S1/W1/B1/O1/S/P/H/Q/T1 mantienen continuidad con el diseño objetivo. Contenedor C4 significa aplicación o almacén lógico; no equivale a una imagen Docker. El portal W1 se ejecuta en el navegador y sus archivos compilados se sirven desde B1.
 
 ## 1. Alcance y evidencia
 
-El administrador registra productores y parcelas ficticios. El recolector consulta sus parcelas asignadas y registra una cosecha/pre-lote; organización, rol y asignación limitan las operaciones. Una cuenta sin concesiones no tiene operaciones de Acopio. El operario recibe/pesa/confirma/consolida solo en centros con concesión por acción; otra persona autorizada revisa las discrepancias. El lote queda pendiente de calidad y sin despacho. No hay administración UI de usuarios/asignaciones, captura offline, QR público, aprobación de calidad, logística, analítica ni liquidaciones. [Decisiones de Acopio](../02-arquitectura/08-decisiones-acopio.md).
+El administrador registra productores y parcelas ficticios. El recolector consulta sus parcelas asignadas y registra una cosecha/pre-lote; organización, rol y asignación limitan las operaciones. Una cuenta sin concesiones no tiene operaciones de Acopio. El operario recibe/pesa/confirma/consolida solo en centros con concesión por acción; otra persona autorizada revisa las discrepancias. El lote se consolida pendiente de calidad; una proyección separada conserva evaluación manual y resultado. El responsable de calidad autorizado por centro captura y cierra solo con originales de todas las recepciones. No hay despacho, administración UI de usuarios/asignaciones, captura offline, QR público, logística, analítica ni liquidaciones. [Decisiones de Acopio](../02-arquitectura/08-decisiones-acopio.md).
 
 Los diagramas describen implementación, no certifican por sí solos un despliegue. [Evidencia local, Compose y CI](../05-sprint01/cierre-primer-recorrido.md) registra qué se ejecutó realmente.
 
@@ -18,11 +18,13 @@ flowchart LR
   CAMPO["Persona: Recolector<br/>Captura pre-lote en parcela asignada"]
   ACOPIO["Persona: Operario de acopio<br/>Recibe, pesa y consolida en su centro"]
   RESPONSABLE["Persona: Responsable de discrepancias<br/>Revisa capturas de otra persona"]
-  S1["Sistema S1: Trazabilidad académica<br/>Origen, cosecha, recepción y consolidación"]
+  CALIDAD["Persona: Responsable de Calidad<br/>Mide, justifica y cierra en su centro"]
+  S1["Sistema S1: Trazabilidad académica<br/>Origen, cosecha, recepción, consolidación y calidad"]
   ADMIN -->|"Opera mediante navegador"| S1
   CAMPO -->|"Opera mediante navegador"| S1
   ACOPIO -->|"Opera en su ámbito autorizado"| S1
   RESPONSABLE -->|"Revisión independiente"| S1
+  CALIDAD -->|"Evaluación manual académica"| S1
 ```
 
 El productor es una entidad registrada por el administrador; este corte no implementa una cuenta de productor independiente. No hay sistemas externos ejecutables en este recorrido.
@@ -53,12 +55,12 @@ HTTP está limitado a la demostración local; el modo de producción exige un or
 flowchart TB
   W1["W1: Portal React"]
   subgraph B1["B1: Un proceso Node / Express"]
-    E["E: Adaptador HTTP<br/>server/http.js + intake-http.js<br/>Validación, sesión, CSRF y rutas REST"]
+    E["E: Adaptador HTTP<br/>server/http.js + intake-http.js + quality-http.js<br/>Validación, sesión, CSRF y rutas REST"]
     ROOT["Ensamblador<br/>server/composition.js<br/>Inyecta repositorios, contratos y transacciones"]
     S["S: Acceso<br/>server/modules/access<br/>Login, ámbitos, autorización y auditoría"]
     P["P: Productores<br/>server/modules/producers<br/>Productor, parcela y contrato de origen"]
     H["H: Cosecha<br/>server/modules/harvest<br/>Captura y consulta de pre-lotes"]
-    Q["Q: Acopio<br/>server/modules/intake<br/>Recepción, pesaje, revisión y coordinación"]
+    Q["Q: Acopio y Calidad<br/>server/modules/intake<br/>Recepción/originales, evaluación manual y cierre"]
     T1["T1: Trazabilidad<br/>server/modules/traceability<br/>Lotes, composición y eventos"]
     DB["Adaptador DB / unidad de trabajo<br/>server/db.js<br/>pg y conexión transaccional compartida"]
   end
@@ -67,7 +69,7 @@ flowchart TB
   E -->|"Casos de uso"| S
   E -->|"Casos de uso"| P
   E -->|"Casos de uso"| H
-  E -->|"Recepción y lotes"| Q
+  E -->|"Recepción, lotes y calidad"| Q
   ROOT -->|"Compone"| S
   ROOT -->|"Compone"| P
   ROOT -->|"Compone"| H
@@ -78,7 +80,7 @@ flowchart TB
   H -->|"requireHarvestOrigin e intakeOrigin(s)"| P
   Q -->|"requireCenter y audit"| S
   Q -->|"intakeOrigin(s)"| H
-  Q -->|"consumed, consolidate y list"| T1
+  Q -->|"consumed, consolidate, list y qualityLot"| T1
   S -->|"Repositorio propio / unidad de trabajo"| DB
   P -->|"Repositorio propio / unidad de trabajo"| DB
   H -->|"Repositorio propio / unidad de trabajo"| DB
@@ -137,16 +139,41 @@ flowchart TD
   Q --> AUDIT
 ```
 
-La revisión de discrepancias conserva medición y declaración; otra persona autorizada aprueba antes de la confirmación. H = neto confirmado, S = H − aportes. Recepciones se bloquean ordenadas y cada una tiene un aporte único: no parcialidades ni doble consumo. Lote, aportes, evento, auditoría y resultado idempotente se confirman juntos o se revierten. El total se deriva de aportes con numeric exacto. Triggers impiden cambiar, borrar o truncar hechos/eventos y agregar composición a un lote cerrado. Calidad permanece pendiente y no existe permiso/ruta de despacho.
+La revisión de discrepancias conserva medición y declaración; otra persona autorizada aprueba antes de la confirmación. H = neto confirmado, S = H − aportes. Recepciones se bloquean ordenadas y cada una tiene un aporte único: no parcialidades ni doble consumo. Lote, aportes, evento, auditoría y resultado idempotente se confirman juntos o se revierten. El total se deriva de aportes con numeric exacto. Triggers impiden cambiar, borrar o truncar hechos/eventos y agregar composición a un lote cerrado. La condición pending_quality es el hecho histórico al consolidar. El resultado actual pertenece a la proyección de Calidad; no existe permiso/ruta de despacho.
 
 ## 7. Continuidad y límites
 
 | Identificador | Elemento implementado                                | Fuente                                                               |
 | ------------- | ---------------------------------------------------- | -------------------------------------------------------------------- |
-| S1            | Primer recorrido y Acopio académico                  | `server/main.js`, `web/main.jsx`                                     |
+| S1            | Primer recorrido, Acopio y Calidad académicos                  | `server/main.js`, `web/main.jsx`                                     |
 | W1            | Portal React, un único origen con API                | `web/`, `vite.config.js`, `server/http.js`                           |
 | B1            | Monolito modular Express                             | `server/composition.js`, `server/modules/`                           |
-| S/P/H/Q/T1    | Acceso, Productores, Cosecha, Acopio y consolidación | Casos de uso y repositorios de cada módulo                           |
-| O1            | PostgreSQL 18                                        | `migrations/001_initial.up.sql`, `002_intake.up.sql`, `compose.yaml` |
+| S/P/H/Q/T1    | Acceso, Productores, Cosecha, Acopio, Calidad y consolidación | Casos de uso y repositorios de cada módulo                           |
+| O1            | PostgreSQL 18                                        | `migrations/001_initial.up.sql` a `004_receipt_temperature.up.sql`, `compose.yaml` |
 
-La [vista objetivo](modelo-c4-objetivo.md) conserva los siete módulos y los modelos QR/offline como evolución propuesta. Express es la decisión de backend del corte actual; NestJS permanece únicamente como alternativa histórica de evolución y requeriría un nuevo ADR para adoptarse. Q y la consolidación de T1 corresponden al código y a la especificación académica; calidad, QR y las demás capacidades objetivo siguen fuera del corte.
+La [vista objetivo](modelo-c4-objetivo.md) conserva los siete módulos y los modelos QR/offline como evolución propuesta. Express es la decisión de backend del corte actual; NestJS permanece únicamente como alternativa histórica de evolución y requeriría un nuevo ADR para adoptarse. Q y la consolidación de T1 corresponden al código y a la especificación académica; Calidad se implementa según ADR-012 con RF-06/RF-07 parciales. QR y las demás capacidades objetivo siguen fuera del corte.
+
+## 8. C4 — Código del cierre de Calidad dentro de Q
+
+```mermaid
+flowchart TD
+  HTTP["quality-http.js<br/>POST /quality/evaluations/:id/closure"]
+  QC["Q: quality-application.js<br/>Permiso, versión, completitud y originales"]
+  QR["Q: quality-repository.js<br/>FOR UPDATE, cierre, evento e idempotencia"]
+  QI["Q: intake.originalTemperatures<br/>Originales inmutables por recepción"]
+  T1["T1: qualityLot<br/>Identidad y composición inmutables"]
+  S["S: requireCenter y audit<br/>Sesión/centro y auditoría transaccional"]
+  O1[("O1 PostgreSQL<br/>Esquemas intake y quality; misma tx")]
+  HTTP --> QC
+  QC --> S
+  QC --> T1
+  QC --> QI
+  QC --> QR
+  QR --> O1
+  QI --> O1
+  S --> O1
+```
+
+El esquema quality pertenece al componente Q; no es otro servicio. La composición inyecta contratos, sin imports entre módulos ni dependencia T1 → Q. El original se inserta al crear recepción antes del evento received, en la misma transacción con auditoría. La migración 004 no rellena históricos y su trigger rechaza incorporaciones posteriores ordinarias. Calidad lee esos originales y conserva por separado posteriores editables en draft.
+
+Cierre: bloquear evaluación, comprobar versión/estado, validar captura y exigir original por cada aporte. Estado/resultado/actor/fecha, evento con snapshot de originales, auditoría y clave se confirman juntos. Dos cierres con versiones iguales tienen un ganador. Closed, originales e historia son inmutables. No cambia composición ni masa ni habilita inventario/despacho. [ADR-012](../02-arquitectura/09-decisiones-calidad.md), [evidencia](../05-sprint01/calidad-implementacion.md).

@@ -124,6 +124,22 @@ test("Calidad HTTP/PostgreSQL: captura autorizada persistida y auditada", async 
     async () => {
       const key = crypto.randomUUID(),
         input = { lotId: lot.id };
+      for (const lotId of [
+        lot.contributions[0].receiptId,
+        lot.contributions[0].origin.id,
+      ])
+        assert.equal(
+          (
+            await call(
+              "/quality/evaluations",
+              "POST",
+              { lotId },
+              qa,
+              crypto.randomUUID(),
+            )
+          ).status,
+          404,
+        );
       const r = await call("/quality/evaluations", "POST", input, qa, key);
       assert.equal(r.status, 201);
       evaluation = r.body;

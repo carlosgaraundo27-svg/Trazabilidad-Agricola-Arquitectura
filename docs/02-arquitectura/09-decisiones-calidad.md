@@ -12,4 +12,16 @@ La migración 003 es aditiva: datos y eventos propios en el esquema `quality`, d
 
 Amenazas consideradas: UUID de otro centro (404), permisos revocados antes del replay, cuerpo con actor/estado/unidades arbitrarios (422), resultados dobles por concurrencia (409), cierre parcial ante fallo de auditoría (rollback), SQL ordinario contra closed (trigger). El propietario de la DB puede administrar/alterar triggers: no se afirma protección frente al superusuario. No se incorporan dependencias nuevas ni datos personales de contacto; responsables se registran para atribución operativa.
 
+## Ampliación Q4 adoptada por el usuario
+
+Cada recepción que aporta al lote debe tener su original documentada para cerrar con cualquier resultado. Posteriores no sustituyen originales. La migración 004 añade `intake.receipt_temperatures`: original única por recepción, valor/unidad/instante/procedencia/observador/método y responsable/fecha de registro del servidor, con FK de ámbito e inmutabilidad. Solo se inserta durante creación de recepción, antes del evento received, con esa recepción/evento/auditoría en una sola transacción. No se modifican 001/002/003 ni se rellena historia.
+
+El campo opcional `temperature` en la creación conserva compatibilidad y permite registrar ausencia sin inventar mediciones. La UI informa antes de recibir que omitirlo bloquea el futuro cierre y que este incremento no permite incorporarlo después. Se consideró exigirlo en toda recepción, pero esa alternativa impediría registrar una recepción real sin lectura y rompería clientes anteriores; la integridad de Calidad se aplica siempre en el cierre. No se oculta la consecuencia ni se ofrece una edición posterior informal.
+
+Calidad recibe originales mediante el contrato interno `intake.originalTemperatures`, separado de `capture.temperatures`, que solo admite posteriores. La consulta devuelve originales y IDs de faltantes; el cierre revalida todas las recepciones del lote y conserva snapshot de originales en su evento. Un trigger adicional impide cerrar por SQL ordinario con originales ausentes. La revisión D4 de discrepancias continúa independiente; los responsables de Calidad no heredan `intake:review` ni captura de recepción.
+
+Históricos sin original: draft permitido y cierre bloqueado. Incorporar desde evidencia original requiere un futuro procedimiento explícito y auditado, con autorización, evidencia conservada y nuevo hecho enlazado; no se implementa aquí y no se autoriza saltar triggers ni sobrescribir hechos. Una posterior no es evidencia retroactiva de recepción.
+
+RF-06 cubre originales por todas las recepciones en evaluaciones closed, pero sigue parcial frente al objetivo productivo por calibre académico g/fruto e integración instrumental ausente. RF-07 sigue parcial: decisión humana justificada sin reglas agrícolas ni categorías comerciales. [Especificación y aceptación](../03-diseno-de-software/05-especificacion-calidad-lote.md), [evidencia](../05-sprint01/calidad-implementacion.md).
+
 Fuentes técnicas: [bloqueos PostgreSQL 18](https://www.postgresql.org/docs/18/explicit-locking.html), [numeric exacto](https://www.postgresql.org/docs/18/datatype-numeric.html), [esquemas estrictos Zod](https://zod.dev/api). Respaldan mecanismos, no decisiones agrícolas.

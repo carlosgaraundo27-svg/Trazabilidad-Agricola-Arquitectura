@@ -41,3 +41,7 @@
 - **RF-10 y RF-11:** justifican el módulo de Logística e Inventario.
 - **RF-12:** justifica ETL y Datamart para reportes.
 - **RF-13:** justifica autenticación, autorización, gestión de roles y controles por operación.
+
+## Cobertura ejecutable académica de RF-06 y RF-07
+
+Q1–Q9 y la exigencia de originales de cada recepción fueron adoptadas por el usuario exclusivamente para el prototipo, sin aprobación docente ni validación agrícola. RF-06 registra peso individual g/fruto como calibre académico, materia seca %, conteos y originales de recepción con procedencia/responsable; todo closed exige cobertura de sus recepciones. Sigue parcial frente al objetivo productivo por representación académica e integración instrumental ausente; históricos sin original quedan bloqueados. RF-07 tiene decisión manual justificada, con cobertura parcial respecto de reglas agrícolas/categorías comerciales no definidas. La formulación objetivo de los requisitos anteriores se conserva. [Especificación y aceptación QC-01–23](../03-diseno-de-software/05-especificacion-calidad-lote.md), [evidencia](../05-sprint01/calidad-implementacion.md).

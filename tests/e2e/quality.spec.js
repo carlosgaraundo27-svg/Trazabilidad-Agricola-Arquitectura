@@ -1,58 +1,74 @@
+import { compose } from "../../server/composition.js";
+import { preLotInput } from "../../server/modules/harvest/domain.js";
+import { receiptInput } from "../../server/modules/intake/domain.js";
+import { lotInput } from "../../server/modules/traceability/domain.js";
 import { test, expect } from "@playwright/test";
 import { connectDatabase } from "../../server/db.js";
 import { ids } from "../../scripts/seed.js";
 import { intakeIds } from "../../scripts/seed-intake.js";
 
-async function lotFixture(playwright, baseURL) {
-  const clients = [];
-  const login = async (email) => {
-    const request = await playwright.request.newContext({ baseURL });
-    clients.push(request);
-    const r = await request.post("/api/v1/auth/login", {
-      data: { email, password: process.env.DEMO_PASSWORD },
-    });
-    expect(r.status()).toBe(200);
-    return { request, csrf: (await r.json()).csrfToken };
-  };
-  const command = async (auth, path, data) => {
-    const r = await auth.request.post("/api/v1" + path, {
-      data,
-      headers: {
-        "X-CSRF-Token": auth.csrf,
-        "Idempotency-Key": crypto.randomUUID(),
-      },
-    });
-    expect(r.status()).toBe(201);
-    return r.json();
-  };
+async function lotFixture(originalCount = 2) {
+  const db = await connectDatabase(),
+    services = compose(db);
+  const actor = async (email) =>
+    services.access.authenticate(
+      (await services.access.login(email, process.env.DEMO_PASSWORD)).token,
+    );
   try {
-    const field = await login("campo@example.test"),
-      op = await login("acopio@example.test"),
+    const field = await actor("campo@example.test"),
+      op = await actor("acopio@example.test"),
       receipts = [];
     for (let i = 0; i < 2; i++) {
-      const p = await command(field, "/pre-lots", {
-        parcelId: ids.parcel,
-        harvestedAt: "2026-01-02T12:00:00Z",
-        quantity: "100",
-        unit: "kg",
-      });
-      const r = await command(op, "/intake/receipts", {
-        centerId: intakeIds.center,
-        preLotId: p.id,
-        reference: "QE-" + p.id,
-        grossKg: "100",
-        tareKg: "0",
-        evidence: "Ticket de prueba ficticio",
-      });
-      await command(op, "/intake/receipts/" + r.id + "/confirmation", {});
+      const p = (
+        await services.harvest.create(
+          field,
+          preLotInput.parse({
+            parcelId: ids.parcel,
+            harvestedAt: "2026-01-02T12:00:00Z",
+            quantity: "100",
+            unit: "kg",
+          }),
+          crypto.randomUUID(),
+        )
+      ).item;
+      const r = (
+        await services.intake.receive(
+          op,
+          receiptInput.parse({
+            centerId: intakeIds.center,
+            preLotId: p.id,
+            reference: "QE-" + p.id,
+            grossKg: "100",
+            tareKg: "0",
+            evidence: "Ticket ficticio de prueba",
+            ...(i < originalCount
+              ? {
+                  temperature: {
+                    value: "18.10",
+                    unit: "°C",
+                    measuredAt: "2026-01-02T20:00:00.123Z",
+                    observedBy: "Observador ficticio",
+                    provenance: "Ticket original ficticio",
+                    method: "Lectura manual ficticia",
+                  },
+                }
+              : {}),
+          }),
+          crypto.randomUUID(),
+        )
+      ).item;
+      await services.intake.confirm(op, r.id, crypto.randomUUID());
       receipts.push(r.id);
     }
-    return await command(op, "/lots", {
-      centerId: intakeIds.center,
-      receiptIds: receipts,
-    });
+    return (
+      await services.intake.consolidate(
+        op,
+        lotInput.parse({ centerId: intakeIds.center, receiptIds: receipts }),
+        crypto.randomUUID(),
+      )
+    ).item;
   } finally {
-    for (const request of clients) await request.dispose();
+    await db.close();
   }
 }
 async function login(page, email = "calidad@example.test") {
@@ -61,7 +77,11 @@ async function login(page, email = "calidad@example.test") {
   await page.getByLabel("Contraseña").fill(process.env.DEMO_PASSWORD);
   await page.getByRole("button", { name: "Ingresar", exact: true }).click();
   await expect(
-    page.getByRole("heading", { name: "Calidad del prototipo académico" }),
+    page.getByRole("heading", {
+      name: email.startsWith("acopio")
+        ? "Recepción y consolidación"
+        : "Calidad del prototipo académico",
+    }),
   ).toBeVisible();
 }
 async function start(page, lot) {
@@ -111,15 +131,13 @@ async function sampleAndWeight(page) {
 }
 test("Calidad: draft incompleto persistente, respuesta perdida y replay sin duplicados", async ({
   page,
-  playwright,
-  baseURL,
 }) => {
   const errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
   page.on("console", (m) => {
     if (m.type() === "warning") errors.push(m.text());
   });
-  const lot = await lotFixture(playwright, baseURL);
+  const lot = await lotFixture();
   await login(page);
   await start(page, lot);
   await sampleAndWeight(page);
@@ -202,13 +220,267 @@ test("Calidad: draft incompleto persistente, respuesta perdida y replay sin dupl
   expect(errors).toEqual([]);
 });
 
+async function completeCapture(page) {
+  await sampleAndWeight(page);
+  await page
+    .getByRole("button", { name: "Añadir materia seca", exact: true })
+    .click();
+  const dry = page.getByRole("region", { name: "Materia seca", exact: true });
+  await dry.getByLabel("Materia seca (%)", { exact: true }).fill("23.10");
+  await metadata(dry);
+  await page
+    .getByRole("button", { name: "Añadir conteos", exact: true })
+    .click();
+  const discard = page.getByRole("region", {
+    name: "Descarte de muestra",
+    exact: true,
+  });
+  await discard.getByLabel("Frutos examinados", { exact: true }).fill("3");
+  await discard.getByLabel("Frutos descartados", { exact: true }).fill("1");
+  await metadata(discard);
+  await page
+    .getByRole("button", { name: "Añadir temperatura", exact: true })
+    .click();
+  const temp = page.getByRole("region", { name: "Temperatura 1", exact: true });
+  await temp.getByLabel("Temperatura (°C)", { exact: true }).fill("-1.50");
+  await metadata(
+    temp,
+    new Date(Date.now() - 5 * 3600000).toISOString().slice(0, -1),
+  );
+  await page
+    .getByRole("button", { name: "Guardar borrador", exact: true })
+    .click();
+  await expect(
+    page.getByRole("status").filter({ hasText: "Borrador guardado." }),
+  ).toBeVisible();
+}
+test("Calidad: cierra con todas las originales y conserva observación posterior y cantidades", async ({
+  page,
+}) => {
+  const errors = [];
+  page.on("pageerror", (e) => errors.push(e.message));
+  const lot = await lotFixture();
+  await login(page);
+  await start(page, lot);
+  await completeCapture(page);
+  await expect(
+    page.getByText(
+      "Todas las recepciones tienen temperatura original documentada.",
+      { exact: true },
+    ),
+  ).toBeVisible();
+  await expect(page.getByTestId("original-temperature")).toHaveCount(2);
+  await expect(page.getByTestId("original-temperature").first()).toContainText(
+    "02/01/2026",
+  );
+  await expect(page.getByTestId("original-temperature").first()).toContainText(
+    "123",
+  );
+  await page
+    .getByLabel("Resultado manual", { exact: true })
+    .selectOption("accepted");
+  await page
+    .getByLabel("Justificación del responsable", { exact: true })
+    .fill("Resultado manual ficticio revisado para el prototipo");
+  await page
+    .getByRole("button", {
+      name: "Cerrar evaluación definitivamente",
+      exact: true,
+    })
+    .click();
+  await expect(
+    page.getByRole("heading", {
+      name: "Resultado manual: Aprobado",
+      exact: true,
+    }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Guardar borrador", exact: true }),
+  ).toHaveCount(0);
+  await expect(
+    page.getByLabel("Peso individual (g/fruto)", { exact: true }),
+  ).toBeDisabled();
+  await page.reload();
+  await page
+    .getByTestId("quality-lot")
+    .filter({ hasText: lot.id })
+    .getByRole("button", { name: "Consultar evaluación", exact: true })
+    .click();
+  await expect(
+    page.getByRole("heading", {
+      name: "Resultado manual: Aprobado",
+      exact: true,
+    }),
+  ).toBeVisible();
+  await expect(
+    page.getByLabel("Temperatura (°C)", { exact: true }),
+  ).toHaveValue("-1.50");
+  for (const width of [320, 768, 1024, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+    ).toBe(true);
+  }
+  await page.screenshot({
+    path: "test-results/quality-closed-desktop.png",
+    fullPage: true,
+  });
+  expect(errors).toEqual([]);
+  const db = await connectDatabase();
+  try {
+    const rows = (
+      await db.query(
+        "SELECT state,result,capture FROM quality.evaluations WHERE lot_id=$1",
+        [lot.id],
+      )
+    ).rows;
+    expect(rows[0].state).toBe("closed");
+    expect(rows[0].capture.temperatures[0].value).toBe("-1.50");
+    expect(
+      (
+        await db.query(
+          "SELECT sum(amount_kg)::text AS total FROM traceability.contributions WHERE lot_id=$1",
+          [lot.id],
+        )
+      ).rows[0].total,
+    ).toBe("200.000");
+  } finally {
+    await db.close();
+  }
+});
+test("Calidad: identifica recepción pendiente y bloquea cierre incluso con temperatura posterior", async ({
+  page,
+}) => {
+  const lot = await lotFixture(1);
+  await login(page);
+  await start(page, lot);
+  await completeCapture(page);
+  const missing = page
+    .getByTestId("original-temperature")
+    .filter({ hasText: "Pendiente: sin temperatura original." });
+  await expect(missing).toHaveCount(1);
+  await expect(
+    page.getByRole("button", {
+      name: "Cerrar evaluación definitivamente",
+      exact: true,
+    }),
+  ).toBeDisabled();
+  const db = await connectDatabase();
+  let row;
+  try {
+    row = (
+      await db.query(
+        "SELECT e.id,e.version,c.receipt_id FROM quality.evaluations e JOIN traceability.contributions c ON c.lot_id=e.lot_id LEFT JOIN intake.receipt_temperatures t ON t.receipt_id=c.receipt_id WHERE e.lot_id=$1 AND t.id IS NULL",
+        [lot.id],
+      )
+    ).rows[0];
+  } finally {
+    await db.close();
+  }
+  await expect(missing).toContainText(row.receipt_id);
+  const me = await (await page.request.get("/api/v1/auth/me")).json();
+  const direct = await page.request.post(
+    "/api/v1/quality/evaluations/" + row.id + "/closure",
+    {
+      data: {
+        expectedVersion: row.version,
+        result: "accepted",
+        note: "No debe cerrar",
+      },
+      headers: {
+        "X-CSRF-Token": me.csrfToken,
+        "Idempotency-Key": crypto.randomUUID(),
+      },
+    },
+  );
+  expect(direct.status()).toBe(422);
+  await page.reload();
+  await page
+    .getByTestId("quality-lot")
+    .filter({ hasText: lot.id })
+    .getByRole("button", { name: "Consultar evaluación", exact: true })
+    .click();
+  await expect(
+    page
+      .getByTestId("original-temperature")
+      .filter({ hasText: row.receipt_id }),
+  ).toContainText("Pendiente");
+  await page.screenshot({
+    path: "test-results/quality-missing-receipt.png",
+    fullPage: true,
+  });
+});
+test("Acopio: registra temperatura original una vez con responsable y evento de recepción", async ({
+  page,
+}) => {
+  const db = await connectDatabase(),
+    h = crypto.randomUUID(),
+    p = crypto.randomUUID(),
+    reference = "TEMP-" + p;
+  try {
+    await db.query(
+      "INSERT INTO harvest.harvests(id,organization_id,parcel_id,harvested_at,quantity,unit,actor_id) VALUES($1,$2,$3,'2026-01-02T12:00:00Z',100,'kg',$4)",
+      [h, ids.org, ids.parcel, ids.collector],
+    );
+    await db.query(
+      "INSERT INTO harvest.pre_lots(id,harvest_id,organization_id,actor_id,request_key,request_payload) VALUES($1,$2,$3,$4,$5,'{}')",
+      [p, h, ids.org, ids.collector, crypto.randomUUID()],
+    );
+    await login(page, "acopio@example.test");
+    await page
+      .getByLabel("Pre-lote a recibir", { exact: true })
+      .selectOption(p);
+    await page
+      .getByLabel("Referencia de recepción", { exact: true })
+      .fill(reference);
+    await page.getByLabel("Peso bruto (kg)", { exact: true }).fill("100");
+    await page.getByLabel("Tara (kg)", { exact: true }).fill("0");
+    await page
+      .getByLabel("Evidencia del pesaje", { exact: true })
+      .fill("Ticket ficticio");
+    await page
+      .getByLabel("Documentar temperatura original", { exact: true })
+      .check();
+    await page
+      .getByLabel("Temperatura original (°C)", { exact: true })
+      .fill("18.10");
+    await metadata(
+      page.getByRole("group", {
+        name: "Temperatura original de recepción",
+        exact: true,
+      }),
+    );
+    await page
+      .getByRole("button", { name: "Registrar recepción", exact: true })
+      .click();
+    const receipt = page.getByTestId("receipt-" + reference);
+    await expect(receipt).toContainText("Temperatura original: 18.10 °C");
+    const row = (
+      await db.query(
+        "SELECT t.recorded_by,t.measured_at,e.payload,a.action FROM intake.receipt_temperatures t JOIN intake.receipts r ON r.id=t.receipt_id JOIN intake.events e ON e.receipt_id=r.id AND e.kind='received' JOIN access.audit a ON a.resource_id=r.id WHERE r.reference=$1",
+        [reference],
+      )
+    ).rows[0];
+    expect(row.recorded_by).toBe(intakeIds.operator);
+    expect(row.measured_at.toISOString()).toBe("2026-01-02T20:00:00.123Z");
+    expect(row.payload.originalTemperature.value).toBe("18.10");
+    expect(row.action).toBe("intake:receive");
+    await page.reload();
+    await expect(page.getByTestId("receipt-" + reference)).toContainText(
+      "Temperatura original: 18.10 °C",
+    );
+  } finally {
+    await db.close();
+  }
+});
+
 test("Calidad: creación concurrente recuperable y aislamiento de otro centro", async ({
   page,
   browser,
-  playwright,
-  baseURL,
 }) => {
-  const lot = await lotFixture(playwright, baseURL),
+  const lot = await lotFixture(),
     context = await browser.newContext(),
     other = await context.newPage();
   try {

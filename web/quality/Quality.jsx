@@ -3,6 +3,7 @@ import { EvaluationOutcome } from "./EvaluationOutcome.jsx";
 import React, { useEffect, useRef, useState } from "react";
 import { api } from "../api.js";
 import { CaptureForm } from "./CaptureForm.jsx";
+import { ReceiptTemperatures } from "./ReceiptTemperatures.jsx";
 export function Quality({ centers }) {
   const [centerId, setCenterId] = useState(centers[0].id),
     [lots, setLots] = useState(null),
@@ -190,6 +191,10 @@ export function Quality({ centers }) {
             {evaluation.discardPercentage ?? "Sin medición"}
             {evaluation.discardPercentage !== null ? " %" : ""}
           </p>
+          <ReceiptTemperatures
+            items={evaluation.receiptTemperatures}
+            missing={evaluation.missingReceiptTemperatureIds}
+          />
           <CaptureForm
             key={evaluation.id + ":" + evaluation.version}
             evaluation={evaluation}

@@ -3,7 +3,7 @@ import {
   MetadataFields,
   TextField,
   blankMetadata,
-} from "./ObservationFields.jsx";
+} from "../measurements/ObservationFields.jsx";
 export function WeightFields({
   capture,
   editable,

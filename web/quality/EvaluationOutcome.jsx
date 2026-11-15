@@ -45,23 +45,33 @@ export function EvaluationOutcome({
               );
             }}
           >
-            <fieldset disabled={busy || !!pending || dirty}>
+            <fieldset
+              disabled={
+                busy ||
+                !!pending ||
+                dirty ||
+                evaluation.missingReceiptTemperatureIds.length > 0
+              }
+            >
               <legend>Resultado y cierre definitivo</legend>
               <p>
                 Revise las mediciones guardadas. El resultado no se calcula
                 automáticamente.
               </p>
-              <label>
-                Resultado manual
-                <select name="result" required defaultValue="">
-                  <option value="">Seleccionar resultado…</option>
-                  {Object.entries(results).map(([v, n]) => (
-                    <option value={v} key={v}>
-                      {n}
-                    </option>
-                  ))}
-                </select>
-              </label>
+              <label htmlFor="quality-result">Resultado manual</label>
+              <select
+                id="quality-result"
+                name="result"
+                required
+                defaultValue=""
+              >
+                <option value="">Seleccionar resultado…</option>
+                {Object.entries(results).map(([v, n]) => (
+                  <option value={v} key={v}>
+                    {n}
+                  </option>
+                ))}
+              </select>
               <label>
                 Justificación del responsable
                 <textarea name="note" required maxLength={500} />

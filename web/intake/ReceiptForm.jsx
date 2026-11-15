@@ -1,4 +1,5 @@
 import React from "react";
+import { ReceiptTemperatureFields } from "./ReceiptTemperatureFields.jsx";
 function preview(gross, tare) {
   const valid = /^(?:0|[1-9][0-9]{0,8})(?:\.[0-9]{1,3})?$/;
   if (!valid.test(gross) || !valid.test(tare)) return "—";
@@ -14,40 +15,43 @@ function preview(gross, tare) {
 export function ReceiptForm({ origins, busy, onReceive }) {
   const [preLotId, setPreLotId] = React.useState(""),
     [gross, setGross] = React.useState(""),
-    [tare, setTare] = React.useState("0");
+    [tare, setTare] = React.useState("0"),
+    [temperature, setTemperature] = React.useState(null);
   const selected = origins.find((o) => o.id === preLotId);
   async function submit(event) {
     event.preventDefault();
     const form = event.currentTarget;
     const values = Object.fromEntries(new FormData(form));
-    if (await onReceive(values)) {
+    if (
+      await onReceive({ ...values, ...(temperature ? { temperature } : {}) })
+    ) {
       form.reset();
       setPreLotId("");
       setGross("");
       setTare("0");
+      setTemperature(null);
     }
   }
   return (
     <section aria-labelledby="receive-title">
       <h2 id="receive-title">Registrar recepción completa</h2>
       <form onSubmit={submit}>
-        <label>
-          Pre-lote a recibir
-          <select
-            name="preLotId"
-            value={preLotId}
-            onChange={(e) => setPreLotId(e.target.value)}
-            required
-            disabled={busy}
-          >
-            <option value="">Seleccionar…</option>
-            {origins.map((o) => (
-              <option key={o.id} value={o.id}>
-                {o.parcelName} · {o.quantity} {o.unit} · {o.id}
-              </option>
-            ))}
-          </select>
-        </label>
+        <label htmlFor="receipt-prelot">Pre-lote a recibir</label>
+        <select
+          id="receipt-prelot"
+          name="preLotId"
+          value={preLotId}
+          onChange={(e) => setPreLotId(e.target.value)}
+          required
+          disabled={busy}
+        >
+          <option value="">Seleccionar…</option>
+          {origins.map((o) => (
+            <option key={o.id} value={o.id}>
+              {o.parcelName} · {o.quantity} {o.unit} · {o.id}
+            </option>
+          ))}
+        </select>
         {selected && (
           <p className="origin-summary">
             {selected.producerName} / {selected.parcelName}
@@ -102,6 +106,11 @@ export function ReceiptForm({ origins, busy, onReceive }) {
             disabled={busy}
           />
         </label>
+        <ReceiptTemperatureFields
+          value={temperature}
+          onChange={setTemperature}
+          busy={busy}
+        />
         <button disabled={busy || !origins.length}>Registrar recepción</button>
       </form>
     </section>

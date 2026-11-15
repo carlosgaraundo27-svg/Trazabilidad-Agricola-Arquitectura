@@ -2,7 +2,7 @@ import { TemperatureFields } from "./TemperatureFields.jsx";
 import { DryDiscardFields } from "./DryDiscardFields.jsx";
 import { WeightFields } from "./WeightFields.jsx";
 import React, { useState } from "react";
-import { TextField, TimeField } from "./ObservationFields.jsx";
+import { TextField, TimeField } from "../measurements/ObservationFields.jsx";
 export function CaptureForm({
   evaluation,
   lot,

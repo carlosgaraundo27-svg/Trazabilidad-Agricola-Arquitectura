@@ -6,7 +6,11 @@ export function qualityRepository() {
         await tx.query(
           select +
             " WHERE e.organization_id=$1 AND e.id=$2" +
-            (lock ? " FOR UPDATE OF e" : ""),
+            (lock === true
+              ? " FOR UPDATE OF e"
+              : lock === "share"
+                ? " FOR SHARE OF e"
+                : ""),
           [actor.organizationId, id],
         )
       ).rows[0];

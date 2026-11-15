@@ -32,7 +32,8 @@ export function qualityService({
     return item;
   }
   async function response(tx, actor, id) {
-    const item = await repository.get(tx, actor, id);
+    // Hold a shared row lock so capture/version and its events describe one state.
+    const item = await repository.get(tx, actor, id, "share");
     return decorate(item, await repository.events(tx, actor, id));
   }
   async function validateCapture(tx, actor, item, capture) {

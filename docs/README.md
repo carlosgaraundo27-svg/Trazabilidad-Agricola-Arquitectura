@@ -43,7 +43,7 @@ La [revisión arquitectónica](05-sprint01/revision-previa-sprint02.md) registra
 
 ## Acopio académico
 
-Siguiente recorrido propuesto: [evaluación manual de calidad del lote consolidado](03-diseno-de-software/05-especificacion-calidad-lote.md), con [continuidad y decisiones pendientes](05-sprint01/continuidad-calidad.md). Es un borrador sin aprobar, sin funciones de calidad implementadas.
+Calidad en implementación: [especificación Q1–Q9 adoptadas para el prototipo](03-diseno-de-software/05-especificacion-calidad-lote.md), [ADR-012](02-arquitectura/09-decisiones-calidad.md) y [continuidad](05-sprint01/continuidad-calidad.md). Captura y borradores implementados; cierre pendiente de definir cobertura de temperatura original por recepción. RF-06/RF-07 tienen cobertura parcial, sin aprobación docente ni validación agrícola.
 
 - [Especificación y criterios D1–D7](03-diseno-de-software/04-especificacion-acopio-consolidacion.md)
 - [ADR-011 y validaciones pendientes](02-arquitectura/08-decisiones-acopio.md)

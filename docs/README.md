@@ -43,6 +43,8 @@ La [revisión arquitectónica](05-sprint01/revision-previa-sprint02.md) registra
 
 ## Acopio académico
 
+Siguiente recorrido propuesto: [evaluación manual de calidad del lote consolidado](03-diseno-de-software/05-especificacion-calidad-lote.md), con [continuidad y decisiones pendientes](05-sprint01/continuidad-calidad.md). Es un borrador sin aprobar, sin funciones de calidad implementadas.
+
 - [Especificación y criterios D1–D7](03-diseno-de-software/04-especificacion-acopio-consolidacion.md)
 - [ADR-011 y validaciones pendientes](02-arquitectura/08-decisiones-acopio.md)
 - [Guía de ejecución](../tecnologia/acopio.md)

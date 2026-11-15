@@ -1,27 +1,11 @@
 import { z } from "zod";
+import {
+  observationInstant as instant,
+  exactDecimal as decimal,
+  observationMetadata as metadata,
+} from "./measurement-domain.js";
 export const qualityUuid = z.uuid().transform((v) => v.toLowerCase());
 const text = z.string().trim().min(1).max(500);
-const instant = z.iso
-  .datetime({ offset: true, precision: undefined })
-  .refine(
-    (v) => !/\.\d{4}/.test(v) && Date.parse(v) <= Date.now(),
-    "Instante con hasta milisegundos, no futuro.",
-  )
-  .transform((v) => new Date(v).toISOString());
-const decimal = z
-  .string()
-  .regex(/^-?(?:0|[1-9][0-9]{0,5})(?:\.[0-9]{1,2})?$/)
-  .refine((v) => !v.includes("\n") && !v.includes("\r"))
-  .transform((v) => {
-    const [w, d = ""] = v.split(".");
-    return (Number(v) === 0 ? "0" : w) + "." + d.padEnd(2, "0");
-  });
-const metadata = {
-  measuredAt: instant,
-  observedBy: text,
-  provenance: text,
-  method: text,
-};
 const weight = z
   .object({
     ...metadata,
@@ -54,14 +38,10 @@ const temperature = z
     ...metadata,
     value: decimal,
     unit: z.literal("°C"),
-    stage: z.enum(["receipt", "post_consolidation"]),
-    sourceReceiptId: qualityUuid.nullable(),
+    stage: z.literal("post_consolidation"),
+    sourceReceiptId: z.null(),
   })
-  .strict()
-  .refine(
-    (v) => (v.stage === "receipt") === (v.sourceReceiptId !== null),
-    "La recepción es obligatoria solo en temperatura de recepción.",
-  );
+  .strict();
 export const captureShape = {
   sample: z
     .object({
@@ -78,12 +58,7 @@ export const captureShape = {
   temperatures: z.array(temperature).max(100),
 };
 const uniqueReferences = (v) =>
-  new Set(v.weights.map((w) => w.fruitReference)).size === v.weights.length &&
-  new Set(
-    v.temperatures
-      .filter((t) => t.stage === "receipt")
-      .map((t) => t.sourceReceiptId),
-  ).size === v.temperatures.filter((t) => t.stage === "receipt").length;
+  new Set(v.weights.map((w) => w.fruitReference)).size === v.weights.length;
 export const captureInput = z
   .object(captureShape)
   .strict()

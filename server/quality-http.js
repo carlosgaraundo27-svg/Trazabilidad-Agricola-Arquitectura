@@ -4,6 +4,7 @@ import {
   qualityPageInput,
   createQualityInput,
   updateQualityInput,
+  closeQualityInput,
 } from "./modules/intake/quality-domain.js";
 import { AppError } from "./shared/errors.js";
 export function qualityRouter(services) {
@@ -18,6 +19,15 @@ export function qualityRouter(services) {
       );
     return parsed.data;
   };
+  router.post("/quality/evaluations/:id/closure", async (req, res) => {
+    const r = await services.quality.close(
+      req.actor,
+      qualityUuid.parse(req.params.id),
+      closeQualityInput.parse(req.body),
+      key(req),
+    );
+    res.status(r.replayed ? 200 : 201).json(r.item);
+  });
   router.get("/quality/lots", async (req, res) =>
     res.json({
       items: await services.quality.lots(

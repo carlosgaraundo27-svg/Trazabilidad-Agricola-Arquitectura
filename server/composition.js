@@ -44,6 +44,7 @@ export function compose(db) {
     unitOfWork,
     access,
     traceability,
+    intake,
   });
   return { access, producers, harvest, intake, quality };
 }

@@ -53,7 +53,13 @@ export function qualityRepository() {
         [JSON.stringify(capture), actor.id, id, actor.organizationId],
       );
     },
-    async event(tx, actor, before, after, kind) {
+    async close(tx, actor, id, input) {
+      await tx.query(
+        "UPDATE quality.evaluations SET state='closed',version=version+1,result=$1,note=$2,closed_by=$3,closed_at=clock_timestamp(),updated_by=$3,updated_at=clock_timestamp() WHERE id=$4 AND organization_id=$5",
+        [input.result, input.note, actor.id, id, actor.organizationId],
+      );
+    },
+    async event(tx, actor, before, after, kind, receiptTemperatures) {
       await tx.query(
         "INSERT INTO quality.events(id,evaluation_id,organization_id,actor_id,kind,version,payload) VALUES($1,$2,$3,$4,$5,$6,$7)",
         [
@@ -63,7 +69,11 @@ export function qualityRepository() {
           actor.id,
           kind,
           after.version,
-          JSON.stringify({ before, after }),
+          JSON.stringify({
+            before,
+            after,
+            ...(receiptTemperatures ? { receiptTemperatures } : {}),
+          }),
         ],
       );
     },

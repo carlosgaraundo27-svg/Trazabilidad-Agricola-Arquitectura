@@ -1,6 +1,10 @@
 import { createHash } from "node:crypto";
 import { AppError, missing } from "../../shared/errors.js";
-import { emptyCapture, discardPercentage } from "./quality-domain.js";
+import {
+  emptyCapture,
+  discardPercentage,
+  captureInput,
+} from "./quality-domain.js";
 const conflict = () =>
   new AppError(
     409,
@@ -19,6 +23,7 @@ export function qualityService({
   unitOfWork,
   access,
   traceability,
+  intake,
 }) {
   async function requireResource(tx, actor, id, action) {
     const item = await repository.get(tx, actor, id);
@@ -34,18 +39,36 @@ export function qualityService({
   async function response(tx, actor, id) {
     // Hold a shared row lock so capture/version and its events describe one state.
     const item = await repository.get(tx, actor, id, "share");
-    return decorate(item, await repository.events(tx, actor, id));
+    const lot = await traceability.qualityLot(tx, actor, item.lotId);
+    const receiptTemperatures = await intake.originalTemperatures(
+      tx,
+      actor,
+      item.centerId,
+      lot.contributions.map((c) => c.receiptId),
+    );
+    return {
+      ...decorate(item, await repository.events(tx, actor, id)),
+      receiptTemperatures,
+      missingReceiptTemperatureIds: lot.contributions
+        .filter(
+          (c) =>
+            !receiptTemperatures.some(
+              (r) => r.receiptId === c.receiptId && r.temperature,
+            ),
+        )
+        .map((c) => c.receiptId)
+        .sort(),
+    };
   }
   async function validateCapture(tx, actor, item, capture) {
     const lot = await traceability.qualityLot(tx, actor, item.lotId);
-    const receipts = new Set(lot.contributions.map((c) => c.receiptId));
     for (const temp of capture.temperatures) {
       const time = Date.parse(temp.measuredAt),
         consolidated = Date.parse(lot.createdAt);
       if (
-        (temp.stage === "receipt" &&
-          (!receipts.has(temp.sourceReceiptId) || time > consolidated)) ||
-        (temp.stage === "post_consolidation" && time < consolidated)
+        temp.stage !== "post_consolidation" ||
+        temp.sourceReceiptId !== null ||
+        time < consolidated
       )
         throw new AppError(
           422,
@@ -102,6 +125,52 @@ export function qualityService({
     }
   }
   return {
+    close(actor, id, input, key) {
+      return command(
+        actor,
+        key,
+        "quality:close",
+        { id, ...input },
+        async (tx) => {
+          const old = await repository.get(tx, actor, id, true);
+          if (
+            old.evaluationState !== "draft" ||
+            old.version !== input.expectedVersion
+          )
+            throw conflict();
+          const capture = captureInput.parse(old.capture);
+          if (
+            !capture.sample ||
+            !capture.weights.length ||
+            !capture.dryMatter ||
+            !capture.discard
+          )
+            throw new AppError(
+              422,
+              "QUALITY_INCOMPLETE",
+              "Complete muestra, pesos individuales, materia seca y conteos antes de cerrar.",
+            );
+          await validateCapture(tx, actor, old, capture);
+          const current = await response(tx, actor, id);
+          if (current.missingReceiptTemperatureIds.length)
+            throw new AppError(
+              422,
+              "RECEIPT_TEMPERATURES_MISSING",
+              "Faltan temperaturas originales de recepción. Consulte las recepciones pendientes en la evaluación.",
+            );
+          await repository.close(tx, actor, id, input);
+          await repository.event(
+            tx,
+            actor,
+            old,
+            await repository.get(tx, actor, id),
+            "closed",
+            current.receiptTemperatures,
+          );
+          return id;
+        },
+      );
+    },
     async lots(actor, { centerId, offset }) {
       return unitOfWork(async (tx) => {
         await access.requireCenter(tx, actor, centerId, "quality:read");

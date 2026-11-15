@@ -1,0 +1,24 @@
+▶ Acopio HTTP y PostgreSQL: integridad y ámbito
+  ✔ consulta de saldo conserva un snapshot al confirmar y consumir en paralelo (213.678ms)
+  ✔ UUID equivalentes en centro, origen, ruta y clave conservan idempotencia (41.8348ms)
+  ✔ recibe, confirma y consolida composición exacta sin calidad ni despacho (45.982ms)
+  ✔ discrepancia requiere revisión y confirmación separadas; no autoaprobación (34.9134ms)
+  ✔ permisos por centro y acción, origen ajeno y administrador sin herencia (85.6952ms)
+  ✔ rechaza mezcla por parcela/productor o fecha local sin consumir saldo (85.7981ms)
+  ✔ unicidad física: pre-lote completo y referencia por centro (20.2919ms)
+  ✔ recepción/revisión/confirmación idempotentes y revalidación tras revocar concesión (25.5392ms)
+  ✔ doble consumo concurrente con claves distintas y replay concurrente de lote (33.2258ms)
+  ✔ dimensiones distintas no se convierten y exceso no modifica declaración (31.3577ms)
+  ✔ fallos reales de evento revierten recepción, revisión, confirmación y lote (48.5567ms)
+  ✔ fallo de auditoría revierte recepción e idempotencia (12.2872ms)
+  ✔ fallo de auditoría al consolidar revierte lote, aportes, evento y request (29.3028ms)
+  ✔ SQL protege hechos cerrados, autoaprobación y aporte completo (444.3203ms)
+✔ Acopio HTTP y PostgreSQL: integridad y ámbito (1518.9647ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1745.9249

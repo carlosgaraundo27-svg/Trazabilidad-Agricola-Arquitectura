@@ -1,6 +1,31 @@
-import { AppError } from "../../shared/errors.js";
+import { AppError, missing } from "../../shared/errors.js";
 export function harvestService({ repository, unitOfWork, access, producers }) {
   return {
+    async intakeOrigin(tx, actor, preLotId) {
+      const origin = await repository.intakeOrigin(tx, actor, preLotId);
+      if (!origin) throw missing();
+      return {
+        ...origin,
+        ...(await producers.intakeOrigin(tx, actor, origin.parcelId)),
+      };
+    },
+    async intakeOrigins(tx, actor, offset) {
+      const rows = await repository.intakeOrigins(tx, actor, offset);
+      const origins = new Map(
+        (
+          await producers.intakeOrigins(
+            tx,
+            actor,
+            rows.map((r) => r.parcelId),
+          )
+        ).map((r) => [r.parcelId, r]),
+      );
+      return rows.map((row) => {
+        const origin = origins.get(row.parcelId);
+        if (!origin) throw missing();
+        return { ...row, ...origin };
+      });
+    },
     async create(actor, input, key) {
       access.authorize(actor, "prelot:create");
       return unitOfWork(async (tx) => {

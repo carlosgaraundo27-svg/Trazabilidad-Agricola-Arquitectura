@@ -1,0 +1,39 @@
+✔ cantidad positiva decimal y fecha con zona (4.1592ms)
+✔ coordenadas y nombre tienen límites (0.622ms)
+✔ roles deniegan por defecto y no heredan operaciones (0.0795ms)
+✔ pesaje exacto, normalización y diferencia conservada (2.3577ms)
+✔ rechaza mediciones inválidas, neto enviado y redondeo implícito (0.4432ms)
+✔ fecha de cosecha local fija en Lima, incluso cerca de medianoche UTC (9.4954ms)
+✖ compatibilidad exige todos los ámbitos y no acepta IDs duplicados (0.5849ms)
+✔ contraseñas con sal única y verificación sin texto plano (88.5598ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 7
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 163.0591
+
+✖ failing tests:
+
+test at tests\unit\intake.test.js:73:1
+✖ compatibilidad exige todos los ámbitos y no acepta IDs duplicados (0.5849ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  false !== true
+
+      at TestContext.<anonymous> (file:///<WORKSPACE>/repo-acopio/tests/unit/intake.test.js:81:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

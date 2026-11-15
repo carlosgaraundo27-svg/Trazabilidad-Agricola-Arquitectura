@@ -1,0 +1,14 @@
+{"event":"server_started","port":3011}
+
+Running 1 test using 1 worker
+
+{"requestId":"39c63c5e-9dfb-4c4e-867a-8ccb436064d7","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+{"requestId":"2a4850f2-ac69-41ba-a76b-400288dd3cdf","method":"POST","status":403,"code":"SELF_APPROVAL"}
+{"requestId":"6523c211-38b6-4095-bdaa-01d17bed2d9e","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+{"requestId":"d0cfc044-2975-4b74-97c5-7f7ec547b5af","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+  ✓  1 tests\e2e\intake.spec.js:124:1 › Acopio: discrepancia bloqueada, autoaprobación rechazada y revisión por otra persona (1.4s)
+
+  1 passed (2.4s)
+.env not found. Continuing without it.
+(node:27116) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

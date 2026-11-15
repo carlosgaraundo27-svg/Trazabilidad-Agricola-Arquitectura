@@ -8,7 +8,7 @@ Este documento relaciona los componentes de la solución con los requisitos func
 
 ## Vista canónica de componentes del backend
 
-El [C3 implementado](../04-modelo-c4/modelo-c4.md#4-c3--componentes-del-backend-b1) es la vista canónica del corte Express y contiene Acceso, Productores y Cosecha. El [C3 objetivo](../04-modelo-c4/modelo-c4-objetivo.md#4-c3--componentes-del-backend-b1) conserva los siete módulos proyectados. Esta página mantiene su matriz de trazabilidad del objetivo; las filas fuera de S/P/H no acreditan implementación.
+El [C3 implementado](../04-modelo-c4/modelo-c4.md#4-c3--componentes-del-backend-b1) es la vista canónica del corte Express y contiene Acceso, Productores, Cosecha, recepción en Acopio y consolidación de Trazabilidad para el prototipo académico. El [C3 objetivo](../04-modelo-c4/modelo-c4-objetivo.md#4-c3--componentes-del-backend-b1) conserva los siete módulos proyectados. Esta página mantiene su matriz de trazabilidad del objetivo; la presencia de Q/T1 no acredita calidad, QR ni otras capacidades todavía fuera del corte. [ADR-011](08-decisiones-acopio.md) precisa la implementación adoptada y sus validaciones externas pendientes.
 
 API REST es el conjunto de adaptadores de entrada de B1, no otro servidor. La consulta QR es una ruta pública del portal W1. ETL es el proceso J1 fuera del backend. Los [límites y propietarios de datos](01-estilo-arquitectonico.md#3-límites-y-propiedad-de-datos) completan las responsabilidades de esta matriz.
 

@@ -1,0 +1,39 @@
+✔ rechaza terminadores de línea sin reinterpretar la fracción decimal (2.2857ms)
+✖ normaliza UUID antes de comparar y detectar recepciones duplicadas (0.6294ms)
+✔ pesaje exacto, normalización y diferencia conservada (0.4633ms)
+✔ rechaza mediciones inválidas, neto enviado y redondeo implícito (0.2513ms)
+✔ fecha de cosecha local fija en Lima, incluso cerca de medianoche UTC (9.5811ms)
+✔ compatibilidad exige todos los ámbitos y no acepta IDs duplicados (0.5782ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 5
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 124.5034
+
+✖ failing tests:
+
+test at tests\unit\intake.test.js:28:1
+✖ normaliza UUID antes de comparar y detectar recepciones duplicadas (0.6294ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+
+  + 'ABCDEFAB-ABCD-4ABC-8ABC-ABCDEFABCDEF'
+  - 'abcdefab-abcd-4abc-8abc-abcdefabcdef'
+
+      at TestContext.<anonymous> (file:///<LOCAL_PATH>/repo-acopio/tests/unit/intake.test.js:30:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'ABCDEFAB-ABCD-4ABC-8ABC-ABCDEFABCDEF',
+    expected: 'abcdefab-abcd-4abc-8abc-abcdefabcdef',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

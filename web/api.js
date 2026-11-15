@@ -29,7 +29,9 @@ export async function listAll(path) {
   let result = [],
     offset = 0;
   for (;;) {
-    const page = await api(path + "?offset=" + offset);
+    const page = await api(
+      path + (path.includes("?") ? "&" : "?") + "offset=" + offset,
+    );
     result.push(...page.items);
     if (page.items.length < page.limit) return result;
     offset += page.limit;

@@ -1,0 +1,75 @@
+▶ Acopio HTTP y PostgreSQL: integridad y ámbito
+  ✖ consulta de saldo conserva un snapshot al confirmar y consumir en paralelo (148.589ms)
+  ✖ UUID equivalentes en centro, origen, ruta y clave conservan idempotencia (14.0434ms)
+  ✔ recibe, confirma y consolida composición exacta sin calidad ni despacho (51.9141ms)
+  ✔ discrepancia requiere revisión y confirmación separadas; no autoaprobación (36.6327ms)
+  ✔ permisos por centro y acción, origen ajeno y administrador sin herencia (79.7476ms)
+  ✔ rechaza mezcla por parcela/productor o fecha local sin consumir saldo (89.8448ms)
+  ✔ unicidad física: pre-lote completo y referencia por centro (27.0609ms)
+  ✔ recepción/revisión/confirmación idempotentes y revalidación tras revocar concesión (33.6282ms)
+  ✔ doble consumo concurrente con claves distintas y replay concurrente de lote (60.942ms)
+  ✔ dimensiones distintas no se convierten y exceso no modifica declaración (33.0276ms)
+  ✔ fallos reales de evento revierten recepción, revisión, confirmación y lote (57.5754ms)
+  ✔ fallo de auditoría revierte recepción e idempotencia (13.9847ms)
+  ✔ fallo de auditoría al consolidar revierte lote, aportes, evento y request (26.5369ms)
+  ✔ SQL protege hechos cerrados, autoaprobación y aporte completo (236.1632ms)
+✖ Acopio HTTP y PostgreSQL: integridad y ámbito (1334.4827ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 12
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1549.2083
+
+✖ failing tests:
+
+test at tests\integration\intake.test.js:126:11
+✖ consulta de saldo conserva un snapshot al confirmar y consumir en paralelo (148.589ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+    [
+      'weighed',
+      '0.000',
+  +   '100.000',
+      '0.000',
+  +   'ad66e1c1-b51f-4edc-9f61-1890dcd90179'
+  -   '0.000',
+  -   null
+    ]
+
+      at TestContext.<anonymous> (file:///<LOCAL_PATH>/repo-acopio/tests/integration/intake.test.js:132:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async TestContext.<anonymous> (file:///<LOCAL_PATH>/repo-acopio/tests/integration/intake.test.js:126:3)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'weighed', '0.000', '100.000', '0.000', 'ad66e1c1-b51f-4edc-9f61-1890dcd90179' ],
+    expected: [ 'weighed', '0.000', '0.000', '0.000', null ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at tests\integration\intake.test.js:136:11
+✖ UUID equivalentes en centro, origen, ruta y clave conservan idempotencia (14.0434ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  409 !== 200
+
+      at TestContext.<anonymous> (file:///<LOCAL_PATH>/repo-acopio/tests/integration/intake.test.js:141:129)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async TestContext.<anonymous> (file:///<LOCAL_PATH>/repo-acopio/tests/integration/intake.test.js:136:3)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 409,
+    expected: 200,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

@@ -1,6 +1,6 @@
 # Modelo C4 — Trazabilidad y Gestión Comercial de Palta Hass
 
-Archivo de arquitectura objetivo conservado como referencia. La [vista canónica del primer recorrido implementado](modelo-c4.md) usa Express y representa únicamente el código existente. Los modelos siguientes de QR, offline, Redis y ETL siguen proyectados.
+Archivo de arquitectura objetivo conservado como referencia histórica del alcance completo. Acopio y consolidación ya tienen un corte académico implementado en Q/T1 (2026-11-14); calidad, despacho y QR siguen proyectados. Los diagramas siguientes no acreditan implementación completa de Q/T1. La [vista canónica del primer recorrido implementado](modelo-c4.md) usa Express y representa únicamente el código existente. Los modelos siguientes de QR, offline, Redis y ETL siguen proyectados.
 
 **Estado:** arquitectura objetivo propuesta; revisión 2026-11-06. Los diagramas no acreditan implementación. Backend NestJS/TypeScript y web React son recomendaciones pendientes de ratificación; se conservan identificadores estables aunque cambie el framework.
 

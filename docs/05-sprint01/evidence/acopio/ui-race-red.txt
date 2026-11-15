@@ -1,0 +1,58 @@
+{"event":"server_started","port":3011}
+
+Running 1 test using 1 worker
+
+{"requestId":"bca95e47-cc06-49ba-8621-bfc90ebde317","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+{"requestId":"e9a06367-8ef6-46f9-9314-aee940ecdcbb","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+{"requestId":"36371b1e-918c-4f6a-af9a-b0c808cca7c4","method":"POST","status":409,"code":"INTAKE_CONFLICT"}
+  ✘  1 tests\e2e\intake.spec.js:207:1 › Acopio: dos interfaces concurrentes no consumen dos veces (6.4s)
+
+
+  1) tests\e2e\intake.spec.js:207:1 › Acopio: dos interfaces concurrentes no consumen dos veces ────
+
+    Error: expect(locator).toBeDisabled() failed
+
+    Locator:  getByRole('button', { name: 'Consolidar seleccionadas' })
+    Expected: disabled
+    Received: enabled
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toBeDisabled" getByRole('button', { name: 'Consolidar seleccionadas' }) with timeout 5000ms
+      - waiting for getByRole('button', { name: 'Consolidar seleccionadas' })
+        14 × locator resolved to <button>Consolidar seleccionadas</button>
+           - unexpected value "enabled"
+
+
+      239 |     await loser.getByRole('button',{name:'Actualizar datos'}).click();
+      240 |     await expect(loser.getByRole('button',{name:'Actualizar datos'})).toHaveCount(0);
+    > 241 |     await expect(loser.getByRole('button',{name:'Consolidar seleccionadas'})).toBeDisabled();
+          |                                                                               ^
+      242 |     const db = await connectDatabase();
+      243 |     try {
+      244 |       const rows = (
+        at <WORKSPACE>\repo-acopio\tests\e2e\intake.spec.js:241:79
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\intake-Acopio-dos-interfac-4ccf6-entes-no-consumen-dos-veces\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\intake-Acopio-dos-interfac-4ccf6-entes-no-consumen-dos-veces\test-failed-2.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\intake-Acopio-dos-interfac-4ccf6-entes-no-consumen-dos-veces\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\intake-Acopio-dos-interfac-4ccf6-entes-no-consumen-dos-veces\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\intake-Acopio-dos-interfac-4ccf6-entes-no-consumen-dos-veces\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests\e2e\intake.spec.js:207:1 › Acopio: dos interfaces concurrentes no consumen dos veces ─────
+.env not found. Continuing without it.
+(node:27256) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

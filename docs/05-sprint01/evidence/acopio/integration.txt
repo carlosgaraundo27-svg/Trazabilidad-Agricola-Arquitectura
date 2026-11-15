@@ -1,0 +1,37 @@
+▶ integración HTTP + SQL del primer recorrido
+  ✔ credenciales, sesión, CSRF, origen y rol (36.5369ms)
+  ✔ alta de productor y parcela; aislamiento por organización (16.5907ms)
+  ✔ rechaza entradas inválidas sin escribir (15.4426ms)
+  ✔ captura, reintento concurrente, conflicto y persistencia (88.3299ms)
+  ✔ revocar asignación bloquea incluso reintento aceptado (7.2974ms)
+  ✔ fallo real de auditoría revierte cosecha y pre-lote (10.4071ms)
+  ✔ CHECK y FK rechazan corrupción y otra organización (2.2337ms)
+  ✔ cuenta inactiva, sesión vencida y logout (7.3718ms)
+  ✔ errores HTTP seguros y límite de autenticación (359.5869ms)
+  ✔ migración down/up en base desechable (89.4937ms)
+✔ integración HTTP + SQL del primer recorrido (1053.1706ms)
+▶ Acopio HTTP y PostgreSQL: integridad y ámbito
+  ✔ recibe, confirma y consolida composición exacta sin calidad ni despacho (74.538ms)
+  ✔ discrepancia requiere revisión y confirmación separadas; no autoaprobación (38.0423ms)
+  ✔ permisos por centro y acción, origen ajeno y administrador sin herencia (86.657ms)
+  ✔ rechaza mezcla por parcela/productor o fecha local sin consumir saldo (89.3663ms)
+  ✔ unicidad física: pre-lote completo y referencia por centro (22.1276ms)
+  ✔ recepción/revisión/confirmación idempotentes y revalidación tras revocar concesión (116.6836ms)
+  ✔ doble consumo concurrente con claves distintas y replay concurrente de lote (91.6503ms)
+  ✔ dimensiones distintas no se convierten y exceso no modifica declaración (37.8949ms)
+  ✔ fallos reales de evento revierten recepción, revisión, confirmación y lote (55.9917ms)
+  ✔ fallo de auditoría revierte recepción e idempotencia (19.429ms)
+  ✔ fallo de auditoría al consolidar revierte lote, aportes, evento y request (30.158ms)
+  ✔ SQL protege hechos cerrados, autoaprobación y aporte completo (531.1164ms)
+✔ Acopio HTTP y PostgreSQL: integridad y ámbito (1452.4197ms)
+.env not found. Continuing without it.
+{"event":"server_started","port":0}
+✔ servidor E2E termina por IPC y libera el puerto sin taskkill (459.8328ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 25
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3444.5443

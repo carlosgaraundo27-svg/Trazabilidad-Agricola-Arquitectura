@@ -1,0 +1,20 @@
+{
+  "finishedAt": "2026-11-14T15:07:42.647Z",
+  "engine": "PostgreSQL nativo 18.6, cluster de pruebas separado en 55434",
+  "restart": "pg_ctl stop fast + postgres, mismo directorio, sin migrate/seed entre snapshots",
+  "unchanged": true,
+  "hash": "612bf670dad884fcf60c8ac213193ddbfa4dcc6476c453e59acdb9416e29418d",
+  "counts": {
+    "receipts": 7,
+    "reviews": 1,
+    "confirmations": 6,
+    "lots": 3,
+    "contributions": 4,
+    "events": 3
+  },
+  "lotIds": [
+    "c1d3377d-0dce-4496-95e2-ba3c6c78aa6d",
+    "f4e3b9c7-1276-4683-941b-26d080d9f43a",
+    "fdc0785e-ad02-4d37-b63a-475a44fd59e3"
+  ]
+}

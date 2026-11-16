@@ -100,3 +100,7 @@ Q1–Q9 adoptadas por el usuario: captura por lote, pesos individuales g/fruto, 
 ## Publicación QR por lote
 
 Publicación, actualización y retiro explícitos por usuario autorizado del centro, con DTO público permitido y QR basado en PUBLIC_BASE_URL. Consulta móvil anónima con Redis subordinado a estado/versión PostgreSQL; un retiro no se sirve aunque falle invalidación. No equivale a aprobar Calidad. [Guía y comandos](tecnologia/publicacion-qr.md), [especificación RF-08/RF-09](docs/03-diseno-de-software/06-especificacion-publicacion-qr.md), [ADR-013](docs/02-arquitectura/10-decisiones-publicacion-qr.md), [evidencias](docs/05-sprint01/evidence/qr/README.md). Sin QR por pallet ni mejora de rendimiento afirmada.
+
+## Siguiente recorrido — propuesta pendiente de decisiones
+
+[Inventario, Despacho y Entrega](docs/03-diseno-de-software/07-especificacion-inventario-despacho-entrega.md): D1–D9 con alternativas, recomendación y ejemplos de cantidades; estados, contratos, pantallas, migraciones candidatas y aceptación. Solo documentación: sin implementación logística hasta responder las decisiones. [Matriz provisional de 16 áreas](docs/05-sprint01/matriz-trabajo-final.md) y [continuidad](docs/05-sprint01/continuidad-inventario.md). Falta aportar la enumeración literal de la rúbrica para validar la correspondencia oficial.

@@ -53,3 +53,7 @@ Calidad académica implementada: [especificación Q1–Q9 adoptadas para el prot
 ## Publicación pública QR
 
 [Contrato, estados y PQ-01–13](03-diseno-de-software/06-especificacion-publicacion-qr.md), [ADR-013 / ADR-005 / ADR-008](02-arquitectura/10-decisiones-publicacion-qr.md), [guía](../tecnologia/publicacion-qr.md), [evidencia](05-sprint01/evidence/qr/README.md), [revisión e integración de Calidad #4](05-sprint01/revision-pr4.md). Publicación no equivale a aprobar Calidad.
+
+## Propuesta de Inventario, Despacho y Entrega
+
+[Especificación y decisiones D1–D9](03-diseno-de-software/07-especificacion-inventario-despacho-entrega.md), [ADR-014 propuesta](02-arquitectura/11-decisiones-inventario-despacho.md), [matriz provisional de 16 áreas del trabajo final](05-sprint01/matriz-trabajo-final.md), [continuidad](05-sprint01/continuidad-inventario.md). No se implementan reglas pendientes ni se afirma que la matriz sustituya la rúbrica oficial ausente. Base main d7da0d6, tras integrar técnicamente PR #5.

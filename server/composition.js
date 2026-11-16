@@ -9,7 +9,18 @@ import { intakeService } from "./modules/intake/application.js";
 import { intakeRepository } from "./modules/intake/repository.js";
 import { traceabilityService } from "./modules/traceability/application.js";
 import { traceabilityRepository } from "./modules/traceability/repository.js";
-export function compose(db) {
+import { publicationService } from "./modules/publication/application.js";
+import { publicationRepository } from "./modules/publication/repository.js";
+import { noCache } from "./adapters/public-cache.js";
+export function compose(
+  db,
+  {
+    cache = noCache,
+    baseUrl = process.env.PUBLIC_BASE_URL,
+    production = process.env.NODE_ENV === "production",
+    log = () => {},
+  } = {},
+) {
   const unitOfWork = (fn) => db.transaction(fn);
   const access = accessService({
     repository: accessRepository(),
@@ -37,5 +48,15 @@ export function compose(db) {
     harvest,
     traceability,
   });
-  return { access, producers, harvest, intake };
+  const publication = publicationService({
+    repository: publicationRepository(),
+    unitOfWork,
+    access,
+    traceability,
+    cache,
+    baseUrl,
+    production,
+    log,
+  });
+  return { access, producers, harvest, intake, publication };
 }

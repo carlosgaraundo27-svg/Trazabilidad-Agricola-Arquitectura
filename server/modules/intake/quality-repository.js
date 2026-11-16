@@ -1,6 +1,16 @@
 const select = `SELECT e.id,e.lot_id AS "lotId",e.organization_id AS "organizationId",e.center_id AS "centerId",e.state AS "evaluationState",e.version,e.capture,e.result AS "qualityResult",e.note,e.created_by AS "createdBy",e.created_at AS "createdAt",e.updated_by AS "updatedBy",e.updated_at AS "updatedAt",e.closed_by AS "closedBy",e.closed_at AS "closedAt" FROM quality.evaluations e`;
 export function qualityRepository() {
   return {
+    async eligibility(tx, actor, lotId) {
+      return (
+        (
+          await tx.query(
+            'SELECT id,version,state AS "evaluationState",result AS "qualityResult" FROM quality.evaluations WHERE lot_id=$1 AND organization_id=$2 FOR SHARE',
+            [lotId, actor.organizationId],
+          )
+        ).rows[0] ?? null
+      );
+    },
     async get(tx, actor, id, lock = "none") {
       let lockClause = "";
       if (lock === "update") lockClause = " FOR UPDATE OF e";

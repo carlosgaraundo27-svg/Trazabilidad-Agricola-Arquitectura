@@ -125,6 +125,7 @@ export function qualityService({
     }
   }
   return {
+    eligibility: (tx, actor, lotId) => repository.eligibility(tx, actor, lotId),
     close(actor, id, input, key) {
       return command(
         actor,

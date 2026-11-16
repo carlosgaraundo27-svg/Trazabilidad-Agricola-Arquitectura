@@ -2,6 +2,8 @@ import { AppError } from "../../shared/errors.js";
 import { compatibleOrigins } from "./domain.js";
 export function traceabilityService({ repository }) {
   return {
+    inventorySource: (tx, actor, id) =>
+      repository.inventorySource(tx, actor, id),
     identity: (tx, actor, id, lock) => repository.identity(tx, actor, id, lock),
     identities: (tx, actor, centerId, offset) =>
       repository.identities(tx, actor, centerId, offset),

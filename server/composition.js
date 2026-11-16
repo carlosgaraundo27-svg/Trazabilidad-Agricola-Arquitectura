@@ -14,6 +14,8 @@ import { traceabilityRepository } from "./modules/traceability/repository.js";
 import { publicationService } from "./modules/publication/application.js";
 import { publicationRepository } from "./modules/publication/repository.js";
 import { noCache } from "./adapters/public-cache.js";
+import { logisticsRepository } from "./modules/logistics/repository.js";
+import { logisticsService } from "./modules/logistics/application.js";
 export function compose(
   db,
   {
@@ -67,5 +69,20 @@ export function compose(
     traceability,
     intake,
   });
-  return { access, producers, harvest, intake, quality, publication };
+  const logistics = logisticsService({
+    repository: logisticsRepository(),
+    unitOfWork,
+    access,
+    traceability,
+    quality,
+  });
+  return {
+    access,
+    producers,
+    harvest,
+    intake,
+    quality,
+    publication,
+    logistics,
+  };
 }

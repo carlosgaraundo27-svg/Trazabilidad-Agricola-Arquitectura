@@ -1,6 +1,30 @@
 const entrySelect = `SELECT e.id,e.lot_id AS "lotId",e.center_id AS "centerId",e.admitted_kg::text AS "sourceKg",e.disposition,e.version,e.reference,e.evidence_ref AS "evidenceRef",e.created_by AS "createdBy",e.created_at AS "createdAt",e.release_evaluation_id AS "releaseEvaluationId",e.release_evaluation_version AS "releaseEvaluationVersion",e.release_reason AS "releaseReason",e.released_by AS "releasedBy",e.released_at AS "releasedAt" FROM inventory.entries e`;
 export function logisticsRepository() {
   return {
+    async inventoryPage(tx, actor, centerId, offset) {
+      return (
+        await tx.query(
+          `SELECT e.id,e.lot_id AS "lotId",e.center_id AS "centerId",e.disposition,e.version,e.admitted_kg::text AS "sourceKg",COALESCE((SELECT jsonb_object_agg(kind,amount) FROM (SELECT kind,sum(amount_kg)::text AS amount FROM inventory.movements WHERE entry_id=e.id GROUP BY kind) totals),'{}'::jsonb) AS totals FROM inventory.entries e WHERE e.organization_id=$1 AND e.center_id=$2 ORDER BY e.id LIMIT 100 OFFSET $3`,
+          [actor.organizationId, centerId, offset],
+        )
+      ).rows;
+    },
+    async entryProjection(tx, actor, lotIds) {
+      return (
+        await tx.query(
+          'SELECT lot_id AS "lotId",id FROM inventory.entries WHERE organization_id=$1 AND lot_id=ANY($2::uuid[])',
+          [actor.organizationId, lotIds],
+        )
+      ).rows;
+    },
+    async shipmentPage(tx, actor, centerId, offset) {
+      return (
+        await tx.query(
+          'SELECT s.id,s.entry_id AS "stockEntryId",e.lot_id AS "lotId",s.center_id AS "centerId",s.quantity_kg::text AS "quantityKg",s.state,s.version,s.transport,s.destination_label AS "destinationLabel",s.departed_at AS "departedAt",s.created_at AS "createdAt" FROM logistics.shipments s JOIN inventory.entries e ON e.id=s.entry_id WHERE s.organization_id=$1 AND s.center_id=$2 ORDER BY s.id LIMIT 100 OFFSET $3',
+          [actor.organizationId, centerId, offset],
+        )
+      ).rows;
+    },
     async shipment(tx, actor, id, lock = "none") {
       const clause =
         lock === "update"
@@ -15,14 +39,6 @@ export function logisticsRepository() {
           [id, actor.organizationId],
         )
       ).rows[0];
-    },
-    async shipmentIds(tx, actor, centerId, offset) {
-      return (
-        await tx.query(
-          "SELECT id FROM logistics.shipments WHERE organization_id=$1 AND center_id=$2 ORDER BY id LIMIT 100 OFFSET $3",
-          [actor.organizationId, centerId, offset],
-        )
-      ).rows;
     },
     async createShipment(tx, actor, entry, input) {
       const id = crypto.randomUUID();
@@ -103,14 +119,6 @@ export function logisticsRepository() {
           [lotId, actor.organizationId],
         )
       ).rows[0];
-    },
-    async entryIds(tx, actor, centerId, offset) {
-      return (
-        await tx.query(
-          "SELECT id FROM inventory.entries WHERE organization_id=$1 AND center_id=$2 ORDER BY id LIMIT 100 OFFSET $3",
-          [actor.organizationId, centerId, offset],
-        )
-      ).rows;
     },
     async totals(tx, actor, id) {
       const rows = (

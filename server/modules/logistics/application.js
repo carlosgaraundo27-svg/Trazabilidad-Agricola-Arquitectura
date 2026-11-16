@@ -198,7 +198,10 @@ export function logisticsService({
               "TRANSPORT_INCOMPLETE",
               "Complete guía, vehículo, placa, chofer, precinto y destino antes de confirmar salida.",
             );
-          if (Date.parse(input.departedAt) < Date.parse(shipment.createdAt))
+          if (
+            Date.parse(input.departedAt) <
+            new Date(shipment.createdAt).getTime()
+          )
             throw new AppError(
               422,
               "DEPARTURE_TIME",
@@ -208,7 +211,8 @@ export function logisticsService({
         if (
           kind === "delivered" &&
           (input.receivedKg !== shipment.quantityKg ||
-            Date.parse(input.deliveredAt) < Date.parse(shipment.departedAt))
+            Date.parse(input.deliveredAt) <
+              new Date(shipment.departedAt).getTime())
         )
           throw new AppError(
             422,
@@ -332,14 +336,7 @@ export function logisticsService({
     shipments: (actor, { centerId, offset }) =>
       unitOfWork(async (tx) => {
         await access.requireCenter(tx, actor, centerId, "shipment:read");
-        const ids = await repository.shipmentIds(tx, actor, centerId, offset);
-        const items = [];
-        for (const { id } of ids) {
-          const s = await repository.shipment(tx, actor, id);
-          await repository.entry(tx, actor, s.stockEntryId, "share");
-          items.push(await responseShipment(tx, actor, id));
-        }
-        return items;
+        return repository.shipmentPage(tx, actor, centerId, offset);
       }),
     events: (actor, id, { offset }) =>
       unitOfWork(async (tx) => {
@@ -427,11 +424,37 @@ export function logisticsService({
     list: (actor, { centerId, offset }) =>
       unitOfWork(async (tx) => {
         await access.requireCenter(tx, actor, centerId, "inventory:read");
-        const ids = await repository.entryIds(tx, actor, centerId, offset);
-        const items = [];
-        for (const { id } of ids)
-          items.push(await responseEntry(tx, actor, id));
-        return items;
+        const rows = await repository.inventoryPage(
+          tx,
+          actor,
+          centerId,
+          offset,
+        );
+        return rows.map(({ totals, ...entry }) => ({
+          ...entry,
+          ...balances(totals),
+          unit: "kg",
+          packagingState: "not_managed",
+        }));
+      }),
+    candidates: (actor, { centerId, offset }) =>
+      unitOfWork(async (tx) => {
+        await access.requireCenter(tx, actor, centerId, "inventory:read");
+        const lots = await traceability.inventorySources(
+          tx,
+          actor,
+          centerId,
+          offset,
+        );
+        const entries = await repository.entryProjection(
+          tx,
+          actor,
+          lots.map((l) => l.id),
+        );
+        return lots.map((l) => ({
+          ...l,
+          stockEntryId: entries.find((e) => e.lotId === l.id)?.id ?? null,
+        }));
       }),
     movements: (actor, id, { offset }) =>
       unitOfWork(async (tx) => {

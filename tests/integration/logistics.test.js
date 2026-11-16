@@ -176,6 +176,14 @@ test("Inventario y despacho HTTP/PostgreSQL conservan masa y autorización", asy
         departedAt: "2026-01-02T20:00:00.123456Z",
       });
       assert.equal(r.status, 422);
+      const beforePreparation = await command(path + "/departure", {
+        ...versionInput(f.shipment),
+        departedAt: new Date(
+          Date.parse(f.shipment.createdAt) - 1,
+        ).toISOString(),
+      });
+      assert.equal(beforePreparation.status, 422);
+      assert.equal(beforePreparation.body.error.code, "DEPARTURE_TIME");
       r = await command(path + "/departure", {
         ...versionInput(f.shipment),
         departedAt: f.shipment.createdAt,

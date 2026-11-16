@@ -3690,6 +3690,1978 @@
           }
         }
       }
+    },
+    "/api/v1/inventory": {
+      "get": {
+        "summary": "Consultar existencias por centro",
+        "description": "D1=A–D9=A adoptadas para prototipo académico, sin aprobación docente ni validación agrícola. Lote completo por cantidad real; admisión única y explícita, sin backfill. Calidad closed/accepted requiere además liberación y acción autorizada. Reserva sin TTL; salida descuenta centro una sola vez, entrega mueve tránsito a entregado. Guía normalizada única por organización/centro, conserva asignaciones históricas incluso tras corrección/cancelación; regla de demo sin validez legal afirmada. Transporte privado obligatorio antes de salida, fuera de QR. Sin empaque/pallets, parciales, devoluciones ni edición ordinaria posterior a salida. Transacción de operación/movimiento/evento/audit/request; sesión/concesión revalidada antes de replay. Listas por página sin bloqueos múltiples; detalle/historia consistentes bajo bloqueo de entrada.",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "centerId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100000,
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado confirmado; kg exactos y ámbito autorizado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "maxItems": 100,
+                      "items": {
+                        "$ref": "#/components/schemas/StockEntrySummary"
+                      }
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "enum": [100]
+                    }
+                  },
+                  "required": ["items", "limit"]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Clave Idempotency-Key UUID inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sin sesión activa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acción o centro no autorizado; CSRF/origen rechazado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso inaccesible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Versión/estado/duplicado, STOCK_INSUFFICIENT, IDEMPOTENCY_CONFLICT o GUIDE_REFERENCE_CONFLICT. No se confirma ningún efecto.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Entrada inválida, QUALITY_NOT_APPROVED, INVENTORY_NOT_RELEASED, ADMISSION_QUANTITY, TRANSPORT_INCOMPLETE, DEPARTURE_TIME o DELIVERY_TOTAL. No se inventan pérdidas ni conversiones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Fallo interno; transacción revertida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/inventory/lots": {
+      "get": {
+        "summary": "Consultar lotes y admisión existente, sin fabricar saldo histórico",
+        "description": "D1=A–D9=A adoptadas para prototipo académico, sin aprobación docente ni validación agrícola. Lote completo por cantidad real; admisión única y explícita, sin backfill. Calidad closed/accepted requiere además liberación y acción autorizada. Reserva sin TTL; salida descuenta centro una sola vez, entrega mueve tránsito a entregado. Guía normalizada única por organización/centro, conserva asignaciones históricas incluso tras corrección/cancelación; regla de demo sin validez legal afirmada. Transporte privado obligatorio antes de salida, fuera de QR. Sin empaque/pallets, parciales, devoluciones ni edición ordinaria posterior a salida. Transacción de operación/movimiento/evento/audit/request; sesión/concesión revalidada antes de replay. Listas por página sin bloqueos múltiples; detalle/historia consistentes bajo bloqueo de entrada.",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "centerId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100000,
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado confirmado; kg exactos y ámbito autorizado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "maxItems": 100,
+                      "items": {
+                        "$ref": "#/components/schemas/InventoryCandidate"
+                      }
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "enum": [100]
+                    }
+                  },
+                  "required": ["items", "limit"]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Clave Idempotency-Key UUID inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sin sesión activa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acción o centro no autorizado; CSRF/origen rechazado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso inaccesible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Versión/estado/duplicado, STOCK_INSUFFICIENT, IDEMPOTENCY_CONFLICT o GUIDE_REFERENCE_CONFLICT. No se confirma ningún efecto.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Entrada inválida, QUALITY_NOT_APPROVED, INVENTORY_NOT_RELEASED, ADMISSION_QUANTITY, TRANSPORT_INCOMPLETE, DEPARTURE_TIME o DELIVERY_TOTAL. No se inventan pérdidas ni conversiones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Fallo interno; transacción revertida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/inventory/entries": {
+      "post": {
+        "summary": "Admitir total real en cuarentena",
+        "description": "D1=A–D9=A adoptadas para prototipo académico, sin aprobación docente ni validación agrícola. Lote completo por cantidad real; admisión única y explícita, sin backfill. Calidad closed/accepted requiere además liberación y acción autorizada. Reserva sin TTL; salida descuenta centro una sola vez, entrega mueve tránsito a entregado. Guía normalizada única por organización/centro, conserva asignaciones históricas incluso tras corrección/cancelación; regla de demo sin validez legal afirmada. Transporte privado obligatorio antes de salida, fuera de QR. Sin empaque/pallets, parciales, devoluciones ni edición ordinaria posterior a salida. Transacción de operación/movimiento/evento/audit/request; sesión/concesión revalidada antes de replay. Listas por página sin bloqueos múltiples; detalle/historia consistentes bajo bloqueo de entrada.",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InventoryAdmissionInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Replay autorizado de la respuesta original, o corrección PUT confirmada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StockEntry"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Resultado confirmado; kg exactos y ámbito autorizado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StockEntry"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Clave Idempotency-Key UUID inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sin sesión activa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acción o centro no autorizado; CSRF/origen rechazado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso inaccesible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Versión/estado/duplicado, STOCK_INSUFFICIENT, IDEMPOTENCY_CONFLICT o GUIDE_REFERENCE_CONFLICT. No se confirma ningún efecto.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Entrada inválida, QUALITY_NOT_APPROVED, INVENTORY_NOT_RELEASED, ADMISSION_QUANTITY, TRANSPORT_INCOMPLETE, DEPARTURE_TIME o DELIVERY_TOTAL. No se inventan pérdidas ni conversiones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Fallo interno; transacción revertida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/inventory/entries/{id}": {
+      "get": {
+        "summary": "Consultar inventario y elegibilidad mínima de Calidad",
+        "description": "D1=A–D9=A adoptadas para prototipo académico, sin aprobación docente ni validación agrícola. Lote completo por cantidad real; admisión única y explícita, sin backfill. Calidad closed/accepted requiere además liberación y acción autorizada. Reserva sin TTL; salida descuenta centro una sola vez, entrega mueve tránsito a entregado. Guía normalizada única por organización/centro, conserva asignaciones históricas incluso tras corrección/cancelación; regla de demo sin validez legal afirmada. Transporte privado obligatorio antes de salida, fuera de QR. Sin empaque/pallets, parciales, devoluciones ni edición ordinaria posterior a salida. Transacción de operación/movimiento/evento/audit/request; sesión/concesión revalidada antes de replay. Listas por página sin bloqueos múltiples; detalle/historia consistentes bajo bloqueo de entrada.",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado confirmado; kg exactos y ámbito autorizado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StockEntry"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Clave Idempotency-Key UUID inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sin sesión activa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acción o centro no autorizado; CSRF/origen rechazado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso inaccesible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Versión/estado/duplicado, STOCK_INSUFFICIENT, IDEMPOTENCY_CONFLICT o GUIDE_REFERENCE_CONFLICT. No se confirma ningún efecto.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Entrada inválida, QUALITY_NOT_APPROVED, INVENTORY_NOT_RELEASED, ADMISSION_QUANTITY, TRANSPORT_INCOMPLETE, DEPARTURE_TIME o DELIVERY_TOTAL. No se inventan pérdidas ni conversiones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Fallo interno; transacción revertida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/inventory/entries/{id}/release": {
+      "post": {
+        "summary": "Liberación logística explícita tras closed/accepted",
+        "description": "D1=A–D9=A adoptadas para prototipo académico, sin aprobación docente ni validación agrícola. Lote completo por cantidad real; admisión única y explícita, sin backfill. Calidad closed/accepted requiere además liberación y acción autorizada. Reserva sin TTL; salida descuenta centro una sola vez, entrega mueve tránsito a entregado. Guía normalizada única por organización/centro, conserva asignaciones históricas incluso tras corrección/cancelación; regla de demo sin validez legal afirmada. Transporte privado obligatorio antes de salida, fuera de QR. Sin empaque/pallets, parciales, devoluciones ni edición ordinaria posterior a salida. Transacción de operación/movimiento/evento/audit/request; sesión/concesión revalidada antes de replay. Listas por página sin bloqueos múltiples; detalle/historia consistentes bajo bloqueo de entrada.",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InventoryReleaseInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Replay autorizado de la respuesta original, o corrección PUT confirmada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StockEntry"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Resultado confirmado; kg exactos y ámbito autorizado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StockEntry"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Clave Idempotency-Key UUID inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sin sesión activa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acción o centro no autorizado; CSRF/origen rechazado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso inaccesible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Versión/estado/duplicado, STOCK_INSUFFICIENT, IDEMPOTENCY_CONFLICT o GUIDE_REFERENCE_CONFLICT. No se confirma ningún efecto.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Entrada inválida, QUALITY_NOT_APPROVED, INVENTORY_NOT_RELEASED, ADMISSION_QUANTITY, TRANSPORT_INCOMPLETE, DEPARTURE_TIME o DELIVERY_TOTAL. No se inventan pérdidas ni conversiones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Fallo interno; transacción revertida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/inventory/entries/{id}/movements": {
+      "get": {
+        "summary": "Movimientos de inventario, balance y versión del mismo snapshot",
+        "description": "D1=A–D9=A adoptadas para prototipo académico, sin aprobación docente ni validación agrícola. Lote completo por cantidad real; admisión única y explícita, sin backfill. Calidad closed/accepted requiere además liberación y acción autorizada. Reserva sin TTL; salida descuenta centro una sola vez, entrega mueve tránsito a entregado. Guía normalizada única por organización/centro, conserva asignaciones históricas incluso tras corrección/cancelación; regla de demo sin validez legal afirmada. Transporte privado obligatorio antes de salida, fuera de QR. Sin empaque/pallets, parciales, devoluciones ni edición ordinaria posterior a salida. Transacción de operación/movimiento/evento/audit/request; sesión/concesión revalidada antes de replay. Listas por página sin bloqueos múltiples; detalle/historia consistentes bajo bloqueo de entrada.",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100000,
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado confirmado; kg exactos y ámbito autorizado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "maxItems": 100,
+                      "items": {
+                        "$ref": "#/components/schemas/InventoryMovement"
+                      }
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "enum": [100]
+                    },
+                    "snapshotVersion": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 2147483647
+                    },
+                    "inventory": {
+                      "$ref": "#/components/schemas/StockEntry"
+                    }
+                  },
+                  "required": ["items", "limit", "snapshotVersion", "inventory"]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Clave Idempotency-Key UUID inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sin sesión activa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acción o centro no autorizado; CSRF/origen rechazado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso inaccesible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Versión/estado/duplicado, STOCK_INSUFFICIENT, IDEMPOTENCY_CONFLICT o GUIDE_REFERENCE_CONFLICT. No se confirma ningún efecto.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Entrada inválida, QUALITY_NOT_APPROVED, INVENTORY_NOT_RELEASED, ADMISSION_QUANTITY, TRANSPORT_INCOMPLETE, DEPARTURE_TIME o DELIVERY_TOTAL. No se inventan pérdidas ni conversiones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Fallo interno; transacción revertida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/shipments": {
+      "get": {
+        "summary": "Consultar despachos por centro",
+        "description": "D1=A–D9=A adoptadas para prototipo académico, sin aprobación docente ni validación agrícola. Lote completo por cantidad real; admisión única y explícita, sin backfill. Calidad closed/accepted requiere además liberación y acción autorizada. Reserva sin TTL; salida descuenta centro una sola vez, entrega mueve tránsito a entregado. Guía normalizada única por organización/centro, conserva asignaciones históricas incluso tras corrección/cancelación; regla de demo sin validez legal afirmada. Transporte privado obligatorio antes de salida, fuera de QR. Sin empaque/pallets, parciales, devoluciones ni edición ordinaria posterior a salida. Transacción de operación/movimiento/evento/audit/request; sesión/concesión revalidada antes de replay. Listas por página sin bloqueos múltiples; detalle/historia consistentes bajo bloqueo de entrada.",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "centerId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100000,
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado confirmado; kg exactos y ámbito autorizado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "maxItems": 100,
+                      "items": {
+                        "$ref": "#/components/schemas/ShipmentSummary"
+                      }
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "enum": [100]
+                    }
+                  },
+                  "required": ["items", "limit"]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Clave Idempotency-Key UUID inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sin sesión activa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acción o centro no autorizado; CSRF/origen rechazado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso inaccesible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Versión/estado/duplicado, STOCK_INSUFFICIENT, IDEMPOTENCY_CONFLICT o GUIDE_REFERENCE_CONFLICT. No se confirma ningún efecto.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Entrada inválida, QUALITY_NOT_APPROVED, INVENTORY_NOT_RELEASED, ADMISSION_QUANTITY, TRANSPORT_INCOMPLETE, DEPARTURE_TIME o DELIVERY_TOTAL. No se inventan pérdidas ni conversiones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Fallo interno; transacción revertida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Preparar lote completo sin reserva implícita",
+        "description": "D1=A–D9=A adoptadas para prototipo académico, sin aprobación docente ni validación agrícola. Lote completo por cantidad real; admisión única y explícita, sin backfill. Calidad closed/accepted requiere además liberación y acción autorizada. Reserva sin TTL; salida descuenta centro una sola vez, entrega mueve tránsito a entregado. Guía normalizada única por organización/centro, conserva asignaciones históricas incluso tras corrección/cancelación; regla de demo sin validez legal afirmada. Transporte privado obligatorio antes de salida, fuera de QR. Sin empaque/pallets, parciales, devoluciones ni edición ordinaria posterior a salida. Transacción de operación/movimiento/evento/audit/request; sesión/concesión revalidada antes de replay. Listas por página sin bloqueos múltiples; detalle/historia consistentes bajo bloqueo de entrada.",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ShipmentCreateInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Replay autorizado de la respuesta original, o corrección PUT confirmada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Shipment"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Resultado confirmado; kg exactos y ámbito autorizado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Shipment"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Clave Idempotency-Key UUID inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sin sesión activa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acción o centro no autorizado; CSRF/origen rechazado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso inaccesible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Versión/estado/duplicado, STOCK_INSUFFICIENT, IDEMPOTENCY_CONFLICT o GUIDE_REFERENCE_CONFLICT. No se confirma ningún efecto.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Entrada inválida, QUALITY_NOT_APPROVED, INVENTORY_NOT_RELEASED, ADMISSION_QUANTITY, TRANSPORT_INCOMPLETE, DEPARTURE_TIME o DELIVERY_TOTAL. No se inventan pérdidas ni conversiones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Fallo interno; transacción revertida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/shipments/{id}": {
+      "get": {
+        "summary": "Consultar despacho, inventario y entrega",
+        "description": "D1=A–D9=A adoptadas para prototipo académico, sin aprobación docente ni validación agrícola. Lote completo por cantidad real; admisión única y explícita, sin backfill. Calidad closed/accepted requiere además liberación y acción autorizada. Reserva sin TTL; salida descuenta centro una sola vez, entrega mueve tránsito a entregado. Guía normalizada única por organización/centro, conserva asignaciones históricas incluso tras corrección/cancelación; regla de demo sin validez legal afirmada. Transporte privado obligatorio antes de salida, fuera de QR. Sin empaque/pallets, parciales, devoluciones ni edición ordinaria posterior a salida. Transacción de operación/movimiento/evento/audit/request; sesión/concesión revalidada antes de replay. Listas por página sin bloqueos múltiples; detalle/historia consistentes bajo bloqueo de entrada.",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado confirmado; kg exactos y ámbito autorizado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Shipment"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Clave Idempotency-Key UUID inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sin sesión activa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acción o centro no autorizado; CSRF/origen rechazado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso inaccesible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Versión/estado/duplicado, STOCK_INSUFFICIENT, IDEMPOTENCY_CONFLICT o GUIDE_REFERENCE_CONFLICT. No se confirma ningún efecto.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Entrada inválida, QUALITY_NOT_APPROVED, INVENTORY_NOT_RELEASED, ADMISSION_QUANTITY, TRANSPORT_INCOMPLETE, DEPARTURE_TIME o DELIVERY_TOTAL. No se inventan pérdidas ni conversiones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Fallo interno; transacción revertida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/shipments/{id}/transport": {
+      "put": {
+        "summary": "Corregir transporte antes de salida, conservando antes/después",
+        "description": "D1=A–D9=A adoptadas para prototipo académico, sin aprobación docente ni validación agrícola. Lote completo por cantidad real; admisión única y explícita, sin backfill. Calidad closed/accepted requiere además liberación y acción autorizada. Reserva sin TTL; salida descuenta centro una sola vez, entrega mueve tránsito a entregado. Guía normalizada única por organización/centro, conserva asignaciones históricas incluso tras corrección/cancelación; regla de demo sin validez legal afirmada. Transporte privado obligatorio antes de salida, fuera de QR. Sin empaque/pallets, parciales, devoluciones ni edición ordinaria posterior a salida. Transacción de operación/movimiento/evento/audit/request; sesión/concesión revalidada antes de replay. Listas por página sin bloqueos múltiples; detalle/historia consistentes bajo bloqueo de entrada.",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ShipmentTransportInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Replay autorizado de la respuesta original, o corrección PUT confirmada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Shipment"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Clave Idempotency-Key UUID inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sin sesión activa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acción o centro no autorizado; CSRF/origen rechazado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso inaccesible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Versión/estado/duplicado, STOCK_INSUFFICIENT, IDEMPOTENCY_CONFLICT o GUIDE_REFERENCE_CONFLICT. No se confirma ningún efecto.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Entrada inválida, QUALITY_NOT_APPROVED, INVENTORY_NOT_RELEASED, ADMISSION_QUANTITY, TRANSPORT_INCOMPLETE, DEPARTURE_TIME o DELIVERY_TOTAL. No se inventan pérdidas ni conversiones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Fallo interno; transacción revertida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/shipments/{id}/reservation": {
+      "post": {
+        "summary": "Reservar lote completo sin vencimiento automático",
+        "description": "D1=A–D9=A adoptadas para prototipo académico, sin aprobación docente ni validación agrícola. Lote completo por cantidad real; admisión única y explícita, sin backfill. Calidad closed/accepted requiere además liberación y acción autorizada. Reserva sin TTL; salida descuenta centro una sola vez, entrega mueve tránsito a entregado. Guía normalizada única por organización/centro, conserva asignaciones históricas incluso tras corrección/cancelación; regla de demo sin validez legal afirmada. Transporte privado obligatorio antes de salida, fuera de QR. Sin empaque/pallets, parciales, devoluciones ni edición ordinaria posterior a salida. Transacción de operación/movimiento/evento/audit/request; sesión/concesión revalidada antes de replay. Listas por página sin bloqueos múltiples; detalle/historia consistentes bajo bloqueo de entrada.",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ShipmentReservationInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Replay autorizado de la respuesta original, o corrección PUT confirmada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Shipment"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Resultado confirmado; kg exactos y ámbito autorizado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Shipment"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Clave Idempotency-Key UUID inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sin sesión activa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acción o centro no autorizado; CSRF/origen rechazado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso inaccesible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Versión/estado/duplicado, STOCK_INSUFFICIENT, IDEMPOTENCY_CONFLICT o GUIDE_REFERENCE_CONFLICT. No se confirma ningún efecto.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Entrada inválida, QUALITY_NOT_APPROVED, INVENTORY_NOT_RELEASED, ADMISSION_QUANTITY, TRANSPORT_INCOMPLETE, DEPARTURE_TIME o DELIVERY_TOTAL. No se inventan pérdidas ni conversiones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Fallo interno; transacción revertida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/shipments/{id}/departure": {
+      "post": {
+        "summary": "Confirmar salida física una sola vez",
+        "description": "D1=A–D9=A adoptadas para prototipo académico, sin aprobación docente ni validación agrícola. Lote completo por cantidad real; admisión única y explícita, sin backfill. Calidad closed/accepted requiere además liberación y acción autorizada. Reserva sin TTL; salida descuenta centro una sola vez, entrega mueve tránsito a entregado. Guía normalizada única por organización/centro, conserva asignaciones históricas incluso tras corrección/cancelación; regla de demo sin validez legal afirmada. Transporte privado obligatorio antes de salida, fuera de QR. Sin empaque/pallets, parciales, devoluciones ni edición ordinaria posterior a salida. Transacción de operación/movimiento/evento/audit/request; sesión/concesión revalidada antes de replay. Listas por página sin bloqueos múltiples; detalle/historia consistentes bajo bloqueo de entrada.",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ShipmentDepartureInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Replay autorizado de la respuesta original, o corrección PUT confirmada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Shipment"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Resultado confirmado; kg exactos y ámbito autorizado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Shipment"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Clave Idempotency-Key UUID inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sin sesión activa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acción o centro no autorizado; CSRF/origen rechazado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso inaccesible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Versión/estado/duplicado, STOCK_INSUFFICIENT, IDEMPOTENCY_CONFLICT o GUIDE_REFERENCE_CONFLICT. No se confirma ningún efecto.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Entrada inválida, QUALITY_NOT_APPROVED, INVENTORY_NOT_RELEASED, ADMISSION_QUANTITY, TRANSPORT_INCOMPLETE, DEPARTURE_TIME o DELIVERY_TOTAL. No se inventan pérdidas ni conversiones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Fallo interno; transacción revertida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/shipments/{id}/delivery": {
+      "post": {
+        "summary": "Confirmar entrega total sin segundo descuento de stock",
+        "description": "D1=A–D9=A adoptadas para prototipo académico, sin aprobación docente ni validación agrícola. Lote completo por cantidad real; admisión única y explícita, sin backfill. Calidad closed/accepted requiere además liberación y acción autorizada. Reserva sin TTL; salida descuenta centro una sola vez, entrega mueve tránsito a entregado. Guía normalizada única por organización/centro, conserva asignaciones históricas incluso tras corrección/cancelación; regla de demo sin validez legal afirmada. Transporte privado obligatorio antes de salida, fuera de QR. Sin empaque/pallets, parciales, devoluciones ni edición ordinaria posterior a salida. Transacción de operación/movimiento/evento/audit/request; sesión/concesión revalidada antes de replay. Listas por página sin bloqueos múltiples; detalle/historia consistentes bajo bloqueo de entrada.",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ShipmentDeliveryInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Replay autorizado de la respuesta original, o corrección PUT confirmada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Shipment"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Resultado confirmado; kg exactos y ámbito autorizado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Shipment"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Clave Idempotency-Key UUID inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sin sesión activa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acción o centro no autorizado; CSRF/origen rechazado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso inaccesible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Versión/estado/duplicado, STOCK_INSUFFICIENT, IDEMPOTENCY_CONFLICT o GUIDE_REFERENCE_CONFLICT. No se confirma ningún efecto.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Entrada inválida, QUALITY_NOT_APPROVED, INVENTORY_NOT_RELEASED, ADMISSION_QUANTITY, TRANSPORT_INCOMPLETE, DEPARTURE_TIME o DELIVERY_TOTAL. No se inventan pérdidas ni conversiones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Fallo interno; transacción revertida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/shipments/{id}/cancellation": {
+      "post": {
+        "summary": "Cancelar antes de salida y liberar reserva atómicamente",
+        "description": "D1=A–D9=A adoptadas para prototipo académico, sin aprobación docente ni validación agrícola. Lote completo por cantidad real; admisión única y explícita, sin backfill. Calidad closed/accepted requiere además liberación y acción autorizada. Reserva sin TTL; salida descuenta centro una sola vez, entrega mueve tránsito a entregado. Guía normalizada única por organización/centro, conserva asignaciones históricas incluso tras corrección/cancelación; regla de demo sin validez legal afirmada. Transporte privado obligatorio antes de salida, fuera de QR. Sin empaque/pallets, parciales, devoluciones ni edición ordinaria posterior a salida. Transacción de operación/movimiento/evento/audit/request; sesión/concesión revalidada antes de replay. Listas por página sin bloqueos múltiples; detalle/historia consistentes bajo bloqueo de entrada.",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ShipmentCancellationInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Replay autorizado de la respuesta original, o corrección PUT confirmada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Shipment"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Resultado confirmado; kg exactos y ámbito autorizado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Shipment"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Clave Idempotency-Key UUID inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sin sesión activa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acción o centro no autorizado; CSRF/origen rechazado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso inaccesible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Versión/estado/duplicado, STOCK_INSUFFICIENT, IDEMPOTENCY_CONFLICT o GUIDE_REFERENCE_CONFLICT. No se confirma ningún efecto.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Entrada inválida, QUALITY_NOT_APPROVED, INVENTORY_NOT_RELEASED, ADMISSION_QUANTITY, TRANSPORT_INCOMPLETE, DEPARTURE_TIME o DELIVERY_TOTAL. No se inventan pérdidas ni conversiones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Fallo interno; transacción revertida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/shipments/{id}/events": {
+      "get": {
+        "summary": "Historial privado e inmutable del despacho",
+        "description": "D1=A–D9=A adoptadas para prototipo académico, sin aprobación docente ni validación agrícola. Lote completo por cantidad real; admisión única y explícita, sin backfill. Calidad closed/accepted requiere además liberación y acción autorizada. Reserva sin TTL; salida descuenta centro una sola vez, entrega mueve tránsito a entregado. Guía normalizada única por organización/centro, conserva asignaciones históricas incluso tras corrección/cancelación; regla de demo sin validez legal afirmada. Transporte privado obligatorio antes de salida, fuera de QR. Sin empaque/pallets, parciales, devoluciones ni edición ordinaria posterior a salida. Transacción de operación/movimiento/evento/audit/request; sesión/concesión revalidada antes de replay. Listas por página sin bloqueos múltiples; detalle/historia consistentes bajo bloqueo de entrada.",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100000,
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultado confirmado; kg exactos y ámbito autorizado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "maxItems": 100,
+                      "items": {
+                        "$ref": "#/components/schemas/LogisticsEvent"
+                      }
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "enum": [100]
+                    },
+                    "snapshotVersion": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 2147483647
+                    },
+                    "shipment": {
+                      "$ref": "#/components/schemas/Shipment"
+                    }
+                  },
+                  "required": ["items", "limit", "snapshotVersion", "shipment"]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Clave Idempotency-Key UUID inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sin sesión activa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acción o centro no autorizado; CSRF/origen rechazado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso inaccesible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Versión/estado/duplicado, STOCK_INSUFFICIENT, IDEMPOTENCY_CONFLICT o GUIDE_REFERENCE_CONFLICT. No se confirma ningún efecto.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Entrada inválida, QUALITY_NOT_APPROVED, INVENTORY_NOT_RELEASED, ADMISSION_QUANTITY, TRANSPORT_INCOMPLETE, DEPARTURE_TIME o DELIVERY_TOTAL. No se inventan pérdidas ni conversiones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Fallo interno; transacción revertida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -5818,6 +7790,878 @@
           }
         },
         "required": ["id", "state", "lotCode"]
+      },
+      "LogisticsTransport": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "guideReference": {
+            "type": ["string", "null"],
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "vehicleLabel": {
+            "type": ["string", "null"],
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "plate": {
+            "type": ["string", "null"],
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "driverName": {
+            "type": ["string", "null"],
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "sealReference": {
+            "type": ["string", "null"],
+            "minLength": 1,
+            "maxLength": 120
+          }
+        },
+        "required": [
+          "guideReference",
+          "vehicleLabel",
+          "plate",
+          "driverName",
+          "sealReference"
+        ]
+      },
+      "LogisticsTransportInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "guideReference": {
+            "type": ["string", "null"],
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "vehicleLabel": {
+            "type": ["string", "null"],
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "plate": {
+            "type": ["string", "null"],
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "driverName": {
+            "type": ["string", "null"],
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "sealReference": {
+            "type": ["string", "null"],
+            "minLength": 1,
+            "maxLength": 120
+          }
+        },
+        "required": []
+      },
+      "LogisticsQualitySummary": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "evaluationState": {
+            "type": "string",
+            "enum": ["draft", "closed"]
+          },
+          "qualityResult": {
+            "type": ["string", "null"],
+            "enum": ["accepted", "observed", "rejected", null]
+          }
+        },
+        "required": ["id", "version", "evaluationState", "qualityResult"]
+      },
+      "InventoryContribution": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "receiptId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "amountKg": {
+            "type": "string",
+            "pattern": "^(?:0|[1-9][0-9]{0,11})\\.[0-9]{3}$"
+          },
+          "origin": {
+            "$ref": "#/components/schemas/IntakeOrigin"
+          }
+        },
+        "required": ["receiptId", "amountKg", "origin"]
+      },
+      "StockEntrySummary": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "lotId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "centerId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "sourceKg": {
+            "type": "string",
+            "pattern": "^(?:0|[1-9][0-9]{0,11})\\.[0-9]{3}$"
+          },
+          "disposition": {
+            "type": "string",
+            "enum": ["quarantine", "released"]
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "admittedKg": {
+            "type": "string",
+            "pattern": "^(?:0|[1-9][0-9]{0,11})\\.[0-9]{3}$"
+          },
+          "onHandKg": {
+            "type": "string",
+            "pattern": "^(?:0|[1-9][0-9]{0,11})\\.[0-9]{3}$"
+          },
+          "reservedKg": {
+            "type": "string",
+            "pattern": "^(?:0|[1-9][0-9]{0,11})\\.[0-9]{3}$"
+          },
+          "unreservedKg": {
+            "type": "string",
+            "pattern": "^(?:0|[1-9][0-9]{0,11})\\.[0-9]{3}$"
+          },
+          "inTransitKg": {
+            "type": "string",
+            "pattern": "^(?:0|[1-9][0-9]{0,11})\\.[0-9]{3}$"
+          },
+          "deliveredKg": {
+            "type": "string",
+            "pattern": "^(?:0|[1-9][0-9]{0,11})\\.[0-9]{3}$"
+          },
+          "unit": {
+            "type": "string",
+            "enum": ["kg"]
+          },
+          "packagingState": {
+            "type": "string",
+            "enum": ["not_managed"],
+            "description": "Empaque no cubierto; RF-10 parcial. No afirma que el lote esté empacado."
+          }
+        },
+        "required": [
+          "id",
+          "lotId",
+          "centerId",
+          "sourceKg",
+          "disposition",
+          "version",
+          "admittedKg",
+          "onHandKg",
+          "reservedKg",
+          "unreservedKg",
+          "inTransitKg",
+          "deliveredKg",
+          "unit",
+          "packagingState"
+        ]
+      },
+      "StockEntry": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "lotId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "centerId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "sourceKg": {
+            "type": "string",
+            "pattern": "^(?:0|[1-9][0-9]{0,11})\\.[0-9]{3}$"
+          },
+          "disposition": {
+            "type": "string",
+            "enum": ["quarantine", "released"]
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "admittedKg": {
+            "type": "string",
+            "pattern": "^(?:0|[1-9][0-9]{0,11})\\.[0-9]{3}$"
+          },
+          "onHandKg": {
+            "type": "string",
+            "pattern": "^(?:0|[1-9][0-9]{0,11})\\.[0-9]{3}$"
+          },
+          "reservedKg": {
+            "type": "string",
+            "pattern": "^(?:0|[1-9][0-9]{0,11})\\.[0-9]{3}$"
+          },
+          "unreservedKg": {
+            "type": "string",
+            "pattern": "^(?:0|[1-9][0-9]{0,11})\\.[0-9]{3}$"
+          },
+          "inTransitKg": {
+            "type": "string",
+            "pattern": "^(?:0|[1-9][0-9]{0,11})\\.[0-9]{3}$"
+          },
+          "deliveredKg": {
+            "type": "string",
+            "pattern": "^(?:0|[1-9][0-9]{0,11})\\.[0-9]{3}$"
+          },
+          "unit": {
+            "type": "string",
+            "enum": ["kg"]
+          },
+          "packagingState": {
+            "type": "string",
+            "enum": ["not_managed"],
+            "description": "Empaque no cubierto; RF-10 parcial. No afirma que el lote esté empacado."
+          },
+          "reference": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "evidenceRef": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "createdBy": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "releaseEvaluationId": {
+            "type": ["string", "null"],
+            "format": "uuid"
+          },
+          "releaseEvaluationVersion": {
+            "type": ["integer", "null"],
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "releaseReason": {
+            "type": ["string", "null"],
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "releasedBy": {
+            "type": ["string", "null"],
+            "format": "uuid"
+          },
+          "releasedAt": {
+            "type": ["string", "null"],
+            "format": "date-time"
+          },
+          "qualitySummary": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/LogisticsQualitySummary"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "dispatchableKg": {
+            "type": "string",
+            "pattern": "^(?:0|[1-9][0-9]{0,11})\\.[0-9]{3}$"
+          },
+          "contributions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InventoryContribution"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "lotId",
+          "centerId",
+          "sourceKg",
+          "disposition",
+          "version",
+          "admittedKg",
+          "onHandKg",
+          "reservedKg",
+          "unreservedKg",
+          "inTransitKg",
+          "deliveredKg",
+          "unit",
+          "packagingState",
+          "reference",
+          "evidenceRef",
+          "createdBy",
+          "createdAt",
+          "releaseEvaluationId",
+          "releaseEvaluationVersion",
+          "releaseReason",
+          "releasedBy",
+          "releasedAt",
+          "qualitySummary",
+          "dispatchableKg",
+          "contributions"
+        ]
+      },
+      "InventoryCandidate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "centerId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "totalKg": {
+            "type": "string",
+            "pattern": "^(?:0|[1-9][0-9]{0,11})\\.[0-9]{3}$"
+          },
+          "stockEntryId": {
+            "type": ["string", "null"],
+            "format": "uuid"
+          }
+        },
+        "required": ["id", "centerId", "totalKg", "stockEntryId"]
+      },
+      "InventoryAdmissionInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "lotId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "verifiedKg": {
+            "type": "string",
+            "pattern": "^(?=.*[1-9])(?:0|[1-9][0-9]{0,11})(?:\\.[0-9]{1,3})?$"
+          },
+          "reference": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "evidenceRef": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        },
+        "required": ["lotId", "verifiedKg", "reference", "evidenceRef"]
+      },
+      "InventoryReleaseInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "expectedVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        },
+        "required": ["expectedVersion", "reason"]
+      },
+      "ShipmentCreateInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "stockEntryId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "transport": {
+            "$ref": "#/components/schemas/LogisticsTransportInput"
+          },
+          "destinationLabel": {
+            "type": ["string", "null"],
+            "minLength": 1,
+            "maxLength": 120
+          }
+        },
+        "required": ["stockEntryId"]
+      },
+      "ShipmentTransportInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "expectedVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "transport": {
+            "$ref": "#/components/schemas/LogisticsTransportInput"
+          },
+          "destinationLabel": {
+            "type": ["string", "null"],
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        },
+        "required": ["expectedVersion", "transport", "reason"]
+      },
+      "ShipmentReservationInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "expectedVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "expectedInventoryVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          }
+        },
+        "required": ["expectedVersion", "expectedInventoryVersion"]
+      },
+      "ShipmentDepartureInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "expectedVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "expectedInventoryVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "departedAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\\.[0-9]{1,3})?(?:Z|[+-][0-9]{2}:[0-9]{2})$",
+            "description": "Instante no futuro, con zona y hasta 3 decimales de segundo. Mayor precisión se rechaza, no se trunca."
+          }
+        },
+        "required": [
+          "expectedVersion",
+          "expectedInventoryVersion",
+          "departedAt"
+        ]
+      },
+      "ShipmentDeliveryInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "expectedVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "expectedInventoryVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "receivedKg": {
+            "type": "string",
+            "pattern": "^(?=.*[1-9])(?:0|[1-9][0-9]{0,11})(?:\\.[0-9]{1,3})?$"
+          },
+          "deliveredAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\\.[0-9]{1,3})?(?:Z|[+-][0-9]{2}:[0-9]{2})$",
+            "description": "Instante no futuro, con zona y hasta 3 decimales de segundo. Mayor precisión se rechaza, no se trunca."
+          },
+          "evidenceRef": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        },
+        "required": [
+          "expectedVersion",
+          "expectedInventoryVersion",
+          "receivedKg",
+          "deliveredAt",
+          "evidenceRef"
+        ]
+      },
+      "ShipmentCancellationInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "expectedVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "expectedInventoryVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        },
+        "required": ["expectedVersion", "expectedInventoryVersion", "reason"]
+      },
+      "LogisticsDelivery": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "receivedKg": {
+            "type": "string",
+            "pattern": "^(?:0|[1-9][0-9]{0,11})\\.[0-9]{3}$"
+          },
+          "deliveredAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "evidenceRef": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "actorId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "receivedKg",
+          "deliveredAt",
+          "evidenceRef",
+          "actorId",
+          "recordedAt"
+        ]
+      },
+      "ShipmentSummary": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "stockEntryId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "lotId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "centerId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "quantityKg": {
+            "type": "string",
+            "pattern": "^(?:0|[1-9][0-9]{0,11})\\.[0-9]{3}$"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "draft",
+              "reserved",
+              "in_transit",
+              "delivered",
+              "cancelled"
+            ]
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "transport": {
+            "$ref": "#/components/schemas/LogisticsTransport"
+          },
+          "destinationLabel": {
+            "type": ["string", "null"],
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "departedAt": {
+            "type": ["string", "null"],
+            "format": "date-time"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "stockEntryId",
+          "lotId",
+          "centerId",
+          "quantityKg",
+          "state",
+          "version",
+          "transport",
+          "destinationLabel",
+          "departedAt",
+          "createdAt"
+        ]
+      },
+      "Shipment": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "stockEntryId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "lotId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "centerId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "quantityKg": {
+            "type": "string",
+            "pattern": "^(?:0|[1-9][0-9]{0,11})\\.[0-9]{3}$"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "draft",
+              "reserved",
+              "in_transit",
+              "delivered",
+              "cancelled"
+            ]
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "transport": {
+            "$ref": "#/components/schemas/LogisticsTransport"
+          },
+          "destinationLabel": {
+            "type": ["string", "null"],
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "departedAt": {
+            "type": ["string", "null"],
+            "format": "date-time"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "delivery": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/LogisticsDelivery"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "unit": {
+            "type": "string",
+            "enum": ["kg"]
+          },
+          "inventory": {
+            "$ref": "#/components/schemas/StockEntry"
+          }
+        },
+        "required": [
+          "id",
+          "stockEntryId",
+          "lotId",
+          "centerId",
+          "quantityKg",
+          "state",
+          "version",
+          "transport",
+          "destinationLabel",
+          "departedAt",
+          "createdAt",
+          "updatedAt",
+          "delivery",
+          "unit",
+          "inventory"
+        ]
+      },
+      "InventoryMovement": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "shipmentId": {
+            "type": ["string", "null"],
+            "format": "uuid"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "admitted",
+              "reserved",
+              "reservation_released",
+              "dispatched",
+              "delivered"
+            ]
+          },
+          "amountKg": {
+            "type": "string",
+            "pattern": "^(?:0|[1-9][0-9]{0,11})\\.[0-9]{3}$"
+          },
+          "actorId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "occurredAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "shipmentId",
+          "kind",
+          "amountKg",
+          "actorId",
+          "occurredAt",
+          "recordedAt"
+        ]
+      },
+      "LogisticsEvent": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "created",
+              "transport_corrected",
+              "reserved",
+              "cancelled",
+              "dispatched",
+              "delivered"
+            ]
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647
+          },
+          "actorId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "occurredAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "payload": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "before": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/Shipment"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "after": {
+                "$ref": "#/components/schemas/Shipment"
+              },
+              "reason": {
+                "type": ["string", "null"],
+                "minLength": 1,
+                "maxLength": 500
+              }
+            },
+            "required": ["before", "after", "reason"]
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "version",
+          "actorId",
+          "occurredAt",
+          "payload"
+        ]
       }
     }
   }

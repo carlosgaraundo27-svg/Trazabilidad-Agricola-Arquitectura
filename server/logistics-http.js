@@ -26,6 +26,15 @@ export function logisticsRouter(services) {
     return p.data;
   };
   const send = (res, r) => res.status(r.replayed ? 200 : 201).json(r.item);
+  router.get("/inventory/lots", async (req, res) =>
+    res.json({
+      items: await services.logistics.candidates(
+        req.actor,
+        pageInput.parse(req.query),
+      ),
+      limit: 100,
+    }),
+  );
   router.get("/shipments", async (req, res) =>
     res.json({
       items: await services.logistics.shipments(

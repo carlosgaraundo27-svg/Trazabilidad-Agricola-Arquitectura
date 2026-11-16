@@ -256,6 +256,22 @@ test("Publicación HTTP/PostgreSQL y caché por puerto", async (t) => {
         (await call("/api/public/v1/lots/" + publication.publicId)).body,
         demoProjection,
       );
+      const withdrawn = await call(
+        path + "/withdrawal",
+        "POST",
+        { expectedVersion: publication.version },
+        owner,
+        crypto.randomUUID(),
+      );
+      assert.equal(withdrawn.status, 201);
+      publication = withdrawn.body;
+      assert.equal(
+        (await call("/api/public/v1/lots/" + publication.publicId)).status,
+        404,
+      );
+      r = await publish(demoProjection, publication.version);
+      assert.equal(r.status, 201);
+      publication = r.body;
       fail = false;
       failDelete = false;
       entries.clear();

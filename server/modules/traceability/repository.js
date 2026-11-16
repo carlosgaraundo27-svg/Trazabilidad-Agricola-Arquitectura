@@ -21,6 +21,14 @@ export function traceabilityRepository() {
         )
       ).rows;
     },
+    async qualityLot(tx, actor, id) {
+      return (
+        await tx.query(select + " WHERE l.organization_id=$1 AND l.id=$2", [
+          actor.organizationId,
+          id,
+        ])
+      ).rows[0];
+    },
     async consumed(tx, actor, centerId, ids) {
       return (
         await tx.query(

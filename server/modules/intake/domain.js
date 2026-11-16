@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { originalTemperatureInput } from "./measurement-domain.js";
 
 // Milésimas de kg: supuesto técnico del prototipo, sin redondeo implícito.
 export const milliKg = (value) => {
@@ -29,6 +30,7 @@ export const receiptInput = z
     grossKg: mass,
     tareKg: mass,
     evidence: z.string().trim().min(1).max(500),
+    temperature: originalTemperatureInput.optional(),
   })
   .strict()
   .refine(

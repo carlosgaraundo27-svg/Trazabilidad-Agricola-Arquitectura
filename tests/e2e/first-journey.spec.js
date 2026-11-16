@@ -18,7 +18,9 @@ test("administrador registra origen y recolector registra pre-lote en línea", a
   await login("admin@example.test");
   await page.getByLabel("Nombre del productor", { exact: true }).fill(producer);
   await page.getByRole("button", { name: "Guardar productor" }).click();
-  await expect(page.getByRole("status")).toContainText(producer);
+  await expect(
+    page.getByRole("status").filter({ hasText: producer }),
+  ).toContainText(producer);
   await page
     .getByLabel("Productor de la parcela")
     .selectOption({ label: producer });
@@ -31,7 +33,9 @@ test("administrador registra origen y recolector registra pre-lote en línea", a
   );
   await page.getByRole("button", { name: "Guardar parcela" }).click();
   const created = await (await response).json();
-  await expect(page.getByRole("status")).toContainText(parcel);
+  await expect(
+    page.getByRole("status").filter({ hasText: parcel }),
+  ).toContainText(parcel);
   // Preparación explícita: no existe aún UI de administración de asignaciones.
   const db = await connectDatabase();
   try {
@@ -44,6 +48,9 @@ test("administrador registra origen y recolector registra pre-lote en línea", a
     await db.close();
   }
   await page.getByRole("button", { name: "Cerrar sesión" }).click();
+  await expect(
+    page.getByRole("heading", { name: "Iniciar sesión" }),
+  ).toBeVisible();
   await login("campo@example.test");
   await page
     .getByRole("combobox", { name: "Productor", exact: true })

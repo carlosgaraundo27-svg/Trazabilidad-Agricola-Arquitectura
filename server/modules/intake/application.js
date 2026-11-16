@@ -83,6 +83,8 @@ export function intakeService({
     return r;
   }
   return {
+    originalTemperatures: (tx, actor, centerId, ids) =>
+      repository.originalTemperatures(tx, actor, centerId, ids),
     async origins(actor, { centerId, offset }) {
       return unitOfWork(async (tx) => {
         await access.requireCenter(tx, actor, centerId, "intake:read");
@@ -139,7 +141,11 @@ export function intakeService({
             origin,
             measured,
           );
-          await repository.event(tx, actor, id, "received", measured);
+          const received = await repository.get(tx, actor, id);
+          await repository.event(tx, actor, id, "received", {
+            ...measured,
+            originalTemperature: received.originalTemperature,
+          });
           return (
             await decorate(tx, actor, centerId, [
               await repository.get(tx, actor, id),

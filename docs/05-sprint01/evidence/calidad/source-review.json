@@ -1,0 +1,51 @@
+{
+  "base": "829f79e976967097554543c51855135e0e1c193b",
+  "headReviewed": "f7ef45d7731bf9ccab06c3f215fcb6f22c18d3ba",
+  "review": "Segunda revisión independiente solo lectura, sin bloqueos técnicos nuevos. No es aprobación docente ni validación agrícola.",
+  "resolvedFindings": [
+    "Milisegundos y fecha/hora Lima completos en UI",
+    "Recargar lotes tras conflicto de creación",
+    "Cierres accepted/observed/rejected completos, sin cambios de masa ni despacho"
+  ],
+  "originals": "Opcional al recibir para compatibilidad; obligatoria por cada recepción para cualquier cierre. Sin backfill ni sustitución por posterior.",
+  "preservedFiles": {
+    "package.json": {
+      "before": "88a2714d7b5b6dbffefc86d0e8ef15df3fcdb69d",
+      "after": "88a2714d7b5b6dbffefc86d0e8ef15df3fcdb69d"
+    },
+    "package-lock.json": {
+      "before": "04dadca677a8acdec34401176bf349bb86c192f5",
+      "after": "04dadca677a8acdec34401176bf349bb86c192f5"
+    },
+    ".github/workflows/ci.yml": {
+      "before": "653339a78ad5a5145752f6938d9de3a052ee103f",
+      "after": "653339a78ad5a5145752f6938d9de3a052ee103f"
+    },
+    "migrations/001_initial.up.sql": {
+      "before": "ec339cc1ccf559a8a18bb824517122d796028eb4",
+      "after": "ec339cc1ccf559a8a18bb824517122d796028eb4"
+    },
+    "migrations/001_initial.down.sql": {
+      "before": "ed2037edb6b30514940288c01b636efafbfafb47",
+      "after": "ed2037edb6b30514940288c01b636efafbfafb47"
+    },
+    "migrations/002_intake.up.sql": {
+      "before": "e8d2185e6b6fdbcab247afc81d6dfaab90daa688",
+      "after": "e8d2185e6b6fdbcab247afc81d6dfaab90daa688"
+    },
+    "migrations/002_intake.down.sql": {
+      "before": "a23174cf02fb7ceb566e36a19604dcacc918eea0",
+      "after": "a23174cf02fb7ceb566e36a19604dcacc918eea0"
+    }
+  },
+  "localChecks": {
+    "unit": 13,
+    "integration": 42,
+    "e2e": 12,
+    "contractSamples": 238,
+    "persistenceTables": 8,
+    "mutationDetected": true
+  },
+  "remoteCI": "Pendiente de consultar en cabeza publicada; no se atribuye CI anterior.",
+  "finishedAt": "2026-11-15T21:03:40.178Z"
+}

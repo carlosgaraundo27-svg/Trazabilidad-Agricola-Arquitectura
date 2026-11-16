@@ -5,6 +5,7 @@ export function traceabilityService({ repository }) {
     identity: (tx, actor, id, lock) => repository.identity(tx, actor, id, lock),
     identities: (tx, actor, centerId, offset) =>
       repository.identities(tx, actor, centerId, offset),
+    qualityLot: (tx, actor, id) => repository.qualityLot(tx, actor, id),
     consumed: (tx, actor, centerId, ids) =>
       repository.consumed(tx, actor, centerId, ids),
     list: (tx, actor, centerId, offset) =>

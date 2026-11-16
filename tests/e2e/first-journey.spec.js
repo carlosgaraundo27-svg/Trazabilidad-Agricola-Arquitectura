@@ -10,12 +10,24 @@ test("administrador registra origen y recolector registra pre-lote en línea", a
     producer = "Productor ficticio " + suffix,
     parcel = "Parcela ficticia " + suffix;
   async function login(email) {
+    await expect(
+      page.getByRole("button", { name: "Ingresar", exact: true }),
+    ).toHaveAttribute("type", "submit");
     await page.getByLabel("Correo electrónico").fill(email);
     await page.getByLabel("Contraseña").fill(process.env.DEMO_PASSWORD);
     await page.getByRole("button", { name: "Ingresar", exact: true }).click();
   }
   await page.goto("/");
   await login("admin@example.test");
+  await expect(
+    page.getByRole("button", { name: "Cerrar sesión" }),
+  ).toHaveAttribute("type", "button");
+  await expect(
+    page.getByRole("button", { name: "Guardar productor" }),
+  ).toHaveAttribute("type", "submit");
+  await expect(
+    page.getByRole("button", { name: "Guardar parcela" }),
+  ).toHaveAttribute("type", "submit");
   await page.getByLabel("Nombre del productor", { exact: true }).fill(producer);
   await page.getByRole("button", { name: "Guardar productor" }).click();
   await expect(
@@ -52,6 +64,9 @@ test("administrador registra origen y recolector registra pre-lote en línea", a
     page.getByRole("heading", { name: "Iniciar sesión" }),
   ).toBeVisible();
   await login("campo@example.test");
+  await expect(
+    page.getByRole("button", { name: "Registrar pre-lote", exact: true }),
+  ).toHaveAttribute("type", "submit");
   await page
     .getByRole("combobox", { name: "Productor", exact: true })
     .selectOption({ label: producer });

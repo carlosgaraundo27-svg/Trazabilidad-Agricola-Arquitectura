@@ -99,6 +99,7 @@ export function Intake({ user, centers }) {
       <p role="status">{busy ? "Procesando…" : message}</p>
       {error && (
         <button
+          type="button"
           className="secondary"
           disabled={busy}
           onClick={async () => {
@@ -154,11 +155,17 @@ export function Intake({ user, centers }) {
                 centro.
               </p>
               <button
+                type="button"
                 disabled={busy || !selected.length}
                 onClick={() =>
                   command(
                     "/lots",
-                    { centerId, receiptIds: [...selected].sort() },
+                    {
+                      centerId,
+                      receiptIds: [...selected].sort((left, right) =>
+                        left.localeCompare(right, "en"),
+                      ),
+                    },
                     "Lote consolidado",
                   )
                 }

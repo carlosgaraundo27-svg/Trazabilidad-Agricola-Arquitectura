@@ -111,7 +111,9 @@ export function ReceiptForm({ origins, busy, onReceive }) {
           onChange={setTemperature}
           busy={busy}
         />
-        <button disabled={busy || !origins.length}>Registrar recepción</button>
+        <button type="submit" disabled={busy || !origins.length}>
+          Registrar recepción
+        </button>
       </form>
     </section>
   );

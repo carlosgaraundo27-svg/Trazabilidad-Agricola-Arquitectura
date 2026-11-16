@@ -1,0 +1,37 @@
+✖ lot input canonicalizes UUID permutations without mutating the caller (7.2154ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 113.8373
+
+✖ failing tests:
+
+test at tests\unit\lot-order.test.js:5:1
+✖ lot input canonicalizes UUID permutations without mutating the caller (7.2154ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+    [
+  +   'ffffffff-ffff-4fff-8fff-ffffffffffff',
+  +   '20000000-0000-4000-8000-000000000000',
+      '10000000-0000-4000-8000-000000000000',
+  -   '20000000-0000-4000-8000-000000000000',
+  -   'ffffffff-ffff-4fff-8fff-ffffffffffff'
+    ]
+
+      at TestContext.<anonymous> (file:///C:/Users/leona/Documents/Proyect_Final_Arquitectura/repo-sonar/tests/unit/lot-order.test.js:14:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.start (node:internal/test_runner/test:1177:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'ffffffff-ffff-4fff-8fff-ffffffffffff', '20000000-0000-4000-8000-000000000000', '10000000-0000-4000-8000-000000000000' ],
+    expected: [ '10000000-0000-4000-8000-000000000000', '20000000-0000-4000-8000-000000000000', 'ffffffff-ffff-4fff-8fff-ffffffffffff' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

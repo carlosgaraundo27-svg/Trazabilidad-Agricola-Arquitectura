@@ -1,0 +1,53 @@
+{"event":"server_started","port":3014}
+
+Running 1 test using 1 worker
+
+{"requestId":"41138e11-2881-4038-811d-8ad4663749f2","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+  ✘  1 tests\e2e\first-journey.spec.js:4:1 › administrador registra origen y recolector registra pre-lote en línea (8.5s)
+
+
+  1) tests\e2e\first-journey.spec.js:4:1 › administrador registra origen y recolector registra pre-lote en línea
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  getByRole('button', { name: 'Ingresar', exact: true })
+    Expected: "submit"
+    Received: ""
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveAttribute" getByRole('button', { name: 'Ingresar', exact: true }) with timeout 5000ms
+      - waiting for getByRole('button', { name: 'Ingresar', exact: true })
+        13 × locator resolved to <button>Ingresar</button>
+           - unexpected value "null"
+
+
+      11 |     parcel = "Parcela ficticia " + suffix;
+      12 |   async function login(email) {
+    > 13 |     await expect(page.getByRole("button", { name: "Ingresar", exact: true })).toHaveAttribute("type", "submit");
+         |                                                                               ^
+      14 |     await page.getByLabel("Correo electrónico").fill(email);
+      15 |     await page.getByLabel("Contraseña").fill(process.env.DEMO_PASSWORD);
+      16 |     await page.getByRole("button", { name: "Ingresar", exact: true }).click();
+        at login (C:\Users\leona\Documents\Proyect_Final_Arquitectura\repo-sonar\tests\e2e\first-journey.spec.js:13:79)
+        at C:\Users\leona\Documents\Proyect_Final_Arquitectura\repo-sonar\tests\e2e\first-journey.spec.js:19:9
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\first-journey-administrado-8a8d8--registra-pre-lote-en-línea\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\first-journey-administrado-8a8d8--registra-pre-lote-en-línea\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\first-journey-administrado-8a8d8--registra-pre-lote-en-línea\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\first-journey-administrado-8a8d8--registra-pre-lote-en-línea\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests\e2e\first-journey.spec.js:4:1 › administrador registra origen y recolector registra pre-lote en línea
+.env not found. Continuing without it.
+(node:28052) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

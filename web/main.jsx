@@ -61,7 +61,9 @@ function Login({ onLogin }) {
           required
         />
         <p role="alert">{error}</p>
-        <button disabled={busy}>{busy ? "Ingresando…" : "Ingresar"}</button>
+        <button type="submit" disabled={busy}>
+          {busy ? "Ingresando…" : "Ingresar"}
+        </button>
       </form>
       <p className="muted">Entorno de demostración · Solo datos ficticios</p>
     </section>
@@ -125,7 +127,9 @@ function Admin() {
               maxLength={120}
               required
             />
-            <button disabled={busy}>Guardar productor</button>
+            <button type="submit" disabled={busy}>
+              Guardar productor
+            </button>
           </form>
         </section>
         <section>
@@ -164,7 +168,7 @@ function Admin() {
                 required
               />
             </div>
-            <button disabled={busy || !producers.length}>
+            <button type="submit" disabled={busy || !producers.length}>
               Guardar parcela
             </button>
           </form>
@@ -333,7 +337,7 @@ function Harvest() {
               Cantidad declarada en campo. El pesaje oficial se registra en
               acopio.
             </p>
-            <button disabled={busy || !parcels.length}>
+            <button type="submit" disabled={busy || !parcels.length}>
               Registrar pre-lote
             </button>
           </form>
@@ -408,7 +412,7 @@ function App() {
         {session && (
           <div className="identity">
             <span>{session.user.email}</span>
-            <button className="secondary" onClick={logout}>
+            <button type="button" className="secondary" onClick={logout}>
               Cerrar sesión
             </button>
           </div>

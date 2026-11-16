@@ -1,0 +1,64 @@
+{
+  "main": "d7da0d691937e607e8258f37650b47fe7fd6af22",
+  "checks": [
+    {
+      "name": "SonarCloud Code Analysis",
+      "status": "completed",
+      "conclusion": "failure",
+      "id": 133594866425,
+      "url": "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/runs/133594866425",
+      "output": {
+        "title": "Quality Gate failed",
+        "summary": "Failed conditions  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/failed.svg '') [D Reliability Rating on New Code](https://sonarcloud.io/project/issues?id=carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura&branch=main&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true) (required ≥ A)  \n  \n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura&branch=main)\n\n##   \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/light_bulb.svg '') Catch issues before they fail your Quality Gate with our IDE extension ![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/sonarlint.svg '') [SonarQube for IDE](https://www.sonarsource.com/products/sonarlint/features/connected-mode/?referrer=pull-request)\n\n",
+        "text": null,
+        "annotations_count": 0,
+        "annotations_url": "https://api.github.com/repos/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/check-runs/133594866425/annotations"
+      }
+    },
+    {
+      "name": "verify",
+      "status": "completed",
+      "conclusion": "success",
+      "id": 133594539647,
+      "url": "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/43951405915/job/133594539647",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 2,
+        "annotations_url": "https://api.github.com/repos/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/check-runs/133594539647/annotations"
+      }
+    },
+    {
+      "name": "compose",
+      "status": "completed",
+      "conclusion": "success",
+      "id": 133594539063,
+      "url": "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/43951405915/job/133594539063",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 3,
+        "annotations_url": "https://api.github.com/repos/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/check-runs/133594539063/annotations"
+      }
+    }
+  ],
+  "comparison": [
+    {
+      "sha": "b664fee0e5723787f3625aa89445401e17d9150a",
+      "sonarCheck": 133050139419,
+      "reliability": "D",
+      "security": "B",
+      "conclusion": "failure"
+    },
+    {
+      "sha": "829f79e976967097554543c51855135e0e1c193b",
+      "sonarCheck": 132943926223,
+      "reliability": "D",
+      "security": "B",
+      "conclusion": "failure"
+    }
+  ],
+  "note": "El check del PR #5 sobre 24550e1 aprobó; el de main usa otro contexto y sigue rojo por fiabilidad D, condición ya presente antes de #5. No se modifica ni debilita el gate. Lectura puntual de la API Sonar devolvió ocho BUG abiertos en main y período previous_version desde 2026-11-14; accesos posteriores fallaron. Falta triage completo antes de clasificar/corregir cada incidencia."
+}

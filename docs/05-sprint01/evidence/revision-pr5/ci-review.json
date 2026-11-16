@@ -1,0 +1,43 @@
+{
+  "reviewed_head": "24550e1e0909e72c883dc89d16a0674bab07ee90",
+  "merge": "d7da0d691937e607e8258f37650b47fe7fd6af22",
+  "checks": [
+    {
+      "name": "SonarCloud Code Analysis",
+      "url": "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/runs/133593146350",
+      "status": "completed",
+      "conclusion": "success",
+      "id": 133593146350
+    },
+    {
+      "name": "verify",
+      "url": "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/43950887689/job/133592736592",
+      "status": "completed",
+      "conclusion": "success",
+      "id": 133592736592
+    },
+    {
+      "name": "compose",
+      "url": "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/43950887689/job/133592735999",
+      "status": "completed",
+      "conclusion": "success",
+      "id": 133592735999
+    }
+  ],
+  "verify_excerpt": [
+    "2026-11-16T20:33:15.3796031Z ℹ tests 19",
+    "2026-11-16T20:33:15.3796563Z ℹ pass 19",
+    "2026-11-16T20:33:15.3797189Z ℹ fail 0",
+    "2026-11-16T20:33:15.3797700Z ℹ skipped 0",
+    "2026-11-16T20:33:15.7324176Z ℹ tests 2",
+    "2026-11-16T20:33:15.7324696Z ℹ pass 2",
+    "2026-11-16T20:33:15.7324880Z ℹ fail 0",
+    "2026-11-16T20:33:15.7326542Z ℹ skipped 0",
+    "2026-11-16T20:33:21.1867468Z ℹ tests 53",
+    "2026-11-16T20:33:21.1867963Z ℹ pass 53",
+    "2026-11-16T20:33:21.1868159Z ℹ fail 0",
+    "2026-11-16T20:33:21.1868575Z ℹ skipped 0",
+    "2026-11-16T20:33:50.8516298Z   13 passed (15.1s)"
+  ],
+  "scope": "Integración técnica del PR #5 con commits conservados. Sin afirmaciones de rendimiento medido ni de aprobación docente/agrícola."
+}

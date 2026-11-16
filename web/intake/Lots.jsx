@@ -11,8 +11,9 @@ export function Lots({ lots, receipts }) {
             <li key={lot.id} data-testid="lot">
               <h3>{lot.totalKg} kg</h3>
               <p className="state-label">
-                Pendiente de calidad · Despacho no autorizado
+                Al consolidar: Pendiente de calidad · Despacho no autorizado
               </p>
+              <p>Resultado vigente: consultar en Calidad con autorización.</p>
               <small data-testid="lot-id">{lot.id}</small>
               <p>
                 {lot.localHarvestDate} ·{" "}

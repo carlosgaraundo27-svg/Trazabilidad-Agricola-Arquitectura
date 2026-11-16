@@ -1,0 +1,74 @@
+{
+  "passed": true,
+  "restart": true,
+  "noSeedBetween": true,
+  "before": {
+    "intake.receipts": {
+      "count": 50,
+      "sha256": "0271f8e1c741c52901398ddd75a377f2bc71091778872189617061012ad2e390"
+    },
+    "intake.receipt_temperatures": {
+      "count": 24,
+      "sha256": "95eef36a0cfa25f956cba470467561bfa41915ced875da59a8bb1dcc50cba111"
+    },
+    "traceability.lots": {
+      "count": 22,
+      "sha256": "97f916f7511c506ad8e7f509a20e9d8746d347e900d6afdd6cde8a8cb7a06af1"
+    },
+    "traceability.contributions": {
+      "count": 35,
+      "sha256": "eb42b4365a7462ff44e4b3308315471a7d9e28212599cc7a2ccba11a695dbdd4"
+    },
+    "quality.evaluations": {
+      "count": 12,
+      "sha256": "e3389358fbb20452d985b391c2eb129d8f33a51a2e411182ad838d6b54f09adb"
+    },
+    "quality.events": {
+      "count": 41,
+      "sha256": "03f8305e1218e0850ebdf556c87696f1c1201cbddbfc283b1e4c59178f48da25"
+    },
+    "quality.requests": {
+      "count": 41,
+      "sha256": "c6acf7cfed5b38ea74b5aea82713cbbea01db5172d69afa8a633f701e32b51f0"
+    },
+    "access.audit": {
+      "count": 243,
+      "sha256": "cd9efd98ebb6df9272226931041f8fea42a52134b3807762da1d1a0b8625a4b4"
+    }
+  },
+  "after": {
+    "intake.receipts": {
+      "count": 50,
+      "sha256": "0271f8e1c741c52901398ddd75a377f2bc71091778872189617061012ad2e390"
+    },
+    "intake.receipt_temperatures": {
+      "count": 24,
+      "sha256": "95eef36a0cfa25f956cba470467561bfa41915ced875da59a8bb1dcc50cba111"
+    },
+    "traceability.lots": {
+      "count": 22,
+      "sha256": "97f916f7511c506ad8e7f509a20e9d8746d347e900d6afdd6cde8a8cb7a06af1"
+    },
+    "traceability.contributions": {
+      "count": 35,
+      "sha256": "eb42b4365a7462ff44e4b3308315471a7d9e28212599cc7a2ccba11a695dbdd4"
+    },
+    "quality.evaluations": {
+      "count": 12,
+      "sha256": "e3389358fbb20452d985b391c2eb129d8f33a51a2e411182ad838d6b54f09adb"
+    },
+    "quality.events": {
+      "count": 41,
+      "sha256": "03f8305e1218e0850ebdf556c87696f1c1201cbddbfc283b1e4c59178f48da25"
+    },
+    "quality.requests": {
+      "count": 41,
+      "sha256": "c6acf7cfed5b38ea74b5aea82713cbbea01db5172d69afa8a633f701e32b51f0"
+    },
+    "access.audit": {
+      "count": 243,
+      "sha256": "cd9efd98ebb6df9272226931041f8fea42a52134b3807762da1d1a0b8625a4b4"
+    }
+  },
+  "finishedAt": "2026-11-15T20:58:48.456Z"
+}

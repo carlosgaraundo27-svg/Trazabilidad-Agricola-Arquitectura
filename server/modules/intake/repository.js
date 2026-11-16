@@ -1,4 +1,5 @@
-const select = `SELECT r.id,r.organization_id AS "organizationId",r.center_id AS "centerId",r.pre_lot_id AS "preLotId",
+const originalTemperature = `(SELECT jsonb_build_object('id',t.id,'value',t.value_c::text,'unit',t.unit,'measuredAt',to_char(t.measured_at AT TIME ZONE 'UTC','YYYY-MM-DD"T"HH24:MI:SS.MS"Z"'),'observedBy',t.observed_by,'provenance',t.provenance,'method',t.method,'recordedBy',t.recorded_by,'recordedAt',to_char(t.recorded_at AT TIME ZONE 'UTC','YYYY-MM-DD"T"HH24:MI:SS.MS"Z"')) FROM intake.receipt_temperatures t WHERE t.receipt_id=r.id)`;
+const select = `SELECT r.id,r.organization_id AS "organizationId",r.center_id AS "centerId",r.pre_lot_id AS "preLotId", ${originalTemperature} AS "originalTemperature",
  r.reference,r.origin,r.gross_kg::text AS "grossKg",r.tare_kg::text AS "tareKg",r.net_kg::text AS "netKg",
  r.difference_kg::text AS "differenceKg",r.review_reason AS "reviewReason",r.evidence,
  r.captured_by AS "capturedBy",r.captured_at AS "capturedAt",
@@ -9,6 +10,14 @@ const select = `SELECT r.id,r.organization_id AS "organizationId",r.center_id AS
  FROM intake.receipts r LEFT JOIN intake.reviews v ON v.receipt_id=r.id LEFT JOIN intake.confirmations c ON c.receipt_id=r.id`;
 export function intakeRepository() {
   return {
+    async originalTemperatures(tx, actor, centerId, ids) {
+      return (
+        await tx.query(
+          `SELECT r.id AS "receiptId",r.reference,${originalTemperature} AS temperature FROM intake.receipts r WHERE r.organization_id=$1 AND r.center_id=$2 AND r.id=ANY($3::uuid[]) ORDER BY r.id`,
+          [actor.organizationId, centerId, ids],
+        )
+      ).rows;
+    },
     async readSnapshot(tx) {
       await tx.query("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ");
     },
@@ -81,6 +90,25 @@ export function intakeRepository() {
           actor.id,
         ],
       );
+      if (input.temperature) {
+        const t = input.temperature;
+        await tx.query(
+          "INSERT INTO intake.receipt_temperatures(id,receipt_id,organization_id,center_id,value_c,unit,measured_at,observed_by,provenance,method,recorded_by) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)",
+          [
+            crypto.randomUUID(),
+            id,
+            actor.organizationId,
+            input.centerId,
+            t.value,
+            t.unit,
+            t.measuredAt,
+            t.observedBy,
+            t.provenance,
+            t.method,
+            actor.id,
+          ],
+        );
+      }
       return id;
     },
     async review(tx, actor, id, note) {

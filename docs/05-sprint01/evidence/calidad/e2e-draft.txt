@@ -1,0 +1,17 @@
+{"event":"server_started","port":3012}
+
+Running 2 tests using 1 worker
+
+{"requestId":"5a700a7c-de59-482a-90fc-5704e31a55b9","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+  ✓  1 tests\e2e\quality.spec.js:112:1 › Calidad: draft incompleto persistente, respuesta perdida y replay sin duplicados (1.2s)
+{"requestId":"27cd960c-5e4b-4974-b872-a4f09af201cd","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+{"requestId":"9a2d3b51-8e52-46bc-a0ce-1ac24d8847e1","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+{"requestId":"1363068c-af38-4d1b-a610-4a261e292759","method":"POST","status":409,"code":"QUALITY_CONFLICT"}
+{"requestId":"3c51b854-f83a-42ef-b20d-d46f22ef7f0f","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+{"requestId":"6ec7e56f-f2ad-4027-81a8-4ff6146143d5","method":"GET","status":404,"code":"NOT_FOUND"}
+  ✓  2 tests\e2e\quality.spec.js:205:1 › Calidad: creación concurrente recuperable y aislamiento de otro centro (1.2s)
+
+  2 passed (3.4s)
+.env not found. Continuing without it.
+(node:7056) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

@@ -1,0 +1,25 @@
+▶ Calidad HTTP/PostgreSQL: captura autorizada persistida y auditada
+  ✔ creación única por lote, replay normalizado y acceso por centro (56.3385ms)
+  ✔ captura incompleta persistida, SQL y auditoría transaccionales (19.1336ms)
+  ✔ unidades, conteos, precisión, futuro y vínculos de recepción inválidos no alteran borrador (35.9413ms)
+  ✔ fallos reales de eventos/auditoría revierten datos, versión y clave de borrador (46.4598ms)
+  ✔ captura completa exacta y dos ediciones concurrentes con versión esperada (37.2682ms)
+  ✔ permiso revocado bloquea replay y calidad no concede revisión de discrepancias (34.2369ms)
+  ✔ historia y claves inmutables; sin cambios en masa, aportes o consolidación (155.7768ms)
+  ✔ originales pertenecen a recepción, son inmutables y mantienen responsable/auditoría (93.1946ms)
+  ✔ cierre incompleto y sin originales bloqueado aunque exista lectura posterior; sin ruta alternativa (210.1884ms)
+  ✔ fallos reales de evento y auditoría revierten cierre completo y clave (63.5638ms)
+  ✔ cierre atómico concurrente con todas las originales, replay y protección posterior (139.4185ms)
+  ✔ observado y rechazado cierran manualmente con originales completos sin alterar cantidades ni despacho (261.6003ms)
+  ✔ temperatura original rechaza unidades, precisión, fechas, datos incompletos y actor arbitrario (18.04ms)
+  ✔ original, recepción, evento y auditoría se revierten juntos ante fallo real (53.8811ms)
+✔ Calidad HTTP/PostgreSQL: captura autorizada persistida y auditada (1609.4579ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1829.0565
+

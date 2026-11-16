@@ -1,0 +1,47 @@
+▶ Calidad HTTP/PostgreSQL: captura autorizada persistida y auditada
+  ✔ creación única por lote, replay normalizado y acceso por centro (146.1276ms)
+  ✔ captura incompleta persistida, SQL y auditoría transaccionales (19.1851ms)
+  ✔ unidades, conteos, precisión, futuro y vínculos de recepción inválidos no alteran borrador (30.2033ms)
+  ✔ fallos reales de eventos/auditoría revierten datos, versión y clave de borrador (56.8959ms)
+  ✔ captura completa exacta y dos ediciones concurrentes con versión esperada (31.7487ms)
+  ✔ permiso revocado bloquea replay y calidad no concede revisión de discrepancias (34.7992ms)
+  ✔ historia y claves inmutables; sin cambios en masa, aportes o consolidación (100.7746ms)
+  ✔ originales pertenecen a recepción, son inmutables y mantienen responsable/auditoría (103.8343ms)
+  ✖ cierre incompleto y sin originales bloqueado aunque exista lectura posterior; sin ruta alternativa (120.289ms)
+  ✔ fallos reales de evento y auditoría revierten cierre completo y clave (74.2854ms)
+  ✔ cierre atómico concurrente con todas las originales, replay y protección posterior (247.7111ms)
+  ✔ observado y rechazado cierran manualmente con originales completos sin alterar cantidades ni despacho (331.0921ms)
+  ✔ temperatura original rechaza unidades, precisión, fechas, datos incompletos y actor arbitrario (19.9613ms)
+  ✔ original, recepción, evento y auditoría se revierten juntos ante fallo real (54.3816ms)
+✖ Calidad HTTP/PostgreSQL: captura autorizada persistida y auditada (1763.9346ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 13
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1983.8892
+
+✖ failing tests:
+
+test at tests\integration\quality.test.js:526:11
+✖ cierre incompleto y sin originales bloqueado aunque exista lectura posterior; sin ruta alternativa (120.289ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  500 !== 422
+  
+      at TestContext.<anonymous> (file:///C:/Users/leona/Documents/Proyect_Final_Arquitectura/repo-calidad/tests/integration/quality.test.js:555:16)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async TestContext.<anonymous> (file:///C:/Users/leona/Documents/Proyect_Final_Arquitectura/repo-calidad/tests/integration/quality.test.js:526:3)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 500,
+    expected: 422,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+

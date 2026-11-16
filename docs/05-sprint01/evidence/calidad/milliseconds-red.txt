@@ -1,0 +1,53 @@
+{"event":"server_started","port":3012}
+
+Running 1 test using 1 worker
+
+{"requestId":"7d48d596-c5a8-4a27-a041-7342be5b3593","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+  ✘  1 tests\e2e\quality.spec.js:112:1 › Calidad: draft incompleto persistente, respuesta perdida y replay sin duplicados (6.3s)
+
+
+  1) tests\e2e\quality.spec.js:112:1 › Calidad: draft incompleto persistente, respuesta perdida y replay sin duplicados 
+
+    Error: expect(locator).toHaveValue(expected) failed
+
+    Locator:  getByLabel('Momento de medición (hora de Lima)', { exact: true })
+    Expected: "2026-01-02T15:00:00.123"
+    Received: "2026-01-02T15:00"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveValue" getByLabel('Momento de medición (hora de Lima)', { exact: true }) with timeout 5000ms
+      - waiting for getByLabel('Momento de medición (hora de Lima)', { exact: true })
+        14 × locator resolved to <input step="0.001" type="datetime-local" value="2026-01-02T15:00:00"/>
+           - unexpected value "2026-01-02T15:00"
+
+
+      179 |     page.getByLabel("Peso individual (g/fruto)", { exact: true }),
+      180 |   ).toHaveValue("210.25");
+    > 181 |   await expect(page.getByLabel("Momento de medición (hora de Lima)",{exact:true})).toHaveValue("2026-01-02T15:00:00.123");
+          |                                                                                    ^
+      182 |   await page.setViewportSize({ width: 320, height: 800 });
+      183 |   await expect(
+      184 |     page.getByRole("button", { name: "Guardar borrador", exact: true }),
+        at C:\Users\leona\Documents\Proyect_Final_Arquitectura\repo-calidad\tests\e2e\quality.spec.js:181:84
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\quality-Calidad-draft-inco-84a49-ida-y-replay-sin-duplicados\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\quality-Calidad-draft-inco-84a49-ida-y-replay-sin-duplicados\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\quality-Calidad-draft-inco-84a49-ida-y-replay-sin-duplicados\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\quality-Calidad-draft-inco-84a49-ida-y-replay-sin-duplicados\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests\e2e\quality.spec.js:112:1 › Calidad: draft incompleto persistente, respuesta perdida y replay sin duplicados 
+.env not found. Continuing without it.
+(node:12776) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+

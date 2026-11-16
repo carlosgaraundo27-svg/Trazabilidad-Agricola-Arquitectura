@@ -15,7 +15,7 @@ for (const module of [
     const code = await readFile(filename, "utf8");
     execFileSync(process.execPath, ["--check", filename], { stdio: "inherit" });
     if (
-      file === "domain.js" &&
+      file.endsWith("domain.js") &&
       /from ['"](?:express|pg|.*repository|.*http)/.test(code)
     )
       throw Error("Dominio depende de infraestructura: " + filename);
@@ -45,9 +45,13 @@ const expectedPaths = [
   "/api/v1/intake/receipts/{id}/reviews",
   "/api/v1/intake/receipts/{id}/confirmation",
   "/api/v1/lots",
+  "/api/v1/quality/lots",
+  "/api/v1/quality/evaluations",
+  "/api/v1/quality/evaluations/{id}",
+  "/api/v1/quality/evaluations/{id}/closure",
 ];
 if (
-  Object.keys(api.paths).length !== 13 ||
+  Object.keys(api.paths).length !== 17 ||
   expectedPaths.some((route) => !api.paths[route])
 )
   throw Error("Contrato API incompleto");

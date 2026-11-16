@@ -2,6 +2,7 @@ import { pathToFileURL } from "node:url";
 import { connectDatabase } from "../server/db.js";
 import { hashPassword } from "../server/modules/access/password.js";
 import { seedIntake } from "./seed-intake.js";
+import { seedQuality } from "./seed-quality.js";
 export const ids = {
   org: "10000000-0000-4000-8000-000000000001",
   otherOrg: "10000000-0000-4000-8000-000000000002",
@@ -70,6 +71,7 @@ export async function seed(db, password) {
       );
   });
   await seedIntake(db, password, ids);
+  await seedQuality(db, password, ids);
 }
 if (
   process.argv[1] &&

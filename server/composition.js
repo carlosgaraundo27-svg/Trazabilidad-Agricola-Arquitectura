@@ -7,6 +7,8 @@ import { harvestRepository } from "./modules/harvest/repository.js";
 import { harvestService } from "./modules/harvest/application.js";
 import { intakeService } from "./modules/intake/application.js";
 import { intakeRepository } from "./modules/intake/repository.js";
+import { qualityService } from "./modules/intake/quality-application.js";
+import { qualityRepository } from "./modules/intake/quality-repository.js";
 import { traceabilityService } from "./modules/traceability/application.js";
 import { traceabilityRepository } from "./modules/traceability/repository.js";
 export function compose(db) {
@@ -37,5 +39,12 @@ export function compose(db) {
     harvest,
     traceability,
   });
-  return { access, producers, harvest, intake };
+  const quality = qualityService({
+    repository: qualityRepository(),
+    unitOfWork,
+    access,
+    traceability,
+    intake,
+  });
+  return { access, producers, harvest, intake, quality };
 }

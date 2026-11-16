@@ -62,6 +62,20 @@ export function ReceiptList({
                     : "Requiere revisión independiente."}
                 </p>
               )}
+              {r.originalTemperature ? (
+                <p>
+                  Temperatura original: {r.originalTemperature.value} °C
+                  <br />
+                  Procedencia: {r.originalTemperature.provenance}
+                  <br />
+                  Responsable de registro: {r.originalTemperature.recordedBy}
+                </p>
+              ) : (
+                <p>
+                  Sin temperatura original documentada. Calidad no podrá cerrar
+                  este lote.
+                </p>
+              )}
               {r.review && (
                 <p>
                   Motivo de aprobación: {r.review.note}

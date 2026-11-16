@@ -1590,7 +1590,7 @@
       },
       "post": {
         "summary": "Registrar recepción completa con pesaje individual",
-        "description": "D1–D7 adoptadas solo para prototipo académico; sin aprobación docente ni validación agrícola. Misma clave por actor y comando normalizado: replay 200; contenido/operación diferente: 409. Revalida sesión y acción/centro antes del replay. UUID de Acopio normalizados a minúsculas antes de comparar/deduplicar/hash/lock; referencias comerciales conservan su caso.",
+        "description": "D1–D7 adoptadas solo para prototipo académico; sin aprobación docente ni validación agrícola. Misma clave por actor y comando normalizado: replay 200; contenido/operación diferente: 409. Revalida sesión y acción/centro antes del replay. UUID de Acopio normalizados a minúsculas antes de comparar/deduplicar/hash/lock; referencias comerciales conservan su caso. Captura opcional de temperatura original junto con nueva recepción, sin backfill histórico. Si se omite, recepción válida pero futuro cierre de Calidad bloqueado.",
         "security": [
           {
             "sessionCookie": []
@@ -2126,7 +2126,7 @@
             }
           }
         },
-        "description": " UUID de Acopio normalizados a minúsculas antes de comparar/deduplicar/hash/lock; referencias comerciales conservan su caso."
+        "description": " UUID de Acopio normalizados a minúsculas antes de comparar/deduplicar/hash/lock; referencias comerciales conservan su caso. qualityStatus registra la condición al consolidar; resultado actual en /quality/lots con permiso propio."
       },
       "post": {
         "summary": "Consolidar saldos completos compatibles; pendiente de calidad y sin despacho",
@@ -2238,6 +2238,640 @@
           },
           "422": {
             "description": "Entrada, medición o mezcla incompatible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Fallo interno; transacción revertida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/quality/lots": {
+      "get": {
+        "summary": "Consultar proyección de Calidad por centro",
+        "description": "Q1–Q9 adoptadas solo por el usuario para prototipo académico; sin aprobación docente ni validación agrícola. RF-06 y RF-07 parciales: g/fruto no es calibre comercial; lectura posterior no acredita recepción; decisión manual sin reglas agrícolas. Sin inventario ni despacho. UUID normalizados, concesión por centro/sesión revalidada antes de replay. Clave por actor y contenido normalizado retenida sin TTL; replay sin nuevo evento. Operación/evento/auditoría/clave comparten transacción. Dos comandos con misma versión tienen un ganador; closed no se modifica ni reabre.",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "centerId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000000,
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Página de lotes, máximo 100",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "maxItems": 100,
+                      "items": {
+                        "$ref": "#/components/schemas/QualityLot"
+                      }
+                    },
+                    "limit": {
+                      "const": 100
+                    }
+                  },
+                  "required": ["items", "limit"]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Clave Idempotency-Key UUID inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sin sesión activa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acción o centro no autorizado; CSRF/origen rechazado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso inaccesible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Evaluación existente/cerrada, versión obsoleta o clave reutilizada con otro contenido.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unidad, precisión, conteos, etapa/procedencia, fecha o datos obligatorios inválidos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Fallo interno; transacción revertida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/quality/evaluations": {
+      "post": {
+        "summary": "Crear evaluación única en draft",
+        "description": "Q1–Q9 adoptadas solo por el usuario para prototipo académico; sin aprobación docente ni validación agrícola. RF-06 y RF-07 parciales: g/fruto no es calibre comercial; lectura posterior no acredita recepción; decisión manual sin reglas agrícolas. Sin inventario ni despacho. UUID normalizados, concesión por centro/sesión revalidada antes de replay. Clave por actor y contenido normalizado retenida sin TTL; replay sin nuevo evento. Operación/evento/auditoría/clave comparten transacción. Dos comandos con misma versión tienen un ganador; closed no se modifica ni reabre.",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QualityCreateInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Replay autorizado, respuesta original",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QualityEvaluation"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Operación/evento/auditoría confirmados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QualityEvaluation"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Clave Idempotency-Key UUID inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sin sesión activa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acción o centro no autorizado; CSRF/origen rechazado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso inaccesible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Evaluación existente/cerrada, versión obsoleta o clave reutilizada con otro contenido.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unidad, precisión, conteos, etapa/procedencia, fecha o datos obligatorios inválidos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Fallo interno; transacción revertida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/quality/evaluations/{id}": {
+      "get": {
+        "summary": "Consultar evaluación y eventos de Calidad",
+        "description": "Q1–Q9 adoptadas solo por el usuario para prototipo académico; sin aprobación docente ni validación agrícola. RF-06 y RF-07 parciales: g/fruto no es calibre comercial; lectura posterior no acredita recepción; decisión manual sin reglas agrícolas. Sin inventario ni despacho. UUID normalizados, concesión por centro/sesión revalidada antes de replay. Clave por actor y contenido normalizado retenida sin TTL; replay sin nuevo evento. Operación/evento/auditoría/clave comparten transacción. Dos comandos con misma versión tienen un ganador; closed no se modifica ni reabre. Devuelve originales de Acopio de solo lectura y missingReceiptTemperatureIds; históricos incompletos permanecen en draft.",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Captura/versiones e historia coherentes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QualityEvaluation"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Clave Idempotency-Key UUID inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sin sesión activa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acción o centro no autorizado; CSRF/origen rechazado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso inaccesible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Evaluación existente/cerrada, versión obsoleta o clave reutilizada con otro contenido.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unidad, precisión, conteos, etapa/procedencia, fecha o datos obligatorios inválidos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Fallo interno; transacción revertida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Reemplazar captura completa del borrador",
+        "description": "Q1–Q9 adoptadas solo por el usuario para prototipo académico; sin aprobación docente ni validación agrícola. RF-06 y RF-07 parciales: g/fruto no es calibre comercial; lectura posterior no acredita recepción; decisión manual sin reglas agrícolas. Sin inventario ni despacho. UUID normalizados, concesión por centro/sesión revalidada antes de replay. Clave por actor y contenido normalizado retenida sin TTL; replay sin nuevo evento. Operación/evento/auditoría/clave comparten transacción. Dos comandos con misma versión tienen un ganador; closed no se modifica ni reabre. temperatures solo permite post_consolidation y sourceReceiptId null; no se acepta original ni estado/actor/resultado arbitrario.",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QualityUpdateInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Borrador actualizado o replay autorizado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QualityEvaluation"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Clave Idempotency-Key UUID inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sin sesión activa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acción o centro no autorizado; CSRF/origen rechazado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso inaccesible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Evaluación existente/cerrada, versión obsoleta o clave reutilizada con otro contenido.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unidad, precisión, conteos, etapa/procedencia, fecha o datos obligatorios inválidos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Fallo interno; transacción revertida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/quality/evaluations/{id}/closure": {
+      "post": {
+        "summary": "Cerrar con resultado manual y justificación",
+        "description": "Q1–Q9 adoptadas solo por el usuario para prototipo académico; sin aprobación docente ni validación agrícola. RF-06 y RF-07 parciales: g/fruto no es calibre comercial; lectura posterior no acredita recepción; decisión manual sin reglas agrícolas. Sin inventario ni despacho. UUID normalizados, concesión por centro/sesión revalidada antes de replay. Clave por actor y contenido normalizado retenida sin TTL; replay sin nuevo evento. Operación/evento/auditoría/clave comparten transacción. Dos comandos con misma versión tienen un ganador; closed no se modifica ni reabre. Requiere captura completa y temperatura original documentada de CADA recepción aportante, obtenida desde Acopio por el servidor. Resultado manual sin umbrales. Faltante bloquea accepted/observed/rejected con 422; sin reapertura ni edición closed. SELECT FOR UPDATE, versión, evento con snapshot de originales, auditoría y clave atómicos.",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QualityCloseInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Replay autorizado, respuesta original",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QualityEvaluation"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Operación/evento/auditoría confirmados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QualityEvaluation"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Clave Idempotency-Key UUID inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sin sesión activa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acción o centro no autorizado; CSRF/origen rechazado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso inaccesible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Evaluación existente/cerrada, versión obsoleta o clave reutilizada con otro contenido.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unidad, precisión, conteos, etapa/procedencia, fecha o datos obligatorios inválidos.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2684,7 +3318,11 @@
                 "intake:receive",
                 "intake:review",
                 "intake:confirm",
-                "lot:consolidate"
+                "lot:consolidate",
+                "quality:read",
+                "quality:create",
+                "quality:update",
+                "quality:close"
               ]
             }
           }
@@ -2723,6 +3361,9 @@
             "type": "string",
             "minLength": 1,
             "maxLength": 500
+          },
+          "temperature": {
+            "$ref": "#/components/schemas/ReceiptTemperatureInput"
           }
         },
         "required": [
@@ -2733,7 +3374,7 @@
           "tareKg",
           "evidence"
         ],
-        "description": "Recepción completa e individual. Bruto > tara >= 0; neto calculado, no admitido en body."
+        "description": "Recepción completa e individual. Bruto > tara >= 0; neto calculado, no admitido en body. temperature es opcional para conservar compatibilidad y recepciones sin dato; si se omite, el lote no podrá cerrar Calidad. La ausencia no se completa automáticamente y no existe edición posterior ordinaria. Captura de original, recepción, evento y auditoría en la misma transacción."
       },
       "ReviewInput": {
         "type": "object",
@@ -2843,6 +3484,16 @@
                   "reviewReason": {
                     "type": ["string", "null"],
                     "enum": ["quantity_difference", "different_unit", null]
+                  },
+                  "originalTemperature": {
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/OriginalReceiptTemperature"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
                   }
                 },
                 "required": ["netKg", "differenceKg", "reviewReason"]
@@ -3002,6 +3653,16 @@
               {
                 "type": "string",
                 "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "originalTemperature": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/OriginalReceiptTemperature"
               },
               {
                 "type": "null"
@@ -3198,6 +3859,972 @@
           "contributions",
           "events"
         ]
+      },
+      "QualitySample": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "reference": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "sampledAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Instante con zona, no futuro, hasta milisegundos. Respuesta UTC."
+          },
+          "sampledBy": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "provenance": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        },
+        "required": ["reference", "sampledAt", "sampledBy", "provenance"]
+      },
+      "QualityWeight": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "measuredAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Instante con zona, no futuro, hasta milisegundos. Respuesta UTC."
+          },
+          "observedBy": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "provenance": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "method": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "fruitReference": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "value": {
+            "type": "string",
+            "pattern": "^(?:0\\.(?:0[1-9]|[1-9][0-9]?)|[1-9][0-9]{0,5}(?:\\.[0-9]{1,2})?)$",
+            "description": "Peso individual positivo hasta 999999.99 g/fruto. Sin categoría comercial."
+          },
+          "unit": {
+            "const": "g/fruto"
+          }
+        },
+        "required": [
+          "measuredAt",
+          "observedBy",
+          "provenance",
+          "method",
+          "fruitReference",
+          "value",
+          "unit"
+        ]
+      },
+      "QualityDryMatter": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "measuredAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Instante con zona, no futuro, hasta milisegundos. Respuesta UTC."
+          },
+          "observedBy": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "provenance": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "method": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "value": {
+            "type": "string",
+            "pattern": "^(?:(?:0|[1-9][0-9]?)(?:\\.[0-9]{1,2})?|100(?:\\.0{1,2})?)$",
+            "description": "Porcentaje de masa seca respecto de masa fresca, 0–100 inclusive."
+          },
+          "unit": {
+            "const": "%"
+          }
+        },
+        "required": [
+          "measuredAt",
+          "observedBy",
+          "provenance",
+          "method",
+          "value",
+          "unit"
+        ]
+      },
+      "QualityDiscard": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "measuredAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Instante con zona, no futuro, hasta milisegundos. Respuesta UTC."
+          },
+          "observedBy": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "provenance": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "method": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "inspectedCount": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000000
+          },
+          "discardedCount": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000000,
+            "description": "No supera examinados. No extrapola kg ni modifica cantidades."
+          },
+          "unit": {
+            "const": "frutos"
+          }
+        },
+        "required": [
+          "measuredAt",
+          "observedBy",
+          "provenance",
+          "method",
+          "inspectedCount",
+          "discardedCount",
+          "unit"
+        ]
+      },
+      "QualityTemperature": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "measuredAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Instante con zona, no futuro, hasta milisegundos. Respuesta UTC."
+          },
+          "observedBy": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "provenance": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "method": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "value": {
+            "type": "string",
+            "pattern": "^-?(?:0|[1-9][0-9]{0,5})(?:\\.[0-9]{1,2})?$",
+            "description": "Cadena exacta hasta dos decimales; respuesta normalizada a dos decimales. Sin conversión ni precisión instrumental afirmada."
+          },
+          "unit": {
+            "const": "°C"
+          },
+          "stage": {
+            "const": "post_consolidation"
+          },
+          "sourceReceiptId": {
+            "type": "null"
+          }
+        },
+        "required": [
+          "measuredAt",
+          "observedBy",
+          "provenance",
+          "method",
+          "value",
+          "unit",
+          "stage",
+          "sourceReceiptId"
+        ],
+        "description": "Solo observación posterior: momento no anterior a consolidación. La temperatura original se consulta desde Acopio por receiptTemperatures; no se acepta transcribirla en la captura de Calidad."
+      },
+      "QualityCapture": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "sample": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/QualitySample"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "weights": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/QualityWeight"
+            }
+          },
+          "dryMatter": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/QualityDryMatter"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "discard": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/QualityDiscard"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "temperatures": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/QualityTemperature"
+            }
+          }
+        },
+        "required": [
+          "sample",
+          "weights",
+          "dryMatter",
+          "discard",
+          "temperatures"
+        ],
+        "description": "Draft permite null/arrays vacíos. Cada observación incluida exige metadata completa; referencias de frutos y de temperaturas de recepción únicas. Sin representación estadística afirmada; muestra pertenece al lote de evaluación. Límite HTTP existente: 16 KiB."
+      },
+      "QualityCreateInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "lotId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "required": ["lotId"]
+      },
+      "QualityUpdateInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "expectedVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483646
+          },
+          "sample": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/QualitySample"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "weights": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/QualityWeight"
+            }
+          },
+          "dryMatter": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/QualityDryMatter"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "discard": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/QualityDiscard"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "temperatures": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/QualityTemperature"
+            }
+          }
+        },
+        "required": [
+          "expectedVersion",
+          "sample",
+          "weights",
+          "dryMatter",
+          "discard",
+          "temperatures"
+        ]
+      },
+      "QualityCloseInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "expectedVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483646
+          },
+          "result": {
+            "enum": ["accepted", "observed", "rejected"]
+          },
+          "note": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        },
+        "required": ["expectedVersion", "result", "note"],
+        "description": "Requiere captura completa y temperatura original documentada de CADA recepción aportante, obtenida desde Acopio por el servidor. Resultado manual sin umbrales. Faltante bloquea accepted/observed/rejected con 422; sin reapertura ni edición closed. SELECT FOR UPDATE, versión, evento con snapshot de originales, auditoría y clave atómicos."
+      },
+      "QualitySnapshot": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "lotId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "organizationId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "centerId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "evaluationState": {
+            "enum": ["draft", "closed"]
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "capture": {
+            "$ref": "#/components/schemas/QualityCapture"
+          },
+          "qualityResult": {
+            "anyOf": [
+              {
+                "enum": ["accepted", "observed", "rejected"]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 500
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "createdBy": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Instante con zona, no futuro, hasta milisegundos. Respuesta UTC."
+          },
+          "updatedBy": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Instante con zona, no futuro, hasta milisegundos. Respuesta UTC."
+          },
+          "closedBy": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "closedAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time",
+                "description": "Instante con zona, no futuro, hasta milisegundos. Respuesta UTC."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "lotId",
+          "organizationId",
+          "centerId",
+          "evaluationState",
+          "version",
+          "capture",
+          "qualityResult",
+          "note",
+          "createdBy",
+          "createdAt",
+          "updatedBy",
+          "updatedAt",
+          "closedBy",
+          "closedAt"
+        ]
+      },
+      "QualityEvent": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "kind": {
+            "enum": ["created", "updated", "closed"]
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "actorId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "occurredAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Instante con zona, no futuro, hasta milisegundos. Respuesta UTC."
+          },
+          "payload": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "before": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/QualitySnapshot"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "after": {
+                "$ref": "#/components/schemas/QualitySnapshot"
+              },
+              "receiptTemperatures": {
+                "type": "array",
+                "maxItems": 100,
+                "items": {
+                  "$ref": "#/components/schemas/ReceiptTemperatureSource"
+                }
+              }
+            },
+            "required": ["before", "after"]
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "version",
+          "actorId",
+          "occurredAt",
+          "payload"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "closed"
+                }
+              },
+              "required": ["kind"]
+            },
+            "then": {
+              "properties": {
+                "payload": {
+                  "required": ["receiptTemperatures"]
+                }
+              }
+            }
+          }
+        ]
+      },
+      "QualityEvaluation": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "lotId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "organizationId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "centerId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "evaluationState": {
+            "enum": ["draft", "closed"]
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "capture": {
+            "$ref": "#/components/schemas/QualityCapture"
+          },
+          "qualityResult": {
+            "anyOf": [
+              {
+                "enum": ["accepted", "observed", "rejected"]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 500
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "createdBy": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Instante con zona, no futuro, hasta milisegundos. Respuesta UTC."
+          },
+          "updatedBy": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Instante con zona, no futuro, hasta milisegundos. Respuesta UTC."
+          },
+          "closedBy": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "closedAt": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time",
+                "description": "Instante con zona, no futuro, hasta milisegundos. Respuesta UTC."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "events": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QualityEvent"
+            }
+          },
+          "discardPercentage": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?:0|[1-9][0-9]?|100)\\.[0-9]{2}$",
+                "description": "100 × descartados/examinados, mitad hacia arriba a dos decimales. Solo informativo."
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "decisionMode": {
+            "const": "manual_academic"
+          },
+          "dispatchAuthorized": {
+            "const": false
+          },
+          "receiptTemperatures": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/ReceiptTemperatureSource"
+            }
+          },
+          "missingReceiptTemperatureIds": {
+            "type": "array",
+            "maxItems": 100,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "IDs aportantes sin original documentada. Bloquean todo resultado de cierre, incluso con lecturas posteriores."
+          }
+        },
+        "required": [
+          "id",
+          "lotId",
+          "organizationId",
+          "centerId",
+          "evaluationState",
+          "version",
+          "capture",
+          "qualityResult",
+          "note",
+          "createdBy",
+          "createdAt",
+          "updatedBy",
+          "updatedAt",
+          "closedBy",
+          "closedAt",
+          "events",
+          "discardPercentage",
+          "decisionMode",
+          "dispatchAuthorized",
+          "receiptTemperatures",
+          "missingReceiptTemperatureIds"
+        ]
+      },
+      "QualityLot": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "organizationId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "centerId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "producerId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "parcelId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "localHarvestDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "status": {
+            "const": "consolidated"
+          },
+          "dispatchAuthorized": {
+            "const": false
+          },
+          "createdBy": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "totalKg": {
+            "type": "string",
+            "pattern": "^(?:0|[1-9][0-9]{0,11})\\.[0-9]{3}$"
+          },
+          "contributions": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 100,
+            "items": {
+              "$ref": "#/components/schemas/Contribution"
+            }
+          },
+          "events": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 1,
+            "items": {
+              "$ref": "#/components/schemas/LotEvent"
+            }
+          },
+          "consolidationQualityStatus": {
+            "const": "pending_quality",
+            "description": "Hecho histórico al consolidar; no es resultado actual."
+          },
+          "evaluationId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "evaluationState": {
+            "anyOf": [
+              {
+                "enum": ["draft", "closed"]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "qualityResult": {
+            "anyOf": [
+              {
+                "enum": ["accepted", "observed", "rejected"]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "organizationId",
+          "centerId",
+          "producerId",
+          "parcelId",
+          "localHarvestDate",
+          "status",
+          "dispatchAuthorized",
+          "createdBy",
+          "createdAt",
+          "totalKg",
+          "contributions",
+          "events",
+          "consolidationQualityStatus",
+          "evaluationId",
+          "evaluationState",
+          "qualityResult"
+        ]
+      },
+      "ReceiptTemperatureInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "measuredAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Instante con zona, no futuro, hasta milisegundos. Respuesta UTC."
+          },
+          "observedBy": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "provenance": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "method": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "value": {
+            "type": "string",
+            "pattern": "^-?(?:0|[1-9][0-9]{0,5})(?:\\.[0-9]{1,2})?$",
+            "description": "Cadena exacta hasta dos decimales; respuesta normalizada a dos decimales. Sin conversión ni precisión instrumental afirmada."
+          },
+          "unit": {
+            "const": "°C"
+          }
+        },
+        "required": [
+          "measuredAt",
+          "observedBy",
+          "provenance",
+          "method",
+          "value",
+          "unit"
+        ],
+        "description": "Solo al crear recepción. Lectura original en °C con momento no futuro, observador, método y procedencia. Sin conversión. No acepta recordedBy/recordedAt del cliente."
+      },
+      "OriginalReceiptTemperature": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "measuredAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Instante con zona, no futuro, hasta milisegundos. Respuesta UTC."
+          },
+          "observedBy": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "provenance": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "method": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "value": {
+            "type": "string",
+            "pattern": "^-?(?:0|[1-9][0-9]{0,5})(?:\\.[0-9]{1,2})?$",
+            "description": "Cadena exacta hasta dos decimales; respuesta normalizada a dos decimales. Sin conversión ni precisión instrumental afirmada."
+          },
+          "unit": {
+            "const": "°C"
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "recordedBy": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "measuredAt",
+          "observedBy",
+          "provenance",
+          "method",
+          "value",
+          "unit",
+          "id",
+          "recordedBy",
+          "recordedAt"
+        ],
+        "description": "Hecho inmutable de Acopio. Responsable de registro y fecha del servidor; momento medido se conserva separadamente. No hay incorporación/corrección histórica en este incremento."
+      },
+      "ReceiptTemperatureSource": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "receiptId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "reference": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "temperature": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/OriginalReceiptTemperature"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": ["receiptId", "reference", "temperature"]
       }
     }
   }

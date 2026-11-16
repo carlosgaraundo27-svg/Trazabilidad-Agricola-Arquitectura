@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "openapi": "3.1.0",
+  "paths": 17,
+  "samplesChecked": 238,
+  "formatValidation": "SwaggerParser estructura y Ajv2020 sin formatos. UUID/fechas comprobados por validación de servidor/pruebas.",
+  "finishedAt": "2026-11-15T20:58:08.486Z"
+}

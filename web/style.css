@@ -260,8 +260,39 @@ footer {
 
 .workspace-tabs {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.75rem;
   margin-bottom: 1.5rem;
+}
+.quality-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+fieldset {
+  min-width: 0;
+  margin: 1.5rem 0;
+  padding: 1rem;
+  border: 1px solid var(--line);
+}
+legend {
+  font-weight: 600;
+  color: var(--green);
+}
+.quality-observation {
+  margin: 1rem 0;
+  padding: 1rem;
+  border-top: 1px solid var(--line);
+}
+pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 0.8rem;
+}
+@media (max-width: 600px) {
+  .quality-fields {
+    grid-template-columns: 1fr;
+  }
 }
 main .secondary {
   color: var(--green);

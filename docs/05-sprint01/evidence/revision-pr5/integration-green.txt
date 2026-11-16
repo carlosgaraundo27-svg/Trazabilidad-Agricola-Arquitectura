@@ -1,0 +1,67 @@
+▶ integración HTTP + SQL del primer recorrido
+  ✔ credenciales, sesión, CSRF, origen y rol (39.1057ms)
+  ✔ alta de productor y parcela; aislamiento por organización (15.7002ms)
+  ✔ rechaza entradas inválidas sin escribir (16.1827ms)
+  ✔ captura, reintento concurrente, conflicto y persistencia (93.9139ms)
+  ✔ revocar asignación bloquea incluso reintento aceptado (5.1042ms)
+  ✔ fallo real de auditoría revierte cosecha y pre-lote (11.5043ms)
+  ✔ CHECK y FK rechazan corrupción y otra organización (2.7504ms)
+  ✔ cuenta inactiva, sesión vencida y logout (7.6519ms)
+  ✔ errores HTTP seguros y límite de autenticación (365.1649ms)
+  ✔ migración down/up en base desechable (152.9968ms)
+✔ integración HTTP + SQL del primer recorrido (1270.7891ms)
+▶ Acopio HTTP y PostgreSQL: integridad y ámbito
+  ✔ consulta de saldo conserva un snapshot al confirmar y consumir en paralelo (150.1781ms)
+  ✔ UUID equivalentes en centro, origen, ruta y clave conservan idempotencia (59.8706ms)
+  ✔ recibe, confirma y consolida composición exacta sin calidad ni despacho (71.3394ms)
+  ✔ discrepancia requiere revisión y confirmación separadas; no autoaprobación (38.3979ms)
+  ✔ permisos por centro y acción, origen ajeno y administrador sin herencia (81.5059ms)
+  ✔ rechaza mezcla por parcela/productor o fecha local sin consumir saldo (91.2899ms)
+  ✔ unicidad física: pre-lote completo y referencia por centro (24.3778ms)
+  ✔ recepción/revisión/confirmación idempotentes y revalidación tras revocar concesión (27.8781ms)
+  ✔ doble consumo concurrente con claves distintas y replay concurrente de lote (41.7332ms)
+  ✔ dimensiones distintas no se convierten y exceso no modifica declaración (32.8386ms)
+  ✔ fallos reales de evento revierten recepción, revisión, confirmación y lote (49.6456ms)
+  ✔ fallo de auditoría revierte recepción e idempotencia (15.3117ms)
+  ✔ fallo de auditoría al consolidar revierte lote, aportes, evento y request (29.5448ms)
+  ✔ SQL protege hechos cerrados, autoaprobación y aporte completo (356.3048ms)
+✔ Acopio HTTP y PostgreSQL: integridad y ámbito (1497.615ms)
+▶ Publicación HTTP/PostgreSQL y caché por puerto
+  ✔ no publicado, permisos por acción/centro/organización y lista acotada (31.6192ms)
+  ✔ publicar explícitamente, replay y DTO sin campos ni valores privados (34.9678ms)
+  ✔ caché fría/caliente y actualización versionada conservan DTO aprobado (11.7271ms)
+  ✔ retiro con invalidación fallida impide servir valor caliente conservado (8.7584ms)
+  ✔ Redis indisponible permite republicar, consultar y retirar; luego se recupera (21.106ms)
+  ✔ lectura en curso serializa retiro; invalidación fallida no permite consultas posteriores (91.856ms)
+  ✔ retirar exige su concesión específica y se revalida antes del replay (12.7039ms)
+  ✔ versión concurrente, permisos revocados antes de replay e historia inmutable (38.838ms)
+  ✔ fallo de auditoría revierte publicación, revisión y clave (10.3481ms)
+  ✔ límite público devuelve 429 sin depender de Redis (52.7499ms)
+✔ Publicación HTTP/PostgreSQL y caché por puerto (673.4418ms)
+▶ Calidad HTTP/PostgreSQL: captura autorizada persistida y auditada
+  ✔ creación única por lote, replay normalizado y acceso por centro (32.4066ms)
+  ✔ captura incompleta persistida, SQL y auditoría transaccionales (17.8912ms)
+  ✔ unidades, conteos, precisión, futuro y vínculos de recepción inválidos no alteran borrador (27.9554ms)
+  ✔ fallos reales de eventos/auditoría revierten datos, versión y clave de borrador (32.0125ms)
+  ✔ captura completa exacta y dos ediciones concurrentes con versión esperada (37.2283ms)
+  ✔ permiso revocado bloquea replay y calidad no concede revisión de discrepancias (29.6571ms)
+  ✔ historia y claves inmutables; sin cambios en masa, aportes o consolidación (71.7423ms)
+  ✔ originales pertenecen a recepción, son inmutables y mantienen responsable/auditoría (79.2836ms)
+  ✔ cierre incompleto y sin originales bloqueado aunque exista lectura posterior; sin ruta alternativa (262.6126ms)
+  ✔ fallos reales de evento y auditoría revierten cierre completo y clave (34.2056ms)
+  ✔ cierre atómico concurrente con todas las originales, replay y protección posterior (208.0101ms)
+  ✔ observado y rechazado cierran manualmente con originales completos sin alterar cantidades ni despacho (128.3167ms)
+  ✔ temperatura original rechaza unidades, precisión, fechas, datos incompletos y actor arbitrario (13.7289ms)
+  ✔ original, recepción, evento y auditoría se revierten juntos ante fallo real (26.717ms)
+✔ Calidad HTTP/PostgreSQL: captura autorizada persistida y auditada (1352.2311ms)
+.env not found. Continuing without it.
+{"event":"server_started","port":0}
+✔ servidor E2E termina por IPC y libera el puerto sin taskkill (697.5618ms)
+ℹ tests 53
+ℹ suites 0
+ℹ pass 53
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7230.7971

@@ -1,0 +1,38 @@
+✖ contenido de caché válido pero con hash ajeno nunca sustituye la revisión aprobada (3.9648ms)
+✔ guard PostgreSQL domina caché caliente, retiro fallido y actualización de versión (0.6323ms)
+✔ Redis falla o devuelve contenido contaminado: DB; DB caída: 503 sin consultar Redis (0.634ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 2
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 121.4319
+
+✖ failing tests:
+
+test at tests\unit\public-query.test.js:6:1
+✖ contenido de caché válido pero con hash ajeno nunca sustituye la revisión aprobada (3.9648ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+    {
+  +   lotCode: 'ALTERADO',
+  -   lotCode: 'APROBADO',
+      stages: [
+        {
+          date: '2026-01-01',
+          description: 'Ficticio aprobado',
+          stage: 'harvest'
+
+      at TestContext.<anonymous> (file:///C:/Users/leona/Documents/Proyect_Final_Arquitectura/repo-qr/tests/unit/public-query.test.js:38:10)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { lotCode: 'ALTERADO', stages: [ [Object] ] },
+    expected: { lotCode: 'APROBADO', stages: [ [Object] ] },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

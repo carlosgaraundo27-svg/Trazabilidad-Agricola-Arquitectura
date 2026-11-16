@@ -18,6 +18,7 @@ test("Publicación HTTP/PostgreSQL y caché por puerto", async (t) => {
   await seed(db, "Fiction-only-2026!");
   const entries = new Map();
   const recordedTtls = [];
+  let holdRead;
   let fail = false,
     failDelete = false,
     hits = 0,
@@ -26,6 +27,7 @@ test("Publicación HTTP/PostgreSQL y caché por puerto", async (t) => {
     get: async (key) => {
       if (fail) throw Error("Redis GET caído");
       hits++;
+      if (holdRead) await holdRead();
       return entries.get(key);
     },
     set: async (key, value, ttl) => {
@@ -282,6 +284,131 @@ test("Publicación HTTP/PostgreSQL y caché por puerto", async (t) => {
         demoProjection,
       );
       assert.equal(entries.size, 1);
+    },
+  );
+  await t.test(
+    "lectura en curso serializa retiro; invalidación fallida no permite consultas posteriores",
+    { timeout: 10000 },
+    async () => {
+      let entered, release;
+      const started = new Promise((resolve) => {
+        entered = resolve;
+      });
+      const barrier = new Promise((resolve) => {
+        release = resolve;
+      });
+      holdRead = async () => {
+        entered();
+        await barrier;
+      };
+      const reading = call("/api/public/v1/lots/" + publication.publicId);
+      let withdrawing;
+      try {
+        await started;
+        await assert.rejects(
+          db.query(
+            "SELECT lot_id FROM publication.lots WHERE public_id=$1 FOR UPDATE NOWAIT",
+            [publication.publicId],
+          ),
+          (e) => e.code === "55P03",
+        );
+        failDelete = true;
+        withdrawing = call(
+          path + "/withdrawal",
+          "POST",
+          { expectedVersion: publication.version },
+          owner,
+          crypto.randomUUID(),
+        );
+        const deadline = Date.now() + 3000;
+        let blocked = false;
+        while (Date.now() < deadline) {
+          blocked = (
+            await db.query(
+              "SELECT EXISTS(SELECT 1 FROM pg_stat_activity WHERE datname=current_database() AND query LIKE 'INSERT INTO publication.lots%' AND wait_event_type='Lock') AS blocked",
+            )
+          ).rows[0].blocked;
+          if (blocked) break;
+          await new Promise((resolve) => setTimeout(resolve, 10));
+        }
+        assert.equal(
+          blocked,
+          true,
+          "retiro espera el bloqueo de la consulta admitida",
+        );
+      } finally {
+        holdRead = null;
+        release();
+        await Promise.allSettled([
+          reading,
+          ...(withdrawing ? [withdrawing] : []),
+        ]);
+      }
+      assert.equal((await reading).status, 200);
+      const retired = await withdrawing;
+      assert.equal(retired.status, 201);
+      publication = retired.body;
+      const hitsBefore = hits;
+      assert.equal(
+        (await call("/api/public/v1/lots/" + publication.publicId)).status,
+        404,
+      );
+      assert.equal(hits, hitsBefore);
+      assert.ok(
+        entries.size > 0,
+        "se conserva deliberadamente una caché antigua",
+      );
+      failDelete = false;
+      const restored = await publish(demoProjection, publication.version);
+      assert.equal(restored.status, 201);
+      publication = restored.body;
+    },
+  );
+  await t.test(
+    "retirar exige su concesión específica y se revalida antes del replay",
+    async () => {
+      const key = crypto.randomUUID(),
+        version = publication.version;
+      const command = () =>
+        call(
+          path + "/withdrawal",
+          "POST",
+          { expectedVersion: version },
+          owner,
+          key,
+        );
+      const removeGrant = () =>
+        db.query(
+          "DELETE FROM access.center_grants WHERE user_id=$1 AND action='publication:withdraw'",
+          ["90000000-0000-4000-8000-000000000001"],
+        );
+      const restoreGrant = () =>
+        db.query(
+          "INSERT INTO access.center_grants VALUES($1,$2,$3,'publication:withdraw') ON CONFLICT DO NOTHING",
+          [
+            "90000000-0000-4000-8000-000000000001",
+            intakeIds.center,
+            lot.organizationId,
+          ],
+        );
+      await removeGrant();
+      try {
+        assert.equal((await command()).status, 404);
+      } finally {
+        await restoreGrant();
+      }
+      const retired = await command();
+      assert.equal(retired.status, 201);
+      publication = retired.body;
+      await removeGrant();
+      try {
+        assert.equal((await command()).status, 404);
+      } finally {
+        await restoreGrant();
+      }
+      const republished = await publish(demoProjection, publication.version);
+      assert.equal(republished.status, 201);
+      publication = republished.body;
     },
   );
   await t.test(

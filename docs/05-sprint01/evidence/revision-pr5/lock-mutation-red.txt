@@ -1,0 +1,37 @@
+▶ Publicación HTTP/PostgreSQL y caché por puerto
+  ✔ no publicado, permisos por acción/centro/organización y lista acotada (30.6579ms)
+  ✔ publicar explícitamente, replay y DTO sin campos ni valores privados (32.4171ms)
+  ✔ caché fría/caliente y actualización versionada conservan DTO aprobado (10.4128ms)
+  ✔ retiro con invalidación fallida impide servir valor caliente conservado (8.0208ms)
+  ✔ Redis indisponible permite republicar, consultar y retirar; luego se recupera (15.8956ms)
+  ✖ lectura en curso serializa retiro; invalidación fallida no permite consultas posteriores (34.1951ms)
+  ✔ versión concurrente, permisos revocados antes de replay e historia inmutable (43.1884ms)
+  ✔ fallo de auditoría revierte publicación, revisión y clave (12.441ms)
+  ✔ límite público devuelve 429 sin depender de Redis (49.3077ms)
+✖ Publicación HTTP/PostgreSQL y caché por puerto (604.1763ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 8
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1008.337
+
+✖ failing tests:
+
+test at tests\integration\publication.test.js:289:11
+✖ lectura en curso serializa retiro; invalidación fallida no permite consultas posteriores (34.1951ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (file:///C:/Users/leona/Documents/Proyect_Final_Arquitectura/repo-qr/tests/integration/publication.test.js:308:9)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async TestContext.<anonymous> (file:///C:/Users/leona/Documents/Proyect_Final_Arquitectura/repo-qr/tests/integration/publication.test.js:289:3)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }

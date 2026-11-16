@@ -2,6 +2,42 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { publicationService } from "../../server/modules/publication/application.js";
 import { contentHash } from "../../server/modules/publication/domain.js";
+
+test("contenido de caché válido pero con hash ajeno nunca sustituye la revisión aprobada", async () => {
+  const id = crypto.randomUUID();
+  const approved = {
+    lotCode: "APROBADO",
+    stages: [
+      {
+        stage: "harvest",
+        date: "2026-01-01",
+        description: "Ficticio aprobado",
+      },
+    ],
+  };
+  let snapshots = 0;
+  const service = publicationService({
+    unitOfWork: (fn) => fn({}),
+    repository: {
+      publicGate: async () => ({
+        publicId: id,
+        state: "published",
+        version: 1,
+        contentHash: contentHash(approved),
+      }),
+      snapshot: async () => {
+        snapshots++;
+        return approved;
+      },
+    },
+    cache: {
+      get: async () => JSON.stringify({ ...approved, lotCode: "ALTERADO" }),
+      set: async () => {},
+    },
+  });
+  assert.deepEqual(await service.query(id), approved);
+  assert.equal(snapshots, 1);
+});
 test("guard PostgreSQL domina caché caliente, retiro fallido y actualización de versión", async () => {
   const id = crypto.randomUUID(),
     dto = {

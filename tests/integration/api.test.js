@@ -352,7 +352,7 @@ test("integración HTTP + SQL del primer recorrido", async (t) => {
       for (const file of files) {
         const sql = await readFile(new URL(file, directory), "utf8");
         for (const statement of sql
-          .split(";")
+          .split(sql.startsWith("-- statement") ? /^-- statement\s*$/m : ";")
           .map((s) => s.trim())
           .filter(Boolean))
           await tx.query(statement);

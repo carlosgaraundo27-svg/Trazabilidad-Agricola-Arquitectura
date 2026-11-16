@@ -1,3 +1,7 @@
+# Estado vigente — 2026-11-16
+
+PR #4 integrado técnicamente por autorización del usuario con merge b664fee, conservando sus commits y la corrección 75ae942. verify, compose y SonarCloud success en esa cabeza. No constituye aprobación docente ni validación agrícola. [Revisión](revision-pr4.md). El contenido anterior se conserva a continuación como registro de la sesión previa y su instrucción de no fusionar fue sustituida por la autorización actual.
+
 ﻿# Continuidad: Calidad académica implementada
 
 2026-11-15. Q1–Q9 y cierre con original de cada recepción adoptadas por el usuario, sin aprobación docente ni validación agrícola. [Especificación](../03-diseno-de-software/05-especificacion-calidad-lote.md), [ADR-012](../02-arquitectura/09-decisiones-calidad.md), [guía](../../tecnologia/calidad.md), [implementación/evidencia](calidad-implementacion.md).

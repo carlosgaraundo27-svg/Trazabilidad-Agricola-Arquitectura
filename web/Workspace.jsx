@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from "react";
+﻿import React, { useEffect, useState } from "react";
 import { api } from "./api.js";
 import { Intake } from "./intake/Intake.jsx";
 import { Quality } from "./quality/Quality.jsx";
+import { PublicationAdmin } from "./publication/PublicationAdmin.jsx";
 export function Workspace({ user, origin }) {
   const [centers, setCenters] = useState(null),
     [error, setError] = useState(""),
-    [tab, setTab] = useState(origin ? "origin" : "intake");
+    [tab, setTab] = useState(origin ? "origin" : null);
   useEffect(() => {
     let active = true;
     api("/intake/centers")
-      .then((result) => {
-        if (active) setCenters(result.items);
+      .then((r) => {
+        if (active) setCenters(r.items);
       })
       .catch((e) => {
         if (active) setError(e.message);
@@ -19,64 +20,57 @@ export function Workspace({ user, origin }) {
       active = false;
     };
   }, []);
-  const intakeCenters =
-    centers?.filter((c) => c.actions.includes("intake:read")) ?? [];
-  const qualityCenters =
-    centers?.filter((c) => c.actions.includes("quality:read")) ?? [];
-  const activeTab =
-    !origin &&
-    tab === "intake" &&
-    !intakeCenters.length &&
-    qualityCenters.length
-      ? "quality"
-      : tab;
+  const scoped = (action) =>
+    centers?.filter((c) => c.actions.includes(action)) ?? [];
+  const intake = scoped("intake:read"),
+    quality = scoped("quality:read"),
+    publication = scoped("publication:read");
+  const views = [];
+  if (origin)
+    views.push({ id: "origin", label: "Origen y cosecha", content: origin });
+  if (intake.length)
+    views.push({
+      id: "intake",
+      label: "Acopio",
+      content: <Intake user={user} centers={intake} />,
+    });
+  if (quality.length)
+    views.push({
+      id: "quality",
+      label: "Calidad",
+      content: <Quality key={user.id} centers={quality} />,
+    });
+  if (publication.length)
+    views.push({
+      id: "publication",
+      label: "Publicación QR",
+      content: <PublicationAdmin centers={publication} />,
+    });
+  const active = tab ?? views[0]?.id,
+    current = views.find((view) => view.id === active);
   return (
     <>
       {error && <p role="alert">{error}</p>}
       {centers === null && !error && (
-        <p role="status">Consultando centros autorizados…</p>
+        <output>Consultando centros autorizados…</output>
       )}
-      {centers?.length > 0 && (
+      {views.length > 0 && (
         <nav className="workspace-tabs" aria-label="Área de trabajo">
-          {origin && (
+          {views.map((view) => (
             <button
+              key={view.id}
               className="secondary"
-              aria-pressed={tab === "origin"}
-              onClick={() => setTab("origin")}
+              aria-pressed={active === view.id}
+              onClick={() => setTab(view.id)}
             >
-              Origen y cosecha
+              {view.label}
             </button>
-          )}
-          {intakeCenters.length > 0 && (
-            <button
-              className="secondary"
-              aria-pressed={tab === "intake"}
-              onClick={() => setTab("intake")}
-            >
-              Acopio
-            </button>
-          )}
-          {qualityCenters.length > 0 && (
-            <button
-              className="secondary"
-              aria-pressed={activeTab === "quality"}
-              onClick={() => setTab("quality")}
-            >
-              Calidad
-            </button>
-          )}
+          ))}
         </nav>
       )}
-      {activeTab === "quality" && qualityCenters.length ? (
-        <Quality key={user.id} centers={qualityCenters} />
-      ) : activeTab === "origin" ? (
-        origin
-      ) : intakeCenters.length > 0 ? (
-        <Intake user={user} centers={intakeCenters} />
-      ) : (
-        centers && (
-          <p>Tu cuenta no tiene operaciones habilitadas en este recorrido.</p>
-        )
+      {current?.content}
+      {centers && views.length === 0 && (
+        <p>Tu cuenta no tiene operaciones habilitadas en este recorrido.</p>
       )}
     </>
   );

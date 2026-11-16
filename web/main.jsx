@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { api, listAll, setSession } from "./api.js";
 import "./style.css";
 import { Workspace } from "./Workspace.jsx";
+import { PublicPage } from "./publication/PublicPage.jsx";
 function Field({ label, ...props }) {
   return (
     <label>
@@ -437,4 +438,7 @@ function App() {
     </>
   );
 }
-createRoot(document.getElementById("root")).render(<App />);
+const publicPath = /^\/q\/([^/]+)$/.exec(window.location.pathname);
+createRoot(document.getElementById("root")).render(
+  publicPath ? <PublicPage id={publicPath[1]} /> : <App />,
+);

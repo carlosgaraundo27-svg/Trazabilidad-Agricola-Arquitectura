@@ -1,9 +1,9 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "Trazabilidad agrícola - primer recorrido y Acopio académico",
-    "version": "0.2.0",
-    "description": "Prototipo académico: primer recorrido y D1–D7 adoptadas por el usuario, sin validación agrícola ni aprobación docente. Acopio requiere concesiones por acción/centro; calidad y despacho fuera del corte. Campos desconocidos se rechazan."
+    "title": "Trazabilidad agrícola - Acopio, Calidad manual y publicación pública QR",
+    "version": "0.4.0",
+    "description": "Prototipo académico. Publicación y retiro explícitos por usuario autorizado del centro. Publicar trazabilidad no aprueba Calidad. DTO público permitido; QR por lote, sin pallets. RF-08/RF-09 y ADR-005/ADR-008. Redis opcional para disponibilidad, verificación obligatoria de estado en PostgreSQL."
   },
   "servers": [
     {
@@ -2892,6 +2892,804 @@
           }
         }
       }
+    },
+    "/api/v1/publications/lots": {
+      "get": {
+        "summary": "Listar hasta 100 lotes publicables del centro; publication:read",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "centerId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000000,
+              "default": 0
+            },
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Página interna",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "maxItems": 100,
+                      "items": {
+                        "$ref": "#/components/schemas/PublicationCandidate"
+                      }
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "const": 100
+                    }
+                  },
+                  "required": ["items", "limit"]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error seguro; 404 oculta recurso ajeno, sin publicar o retirado; 409 versión/estado/clave incompatible.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error seguro; 404 oculta recurso ajeno, sin publicar o retirado; 409 versión/estado/clave incompatible.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error seguro; 404 oculta recurso ajeno, sin publicar o retirado; 409 versión/estado/clave incompatible.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error seguro; 404 oculta recurso ajeno, sin publicar o retirado; 409 versión/estado/clave incompatible.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Error seguro; 404 oculta recurso ajeno, sin publicar o retirado; 409 versión/estado/clave incompatible.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Error seguro; 404 oculta recurso ajeno, sin publicar o retirado; 409 versión/estado/clave incompatible.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Error seguro; 404 oculta recurso ajeno, sin publicar o retirado; 409 versión/estado/clave incompatible.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error seguro; 404 oculta recurso ajeno, sin publicar o retirado; 409 versión/estado/clave incompatible.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/publications/lots/{id}": {
+      "get": {
+        "summary": "Consultar estado e historia interna; publication:read",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Estado interno; sin fila = unpublished versión 0",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Publication"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error seguro; 404 oculta recurso ajeno, sin publicar o retirado; 409 versión/estado/clave incompatible.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error seguro; 404 oculta recurso ajeno, sin publicar o retirado; 409 versión/estado/clave incompatible.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error seguro; 404 oculta recurso ajeno, sin publicar o retirado; 409 versión/estado/clave incompatible.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error seguro; 404 oculta recurso ajeno, sin publicar o retirado; 409 versión/estado/clave incompatible.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Error seguro; 404 oculta recurso ajeno, sin publicar o retirado; 409 versión/estado/clave incompatible.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Error seguro; 404 oculta recurso ajeno, sin publicar o retirado; 409 versión/estado/clave incompatible.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Error seguro; 404 oculta recurso ajeno, sin publicar o retirado; 409 versión/estado/clave incompatible.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error seguro; 404 oculta recurso ajeno, sin publicar o retirado; 409 versión/estado/clave incompatible.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Aprobar y publicar/republicar campos; publication:publish",
+        "description": "Requiere concesión explícita por centro, sesión/CSRF e Idempotency-Key. Versión esperada, historia y auditoría atómicas. Misma intención devuelve 200 sin duplicar; distinta con misma clave = 409.",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          },
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PublicationInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Replay autorizado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Publication"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Publicación/retiro confirmado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Publication"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error seguro; 404 oculta recurso ajeno, sin publicar o retirado; 409 versión/estado/clave incompatible.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error seguro; 404 oculta recurso ajeno, sin publicar o retirado; 409 versión/estado/clave incompatible.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error seguro; 404 oculta recurso ajeno, sin publicar o retirado; 409 versión/estado/clave incompatible.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error seguro; 404 oculta recurso ajeno, sin publicar o retirado; 409 versión/estado/clave incompatible.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Error seguro; 404 oculta recurso ajeno, sin publicar o retirado; 409 versión/estado/clave incompatible.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Error seguro; 404 oculta recurso ajeno, sin publicar o retirado; 409 versión/estado/clave incompatible.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Error seguro; 404 oculta recurso ajeno, sin publicar o retirado; 409 versión/estado/clave incompatible.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error seguro; 404 oculta recurso ajeno, sin publicar o retirado; 409 versión/estado/clave incompatible.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/publications/lots/{id}/withdrawal": {
+      "post": {
+        "summary": "Retirar publicación; publication:withdraw",
+        "description": "Requiere concesión explícita por centro, sesión/CSRF e Idempotency-Key. Versión esperada, historia y auditoría atómicas. Misma intención devuelve 200 sin duplicar; distinta con misma clave = 409.",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          },
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WithdrawalInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Replay autorizado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Publication"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Publicación/retiro confirmado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Publication"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error seguro; 404 oculta recurso ajeno, sin publicar o retirado; 409 versión/estado/clave incompatible.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error seguro; 404 oculta recurso ajeno, sin publicar o retirado; 409 versión/estado/clave incompatible.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error seguro; 404 oculta recurso ajeno, sin publicar o retirado; 409 versión/estado/clave incompatible.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error seguro; 404 oculta recurso ajeno, sin publicar o retirado; 409 versión/estado/clave incompatible.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Error seguro; 404 oculta recurso ajeno, sin publicar o retirado; 409 versión/estado/clave incompatible.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Error seguro; 404 oculta recurso ajeno, sin publicar o retirado; 409 versión/estado/clave incompatible.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Error seguro; 404 oculta recurso ajeno, sin publicar o retirado; 409 versión/estado/clave incompatible.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error seguro; 404 oculta recurso ajeno, sin publicar o retirado; 409 versión/estado/clave incompatible.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/publications/lots/{id}/qr": {
+      "get": {
+        "summary": "Generar QR PNG por lote publicado con PUBLIC_BASE_URL; publication:read",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "QR codifica exclusivamente la URL pública configurada",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "image/png": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error seguro; 404 oculta recurso ajeno, sin publicar o retirado; 409 versión/estado/clave incompatible.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error seguro; 404 oculta recurso ajeno, sin publicar o retirado; 409 versión/estado/clave incompatible.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error seguro; 404 oculta recurso ajeno, sin publicar o retirado; 409 versión/estado/clave incompatible.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error seguro; 404 oculta recurso ajeno, sin publicar o retirado; 409 versión/estado/clave incompatible.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Error seguro; 404 oculta recurso ajeno, sin publicar o retirado; 409 versión/estado/clave incompatible.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Error seguro; 404 oculta recurso ajeno, sin publicar o retirado; 409 versión/estado/clave incompatible.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Error seguro; 404 oculta recurso ajeno, sin publicar o retirado; 409 versión/estado/clave incompatible.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error seguro; 404 oculta recurso ajeno, sin publicar o retirado; 409 versión/estado/clave incompatible.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/public/v1/lots/{id}": {
+      "get": {
+        "summary": "Consultar DTO público del lote, sin sesión",
+        "description": "UUID v4 público no secuencial. PostgreSQL verifica published/version en cada lectura, incluso caliente. Redis TTL 300 s, clave por versión, DTO y hash validados. Retirado = 404 aunque falle DELETE. Redis caído: DB; DB caída: 503 sin servir caché. 60 consultas/minuto/IP, una instancia. Sin listado ni campos privados.",
+        "security": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Solo campos públicos aprobados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicLot"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No publicado, retirado, inexistente o ID inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Límite alcanzado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "No se pudo verificar publicación en DB; fallo cerrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/q/{id}": {
+      "get": {
+        "summary": "Página pública móvil de consulta QR",
+        "security": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Página React sin sesión, consulta la API pública; ocultamiento/reconsulta al recuperar visibilidad.",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string",
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Límite alcanzado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -4825,6 +5623,201 @@
           }
         },
         "required": ["receiptId", "reference", "temperature"]
+      },
+      "PublicStage": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "stage": {
+            "type": "string",
+            "enum": ["harvest", "reception", "consolidation"]
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "description": "Fecha real, no futura."
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500,
+            "description": "Texto plano revisado y aprobado para publicación, sin información privada."
+          }
+        },
+        "required": ["stage", "date", "description"]
+      },
+      "PublicLot": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "lotCode": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{1,80}$"
+          },
+          "stages": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 20,
+            "items": {
+              "$ref": "#/components/schemas/PublicStage"
+            }
+          }
+        },
+        "required": ["lotCode", "stages"]
+      },
+      "PublicationHistory": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "version": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483646
+          },
+          "state": {
+            "type": "string",
+            "enum": ["published", "withdrawn"]
+          },
+          "content": {
+            "$ref": "#/components/schemas/PublicLot"
+          },
+          "actorId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "occurredAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": ["version", "state", "content", "actorId", "occurredAt"]
+      },
+      "Publication": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "lotId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "state": {
+            "type": "string",
+            "enum": ["unpublished", "published", "withdrawn"]
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483646
+          },
+          "publicId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uri"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "content": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PublicLot"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "history": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicationHistory"
+            }
+          }
+        },
+        "required": [
+          "lotId",
+          "state",
+          "version",
+          "publicId",
+          "url",
+          "content",
+          "history"
+        ]
+      },
+      "PublicationInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "expectedVersion": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483646
+          },
+          "lotCode": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{1,80}$"
+          },
+          "stages": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 20,
+            "items": {
+              "$ref": "#/components/schemas/PublicStage"
+            }
+          }
+        },
+        "required": ["expectedVersion", "lotCode", "stages"]
+      },
+      "WithdrawalInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "expectedVersion": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2147483646
+          }
+        },
+        "required": ["expectedVersion"]
+      },
+      "PublicationCandidate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "state": {
+            "type": "string",
+            "enum": ["unpublished", "published", "withdrawn"]
+          },
+          "lotCode": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": ["id", "state", "lotCode"]
       }
     }
   }

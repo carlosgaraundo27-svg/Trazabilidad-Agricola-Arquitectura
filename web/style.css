@@ -1,4 +1,5 @@
 :root {
+  --public-border: #c7d6ca;
   font-family:
     Inter,
     Segoe UI,
@@ -431,4 +432,60 @@ summary {
   .intake-layout > section {
     padding: 1rem;
   }
+}
+.public-journey {
+  max-width: 48rem;
+  margin-inline: auto;
+}
+.public-timeline {
+  list-style: none;
+  padding: 0;
+  border-left: 2px solid var(--public-border);
+}
+.public-timeline li {
+  padding: 1rem 0 1rem 1.5rem;
+  margin-bottom: 1rem;
+  overflow-wrap: anywhere;
+}
+.public-timeline h2 {
+  margin-block: 0.5rem;
+}
+.public-scope {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--public-border);
+}
+.public-stage-editor {
+  margin-block: 1rem;
+}
+.publication-approval {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-block: 1rem;
+}
+.publication-approval input {
+  width: auto;
+  margin-top: 0.25rem;
+}
+.publication-qr {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+.public-url {
+  overflow-wrap: anywhere;
+}
+.public-stage-editor textarea {
+  width: 100%;
+  min-height: 6rem;
+  padding: 0.75rem;
+  font: inherit;
+  border: 1px solid var(--public-border);
+  border-radius: 0.25rem;
+}
+
+output {
+  display: block;
+  margin-block: 1rem;
 }

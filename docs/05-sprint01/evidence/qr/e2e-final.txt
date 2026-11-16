@@ -1,0 +1,48 @@
+{"event":"server_started","port":3013}
+
+Running 13 tests using 1 worker
+
+{"requestId":"57a09246-bb4e-4ae0-9972-8ae72cc7aefd","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+  ✓   1 tests\e2e\first-journey.spec.js:4:1 › administrador registra origen y recolector registra pre-lote en línea (1.3s)
+{"requestId":"294166c0-39a4-4b7b-8865-5c681adf237a","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+  ✓   2 tests\e2e\intake.spec.js:65:1 › Acopio: recepción y consolidación exacta con consulta persistente (1.2s)
+{"requestId":"5863aafe-6c42-43c8-9499-6072d71db615","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+{"requestId":"10f40aca-493d-4f57-8a8f-6e8b67b2092a","method":"POST","status":422,"code":"INCOMPATIBLE_ORIGINS"}
+  ✓   3 tests\e2e\intake.spec.js:103:1 › Acopio: mezcla incompatible se explica sin consumir (1.1s)
+{"requestId":"623e75e1-d9da-4b2d-964c-f660891e6a46","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+{"requestId":"97ab3daf-e5cd-4e4d-8e8b-af61dcbe6943","method":"POST","status":403,"code":"SELF_APPROVAL"}
+{"requestId":"1ef0dd98-aad5-413a-8858-f7c52511c38c","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+{"requestId":"a2e1630e-e538-437a-8fe9-2eca8382d02c","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+  ✓   4 tests\e2e\intake.spec.js:124:1 › Acopio: discrepancia bloqueada, autoaprobación rechazada y revisión por otra persona (1.4s)
+{"requestId":"25a7a2e1-2f74-4eaa-b568-c9ecf915b413","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+{"requestId":"f0003a8f-30c8-4030-8b02-d26b20ab6ebf","method":"POST","status":403,"code":"CENTER_FORBIDDEN"}
+  ✓   5 tests\e2e\intake.spec.js:181:1 › Acopio: cuenta de otro centro no ve ni opera Norte (385ms)
+{"requestId":"0cd0092c-0db1-4935-9aab-ef32b0c39189","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+{"requestId":"2605a62e-f976-4b98-bfa3-e5491e20b444","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+{"requestId":"822bc3b8-f8f8-45bb-af2a-60efdfb9163b","method":"POST","status":409,"code":"INTAKE_CONFLICT"}
+  ✓   6 tests\e2e\intake.spec.js:210:1 › Acopio: dos interfaces concurrentes no consumen dos veces (1.2s)
+{"requestId":"c0e3afe1-1abf-4c96-8e42-a84ada02e37a","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+  ✓   7 tests\e2e\intake.spec.js:266:1 › Acopio: respuesta perdida y reintento desde el formulario no duplican recepción (602ms)
+{"requestId":"dd93111f-d811-4a1b-9763-4164495a4293","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+{"requestId":"38975474-a906-4136-a84e-4622778b2035","method":"GET","status":404,"code":"NOT_FOUND"}
+  ✓   8 tests\e2e\publication.spec.js:7:1 › publicar, consultar QR anónimo móvil, actualizar y retirar (1.4s)
+{"requestId":"8f3c586e-851f-472d-a5b9-3230c5541bb0","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+  ✓   9 tests\e2e\quality.spec.js:132:1 › Calidad: draft incompleto persistente, respuesta perdida y replay sin duplicados (1.2s)
+{"requestId":"ea82e2e4-571b-4daf-9f52-9325021a309c","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+  ✓  10 tests\e2e\quality.spec.js:257:1 › Calidad: cierra con todas las originales y conserva observación posterior y cantidades (1.6s)
+{"requestId":"3ee5bfe8-ddfa-4e90-9392-413992f16704","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+{"requestId":"648be281-2cc8-4697-bbd7-e2e9879831a6","method":"POST","status":422,"code":"RECEIPT_TEMPERATURES_MISSING"}
+  ✓  11 tests\e2e\quality.spec.js:353:1 › Calidad: identifica recepción pendiente y bloquea cierre incluso con temperatura posterior (1.4s)
+{"requestId":"1c46214c-1a32-4274-b394-00cdbf3f7d01","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+  ✓  12 tests\e2e\quality.spec.js:415:1 › Acopio: registra temperatura original una vez con responsable y evento de recepción (825ms)
+{"requestId":"64fa2427-4b7d-473f-8cf5-c3463683f490","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+{"requestId":"3b9ff003-ac71-4f62-b9d5-b11f7e87f721","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+{"requestId":"75189d72-3dfa-4acc-8711-c03c102e1ebf","method":"POST","status":409,"code":"QUALITY_CONFLICT"}
+{"requestId":"486e814c-ae67-42b8-b76a-21de3c1ddf33","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+{"requestId":"8e3fc9d1-addd-453e-825b-6780c4e68597","method":"GET","status":404,"code":"NOT_FOUND"}
+  ✓  13 tests\e2e\quality.spec.js:479:1 › Calidad: creación concurrente recuperable y aislamiento de otro centro (1.4s)
+
+  13 passed (17.5s)
+.env not found. Continuing without it.
+(node:24484) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

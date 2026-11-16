@@ -15,6 +15,7 @@ export async function startTestServer(env = process.env) {
         HOST: "127.0.0.1",
         PORT: port,
         APP_ORIGIN: "http://127.0.0.1:" + port,
+        PUBLIC_BASE_URL: env.PUBLIC_BASE_URL || "http://127.0.0.1:" + port,
       },
       silent: true,
       windowsHide: true,

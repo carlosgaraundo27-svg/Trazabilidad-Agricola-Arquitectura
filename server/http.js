@@ -8,6 +8,11 @@ import { AppError } from "./shared/errors.js";
 import { producerInput, parcelInput } from "./modules/producers/domain.js";
 import { preLotInput, requestKey } from "./modules/harvest/domain.js";
 import { intakeRouter } from "./intake-http.js";
+import {
+  publicationRouter,
+  publicRouter,
+  publicLimiter,
+} from "./publication-http.js";
 import { qualityRouter } from "./quality-http.js";
 const loginInput = z
   .object({
@@ -38,6 +43,15 @@ export function createApp({
   app.use(helmet());
   app.use(express.json({ limit: "16kb" }));
   app.use(cookieParser());
+  const publicLimit = publicLimiter();
+  const noStore = (req, res, next) => {
+    res.set("Cache-Control", "no-store");
+    next();
+  };
+  app.use("/api/public/v1", noStore, publicLimit, publicRouter(services));
+  app.get("/q/:id", noStore, publicLimit, (req, res) =>
+    res.sendFile(path.resolve("dist/index.html")),
+  );
   app.get("/health", async (req, res) => {
     try {
       await db.query("SELECT 1");
@@ -166,6 +180,7 @@ export function createApp({
     res.status(result.replayed ? 200 : 201).json(result.item);
   });
   api.use(intakeRouter(services));
+  api.use(publicationRouter(services));
   api.use(qualityRouter(services));
   app.use("/api/v1", api);
   app.use("/api", (req, res, next) =>

@@ -1,6 +1,7 @@
 import { connectDatabase } from "./db.js";
 import { compose } from "./composition.js";
 import { createApp } from "./http.js";
+import { redisCache } from "./adapters/public-cache.js";
 const db = await connectDatabase();
 const port = Number(process.env.PORT || 3000);
 if (
@@ -8,9 +9,10 @@ if (
   !process.env.APP_ORIGIN?.startsWith("https://")
 )
   throw Error("Producción requiere APP_ORIGIN HTTPS.");
+const cache = redisCache(process.env.REDIS_URL);
 const app = createApp({
   db,
-  services: compose(db),
+  services: compose(db, { cache, log: console.log }),
   origin: process.env.APP_ORIGIN || "http://localhost:" + port,
   production: process.env.NODE_ENV === "production",
 });
@@ -22,6 +24,7 @@ export function stop() {
   if (stopping) return;
   stopping = true;
   server.close(async () => {
+    await cache.close();
     await db.close();
     process.exit(0);
   });

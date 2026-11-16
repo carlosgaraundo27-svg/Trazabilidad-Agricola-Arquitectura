@@ -375,3 +375,7 @@ Las ADR aceptadas describen decisiones del diseño documental; no certifican apr
 ## Alcance ejecutable del primer recorrido — 2026-11-11
 
 El subconjunto implementado y la selección Express/React están precisados en [ADR-009/010](07-decisiones-primer-recorrido.md). Las vistas anteriores conservan la arquitectura objetivo, incluyendo componentes todavía proyectados.
+
+## Concreción académica de ADR-005 y ADR-008
+
+[ADR-013](10-decisiones-publicacion-qr.md) concreta publicación/retiro, DTO permitido, TTL 300 s, invalidación versionada y fallos. PostgreSQL verifica estado/versión en cada consulta, aun caliente. Redis caído usa DB; DB caída falla cerrado. Los beneficios de rendimiento de ADR-005 son expectativas pendientes de medición. QR por pallet sigue fuera del incremento; publicación no aprueba Calidad.

@@ -19,7 +19,7 @@ La propuesta centraliza la información del proceso en torno al **lote agrícola
 - **Comunicación:** API REST sobre HTTPS entre clientes y backend.
 - **Enfoque interno:** Clean Architecture.
 - **Persistencia transaccional:** PostgreSQL (OLTP).
-- **Caché QR:** Redis, dentro de la arquitectura objetivo.
+- **Caché QR:** Redis mediante puerto/adaptador; estado/versión verificados en PostgreSQL.
 - **Analítica:** ETL + Datamart lógico (OLAP).
 - **Despliegue del prototipo:** Docker.
 
@@ -96,3 +96,7 @@ D1–D7 fueron adoptadas por el usuario exclusivamente para este prototipo, sin 
 ## Calidad académica — 2026-11-15
 
 Q1–Q9 adoptadas por el usuario: captura por lote, pesos individuales g/fruto, materia seca %, conteos y temperaturas con procedencia; resultado manual justificado. El cierre exige original documentada de cada recepción. Históricos incompletos permanecen en draft, sin completar valores automáticamente. Calidad no altera cantidades ni autoriza despacho. Ver [especificación](docs/03-diseno-de-software/05-especificacion-calidad-lote.md), [ADR-012](docs/02-arquitectura/09-decisiones-calidad.md), [guía](tecnologia/calidad.md) y [evidencia](docs/05-sprint01/calidad-implementacion.md). RF-06/RF-07 tienen cobertura parcial frente al alcance productivo.
+
+## Publicación QR por lote
+
+Publicación, actualización y retiro explícitos por usuario autorizado del centro, con DTO público permitido y QR basado en PUBLIC_BASE_URL. Consulta móvil anónima con Redis subordinado a estado/versión PostgreSQL; un retiro no se sirve aunque falle invalidación. No equivale a aprobar Calidad. [Guía y comandos](tecnologia/publicacion-qr.md), [especificación RF-08/RF-09](docs/03-diseno-de-software/06-especificacion-publicacion-qr.md), [ADR-013](docs/02-arquitectura/10-decisiones-publicacion-qr.md), [evidencias](docs/05-sprint01/evidence/qr/README.md). Sin QR por pallet ni mejora de rendimiento afirmada.

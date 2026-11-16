@@ -1,4 +1,23 @@
 services:
+  redis:
+    image: redis:8-alpine
+    command:
+      [
+        redis-server,
+        --save,
+        "",
+        --appendonly,
+        "no",
+        --maxmemory,
+        64mb,
+        --maxmemory-policy,
+        allkeys-lru,
+      ]
+    healthcheck:
+      test: [CMD, redis-cli, ping]
+      interval: 5s
+      timeout: 3s
+      retries: 10
   db:
     image: postgres:18
     environment:
@@ -20,6 +39,8 @@ services:
       NODE_ENV: development
       HOST: 0.0.0.0
       APP_ORIGIN: http://localhost:${APP_PORT:-3000}
+      PUBLIC_BASE_URL: ${PUBLIC_BASE_URL:-http://localhost:3000}
+      REDIS_URL: redis://redis:6379
       DATABASE_URL: postgres://demo:${POSTGRES_PASSWORD}@db:5432/trazabilidad
       ALLOW_DEMO_SEED: "true"
       DEMO_PASSWORD: ${DEMO_PASSWORD:?Configure DEMO_PASSWORD en .env}

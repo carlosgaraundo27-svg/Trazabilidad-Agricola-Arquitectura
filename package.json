@@ -20,7 +20,8 @@
     "test:e2e": "node --env-file-if-exists=.env node_modules/@playwright/test/cli.js test",
     "check": "node scripts/check.js",
     "format": "prettier --write server web scripts tests *.js *.json .github/workflows/ci.yml compose*.yaml",
-    "format:check": "prettier --check server web scripts tests *.js *.json .github/workflows/ci.yml compose*.yaml"
+    "format:check": "prettier --check server web scripts tests *.js *.json .github/workflows/ci.yml compose*.yaml",
+    "test:redis": "node --env-file-if-exists=.env --test tests/redis/*.test.js"
   },
   "dependencies": {
     "cookie-parser": "1.4.7",
@@ -38,6 +39,8 @@
     "@apidevtools/swagger-parser": "13.1.0",
     "@electric-sql/pglite": "0.5.16",
     "@playwright/test": "1.65.0",
+    "jsqr": "1.4.0",
+    "pngjs": "7.0.0",
     "prettier": "3.10.0",
     "vite": "8.3.8",
     "yaml": "2.9.1"

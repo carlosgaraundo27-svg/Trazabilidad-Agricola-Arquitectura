@@ -2,6 +2,8 @@ import { test, expect } from "@playwright/test";
 import { connectDatabase } from "../../server/db.js";
 import { compose } from "../../server/composition.js";
 import { publicationLot } from "../support/publication-fixture.js";
+import { PNG } from "pngjs";
+import jsQR from "jsqr";
 test("publicar, consultar QR anónimo móvil, actualizar y retirar", async ({
   page,
   browser,
@@ -39,6 +41,13 @@ test("publicar, consultar QR anónimo móvil, actualizar y retirar", async ({
   );
   const link = page.getByRole("link", { name: "Abrir consulta pública" });
   const url = await link.getAttribute("href");
+  const qrImage = await page.request.get(
+    "/api/v1/publications/lots/" + lot.id + "/qr",
+  );
+  const png = PNG.sync.read(await qrImage.body());
+  expect(
+    jsQR(new Uint8ClampedArray(png.data), png.width, png.height)?.data,
+  ).toBe(url);
   expect(url).toMatch(/\/q\/[a-f0-9-]{36}$/);
   await expect(
     page.getByRole("img", { name: "QR del lote publicado" }),

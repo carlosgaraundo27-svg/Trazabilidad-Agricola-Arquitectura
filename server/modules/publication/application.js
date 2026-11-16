@@ -53,7 +53,10 @@ export function publicationService({
       state: row.state,
       version: row.version,
       publicId: row.publicId,
-      url: publicUrl(baseUrl, row.publicId, production),
+      url:
+        row.state === "published"
+          ? publicUrl(baseUrl, row.publicId, production)
+          : null,
       content: row.content,
       history: await repository.history(tx, actor, lot.id),
     };
@@ -89,7 +92,7 @@ export function publicationService({
         content,
         contentHash: contentHash(content),
       };
-      publicUrl(baseUrl, next.publicId, production);
+      if (!withdraw) publicUrl(baseUrl, next.publicId, production);
       await repository.save(tx, actor, lot, next);
       await access.audit(tx, actor, action, lotId);
       const item = await response(tx, actor, lot);
@@ -121,16 +124,18 @@ export function publicationService({
       unitOfWork(async (tx) => {
         await access.requireCenter(tx, actor, centerId, "publication:read");
         const lots = await traceability.identities(tx, actor, centerId, offset);
-        return Promise.all(
-          lots.map(async (lot) => {
-            const row = await repository.get(tx, lot.id);
-            return {
-              id: lot.id,
-              state: row?.state ?? "unpublished",
-              lotCode: row?.content.lotCode ?? null,
-            };
-          }),
+        const publications = await repository.projection(
+          tx,
+          lots.map((lot) => lot.id),
         );
+        return lots.map((lot) => {
+          const row = publications.find((item) => item.lotId === lot.id);
+          return {
+            id: lot.id,
+            state: row?.state ?? "unpublished",
+            lotCode: row?.content.lotCode ?? null,
+          };
+        });
       }),
     async query(id) {
       try {

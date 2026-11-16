@@ -9,6 +9,7 @@ for (const module of [
   "harvest",
   "intake",
   "traceability",
+  "publication",
 ]) {
   for (const file of await readdir("server/modules/" + module)) {
     const filename = "server/modules/" + module + "/" + file;
@@ -45,9 +46,15 @@ const expectedPaths = [
   "/api/v1/intake/receipts/{id}/reviews",
   "/api/v1/intake/receipts/{id}/confirmation",
   "/api/v1/lots",
+  "/api/v1/publications/lots",
+  "/api/v1/publications/lots/{id}",
+  "/api/v1/publications/lots/{id}/withdrawal",
+  "/api/v1/publications/lots/{id}/qr",
+  "/api/public/v1/lots/{id}",
+  "/q/{id}",
 ];
 if (
-  Object.keys(api.paths).length !== 13 ||
+  Object.keys(api.paths).length !== 19 ||
   expectedPaths.some((route) => !api.paths[route])
 )
   throw Error("Contrato API incompleto");

@@ -342,32 +342,25 @@ test("integración HTTP + SQL del primer recorrido", async (t) => {
     assert.equal(limited.status, 429);
   });
   await t.test("migración down/up en base desechable", async () => {
-    const { readFile } = await import("node:fs/promises");
-    const intakeDown = await readFile(
-      new URL("../../migrations/002_intake.down.sql", import.meta.url),
-      "utf8",
-    );
-    const sql = await readFile(
-      new URL("../../migrations/001_initial.down.sql", import.meta.url),
-      "utf8",
-    );
+    const { readFile, readdir } = await import("node:fs/promises");
+    const directory = new URL("../../migrations/", import.meta.url);
+    const files = (await readdir(directory))
+      .filter((f) => /^\d+_[a-z_]+\.down\.sql$/.test(f))
+      .sort()
+      .reverse();
     await db.transaction(async (tx) => {
-      for (const statement of intakeDown
-        .split(";")
-        .map((s) => s.trim())
-        .filter(Boolean))
-        await tx.query(statement);
-      await tx.query("DELETE FROM public.schema_migrations WHERE version=$1", [
-        "002",
-      ]);
-      for (const statement of sql
-        .split(";")
-        .map((s) => s.trim())
-        .filter(Boolean))
-        await tx.query(statement);
-      await tx.query("DELETE FROM public.schema_migrations WHERE version=$1", [
-        "001",
-      ]);
+      for (const file of files) {
+        const sql = await readFile(new URL(file, directory), "utf8");
+        for (const statement of sql
+          .split(sql.startsWith("-- statement") ? /^-- statement\s*$/m : ";")
+          .map((s) => s.trim())
+          .filter(Boolean))
+          await tx.query(statement);
+        await tx.query(
+          "DELETE FROM public.schema_migrations WHERE version=$1",
+          [file.split("_")[0]],
+        );
+      }
     });
     await migrate(db);
     assert.equal(

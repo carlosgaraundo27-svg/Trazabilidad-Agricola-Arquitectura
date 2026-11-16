@@ -2,6 +2,10 @@ const select =
   'SELECT lot_id AS "lotId", public_id AS "publicId",state,version,content,content_hash AS "contentHash" FROM publication.lots';
 export function publicationRepository() {
   return {
+    async projection(tx, ids) {
+      return (await tx.query(select + " WHERE lot_id=ANY($1::uuid[])", [ids]))
+        .rows;
+    },
     async get(tx, lotId) {
       return (await tx.query(select + " WHERE lot_id=$1", [lotId])).rows[0];
     },

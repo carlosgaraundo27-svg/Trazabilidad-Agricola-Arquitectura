@@ -1,0 +1,46 @@
+{
+  "head": "5e05ac4ce6e9986d932f9852ca9bf757b4b4b89c",
+  "main": "b664fee0e5723787f3625aa89445401e17d9150a",
+  "checks": [
+    {
+      "name": "SonarCloud Code Analysis",
+      "conclusion": "success",
+      "status": "completed",
+      "url": "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/runs/133051150832",
+      "id": 133051150832
+    },
+    {
+      "name": "verify",
+      "conclusion": "success",
+      "status": "completed",
+      "url": "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/43791572358/job/133050954193",
+      "id": 133050954193
+    },
+    {
+      "name": "compose",
+      "conclusion": "success",
+      "status": "completed",
+      "url": "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/43791572358/job/133050953879",
+      "id": 133050953879
+    }
+  ],
+  "verifyExcerpt": [
+    "2026-11-16T02:21:02.0744098Z ℹ tests 18",
+    "2026-11-16T02:21:02.0745548Z ℹ pass 18",
+    "2026-11-16T02:21:02.0746003Z ℹ fail 0",
+    "2026-11-16T02:21:02.0746955Z ℹ skipped 0",
+    "2026-11-16T02:21:02.0898986Z ##[group]Run npm run test:redis",
+    "2026-11-16T02:21:02.5806750Z ✔ Redis real: fría, caliente, TTL, actualización, retiro con DELETE fallido y recuperación (91.577638ms)",
+    "2026-11-16T02:21:02.5823379Z ✔ adaptador Redis caído falla sin cola offline ni bloquear la aplicación (30.377203ms)",
+    "2026-11-16T02:21:02.6239050Z ℹ tests 2",
+    "2026-11-16T02:21:02.6239852Z ℹ pass 2",
+    "2026-11-16T02:21:02.6240373Z ℹ fail 0",
+    "2026-11-16T02:21:02.6241404Z ℹ skipped 0",
+    "2026-11-16T02:21:10.1089574Z ℹ tests 51",
+    "2026-11-16T02:21:10.1090416Z ℹ pass 51",
+    "2026-11-16T02:21:10.1090741Z ℹ fail 0",
+    "2026-11-16T02:21:10.1091384Z ℹ skipped 0",
+    "2026-11-16T02:21:45.5975365Z   13 passed (17.8s)"
+  ],
+  "scope": "Cabeza integrada verificada; los checks de la última cabeza se enlazan en la descripción del PR #5."
+}

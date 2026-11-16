@@ -132,7 +132,7 @@ export function qualityService({
         "quality:close",
         { id, ...input },
         async (tx) => {
-          const old = await repository.get(tx, actor, id, true);
+          const old = await repository.get(tx, actor, id, "update");
           if (
             old.evaluationState !== "draft" ||
             old.version !== input.expectedVersion
@@ -220,7 +220,7 @@ export function qualityService({
         "quality:update",
         { id, ...input },
         async (tx) => {
-          const old = await repository.get(tx, actor, id, true);
+          const old = await repository.get(tx, actor, id, "update");
           if (
             old.evaluationState !== "draft" ||
             old.version !== input.expectedVersion

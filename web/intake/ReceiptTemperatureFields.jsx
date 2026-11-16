@@ -20,7 +20,7 @@ export function ReceiptTemperatureFields({ value, onChange, busy }) {
             )
           }
         />
-        Documentar temperatura original
+        <span>Documentar temperatura original</span>
       </label>
       <p>
         Registre solo la lectura original con su evidencia. Sin este dato,

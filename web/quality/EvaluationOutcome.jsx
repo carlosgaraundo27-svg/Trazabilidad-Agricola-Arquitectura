@@ -73,10 +73,10 @@ export function EvaluationOutcome({
                 ))}
               </select>
               <label>
-                Justificación del responsable
+                <span>Justificación del responsable</span>
                 <textarea name="note" required maxLength={500} />
               </label>
-              <button>Cerrar evaluación definitivamente</button>
+              <button type="submit">Cerrar evaluación definitivamente</button>
             </fieldset>
             {dirty && <p>Guarde el borrador antes de cerrar.</p>}
           </form>

@@ -109,7 +109,11 @@ export function CaptureForm({
         remove={remove}
         change={change}
       />
-      {editable && <button disabled={busy}>Guardar borrador</button>}
+      {editable && (
+        <button type="submit" disabled={busy}>
+          Guardar borrador
+        </button>
+      )}
     </form>
   );
 }

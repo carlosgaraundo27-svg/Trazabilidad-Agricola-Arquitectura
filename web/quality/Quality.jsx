@@ -102,7 +102,7 @@ export function Quality({ centers }) {
         independientes; aprobar no autoriza despacho.
       </p>
       <label className="center-picker">
-        Centro de Calidad
+        <span>Centro de Calidad</span>
         <select
           value={centerId}
           disabled={busy || !!pending || !!evaluation}

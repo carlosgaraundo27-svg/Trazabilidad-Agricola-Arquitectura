@@ -1,16 +1,13 @@
 const select = `SELECT e.id,e.lot_id AS "lotId",e.organization_id AS "organizationId",e.center_id AS "centerId",e.state AS "evaluationState",e.version,e.capture,e.result AS "qualityResult",e.note,e.created_by AS "createdBy",e.created_at AS "createdAt",e.updated_by AS "updatedBy",e.updated_at AS "updatedAt",e.closed_by AS "closedBy",e.closed_at AS "closedAt" FROM quality.evaluations e`;
 export function qualityRepository() {
   return {
-    async get(tx, actor, id, lock = false) {
+    async get(tx, actor, id, lock = "none") {
+      let lockClause = "";
+      if (lock === "update") lockClause = " FOR UPDATE OF e";
+      if (lock === "share") lockClause = " FOR SHARE OF e";
       return (
         await tx.query(
-          select +
-            " WHERE e.organization_id=$1 AND e.id=$2" +
-            (lock === true
-              ? " FOR UPDATE OF e"
-              : lock === "share"
-                ? " FOR SHARE OF e"
-                : ""),
+          select + " WHERE e.organization_id=$1 AND e.id=$2" + lockClause,
           [actor.organizationId, id],
         )
       ).rows[0];

@@ -1,0 +1,16 @@
+name: sonar-diagnostic
+on:
+  pull_request:
+    paths:
+      - .github/workflows/sonar-diagnostic.yml
+permissions:
+  contents: read
+jobs:
+  evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Hallazgos públicos y estado del gate de main
+        run: |
+          curl --fail --retry 2 --max-time 30 'https://sonarcloud.io/api/issues/search?componentKeys=carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura&branch=main&resolved=false&types=BUG&ps=100'
+          curl --fail --retry 2 --max-time 30 'https://sonarcloud.io/api/qualitygates/project_status?projectKey=carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura&branch=main'

@@ -11,7 +11,9 @@ export const lotInput = z
         (ids) => new Set(ids).size === ids.length,
         "Recepciones repetidas.",
       )
-      .transform((ids) => [...ids].sort()),
+      .transform((ids) =>
+        [...ids].sort((left, right) => left.localeCompare(right, "en")),
+      ),
   })
   .strict();
 export function compatibleOrigins(origins) {

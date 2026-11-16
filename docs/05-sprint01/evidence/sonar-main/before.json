@@ -1,0 +1,135 @@
+{
+  "retrievedFromJob": 133620678112,
+  "run": 43958891612,
+  "baseCommit": "d7da0d691937e607e8258f37650b47fe7fd6af22",
+  "total": 8,
+  "issues": [
+    {
+      "key": "AaHg28XZGhjC-EaUtdT9",
+      "rule": "javascript:S2871",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:web/intake/Intake.jsx",
+      "line": 161,
+      "message": "Provide a compare function to avoid sorting elements alphabetically.",
+      "severity": "CRITICAL",
+      "creationDate": "2026-11-14T15:15:48+0000"
+    },
+    {
+      "key": "AaHg28YJGhjC-EaUtdUF",
+      "rule": "javascript:S9011",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:web/intake/ReceiptForm.jsx",
+      "line": 114,
+      "message": "Add an explicit \"type\" attribute to this button.",
+      "severity": "MAJOR",
+      "creationDate": "2026-11-14T15:15:48+0000"
+    },
+    {
+      "key": "AaHg28YdGhjC-EaUtdUG",
+      "rule": "javascript:S9011",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:web/intake/ReceiptList.jsx",
+      "line": 111,
+      "message": "Add an explicit \"type\" attribute to this button.",
+      "severity": "MAJOR",
+      "creationDate": "2026-11-14T15:15:48+0000"
+    },
+    {
+      "key": "AaHg28agGhjC-EaUtdUK",
+      "rule": "javascript:S2871",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:server/modules/traceability/domain.js",
+      "line": 14,
+      "message": "Provide a compare function to avoid sorting elements alphabetically.",
+      "severity": "CRITICAL",
+      "creationDate": "2026-11-14T15:15:15+0000"
+    },
+    {
+      "key": "AaHagHp7GiVmDmX-BZXv",
+      "rule": "javascript:S9011",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:web/main.jsx",
+      "line": 64,
+      "message": "Add an explicit \"type\" attribute to this button.",
+      "severity": "MAJOR",
+      "creationDate": "2026-11-12T15:52:43+0000"
+    },
+    {
+      "key": "AaHagHp7GiVmDmX-BZXx",
+      "rule": "javascript:S9011",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:web/main.jsx",
+      "line": 128,
+      "message": "Add an explicit \"type\" attribute to this button.",
+      "severity": "MAJOR",
+      "creationDate": "2026-11-12T15:52:43+0000"
+    },
+    {
+      "key": "AaHagHp7GiVmDmX-BZXy",
+      "rule": "javascript:S9011",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:web/main.jsx",
+      "line": 167,
+      "message": "Add an explicit \"type\" attribute to this button.",
+      "severity": "MAJOR",
+      "creationDate": "2026-11-12T15:52:43+0000"
+    },
+    {
+      "key": "AaHagHp7GiVmDmX-BZX1",
+      "rule": "javascript:S9011",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:web/main.jsx",
+      "line": 336,
+      "message": "Add an explicit \"type\" attribute to this button.",
+      "severity": "MAJOR",
+      "creationDate": "2026-11-12T15:52:43+0000"
+    }
+  ],
+  "gate": {
+    "projectStatus": {
+      "status": "ERROR",
+      "conditions": [
+        {
+          "status": "ERROR",
+          "metricKey": "new_reliability_rating",
+          "comparator": "GT",
+          "periodIndex": 1,
+          "errorThreshold": "1",
+          "actualValue": "4"
+        },
+        {
+          "status": "OK",
+          "metricKey": "new_security_rating",
+          "comparator": "GT",
+          "periodIndex": 1,
+          "errorThreshold": "1",
+          "actualValue": "1"
+        },
+        {
+          "status": "OK",
+          "metricKey": "new_maintainability_rating",
+          "comparator": "GT",
+          "periodIndex": 1,
+          "errorThreshold": "1",
+          "actualValue": "1"
+        },
+        {
+          "status": "OK",
+          "metricKey": "new_duplicated_lines_density",
+          "comparator": "GT",
+          "periodIndex": 1,
+          "errorThreshold": "3",
+          "actualValue": "1.1"
+        },
+        {
+          "status": "OK",
+          "metricKey": "new_security_hotspots_reviewed",
+          "comparator": "LT",
+          "periodIndex": 1,
+          "errorThreshold": "100",
+          "actualValue": "100.0"
+        }
+      ],
+      "periods": [
+        {
+          "index": 1,
+          "mode": "previous_version",
+          "date": "2026-11-14T14:39:43+0000"
+        }
+      ],
+      "ignoredConditions": false
+    }
+  }
+}

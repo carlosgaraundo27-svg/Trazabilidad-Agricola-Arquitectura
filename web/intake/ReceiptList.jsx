@@ -108,11 +108,14 @@ export function ReceiptList({
                         disabled={busy}
                       />
                     </label>
-                    <button disabled={busy}>Aprobar discrepancia</button>
+                    <button type="submit" disabled={busy}>
+                      Aprobar discrepancia
+                    </button>
                   </form>
                 ))}
               {r.status === "weighed" && actions.includes("intake:confirm") && (
                 <button
+                  type="button"
                   className="secondary"
                   disabled={busy}
                   onClick={() =>

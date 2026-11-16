@@ -38,6 +38,9 @@ async function createOrigin(
   }
 }
 async function receive(page, id, reference, gross = "100", tara = "0") {
+  await expect(
+    page.getByRole("button", { name: "Registrar recepción", exact: true }),
+  ).toHaveAttribute("type", "submit");
   await page.getByLabel("Pre-lote a recibir").selectOption(id);
   await page.getByLabel("Referencia de recepción").fill(reference);
   await page.getByLabel("Peso bruto (kg)").fill(gross);
@@ -165,6 +168,9 @@ test("Acopio: discrepancia bloqueada, autoaprobación rechazada y revisión por 
   await rr
     .getByLabel("Motivo de revisión de " + ref)
     .fill("Ticket contrastado por otra persona");
+  await expect(
+    rr.getByRole("button", { name: "Aprobar discrepancia" }),
+  ).toHaveAttribute("type", "submit");
   await rr.getByRole("button", { name: "Aprobar discrepancia" }).click();
   await expect(rr).toContainText("Revisión independiente aprobada");
   await logout(page);

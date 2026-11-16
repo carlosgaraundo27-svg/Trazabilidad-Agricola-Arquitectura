@@ -25,7 +25,7 @@ export function publicationService({
       return null;
     }
   }
-  async function resource(tx, actor, lotId, action, lock = false) {
+  async function resource(tx, actor, lotId, action, lock = "none") {
     const lot = await traceability.identity(tx, actor, lotId, lock);
     if (!lot) throw missing();
     try {
@@ -63,7 +63,7 @@ export function publicationService({
   }
   async function command(actor, lotId, input, key, action) {
     const result = await unitOfWork(async (tx) => {
-      const lot = await resource(tx, actor, lotId, action, true);
+      const lot = await resource(tx, actor, lotId, action, "update");
       await repository.lockRequest(tx, actor, key);
       const hash = createHash("sha256")
         .update(JSON.stringify({ lotId, input, action }))

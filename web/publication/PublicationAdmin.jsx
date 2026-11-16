@@ -72,7 +72,7 @@ export function PublicationAdmin({ centers }) {
         persona con el QR.
       </p>
       <label>
-        Centro de publicación
+        <span>Centro de publicación</span>
         <select
           value={centerId}
           disabled={busy || !!pending || !!item}
@@ -89,15 +89,15 @@ export function PublicationAdmin({ centers }) {
         </select>
       </label>
       {error && <p role="alert">{error}</p>}
-      {notice && <p role="status">{notice}</p>}
-      {busy && <p role="status">Procesando publicación…</p>}
+      {notice && <output>{notice}</output>}
+      {busy && <output>Procesando publicación…</output>}
       {pending && (
-        <p role="status">
+        <output>
           No se pudo confirmar la respuesta.{" "}
           <button disabled={busy} onClick={() => execute(pending)}>
             Reintentar misma operación
           </button>
-        </p>
+        </output>
       )}
       {!item ? (
         <>
@@ -108,7 +108,7 @@ export function PublicationAdmin({ centers }) {
           >
             Actualizar lotes
           </button>
-          {lots === null && !error && <p role="status">Consultando lotes…</p>}
+          {lots === null && !error && <output>Consultando lotes…</output>}
           {lots?.length === 0 && <p>No hay lotes en esta página.</p>}
           <ul className="list">
             {lots?.map((l) => (

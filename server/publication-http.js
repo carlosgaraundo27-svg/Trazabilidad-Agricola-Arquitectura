@@ -59,16 +59,14 @@ export function publicationRouter(services) {
       uuid.parse(req.params.id),
     );
     if (item.state !== "published") throw missing();
-    res
-      .type("png")
-      .send(
-        await QRCode.toBuffer(item.url, {
-          type: "png",
-          errorCorrectionLevel: "M",
-          margin: 4,
-          width: 320,
-        }),
-      );
+    res.type("png").send(
+      await QRCode.toBuffer(item.url, {
+        type: "png",
+        errorCorrectionLevel: "M",
+        margin: 4,
+        width: 320,
+      }),
+    );
   });
   return router;
 }

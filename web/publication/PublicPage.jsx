@@ -63,7 +63,7 @@ export function PublicPage({ id }) {
         ) : !item ? (
           <>
             <h1>Consulta de trazabilidad</h1>
-            <p role="status">Consultando publicación vigente…</p>
+            <output>Consultando publicación vigente…</output>
           </>
         ) : (
           <>

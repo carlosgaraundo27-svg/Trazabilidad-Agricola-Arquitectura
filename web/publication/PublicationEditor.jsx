@@ -66,7 +66,7 @@ export function PublicationEditor({ item, actions, busy, pending, onCommand }) {
         >
           <legend>Campos públicos revisados</legend>
           <label>
-            Código público del lote
+            <span>Código público del lote</span>
             <input
               value={code}
               onChange={(e) => {
@@ -82,7 +82,7 @@ export function PublicationEditor({ item, actions, busy, pending, onCommand }) {
             <fieldset className="public-stage-editor" key={s.key}>
               <legend>Etapa pública</legend>
               <label>
-                Etapa
+                <span>Etapa</span>
                 <select
                   value={s.stage}
                   onChange={(e) => change(s.key, "stage", e.target.value)}
@@ -95,7 +95,7 @@ export function PublicationEditor({ item, actions, busy, pending, onCommand }) {
                 </select>
               </label>
               <label>
-                Fecha pública
+                <span>Fecha pública</span>
                 <input
                   type="date"
                   value={s.date}
@@ -105,7 +105,7 @@ export function PublicationEditor({ item, actions, busy, pending, onCommand }) {
                 />
               </label>
               <label>
-                Descripción pública aprobada
+                <span>Descripción pública aprobada</span>
                 <textarea
                   value={s.description}
                   maxLength={500}
@@ -149,10 +149,14 @@ export function PublicationEditor({ item, actions, busy, pending, onCommand }) {
               onChange={(e) => setApproved(e.target.checked)}
               required
             />
-            He revisado estos campos y apruebo su publicación sin información
-            privada.
+            <span>
+              He revisado estos campos y apruebo su publicación sin información
+              privada.
+            </span>
           </label>
-          <button disabled={!approved}>Publicar campos revisados</button>
+          <button type="submit" disabled={!approved}>
+            Publicar campos revisados
+          </button>
         </fieldset>
       </form>
       {item.state === "published" && (

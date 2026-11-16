@@ -1,4 +1,5 @@
 :root {
+  --public-border: #c7d6ca;
   font-family:
     Inter,
     Segoe UI,
@@ -401,9 +402,6 @@ summary {
     padding: 1rem;
   }
 }
-:root {
-  --public-border: #c7d6ca;
-}
 .public-journey {
   max-width: 48rem;
   margin-inline: auto;
@@ -447,11 +445,16 @@ summary {
 .public-url {
   overflow-wrap: anywhere;
 }
-textarea {
+.public-stage-editor textarea {
   width: 100%;
   min-height: 6rem;
   padding: 0.75rem;
   font: inherit;
   border: 1px solid var(--public-border);
   border-radius: 0.25rem;
+}
+
+output {
+  display: block;
+  margin-block: 1rem;
 }

@@ -1,8 +1,8 @@
-import { ids } from "../../scripts/seed.js";
-import { intakeIds } from "../../scripts/seed-intake.js";
-import { preLotInput } from "../../server/modules/harvest/domain.js";
-import { receiptInput } from "../../server/modules/intake/domain.js";
-import { lotInput } from "../../server/modules/traceability/domain.js";
+import { ids } from "./seed.js";
+import { intakeIds } from "./seed-intake.js";
+import { preLotInput } from "../server/modules/harvest/domain.js";
+import { receiptInput } from "../server/modules/intake/domain.js";
+import { lotInput } from "../server/modules/traceability/domain.js";
 export const demoProjection = {
   lotCode: "VV-DEMO-001",
   stages: [

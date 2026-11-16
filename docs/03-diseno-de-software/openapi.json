@@ -1,8 +1,8 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "Trazabilidad agrícola - Acopio y publicación pública QR académica",
-    "version": "0.3.0",
+    "title": "Trazabilidad agrícola - Acopio, Calidad manual y publicación pública QR",
+    "version": "0.4.0",
     "description": "Prototipo académico. Publicación y retiro explícitos por usuario autorizado del centro. Publicar trazabilidad no aprueba Calidad. DTO público permitido; QR por lote, sin pallets. RF-08/RF-09 y ADR-005/ADR-008. Redis opcional para disponibilidad, verificación obligatoria de estado en PostgreSQL."
   },
   "servers": [
@@ -51,10 +51,7 @@
                       "const": 100
                     }
                   },
-                  "required": [
-                    "items",
-                    "limit"
-                  ]
+                  "required": ["items", "limit"]
                 }
               }
             }
@@ -322,10 +319,7 @@
                       "const": 100
                     }
                   },
-                  "required": [
-                    "items",
-                    "limit"
-                  ]
+                  "required": ["items", "limit"]
                 }
               }
             }
@@ -593,10 +587,7 @@
                       "const": 100
                     }
                   },
-                  "required": [
-                    "items",
-                    "limit"
-                  ]
+                  "required": ["items", "limit"]
                 }
               }
             }
@@ -1214,9 +1205,7 @@
                       "const": "ok"
                     }
                   },
-                  "required": [
-                    "status"
-                  ]
+                  "required": ["status"]
                 }
               }
             }
@@ -1233,9 +1222,7 @@
                       "const": "unavailable"
                     }
                   },
-                  "required": [
-                    "status"
-                  ]
+                  "required": ["status"]
                 }
               }
             }
@@ -1267,9 +1254,7 @@
                       }
                     }
                   },
-                  "required": [
-                    "items"
-                  ]
+                  "required": ["items"]
                 }
               }
             }
@@ -1397,10 +1382,7 @@
                       "const": 100
                     }
                   },
-                  "required": [
-                    "items",
-                    "limit"
-                  ]
+                  "required": ["items", "limit"]
                 }
               }
             }
@@ -1528,10 +1510,7 @@
                       "const": 100
                     }
                   },
-                  "required": [
-                    "items",
-                    "limit"
-                  ]
+                  "required": ["items", "limit"]
                 }
               }
             }
@@ -2071,10 +2050,7 @@
                       "const": 100
                     }
                   },
-                  "required": [
-                    "items",
-                    "limit"
-                  ]
+                  "required": ["items", "limit"]
                 }
               }
             }
@@ -2333,10 +2309,7 @@
                       "const": 100
                     }
                   },
-                  "required": [
-                    "items",
-                    "limit"
-                  ]
+                  "required": ["items", "limit"]
                 }
               }
             }
@@ -2971,10 +2944,7 @@
                       "const": 100
                     }
                   },
-                  "required": [
-                    "items",
-                    "limit"
-                  ]
+                  "required": ["items", "limit"]
                 }
               }
             }
@@ -3741,9 +3711,7 @@
             "maxLength": 120
           }
         },
-        "required": [
-          "name"
-        ]
+        "required": ["name"]
       },
       "ParcelInput": {
         "type": "object",
@@ -3769,12 +3737,7 @@
             "maximum": 180
           }
         },
-        "required": [
-          "producerId",
-          "name",
-          "latitude",
-          "longitude"
-        ]
+        "required": ["producerId", "name", "latitude", "longitude"]
       },
       "PreLotInput": {
         "type": "object",
@@ -3796,18 +3759,10 @@
           },
           "unit": {
             "type": "string",
-            "enum": [
-              "kg",
-              "unidad"
-            ]
+            "enum": ["kg", "unidad"]
           }
         },
-        "required": [
-          "parcelId",
-          "harvestedAt",
-          "quantity",
-          "unit"
-        ]
+        "required": ["parcelId", "harvestedAt", "quantity", "unit"]
       },
       "LoginInput": {
         "type": "object",
@@ -3824,10 +3779,7 @@
             "maxLength": 256
           }
         },
-        "required": [
-          "email",
-          "password"
-        ]
+        "required": ["email", "password"]
       },
       "User": {
         "type": "object",
@@ -3847,19 +3799,10 @@
           },
           "role": {
             "type": "string",
-            "enum": [
-              "admin",
-              "collector",
-              "viewer"
-            ]
+            "enum": ["admin", "collector", "viewer"]
           }
         },
-        "required": [
-          "id",
-          "organizationId",
-          "email",
-          "role"
-        ]
+        "required": ["id", "organizationId", "email", "role"]
       },
       "Error": {
         "type": "object",
@@ -3880,16 +3823,10 @@
                 "format": "uuid"
               }
             },
-            "required": [
-              "code",
-              "message",
-              "requestId"
-            ]
+            "required": ["code", "message", "requestId"]
           }
         },
-        "required": [
-          "error"
-        ]
+        "required": ["error"]
       },
       "Producer": {
         "type": "object",
@@ -3909,11 +3846,7 @@
             "format": "date-time"
           }
         },
-        "required": [
-          "id",
-          "name",
-          "createdAt"
-        ]
+        "required": ["id", "name", "createdAt"]
       },
       "Parcel": {
         "type": "object",
@@ -3983,16 +3916,11 @@
           },
           "unit": {
             "type": "string",
-            "enum": [
-              "kg",
-              "unidad"
-            ]
+            "enum": ["kg", "unidad"]
           },
           "status": {
             "type": "string",
-            "enum": [
-              "registrado"
-            ]
+            "enum": ["registrado"]
           },
           "createdBy": {
             "type": "string",
@@ -4027,10 +3955,7 @@
             "description": "Enviar como X-CSRF-Token en escrituras."
           }
         },
-        "required": [
-          "user",
-          "csrfToken"
-        ]
+        "required": ["user", "csrfToken"]
       },
       "IntakeOrigin": {
         "type": "object",
@@ -4077,10 +4002,7 @@
           },
           "unit": {
             "type": "string",
-            "enum": [
-              "kg",
-              "unidad"
-            ]
+            "enum": ["kg", "unidad"]
           }
         },
         "required": [
@@ -4142,10 +4064,7 @@
           },
           "unit": {
             "type": "string",
-            "enum": [
-              "kg",
-              "unidad"
-            ]
+            "enum": ["kg", "unidad"]
           },
           "status": {
             "const": "registrado"
@@ -4206,11 +4125,7 @@
             }
           }
         },
-        "required": [
-          "id",
-          "name",
-          "actions"
-        ]
+        "required": ["id", "name", "actions"]
       },
       "ReceiptInput": {
         "type": "object",
@@ -4269,9 +4184,7 @@
             "maxLength": 500
           }
         },
-        "required": [
-          "note"
-        ]
+        "required": ["note"]
       },
       "ConfirmationInput": {
         "type": "object",
@@ -4298,10 +4211,7 @@
             }
           }
         },
-        "required": [
-          "centerId",
-          "receiptIds"
-        ],
+        "required": ["centerId", "receiptIds"],
         "description": "Recepciones confirmadas compatibles del mismo centro/origen/fecha local; consumo completo. Orden de IDs normalizado. No cantidades parciales."
       },
       "ReceiptReview": {
@@ -4326,12 +4236,7 @@
             "maxLength": 500
           }
         },
-        "required": [
-          "id",
-          "approvedBy",
-          "approvedAt",
-          "note"
-        ]
+        "required": ["id", "approvedBy", "approvedAt", "note"]
       },
       "IntakeEvent": {
         "type": "object",
@@ -4343,11 +4248,7 @@
           },
           "kind": {
             "type": "string",
-            "enum": [
-              "received",
-              "reviewed",
-              "confirmed"
-            ]
+            "enum": ["received", "reviewed", "confirmed"]
           },
           "actorId": {
             "type": "string",
@@ -4379,15 +4280,8 @@
                     ]
                   },
                   "reviewReason": {
-                    "type": [
-                      "string",
-                      "null"
-                    ],
-                    "enum": [
-                      "quantity_difference",
-                      "different_unit",
-                      null
-                    ]
+                    "type": ["string", "null"],
+                    "enum": ["quantity_difference", "different_unit", null]
                   },
                   "originalTemperature": {
                     "anyOf": [
@@ -4400,11 +4294,7 @@
                     ]
                   }
                 },
-                "required": [
-                  "netKg",
-                  "differenceKg",
-                  "reviewReason"
-                ]
+                "required": ["netKg", "differenceKg", "reviewReason"]
               },
               {
                 "type": "object",
@@ -4416,9 +4306,7 @@
                     "maxLength": 500
                   }
                 },
-                "required": [
-                  "note"
-                ]
+                "required": ["note"]
               },
               {
                 "type": "object",
@@ -4429,20 +4317,12 @@
                     "pattern": "^(?:0|[1-9][0-9]{0,8})\\.[0-9]{3}$"
                   }
                 },
-                "required": [
-                  "netKg"
-                ]
+                "required": ["netKg"]
               }
             ]
           }
         },
-        "required": [
-          "id",
-          "kind",
-          "actorId",
-          "occurredAt",
-          "payload"
-        ]
+        "required": ["id", "kind", "actorId", "occurredAt", "payload"]
       },
       "Receipt": {
         "type": "object",
@@ -4496,15 +4376,8 @@
             ]
           },
           "reviewReason": {
-            "type": [
-              "string",
-              "null"
-            ],
-            "enum": [
-              "quantity_difference",
-              "different_unit",
-              null
-            ]
+            "type": ["string", "null"],
+            "enum": ["quantity_difference", "different_unit", null]
           },
           "evidence": {
             "type": "string",
@@ -4521,11 +4394,7 @@
           },
           "status": {
             "type": "string",
-            "enum": [
-              "weighed",
-              "pending_review",
-              "confirmed"
-            ]
+            "enum": ["weighed", "pending_review", "confirmed"]
           },
           "review": {
             "anyOf": [
@@ -4701,19 +4570,10 @@
                 }
               }
             },
-            "required": [
-              "totalKg",
-              "receiptIds"
-            ]
+            "required": ["totalKg", "receiptIds"]
           }
         },
-        "required": [
-          "id",
-          "kind",
-          "actorId",
-          "occurredAt",
-          "payload"
-        ]
+        "required": ["id", "kind", "actorId", "occurredAt", "payload"]
       },
       "Lot": {
         "type": "object",
@@ -4823,12 +4683,7 @@
             "maxLength": 500
           }
         },
-        "required": [
-          "reference",
-          "sampledAt",
-          "sampledBy",
-          "provenance"
-        ]
+        "required": ["reference", "sampledAt", "sampledBy", "provenance"]
       },
       "QualityWeight": {
         "type": "object",
@@ -5087,9 +4942,7 @@
             "format": "uuid"
           }
         },
-        "required": [
-          "lotId"
-        ]
+        "required": ["lotId"]
       },
       "QualityUpdateInput": {
         "type": "object",
@@ -5164,11 +5017,7 @@
             "maximum": 2147483646
           },
           "result": {
-            "enum": [
-              "accepted",
-              "observed",
-              "rejected"
-            ]
+            "enum": ["accepted", "observed", "rejected"]
           },
           "note": {
             "type": "string",
@@ -5176,11 +5025,7 @@
             "maxLength": 500
           }
         },
-        "required": [
-          "expectedVersion",
-          "result",
-          "note"
-        ],
+        "required": ["expectedVersion", "result", "note"],
         "description": "Requiere captura completa y temperatura original documentada de CADA recepción aportante, obtenida desde Acopio por el servidor. Resultado manual sin umbrales. Faltante bloquea accepted/observed/rejected con 422; sin reapertura ni edición closed. SELECT FOR UPDATE, versión, evento con snapshot de originales, auditoría y clave atómicos."
       },
       "QualitySnapshot": {
@@ -5204,10 +5049,7 @@
             "format": "uuid"
           },
           "evaluationState": {
-            "enum": [
-              "draft",
-              "closed"
-            ]
+            "enum": ["draft", "closed"]
           },
           "version": {
             "type": "integer",
@@ -5219,11 +5061,7 @@
           "qualityResult": {
             "anyOf": [
               {
-                "enum": [
-                  "accepted",
-                  "observed",
-                  "rejected"
-                ]
+                "enum": ["accepted", "observed", "rejected"]
               },
               {
                 "type": "null"
@@ -5311,11 +5149,7 @@
             "format": "uuid"
           },
           "kind": {
-            "enum": [
-              "created",
-              "updated",
-              "closed"
-            ]
+            "enum": ["created", "updated", "closed"]
           },
           "version": {
             "type": "integer",
@@ -5355,10 +5189,7 @@
                 }
               }
             },
-            "required": [
-              "before",
-              "after"
-            ]
+            "required": ["before", "after"]
           }
         },
         "required": [
@@ -5377,16 +5208,12 @@
                   "const": "closed"
                 }
               },
-              "required": [
-                "kind"
-              ]
+              "required": ["kind"]
             },
             "then": {
               "properties": {
                 "payload": {
-                  "required": [
-                    "receiptTemperatures"
-                  ]
+                  "required": ["receiptTemperatures"]
                 }
               }
             }
@@ -5414,10 +5241,7 @@
             "format": "uuid"
           },
           "evaluationState": {
-            "enum": [
-              "draft",
-              "closed"
-            ]
+            "enum": ["draft", "closed"]
           },
           "version": {
             "type": "integer",
@@ -5429,11 +5253,7 @@
           "qualityResult": {
             "anyOf": [
               {
-                "enum": [
-                  "accepted",
-                  "observed",
-                  "rejected"
-                ]
+                "enum": ["accepted", "observed", "rejected"]
               },
               {
                 "type": "null"
@@ -5639,10 +5459,7 @@
           "evaluationState": {
             "anyOf": [
               {
-                "enum": [
-                  "draft",
-                  "closed"
-                ]
+                "enum": ["draft", "closed"]
               },
               {
                 "type": "null"
@@ -5652,11 +5469,7 @@
           "qualityResult": {
             "anyOf": [
               {
-                "enum": [
-                  "accepted",
-                  "observed",
-                  "rejected"
-                ]
+                "enum": ["accepted", "observed", "rejected"]
               },
               {
                 "type": "null"
@@ -5809,11 +5622,7 @@
             ]
           }
         },
-        "required": [
-          "receiptId",
-          "reference",
-          "temperature"
-        ]
+        "required": ["receiptId", "reference", "temperature"]
       },
       "PublicStage": {
         "type": "object",
@@ -5821,11 +5630,7 @@
         "properties": {
           "stage": {
             "type": "string",
-            "enum": [
-              "harvest",
-              "reception",
-              "consolidation"
-            ]
+            "enum": ["harvest", "reception", "consolidation"]
           },
           "date": {
             "type": "string",
@@ -5839,11 +5644,7 @@
             "description": "Texto plano revisado y aprobado para publicación, sin información privada."
           }
         },
-        "required": [
-          "stage",
-          "date",
-          "description"
-        ]
+        "required": ["stage", "date", "description"]
       },
       "PublicLot": {
         "type": "object",
@@ -5862,10 +5663,7 @@
             }
           }
         },
-        "required": [
-          "lotCode",
-          "stages"
-        ]
+        "required": ["lotCode", "stages"]
       },
       "PublicationHistory": {
         "type": "object",
@@ -5878,10 +5676,7 @@
           },
           "state": {
             "type": "string",
-            "enum": [
-              "published",
-              "withdrawn"
-            ]
+            "enum": ["published", "withdrawn"]
           },
           "content": {
             "$ref": "#/components/schemas/PublicLot"
@@ -5895,13 +5690,7 @@
             "format": "date-time"
           }
         },
-        "required": [
-          "version",
-          "state",
-          "content",
-          "actorId",
-          "occurredAt"
-        ]
+        "required": ["version", "state", "content", "actorId", "occurredAt"]
       },
       "Publication": {
         "type": "object",
@@ -5913,11 +5702,7 @@
           },
           "state": {
             "type": "string",
-            "enum": [
-              "unpublished",
-              "published",
-              "withdrawn"
-            ]
+            "enum": ["unpublished", "published", "withdrawn"]
           },
           "version": {
             "type": "integer",
@@ -5995,11 +5780,7 @@
             }
           }
         },
-        "required": [
-          "expectedVersion",
-          "lotCode",
-          "stages"
-        ]
+        "required": ["expectedVersion", "lotCode", "stages"]
       },
       "WithdrawalInput": {
         "type": "object",
@@ -6011,9 +5792,7 @@
             "maximum": 2147483646
           }
         },
-        "required": [
-          "expectedVersion"
-        ]
+        "required": ["expectedVersion"]
       },
       "PublicationCandidate": {
         "type": "object",
@@ -6025,11 +5804,7 @@
           },
           "state": {
             "type": "string",
-            "enum": [
-              "unpublished",
-              "published",
-              "withdrawn"
-            ]
+            "enum": ["unpublished", "published", "withdrawn"]
           },
           "lotCode": {
             "anyOf": [
@@ -6042,11 +5817,7 @@
             ]
           }
         },
-        "required": [
-          "id",
-          "state",
-          "lotCode"
-        ]
+        "required": ["id", "state", "lotCode"]
       }
     }
   }

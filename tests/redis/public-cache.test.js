@@ -79,7 +79,7 @@ test("Redis real: fría, caliente, TTL, actualización, retiro con DELETE fallid
   assert.ok(await witness.get(key));
   await cache.delete(key);
   assert.equal(await witness.get(key), null);
-  await witness.del(cacheKey(id, 0), cacheKey(id, 2));
+  await witness.del([cacheKey(id, 0), cacheKey(id, 2)]);
 });
 test("adaptador Redis caído falla sin cola offline ni bloquear la aplicación", async () => {
   const cache = redisCache("redis://127.0.0.1:1", () => {});

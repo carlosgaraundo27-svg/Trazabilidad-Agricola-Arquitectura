@@ -64,3 +64,7 @@ Esta adopción acotada no valida la matriz productiva anterior ni implica aproba
 | quality:close | Cerrar manualmente con justificación, datos completos y originales de todas las recepciones. |
 
 La misma persona autorizada puede capturar y cerrar Calidad. No se heredan acciones por admin/collector/viewer, ni permisos de recepción, discrepancias o despacho. La original se captura con `intake:receive` en la creación de recepción; el actor/fecha del registro vienen del servidor. D4 sigue requiriendo otra persona para aprobar discrepancias de Acopio. Sesión y concesión se revalidan dentro de transacción antes de todo comando/replay. Otro centro/organización no puede consultar un UUID conocido; no hay exposición QR ni rutas de incorporación histórica en este incremento.
+
+## Publicación QR académica
+
+Concesiones explícitas publication:read/publish/withdraw por usuario/organización/centro, revalidadas antes de replay. Administrador, Acopio y Calidad no las heredan. Público solo GET de DTO aprobado; sin listado ni historia interna. 60 consultas/min/IP para una instancia. QR por lote UUID v4 independiente; DB comprueba estado/versión antes de Redis. Texto libre exige revisión semántica humana. [Contrato y casos de aislamiento/retiro](../03-diseno-de-software/06-especificacion-publicacion-qr.md).

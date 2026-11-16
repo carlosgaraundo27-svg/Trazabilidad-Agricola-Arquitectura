@@ -9,7 +9,7 @@ import { intakeIds } from "../../scripts/seed-intake.js";
 import {
   publicationLot,
   demoProjection,
-} from "../support/publication-fixture.js";
+} from "../../scripts/publication-fixture.js";
 test("Publicación HTTP/PostgreSQL y caché por puerto", async (t) => {
   if (process.env.TEST_ALLOW_DB_WRITE !== "true")
     throw Error("DB de pruebas requerida");
@@ -17,6 +17,7 @@ test("Publicación HTTP/PostgreSQL y caché por puerto", async (t) => {
   await migrate(db);
   await seed(db, "Fiction-only-2026!");
   const entries = new Map();
+  const recordedTtls = [];
   let fail = false,
     failDelete = false,
     hits = 0,
@@ -29,7 +30,7 @@ test("Publicación HTTP/PostgreSQL y caché por puerto", async (t) => {
     },
     set: async (key, value, ttl) => {
       if (fail) throw Error("Redis SET caído");
-      assert.equal(ttl, 300);
+      recordedTtls.push(ttl);
       writes++;
       entries.set(key, value);
     },
@@ -197,6 +198,7 @@ test("Publicación HTTP/PostgreSQL y caché por puerto", async (t) => {
         demoProjection,
       );
       assert.equal(writes, before + 1);
+      assert.ok(recordedTtls.every((ttl) => ttl === 300));
       assert.deepEqual(
         (await call("/api/public/v1/lots/" + publication.publicId)).body,
         demoProjection,

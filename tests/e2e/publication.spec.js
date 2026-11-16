@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { connectDatabase } from "../../server/db.js";
 import { compose } from "../../server/composition.js";
-import { publicationLot } from "../support/publication-fixture.js";
+import { publicationLot } from "../../scripts/publication-fixture.js";
 import { PNG } from "pngjs";
 import jsQR from "jsqr";
 test("publicar, consultar QR anónimo móvil, actualizar y retirar", async ({
@@ -84,6 +84,9 @@ test("publicar, consultar QR anónimo móvil, actualizar y retirar", async ({
     fullPage: true,
   });
   await page.getByLabel("Código público del lote").fill("VV-E2E-002");
+  await page
+    .getByLabel("Descripción pública aprobada")
+    .fill("Cosecha ficticia documentada para la consulta pública.");
   await page.getByLabel("He revisado estos campos").check();
   await page
     .getByRole("button", { name: "Publicar campos revisados", exact: true })
@@ -95,6 +98,15 @@ test("publicar, consultar QR anónimo móvil, actualizar y retirar", async ({
   await expect(
     publicPage.getByRole("heading", { name: "Lote VV-E2E-002" }),
   ).toBeVisible();
+  await publicPage.screenshot({
+    path: ".local/qr-public-mobile.png",
+    fullPage: true,
+  });
+  await publicPage.setViewportSize({ width: 1440, height: 900 });
+  await publicPage.screenshot({
+    path: ".local/qr-public-desktop.png",
+    fullPage: true,
+  });
   await page
     .getByRole("button", { name: "Retirar publicación", exact: true })
     .click();

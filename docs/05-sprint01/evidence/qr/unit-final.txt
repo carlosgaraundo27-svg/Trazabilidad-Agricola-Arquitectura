@@ -1,0 +1,26 @@
+✔ cantidad positiva decimal y fecha con zona (5.1226ms)
+✔ coordenadas y nombre tienen límites (0.7491ms)
+✔ roles deniegan por defecto y no heredan operaciones (0.0931ms)
+✔ normaliza UUID antes de comparar y detectar recepciones duplicadas (2.5976ms)
+✔ pesaje exacto, normalización y diferencia conservada (0.6044ms)
+✔ rechaza mediciones inválidas, neto enviado y redondeo implícito (0.37ms)
+✔ fecha de cosecha local fija en Lima, incluso cerca de medianoche UTC (12.5446ms)
+✔ compatibilidad exige todos los ámbitos y no acepta IDs duplicados (0.2902ms)
+✔ contraseñas con sal única y verificación sin texto plano (105.2616ms)
+✔ guard PostgreSQL domina caché caliente, retiro fallido y actualización de versión (5.0068ms)
+✔ Redis falla o devuelve contenido contaminado: DB; DB caída: 503 sin consultar Redis (0.9613ms)
+✔ contrato público acepta solo la lista permitida y fechas reales (4.3767ms)
+✔ QR usa URL configurada y rechaza Host arbitrario, credenciales y HTTP productivo (0.5521ms)
+✔ repositorio Calidad distingue lectura, snapshot compartido y edición exclusiva (3.5028ms)
+✔ captura exacta con unidades explícitas y temperatura negativa sin umbral agrícola (4.9528ms)
+✔ unidades, magnitudes y precisión inválidas no se convierten ni redondean (1.752ms)
+✔ conteos contradictorios, frutos duplicados, fuentes ambiguas y fechas futuras rechazados (2.7299ms)
+✔ draft vacío conserva faltantes y porcentaje informativo usa mitad hacia arriba exacta (0.5497ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 202.2361

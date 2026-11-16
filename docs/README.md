@@ -49,3 +49,7 @@ Calidad académica implementada: [especificación Q1–Q9 adoptadas para el prot
 - [ADR-011 y validaciones pendientes](02-arquitectura/08-decisiones-acopio.md)
 - [Guía de ejecución](../tecnologia/acopio.md)
 - [Evidencias y continuidad](05-sprint01/acopio-implementacion.md)
+
+## Publicación pública QR
+
+[Contrato, estados y PQ-01–13](03-diseno-de-software/06-especificacion-publicacion-qr.md), [ADR-013 / ADR-005 / ADR-008](02-arquitectura/10-decisiones-publicacion-qr.md), [guía](../tecnologia/publicacion-qr.md), [evidencia](05-sprint01/evidence/qr/README.md), [revisión e integración de Calidad #4](05-sprint01/revision-pr4.md). Publicación no equivale a aprobar Calidad.

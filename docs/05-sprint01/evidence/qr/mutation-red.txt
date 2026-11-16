@@ -1,0 +1,25 @@
+✖ guard PostgreSQL domina caché caliente, retiro fallido y actualización de versión (4.1055ms)
+✔ Redis falla o devuelve contenido contaminado: DB; DB caída: 503 sin consultar Redis (0.7726ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 1
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 124.8361
+
+✖ failing tests:
+
+test at tests\unit\public-query.test.js:5:1
+✖ guard PostgreSQL domina caché caliente, retiro fallido y actualización de versión (4.1055ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (file:///C:/Users/leona/Documents/Proyect_Final_Arquitectura/repo-qr/tests/unit/public-query.test.js:46:3)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }

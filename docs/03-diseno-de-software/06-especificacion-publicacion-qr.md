@@ -1,6 +1,6 @@
 # Consulta pública QR y Redis
 
-2026-11-15. Alcance adoptado por el usuario para prototipo académico. No supone aprobación docente ni validación agrícola. RF-08/RF-09, ADR-005/ADR-008. Base inicial: main 829f79e; PR #4 continúa bloqueado por SonarCloud, por lo que esta capacidad no depende de su integración ni interpreta sus resultados.
+2026-11-15/16. Alcance adoptado por el usuario para prototipo académico. No supone aprobación docente ni validación agrícola. RF-08/RF-09, ADR-005/ADR-008. Base vigente: main b664fee, que integra PR #4 conservando sus commits y la corrección revisada con verify/compose/SonarCloud aprobados sobre 75ae942. La especificación se preparó inicialmente desde 829f79e mientras se resolvía ese bloqueo; el incremento se reconcilió y verificó sobre main integrado. Publicación no depende del resultado de Calidad ni lo interpreta.
 
 ## Objetivo y capacidades
 

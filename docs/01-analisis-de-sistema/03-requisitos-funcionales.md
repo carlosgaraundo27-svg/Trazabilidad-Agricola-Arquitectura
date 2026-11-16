@@ -45,3 +45,7 @@
 ## Cobertura ejecutable académica de RF-06 y RF-07
 
 Q1–Q9 y la exigencia de originales de cada recepción fueron adoptadas por el usuario exclusivamente para el prototipo, sin aprobación docente ni validación agrícola. RF-06 registra peso individual g/fruto como calibre académico, materia seca %, conteos y originales de recepción con procedencia/responsable; todo closed exige cobertura de sus recepciones. Sigue parcial frente al objetivo productivo por representación académica e integración instrumental ausente; históricos sin original quedan bloqueados. RF-07 tiene decisión manual justificada, con cobertura parcial respecto de reglas agrícolas/categorías comerciales no definidas. La formulación objetivo de los requisitos anteriores se conserva. [Especificación y aceptación QC-01–23](../03-diseno-de-software/05-especificacion-calidad-lote.md), [evidencia](../05-sprint01/calidad-implementacion.md).
+
+## Cobertura académica de RF-08/RF-09 — publicación QR
+
+RF-08/HU05/HU07: QR por lote y consulta pública móvil; pallets excluidos del incremento adoptado. RF-09: revisiones de publicación y auditoría inmutables, sin exponer eventos internos ni modificar historia operativa. Publicación/retiro explícitos por concesión del centro; solo código, etapas, fechas y descripciones aprobadas. [PQ-01–13](../03-diseno-de-software/06-especificacion-publicacion-qr.md), [ADR-013](../02-arquitectura/10-decisiones-publicacion-qr.md). No equivale a aprobar Calidad; sin aprobación docente, validación agrícola ni rendimiento mejorado medido.

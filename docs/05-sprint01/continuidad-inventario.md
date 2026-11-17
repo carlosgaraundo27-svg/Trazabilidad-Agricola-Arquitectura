@@ -17,3 +17,9 @@ Pendientes: pallets/empaque con composición/origen, parcialidades, devoluciones
 **PDF oficial de los 16 criterios no accesible**. La [matriz P01–P16](matriz-trabajo-final.md) sigue provisional, sin títulos/ponderaciones oficiales ni nota inventada. Al obtener el PDF, sustituir correspondencia por sus criterios literales conservando evidencia.
 
 Integración local solo en bases nuevas del cluster exclusivo .acopio-runtime puerto 55434. La suite revierte migraciones: nunca demo/datos reales. Conservar evidencia/bases y detener únicamente ese cluster al finalizar. La demo crea hechos ficticios nuevos y requiere ALLOW_DEMO_SEED=true fuera de producción; no rellena históricos. Mantener PR #7 abierto sin merge.
+
+## Revisión adicional y siguiente incremento — 2026-11-16
+
+[Revisión por clave de los 20 avisos](revision-pr7.md): nueve S1192 DDL documentados individualmente, cinco VARCHAR2 no aplicables a PostgreSQL y seis await secuenciales justificados. No se cambian 001–007, gate, perfiles, exclusiones ni aceptación manual. Nuevas pruebas de cancelación draft sin movimiento y lectura de detalle/historia con barrera contra salida; mutación de FOR SHARE detectada/restaurada. El dictamen y checks de cabeza final constan en PR #7, que permanece sin fusionar.
+
+[Especificación offline](../03-diseno-de-software/08-especificacion-offline-cosecha.md) y ADR-015 son propuestas sin código; O1–O10 requieren respuesta. Flutter aún no existe; recomendación Android+SQLite no cambia la referencia móvil ni adopta PWA. PDF oficial no accesible en esta sesión; ruta/enlace solicitados, matriz con columnas implementado/probado/despliegue/pendiente sigue provisional.

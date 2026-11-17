@@ -56,15 +56,20 @@ CREATE TABLE inventory.requests(
 );
 -- statement
 CREATE FUNCTION inventory.guard_entry() RETURNS trigger LANGUAGE plpgsql AS $$
+DECLARE
+ constraint_violation CONSTANT text := '23514';
+ version_field CONSTANT text := 'version';
+ released_state CONSTANT text := 'released';
+ mutable_fields CONSTANT text[] := ARRAY[version_field,'disposition','release_evaluation_id','release_evaluation_version','release_reason','released_by','released_at'];
 BEGIN
- IF TG_OP='DELETE' THEN RAISE EXCEPTION 'inventory entry cannot be deleted' USING ERRCODE='23514'; END IF;
+ IF TG_OP='DELETE' THEN RAISE EXCEPTION 'inventory entry cannot be deleted' USING ERRCODE=constraint_violation; END IF;
  IF TG_OP='INSERT' THEN
-  IF NEW.version<>1 OR NEW.disposition<>'quarantine' OR NEW.admitted_kg IS DISTINCT FROM (SELECT sum(amount_kg) FROM traceability.contributions WHERE lot_id=NEW.lot_id AND organization_id=NEW.organization_id AND center_id=NEW.center_id) THEN RAISE EXCEPTION 'admission must equal documented lot' USING ERRCODE='23514'; END IF;
+  IF NEW.version<>1 OR NEW.disposition<>'quarantine' OR NEW.admitted_kg IS DISTINCT FROM (SELECT sum(amount_kg) FROM traceability.contributions WHERE lot_id=NEW.lot_id AND organization_id=NEW.organization_id AND center_id=NEW.center_id) THEN RAISE EXCEPTION 'admission must equal documented lot' USING ERRCODE=constraint_violation; END IF;
  ELSE
-  IF (to_jsonb(NEW)-ARRAY['version','disposition','release_evaluation_id','release_evaluation_version','release_reason','released_by','released_at']) IS DISTINCT FROM (to_jsonb(OLD)-ARRAY['version','disposition','release_evaluation_id','release_evaluation_version','release_reason','released_by','released_at']) OR NEW.version<>OLD.version+1 THEN RAISE EXCEPTION 'inventory identity immutable, version must advance' USING ERRCODE='23514'; END IF;
-  IF OLD.disposition='released' AND (to_jsonb(NEW)-'version') IS DISTINCT FROM (to_jsonb(OLD)-'version') THEN RAISE EXCEPTION 'release immutable' USING ERRCODE='23514'; END IF;
+  IF (to_jsonb(NEW)-mutable_fields) IS DISTINCT FROM (to_jsonb(OLD)-mutable_fields) OR NEW.version<>OLD.version+1 THEN RAISE EXCEPTION 'inventory identity immutable, version must advance' USING ERRCODE=constraint_violation; END IF;
+  IF OLD.disposition=released_state AND (to_jsonb(NEW)-version_field) IS DISTINCT FROM (to_jsonb(OLD)-version_field) THEN RAISE EXCEPTION 'release immutable' USING ERRCODE=constraint_violation; END IF;
  END IF;
- IF NEW.disposition='released' AND NOT EXISTS(SELECT 1 FROM quality.evaluations q WHERE q.id=NEW.release_evaluation_id AND q.lot_id=NEW.lot_id AND q.organization_id=NEW.organization_id AND q.center_id=NEW.center_id AND q.state='closed' AND q.result='accepted' AND q.version=NEW.release_evaluation_version) THEN RAISE EXCEPTION 'closed accepted quality required' USING ERRCODE='23514'; END IF;
+ IF NEW.disposition=released_state AND NOT EXISTS(SELECT 1 FROM quality.evaluations q WHERE q.id=NEW.release_evaluation_id AND q.lot_id=NEW.lot_id AND q.organization_id=NEW.organization_id AND q.center_id=NEW.center_id AND q.state='closed' AND q.result='accepted' AND q.version=NEW.release_evaluation_version) THEN RAISE EXCEPTION 'closed accepted quality required' USING ERRCODE=constraint_violation; END IF;
  RETURN NEW;
 END;
 $$;

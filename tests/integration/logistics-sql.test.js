@@ -165,4 +165,52 @@ test("SQL de Logística protege identidad, masa, ámbito e históricos", async (
   assert.equal(current.onHandKg, "73.125");
   assert.equal(current.disposition, "quarantine");
   assert.deepEqual(current.contributions, entry.contributions);
+  const released = (
+    await s.logistics.release(
+      actor,
+      entry.id,
+      {
+        expectedVersion: current.version,
+        reason: "Liberación ficticia para validar constraints",
+      },
+      crypto.randomUUID(),
+    )
+  ).item;
+  const reserved = (
+    await s.logistics.reserve(
+      actor,
+      shipment.id,
+      {
+        expectedVersion: shipment.version,
+        expectedInventoryVersion: released.version,
+      },
+      crypto.randomUUID(),
+    )
+  ).item;
+  const validTransport = {
+    guideReference: "SQL-" + shipment.id,
+    vehicleLabel: "Unidad ficticia",
+    plate: "DEMO-001",
+    driverName: "Persona ficticia",
+    sealReference: "DEMO-S",
+  };
+  for (const field of Object.keys(validTransport))
+    for (const invalid of [null, "", "   "]) {
+      await assert.rejects(
+        () =>
+          db.query(
+            "UPDATE logistics.shipments SET state='in_transit',version=version+1,transport=$1,destination_label='Destino',departed_at=created_at WHERE id=$2",
+            [
+              JSON.stringify({ ...validTransport, [field]: invalid }),
+              shipment.id,
+            ],
+          ),
+        { code: "23514" },
+      );
+    }
+  const stillReserved = await s.logistics.getShipment(actor, shipment.id);
+  assert.equal(stillReserved.state, "reserved");
+  assert.equal(stillReserved.version, reserved.version);
+  assert.equal(stillReserved.inventory.reservedKg, "73.125");
+  assert.equal(stillReserved.inventory.onHandKg, "73.125");
 });

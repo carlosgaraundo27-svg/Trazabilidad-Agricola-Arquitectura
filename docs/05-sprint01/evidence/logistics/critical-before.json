@@ -1,0 +1,566 @@
+{
+  "analyzedHead": "c91a90ae3bc97f3cf02e676bcbf345a1cfe3aa58",
+  "collectedByHead": "c4682c75f727ecc863b1fbf319c6c293a9446b69",
+  "run": 44002521621,
+  "total": 62,
+  "issues": [
+    {
+      "key": "AaHmZtM-2XsEZRRQrjcs",
+      "rule": "githubactions:S8482",
+      "type": "VULNERABILITY",
+      "severity": "BLOCKER",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:.github/workflows/logistics-review.yml",
+      "line": 14,
+      "message": "Avoid executing downloaded artifacts directly without verification."
+    },
+    {
+      "key": "AaHmZCF1eKABQuiq77Eu",
+      "rule": "javascript:S7723",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:scripts/test-compose.js",
+      "line": 4,
+      "message": "Use `new Error()` instead of `Error()`."
+    },
+    {
+      "key": "AaHmZCF1eKABQuiq77Ev",
+      "rule": "javascript:S9382",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:scripts/test-compose.js",
+      "line": 63,
+      "message": "Unexpected `await` inside a loop."
+    },
+    {
+      "key": "AaHmZCF1eKABQuiq77Ew",
+      "rule": "javascript:S7723",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:scripts/test-compose.js",
+      "line": 65,
+      "message": "Use `new Error()` instead of `Error()`."
+    },
+    {
+      "key": "AaHmZCF1eKABQuiq77Ex",
+      "rule": "javascript:S7723",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:scripts/test-compose.js",
+      "line": 80,
+      "message": "Use `new Error()` instead of `Error()`."
+    },
+    {
+      "key": "AaHmZCF1eKABQuiq77Ey",
+      "rule": "javascript:S7723",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:scripts/test-compose.js",
+      "line": 97,
+      "message": "Use `new Error()` instead of `Error()`."
+    },
+    {
+      "key": "AaHmZCF1eKABQuiq77Ez",
+      "rule": "javascript:S7723",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:scripts/test-compose.js",
+      "line": 110,
+      "message": "Use `new Error()` instead of `Error()`."
+    },
+    {
+      "key": "AaHmZCFIeKABQuiq77ET",
+      "rule": "javascript:S3776",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:server/modules/logistics/application.js",
+      "line": 167,
+      "message": "Refactor this function to reduce its Cognitive Complexity from 21 to the 15 allowed."
+    },
+    {
+      "key": "AaHmZCFgeKABQuiq77Eg",
+      "rule": "javascript:S6772",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:web/logistics/InventoryPanel.jsx",
+      "line": 53,
+      "message": "Ambiguous spacing before next element input"
+    },
+    {
+      "key": "AaHmZCFgeKABQuiq77Eh",
+      "rule": "javascript:S6772",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:web/logistics/InventoryPanel.jsx",
+      "line": 62,
+      "message": "Ambiguous spacing before next element input"
+    },
+    {
+      "key": "AaHmZCFgeKABQuiq77Ei",
+      "rule": "javascript:S6772",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:web/logistics/InventoryPanel.jsx",
+      "line": 66,
+      "message": "Ambiguous spacing before next element textarea"
+    },
+    {
+      "key": "AaHmZCFgeKABQuiq77Ej",
+      "rule": "javascript:S6772",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:web/logistics/InventoryPanel.jsx",
+      "line": 137,
+      "message": "Ambiguous spacing before next element textarea"
+    },
+    {
+      "key": "AaHmZCFieKABQuiq77Ek",
+      "rule": "javascript:S6772",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:web/logistics/Logistics.jsx",
+      "line": 38,
+      "message": "Ambiguous spacing before next element select"
+    },
+    {
+      "key": "AaHmZCFieKABQuiq77El",
+      "rule": "javascript:S6819",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:web/logistics/Logistics.jsx",
+      "line": 51,
+      "message": "Use <output> instead of the \"status\" role to ensure accessibility across all devices."
+    },
+    {
+      "key": "AaHmZCFeeKABQuiq77Ea",
+      "rule": "javascript:S6819",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:web/logistics/ShipmentDetail.jsx",
+      "line": 28,
+      "message": "Use <output> instead of the \"status\" role to ensure accessibility across all devices."
+    },
+    {
+      "key": "AaHmZCFeeKABQuiq77Eb",
+      "rule": "javascript:S6772",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:web/logistics/ShipmentDetail.jsx",
+      "line": 96,
+      "message": "Ambiguous spacing before next element input"
+    },
+    {
+      "key": "AaHmZCFeeKABQuiq77Ec",
+      "rule": "javascript:S6772",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:web/logistics/ShipmentDetail.jsx",
+      "line": 134,
+      "message": "Ambiguous spacing before next element textarea"
+    },
+    {
+      "key": "AaHmZCFeeKABQuiq77Ed",
+      "rule": "javascript:S6772",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:web/logistics/ShipmentDetail.jsx",
+      "line": 166,
+      "message": "Ambiguous spacing before next element input"
+    },
+    {
+      "key": "AaHmZCFeeKABQuiq77Ee",
+      "rule": "javascript:S6772",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:web/logistics/ShipmentDetail.jsx",
+      "line": 176,
+      "message": "Ambiguous spacing before next element input"
+    },
+    {
+      "key": "AaHmZCFeeKABQuiq77Ef",
+      "rule": "javascript:S6772",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:web/logistics/ShipmentDetail.jsx",
+      "line": 187,
+      "message": "Ambiguous spacing before next element textarea"
+    },
+    {
+      "key": "AaHmZCFkeKABQuiq77Em",
+      "rule": "javascript:S6772",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:web/logistics/TransportForm.jsx",
+      "line": 37,
+      "message": "Ambiguous spacing before next element input"
+    },
+    {
+      "key": "AaHmZCFkeKABQuiq77En",
+      "rule": "javascript:S6772",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:web/logistics/TransportForm.jsx",
+      "line": 46,
+      "message": "Ambiguous spacing before next element input"
+    },
+    {
+      "key": "AaHmZCFkeKABQuiq77Eo",
+      "rule": "javascript:S6772",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:web/logistics/TransportForm.jsx",
+      "line": 55,
+      "message": "Ambiguous spacing before next element input"
+    },
+    {
+      "key": "AaHmZCFkeKABQuiq77Ep",
+      "rule": "javascript:S6772",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:web/logistics/TransportForm.jsx",
+      "line": 64,
+      "message": "Ambiguous spacing before next element input"
+    },
+    {
+      "key": "AaHmZCFkeKABQuiq77Eq",
+      "rule": "javascript:S6772",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:web/logistics/TransportForm.jsx",
+      "line": 73,
+      "message": "Ambiguous spacing before next element input"
+    },
+    {
+      "key": "AaHmZCFkeKABQuiq77Er",
+      "rule": "javascript:S6772",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:web/logistics/TransportForm.jsx",
+      "line": 82,
+      "message": "Ambiguous spacing before next element input"
+    },
+    {
+      "key": "AaHmZCFkeKABQuiq77Es",
+      "rule": "javascript:S6772",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:web/logistics/TransportForm.jsx",
+      "line": 91,
+      "message": "Ambiguous spacing before next element textarea"
+    },
+    {
+      "key": "AaHmZCFmeKABQuiq77Et",
+      "rule": "javascript:S3800",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:web/logistics/useLogistics.js",
+      "line": 109,
+      "message": "Refactor this function to always return the same type."
+    },
+    {
+      "key": "AaHmZCEveKABQuiq77EN",
+      "rule": "plsql:S1192",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:migrations/006_inventory.up.sql",
+      "line": 10,
+      "message": "Define a constant instead of duplicating this literal 5 times."
+    },
+    {
+      "key": "AaHmZCEveKABQuiq77ER",
+      "rule": "plsql:S1192",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:migrations/006_inventory.up.sql",
+      "line": 10,
+      "message": "Define a constant instead of duplicating this literal 4 times."
+    },
+    {
+      "key": "AaHmZCEveKABQuiq77EJ",
+      "rule": "plsql:VarcharUsageCheck",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:migrations/006_inventory.up.sql",
+      "line": 11,
+      "message": "Use VARCHAR2 instead of VARCHAR."
+    },
+    {
+      "key": "AaHmZCEveKABQuiq77EK",
+      "rule": "plsql:VarcharUsageCheck",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:migrations/006_inventory.up.sql",
+      "line": 11,
+      "message": "Use VARCHAR2 instead of VARCHAR."
+    },
+    {
+      "key": "AaHmZCEveKABQuiq77EL",
+      "rule": "plsql:VarcharUsageCheck",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:migrations/006_inventory.up.sql",
+      "line": 13,
+      "message": "Use VARCHAR2 instead of VARCHAR."
+    },
+    {
+      "key": "AaHmZCEveKABQuiq77EM",
+      "rule": "plsql:S1192",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:migrations/006_inventory.up.sql",
+      "line": 26,
+      "message": "Define a constant instead of duplicating this literal 3 times."
+    },
+    {
+      "key": "AaHmZCEveKABQuiq77EO",
+      "rule": "plsql:S1192",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:migrations/006_inventory.up.sql",
+      "line": 26,
+      "message": "Define a constant instead of duplicating this literal 5 times."
+    },
+    {
+      "key": "AaHmZCEveKABQuiq77EQ",
+      "rule": "plsql:S1192",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:migrations/006_inventory.up.sql",
+      "line": 60,
+      "message": "Define a constant instead of duplicating this literal 5 times."
+    },
+    {
+      "key": "AaHmZCEveKABQuiq77EP",
+      "rule": "plsql:S1192",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:migrations/006_inventory.up.sql",
+      "line": 64,
+      "message": "Define a constant instead of duplicating this literal 4 times."
+    },
+    {
+      "key": "AaHmZCCgeKABQuiq77D_",
+      "rule": "plsql:S1192",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:migrations/007_shipments.up.sql",
+      "line": 6,
+      "message": "Define a constant instead of duplicating this literal 7 times."
+    },
+    {
+      "key": "AaHmZCCgeKABQuiq77EB",
+      "rule": "plsql:S1192",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:migrations/007_shipments.up.sql",
+      "line": 6,
+      "message": "Define a constant instead of duplicating this literal 6 times."
+    },
+    {
+      "key": "AaHmZCCgeKABQuiq77EE",
+      "rule": "plsql:S1192",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:migrations/007_shipments.up.sql",
+      "line": 6,
+      "message": "Define a constant instead of duplicating this literal 5 times."
+    },
+    {
+      "key": "AaHmZCCgeKABQuiq77EF",
+      "rule": "plsql:S1192",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:migrations/007_shipments.up.sql",
+      "line": 6,
+      "message": "Define a constant instead of duplicating this literal 6 times."
+    },
+    {
+      "key": "AaHmZCCgeKABQuiq77EI",
+      "rule": "plsql:S1192",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:migrations/007_shipments.up.sql",
+      "line": 6,
+      "message": "Define a constant instead of duplicating this literal 6 times."
+    },
+    {
+      "key": "AaHmZCCgeKABQuiq77D-",
+      "rule": "plsql:S1192",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:migrations/007_shipments.up.sql",
+      "line": 7,
+      "message": "Define a constant instead of duplicating this literal 5 times."
+    },
+    {
+      "key": "AaHmZCCgeKABQuiq77EA",
+      "rule": "plsql:S1192",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:migrations/007_shipments.up.sql",
+      "line": 7,
+      "message": "Define a constant instead of duplicating this literal 3 times."
+    },
+    {
+      "key": "AaHmZCCgeKABQuiq77EC",
+      "rule": "plsql:S1192",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:migrations/007_shipments.up.sql",
+      "line": 7,
+      "message": "Define a constant instead of duplicating this literal 3 times."
+    },
+    {
+      "key": "AaHmZCCgeKABQuiq77ED",
+      "rule": "plsql:S1192",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:migrations/007_shipments.up.sql",
+      "line": 7,
+      "message": "Define a constant instead of duplicating this literal 3 times."
+    },
+    {
+      "key": "AaHmZCCgeKABQuiq77EG",
+      "rule": "plsql:S1192",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:migrations/007_shipments.up.sql",
+      "line": 7,
+      "message": "Define a constant instead of duplicating this literal 3 times."
+    },
+    {
+      "key": "AaHmZCCgeKABQuiq77D8",
+      "rule": "plsql:VarcharUsageCheck",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:migrations/007_shipments.up.sql",
+      "line": 25,
+      "message": "Use VARCHAR2 instead of VARCHAR."
+    },
+    {
+      "key": "AaHmZCCgeKABQuiq77EH",
+      "rule": "plsql:S1192",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:migrations/007_shipments.up.sql",
+      "line": 37,
+      "message": "Define a constant instead of duplicating this literal 6 times."
+    },
+    {
+      "key": "AaHmZCCgeKABQuiq77D9",
+      "rule": "plsql:VarcharUsageCheck",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:migrations/007_shipments.up.sql",
+      "line": 72,
+      "message": "Use VARCHAR2 instead of VARCHAR."
+    },
+    {
+      "key": "AaHmZCF4eKABQuiq77E2",
+      "rule": "javascript:S9382",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:scripts/logistics-fixture.js",
+      "line": 28,
+      "message": "Unexpected `await` inside a loop."
+    },
+    {
+      "key": "AaHmZCF4eKABQuiq77E3",
+      "rule": "javascript:S9382",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:scripts/logistics-fixture.js",
+      "line": 40,
+      "message": "Unexpected `await` inside a loop."
+    },
+    {
+      "key": "AaHmZCF4eKABQuiq77E4",
+      "rule": "javascript:S9382",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:scripts/logistics-fixture.js",
+      "line": 54,
+      "message": "Unexpected `await` inside a loop."
+    },
+    {
+      "key": "AaHmZCF3eKABQuiq77E0",
+      "rule": "javascript:S9382",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:scripts/seed-logistics.js",
+      "line": 42,
+      "message": "Unexpected `await` inside a loop."
+    },
+    {
+      "key": "AaHmZCF3eKABQuiq77E1",
+      "rule": "javascript:S9382",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:scripts/seed-logistics.js",
+      "line": 47,
+      "message": "Unexpected `await` inside a loop."
+    },
+    {
+      "key": "AaHmZCFIeKABQuiq77ES",
+      "rule": "javascript:S7721",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:server/modules/logistics/application.js",
+      "line": 120,
+      "message": "Move function 'requireEligible' to the outer scope."
+    },
+    {
+      "key": "AaHmZCFIeKABQuiq77EU",
+      "rule": "javascript:S3358",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:server/modules/logistics/application.js",
+      "line": 231,
+      "message": "Extract this nested ternary operation into an independent statement."
+    },
+    {
+      "key": "AaHmZCFNeKABQuiq77EY",
+      "rule": "javascript:S6353",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:server/modules/logistics/domain.js",
+      "line": 12,
+      "message": "Use concise character class syntax '\\d' instead of '[0-9]'."
+    },
+    {
+      "key": "AaHmZCFNeKABQuiq77EZ",
+      "rule": "javascript:S6353",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:server/modules/logistics/domain.js",
+      "line": 12,
+      "message": "Use concise character class syntax '\\d' instead of '[0-9]'."
+    },
+    {
+      "key": "AaHmZCFLeKABQuiq77EV",
+      "rule": "javascript:S3358",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:server/modules/logistics/repository.js",
+      "line": 32,
+      "message": "Extract this nested ternary operation into an independent statement."
+    },
+    {
+      "key": "AaHmZCFLeKABQuiq77EW",
+      "rule": "javascript:S3358",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:server/modules/logistics/repository.js",
+      "line": 105,
+      "message": "Extract this nested ternary operation into an independent statement."
+    },
+    {
+      "key": "AaHmZCFLeKABQuiq77EX",
+      "rule": "javascript:S107",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:server/modules/logistics/repository.js",
+      "line": 191,
+      "message": "Async method 'event' has too many parameters (8). Maximum allowed is 7."
+    }
+  ]
+}

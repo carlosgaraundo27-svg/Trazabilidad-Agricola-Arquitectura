@@ -56,7 +56,7 @@ Calidad académica implementada: [especificación Q1–Q9 adoptadas para el prot
 
 ## Inventario, Reserva, Despacho y Entrega
 
-[Especificación D1–D9 adoptadas](03-diseno-de-software/07-especificacion-inventario-despacho-entrega.md), [ADR-014](02-arquitectura/11-decisiones-inventario-despacho.md), [implementación y evidencia](05-sprint01/inventario-implementacion.md), [continuidad](05-sprint01/continuidad-inventario.md). Implementado en PR #7, sin fusionar, sobre main 47d827c. [Corrección de fiabilidad de main](05-sprint01/revision-sonar-main.md), [triage Sonar de Logística](05-sprint01/revision-sonar-logistica.md). RF-10 parcial, sin pallets/empaque. [Matriz de 16 áreas provisional](05-sprint01/matriz-trabajo-final.md): PDF oficial no accesible; no sustituye su rúbrica.
+[Especificación D1–D9 adoptadas](03-diseno-de-software/07-especificacion-inventario-despacho-entrega.md), [ADR-014](02-arquitectura/11-decisiones-inventario-despacho.md), [implementación y evidencia](05-sprint01/inventario-implementacion.md), [continuidad](05-sprint01/continuidad-inventario.md). Implementado en PR #7, sin fusionar, sobre main 47d827c. [Corrección de fiabilidad de main](05-sprint01/revision-sonar-main.md), [triage Sonar de Logística](05-sprint01/revision-sonar-logistica.md). RF-10 parcial, sin pallets/empaque. [Matriz de 16 criterios transcritos](05-sprint01/matriz-trabajo-final.md): Fuente: transcripción del estudiante, pendiente de cotejar con el PDF original; SDD por aclarar con la docente.
 
 ## Revisión #7 y siguiente incremento propuesto
 

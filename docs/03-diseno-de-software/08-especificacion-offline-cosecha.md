@@ -146,3 +146,44 @@ Comandos **previstos**, condicionados a crear el proyecto/decidir dependencias: 
 ## Entrega para decisión
 
 Responder O1–O10 o indicar cambios concretos. Recomendación: Flutter Android + SQLite, identidad local estable mapeada al UUID servidor, sync secuencial en primer plano, sesión segura vigente al sincronizar y resolución manual sin sobreescritura. Definir retención/catálogo/logout antes de implementar. No se sustituyen tecnologías, crean migraciones/endpoints ni reglas offline hasta esa respuesta.
+## Revisión de decisiones O1–O10 — 2026-11-17
+
+Siguen **sin adoptar ni implementar**. La columna de dependencia indica qué se puede reutilizar y qué falta; no convierte una recomendación en autorización.
+
+| ID / pregunta para decidir | Recomendación | Consecuencia | Dependencia con lo implementado |
+| --- | --- | --- | --- |
+| O1 ¿Mantener Flutter solo Android, Android+iOS o proponer PWA? | Mantener Flutter y comenzar Android; iOS diferido | Hay que crear la app; PWA sería una sustitución que necesita decisión expresa y ADR | Backend REST y web React existen; no hay cliente Flutter/Android versionado. La web no cubre RF-03/DA01 |
+| O2 ¿Qué almacenamiento conservará capturas y cola tras reinicio? | SQLite privada, captura/outbox en una transacción; sesión en almacén seguro del SO | Guardado durable y migraciones locales; no prometer supervivencia a desinstalación | PostgreSQL conserva datos remotos; no existe DB local ni outbox. useRef de la web se pierde al cerrar |
+| O3 ¿ID local mapeado al UUID servidor o ID final elegido por cliente? | UUID local desde primer guardado, estable, mapeado al preLotId servidor | Conservar dos IDs; mismo ID/cuerpo devuelve el mismo resultado; otro contenido→409 | H genera UUID servidor y tiene idempotencia por actor/clave; falta recibo/contrato sync, sin renumerar históricos |
+| O4 ¿Sincronizar en primer plano o también en segundo plano? | Botón y apertura/recuperación de app, secuencial en primer plano | No se promete envío con la app cerrada; la cola sí persiste | Hay API online; no hay worker móvil ni política de ejecución/batería Android |
+| O5 ¿Qué identidad/catálogo permite guardar sin red y cuánto se conserva? | Primera autenticación/descarga online, perfil conocido y fecha de catálogo visible; confirmar retención/validez | Guardar local no garantiza autorización remota; catálogo obsoleto puede bloquear sync | S valida sesión y P asignación al operar; aún faltan caché local y política de retención. No se adopta un plazo por omisión |
+| O6 ¿Reutilizar cookie+CSRF o introducir token/refresh móvil? | Cookie+CSRF en jar nativo seguro y login al vencer, sin guardar contraseña | Probar persistencia/expiración/logout/HTTPS y Origin; no relajar controles web | Sesiones/cookies/CSRF/Origin existen; falta el adaptador nativo. Tokens requerirían otro contrato/ADR |
+| O7 ¿Cuándo se edita, corrige o sustituye una captura? | Solo draft editable; confirmar congela ID/cuerpo; tras intento no crear sustituto en el incremento inicial | Respuesta perdida deja uncertain; conservar y gestionar sin sobrescribir ni clonar. Autorizar sustitutos exige decidir reconciliación/cierre seguro del ID | Alta online es inmutable y replay con distinto contenido da conflicto; no hay protocolo de sustitución ni corrección remota |
+| O8 ¿Petición individual o batch y qué política de reintento? | Un registro/petición, secuencia y backoff propuesto con jitter/Retry-After; pausar tras fallos y mostrar acción | Reintentar conserva intención; nunca borrar datos por alcanzar el límite. Los tiempos y umbral del cuadro anterior requieren respuesta | Existe idempotencia online y límites HTTP; no hay scheduler durable ni recibos sync. No desactivar límites para sincronizar |
+| O9 ¿Qué pasa con pendientes al salir o cambiar de usuario? | Conservarlos aislados por organización/actor y bloquearlos hasta volver con el mismo usuario | B no envía ni ve la cola de A; borrado explícito advertido, retención pendiente | Backend separa organizaciones/actores; el almacenamiento local y su política de borrado no existen |
+| O10 ¿Qué catálogos/unidades y reglas de reloj se permiten offline? | Solo parcelas descargadas asignadas y contrato actual kg/unidad; separar captura/recepción; no corregir reloj en silencio | Parcela nueva offline o tolerancia especial requieren otra decisión; cantidades no se convierten ni redondean | P/H validan parcela, unidades/cantidad y fecha en servidor; falta catálogo local y manejo de rechazo al sincronizar |
+
+## Verificación real y preparación para Android
+
+Revisión del árbol versionado en f8b386f: **sin pubspec.yaml, .dart ni proyecto Android/iOS**. Get-Command flutter,adb,emulator no encontró ejecutables en PATH de esta sesión; esto no prueba que no haya un SDK fuera de PATH. No se ejecutó flutter doctor, compilación, emulador ni prueba Android. No se instaló software ni se creó un proyecto.
+
+Para poder probar RF-03/DA01 en Android, después de responder las decisiones:
+
+1. Preparar Flutter SDK en PATH, Android SDK/herramientas y un emulador o dispositivo; validar toolchain/dispositivo. La aceptación de licencias corresponde a quien configure ese entorno. [Configuración oficial Android](https://docs.flutter.dev/platform-integration/android/setup).
+2. Crear el cliente Flutter y desarrollar captura/SQLite/outbox, autenticación segura y sincronizador, junto con el contrato/recibo transaccional backend. La API online actual no resuelve por sí sola pérdida de respuesta tras reinicio.
+3. Crear pruebas Dart/widget y de integración en Android. [Guía oficial de integración](https://docs.flutter.dev/testing/integration-tests). Reutilizar en backend las pruebas de ámbito/idempotencia/rollback, ampliándolas al nuevo contrato.
+4. Demostrar modo avión, guardado local, cierre forzado/reinicio, recuperación de red y respuesta perdida; contrastar IDs y conteos en PostgreSQL. Probar también rechazo por revocación/conflicto y cola aislada al cambiar cuenta, sin duplicados ni pérdida.
+
+Comandos de comprobación **previstos, no ejecutados**, una vez exista el proyecto/SDK y dispositivo:
+
+~~~powershell
+flutter doctor -v
+flutter devices
+# Desde el proyecto Flutter que se decida crear:
+flutter pub get
+flutter analyze
+flutter test
+flutter test integration_test/offline_sync_test.dart -d <android-id>
+~~~
+
+El último archivo es un nombre de prueba propuesto y aún no existe. No se atribuye a Android la ejecución E2E Chromium actual. Registrar versión de app/SHA, Android/dispositivo, dataset, pasos y resultados cuando se ejecute. No sustituir la app por web offline ni afirmar cumplimiento RF-03/DA01 por haber escrito esta especificación.

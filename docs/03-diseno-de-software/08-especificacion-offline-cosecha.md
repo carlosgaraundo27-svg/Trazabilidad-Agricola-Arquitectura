@@ -22,6 +22,8 @@ La guía oficial Flutter recomienda repositorios que coordinan servicio local/re
 
 ## Decisiones pendientes — opciones y recomendación
 
+Resumen anterior: los valores y condiciones quedan precisados por la sección final «Propuesta concreta para aprobar O1–O10». Para decidir usar esa sección; ninguna recomendación está adoptada.
+
 | ID | A (recomendada) | B | C / ejemplo y consecuencia |
 | --- | --- | --- | --- |
 | O1 Cliente y plataforma | Mantener Flutter, empezar Android y contrato reutilizable; iOS diferido | Flutter Android+iOS desde inicio, más infraestructura y pruebas | PWA/web offline: requiere aprobación expresa de sustitución y ADR. Ej.: demostrar 3 capturas tras reiniciar Android; un navegador responsive no acredita esa demo |
@@ -31,11 +33,11 @@ La guía oficial Flutter recomienda repositorios que coordinan servicio local/re
 | O5 Identidad/asignaciones offline | Primera sesión online y descarga de parcelas; permitir captura local con perfil conocido y desbloqueo del dispositivo, avisando que no es permiso servidor | Exigir sesión aún no vencida para guardar; más restrictivo en jornadas sin red | Definir retención local/validez del catálogo antes de implementar. Recomendación inicial: mostrar fecha de descarga y advertir catálogo vencido, nunca borrar cola ni inferir autorización vigente. Revocado al volver: bloquear sincronización |
 | O6 Sesión móvil | Reutilizar sesión cookie + CSRF en jar nativo persistido de forma segura; reautenticación al vencer (sin contraseña guardada) | Nuevo flujo token/refresh por dispositivo con revocación y almacenamiento seguro, requiere ADR/endpoints propios | A reduce cambio de backend; probar HTTPS, cookie, CSRF, logout y expiración real, sin abrir CORS ni desactivar Origin |
 | O7 Conflictos/correcciones | Captura editable solo en draft; confirmar congela cuerpo/ID; conflictos se muestran y resuelven manualmente | Editar lo pendiente solo si nunca se intentó; exige control de estado adicional | Nunca last-write-wins para cantidad/origen. Una respuesta perdida impide clonar automáticamente con ID nuevo |
-| O8 Reintentos y tamaño | Un registro por petición, secuencial; backoff 1/2/4/8/16/30 s con jitter, respeta Retry-After; botón reintentar | Batch con resultados por elemento y transacciones independientes; más contrato | A: 25.500 y 17.125 son dos altas independientes, sin transacción global ficticia. Tras 5 fallos automáticos pausar y mostrar acción; no borrar registro |
+| O8 Reintentos y tamaño | Un registro por petición, secuencial; backoff 2/4/8/16/30 s con jitter, respeta Retry-After; botón reintentar | Batch con resultados por elemento y transacciones independientes; más contrato | A: 25.500 y 17.125 son dos altas independientes, sin transacción global ficticia. Tras cinco reintentos automáticos fallidos (seis intentos por ciclo) pausar y mostrar acción; no borrar registro |
 | O9 Datos locales/logout | Espacios por organización/actor; conservar pendientes bloqueados y exigir el mismo usuario al volver; borrado solo explícito con advertencia de pérdida local | Borrar al salir, requiere decisión y confirmación que identifica pendientes no enviados | No enviar cola de A como usuario B. Al cambiar cuenta, ocultar su detalle; DB privada y bloqueo SO no equivalen a cifrado completo |
 | O10 Catálogo/límites de jornada | Parcelas asignadas descargadas online; límites de cantidad/unidades iguales al contrato actual; fecha capturada y recibida separadas | Permitir nuevas parcelas offline o futuras tolerancias de reloj, requiere reglas adicionales | Recomendación: no inventar ID de parcela ni corregir reloj silenciosamente; futuro según servidor→validación, conservar dato para resolución |
 
-O5/O9 requieren concretar retención y sensibilidad del dispositivo para el contexto académico antes de escribir código; no se fija un plazo implícito. Recomendación transversal: no admitir primer inicio completamente desconectado sin identidad/catálogo conocido.
+La propuesta concreta al final fija para aprobación una ventana de captura O5 de 24 h, separada de la retención O9 sin autoexpiración de pendientes. Esos valores no están adoptados ni implementados. Recomendación transversal: no admitir primer inicio completamente desconectado sin identidad/catálogo conocido.
 
 ## Persistencia local propuesta
 
@@ -148,6 +150,8 @@ Comandos **previstos**, condicionados a crear el proyecto/decidir dependencias: 
 Responder O1–O10 o indicar cambios concretos. Recomendación: Flutter Android + SQLite, identidad local estable mapeada al UUID servidor, sync secuencial en primer plano, sesión segura vigente al sincronizar y resolución manual sin sobreescritura. Definir retención/catálogo/logout antes de implementar. No se sustituyen tecnologías, crean migraciones/endpoints ni reglas offline hasta esa respuesta.
 ## Revisión de decisiones O1–O10 — 2026-11-17
 
+Cuadro de dependencia inicial; la propuesta concreta posterior lo precisa y sustituye cualquier plazo/contador anterior.
+
 Siguen **sin adoptar ni implementar**. La columna de dependencia indica qué se puede reutilizar y qué falta; no convierte una recomendación en autorización.
 
 | ID / pregunta para decidir | Recomendación | Consecuencia | Dependencia con lo implementado |
@@ -187,3 +191,95 @@ flutter test integration_test/offline_sync_test.dart -d <android-id>
 ~~~
 
 El último archivo es un nombre de prueba propuesto y aún no existe. No se atribuye a Android la ejecución E2E Chromium actual. Registrar versión de app/SHA, Android/dispositivo, dataset, pasos y resultados cuando se ejecute. No sustituir la app por web offline ni afirmar cumplimiento RF-03/DA01 por haber escrito esta especificación.
+## Propuesta concreta para aprobar O1–O10 — 2026-11-17
+
+**Estado: propuesta académica pendiente de aprobación; nada implementado.** Esta sección concreta y actualiza las recomendaciones anteriores. Los plazos/reintentos son opciones del prototipo, no requisitos docentes o agrícolas. Se recomienda aprobar el paquete A siguiente, con las salvedades O5/O6/O7 descritas.
+
+Supuestos: datos ficticios, dispositivo Android de prueba con bloqueo del SO y sin root, primera preparación online; API propia HTTPS, actor/organización fijos por perfil. No se pretende administrar permisos remotamente mientras el dispositivo está desconectado. No hay Flutter/SQLite/outbox/adaptador nativo/endpoint sync en el repositorio actual.
+
+| Decisión | Opción A recomendada para aprobar | Alternativa y consecuencia |
+| --- | --- | --- |
+| O1 Cliente | Flutter Android primero; conservar web React operativa; iOS diferido | Android+iOS aumenta preparación/pruebas; PWA requiere sustitución expresa y ADR, no se adopta implícitamente |
+| O2 Persistencia | SQLite privada de app: captura + outbox en una transacción; IDs y cuerpo congelados al confirmar; credenciales fuera de SQLite en almacenamiento seguro nativo | Otra DB exige probar transacciones/migraciones/reinicio equivalentes. No usar memoria/preferencias como cola |
+| O3 Identidad | UUID local desde el primer guardado; clave efectiva organización/captureId y dueño actor inmutable; mapping a UUID servidor | UUID final elegido por cliente exige otra evolución de identidad. No renumerar históricos |
+| O4 Ejecución | Sync manual y al abrir/recuperar app; un worker y una petición a la vez, solo en primer plano | Segundo plano necesita política Android/batería y pruebas adicionales. No se promete envío con app cerrada |
+| O5 Habilitación local | 24 h desde última validación online exitosa de identidad + catálogo; solo los campos enumerados abajo; bloquear nuevas confirmaciones al vencer o perder continuidad del reloj | Exigir sesión servidor aún vigente limita a 8 h; permitir nuevas capturas tras reiniciar dispositivo sin red requiere otra política de tiempo menos estricta, explícita |
+| O6 Sesión | Conservar cookie de sesión de 8 h y CSRF existentes mediante jar nativo explícito/seguro, sin refresh token ni guardar contraseña; prueba NA-01–08 antes de integrar móvil | Token/refresh es otro diseño de autenticación y necesita ADR/endpoints y revisión propios |
+| O7 Contenido/reconciliación | Editar solo draft; al confirmar, ID y cuerpo inmutables. Repetir la misma operación para reconciliar; ningún sustituto tras un intento en el primer incremento | Sustituir una captura exige cierre/tombstone transaccional del ID original en servidor y contrato de corrección; se difiere |
+| O8 Reintentos | Un envío inicial + hasta cinco reintentos automáticos a 2/4/8/16/30 s, jitter 0–20 %, respetando Retry-After; después pausa visible | Batch/segundo plano más complejo. Un reintento manual reinicia el ciclo de espera, no el ID/cuerpo ni el historial de intentos |
+| O9 Cuentas y retención | Espacio SQLite separado por organización/actor; logout bloquea el espacio y borra credenciales, conserva pendientes sin vencimiento automático; reabrir tras login online del mismo propietario | Borrar al salir puede perder hechos no enviados; no se recomienda. Cifrado completo de DB requiere seleccionar/verificar implementación antes de afirmar esa garantía |
+| O10 Catálogo/datos | Solo parcelas descargadas asignadas, kg/unidad y precisión actual; capturadoEn y recibidoEn separados; no corregir reloj ni convertir cantidades | Nuevas parcelas/unidades/tolerancias offline requieren otras reglas. El servidor valida sus datos y permisos vigentes |
+
+### O5 — datos, 24 horas y revocación
+
+Datos capturables: parcela UUID descargada, fecha/hora de cosecha con zona, cantidad decimal positiva como texto y unidad kg o unidad. El cliente añade captureId, schemaVersion, capturedAtDevice y dueño local (organización/actor conocidos). Los IDs de dueño no se aceptan como identidad enviada por el cliente al servidor. No se capturan contactos, finanzas, credenciales, notas privadas libres, transporte, Calidad ni inventario. No se crean parcelas/productores nuevos offline.
+
+La ventana de **24 h habilita confirmar nuevas capturas locales**, no autoriza escrituras remotas ni prueba autorización en la fecha de cosecha. Se inicia después de autenticar online y terminar la descarga válida de parcelas asignadas. Solo un nuevo ciclo online completo la renueva; guardar, reintentar o reabrir app no la prolonga. La sesión servidor sigue caducando a las 8 h: entre las horas 8 y 24 puede guardarse localmente si sigue vigente la ventana, pero sincronizar requiere una nueva sesión válida.
+
+Propuesta conservadora de tiempo: registrar tiempo servidor de referencia, contador monotónico Android elapsedRealtime y marcador fiable del mismo arranque. elapsedRealtime incluye suspensión; no usar Stopwatch de proceso ni uptimeMillis para prolongar la ventana al dormir. [Referencia Android](https://developer.android.com/reference/android/os/SystemClock). Reabrir la app conserva el contador/deadline si se acredita el mismo arranque. Si el dispositivo se reinicia, el marcador no es fiable o no puede verificarse continuidad, exigir validación online **antes de confirmar nuevas capturas**; no inventar tiempo transcurrido con el reloj de pared. Cambiar la fecha del SO no renueva derechos.
+
+**Límite que requiere aprobación expresa de O5:** tras reiniciar el teléfono sin red, se conservan y pueden consultarse los registros previos del perfil activo desbloqueado, pero no se confirman capturas nuevas hasta revalidar online. La persistencia tras reinicio sí debe probarse; esta política no demuestra toda la disponibilidad offline deseable para campo. Alternativa: permitir captura tras reboot con hora local y marca “tiempo no verificado”; esa alternativa aumenta incertidumbre y no se adopta sin respuesta.
+
+Al vencer la ventana, conservar capturas/cola; no borrar ni mutar cuerpo, no cancelar envíos inciertos. El perfil activo puede leer lo propio con bloqueo del dispositivo; crear/editar/confirmar nuevas capturas queda bloqueado hasta revalidación. Logout/cambio de cuenta aplica además el bloqueo de O9.
+
+Una revocación remota no puede conocerse instantáneamente sin conexión. Durante esa desconexión podría haber capturas locales dentro de la ventana; no se afirma que estén autorizadas en servidor. Al sincronizar se revalidan usuario activo, sesión, permiso y asignación actual antes de consultar replay/crear hechos:
+- 403/404 de ámbito: bloquear esa captura y deshabilitar localmente la parcela afectada hasta refresco autorizado, sin revelar datos ajenos ni eliminarla.
+- 401: suspender sync y requerir login del mismo actor; una respuesta 401 recibida también suspende nuevas confirmaciones locales hasta revalidación, sin interpretar su causa como prueba específica de revocación.
+- Permiso revocado incluso tras un intento aceptado con respuesta perdida: no saltarse la autorización para recuperar el recibo; conservar uncertain/forbidden y escalar, sin clonar.
+- Permiso restaurado: volver a intentar con idénticos ID/cuerpo bajo el mismo actor. Nadie recibe permiso por la antigüedad de la captura.
+
+### O6 — adaptador nativo de cookie/CSRF y sesión de 8 h
+
+Contrato actual comprobado en server/http.js y access/application.js: POST /api/v1/auth/login devuelve usuario y csrfToken, y Set-Cookie session; cookie HttpOnly, SameSite=Strict, Path=/api/v1, Max-Age=8 h, Secure en producción. GET /api/v1/auth/me exige sesión y devuelve identidad/CSRF; mutaciones posteriores exigen X-CSRF-Token. Logout elimina sesión servidor. No existe refresh token ni renovación deslizante por llamar me.
+
+Adaptador propuesto, sin implementarlo:
+1. API_BASE_URL HTTPS fija por entorno, host permitido único; evitar URLs arbitrarias/QR como destinos de sesión. Usar cliente HTTP nativo tras interfaz, por ejemplo package:http/IOClient con jar explícito. No asumir que una instancia HTTP o el navegador embebido persisten correctamente las cookies. [API Dart](https://api.dart.dev/dart-io/HttpClient-class.html).
+2. Procesar Set-Cookie con parser probado; respetar host-only/dominio, path, Secure y caducidad. Credencial persistida de forma segura con protección Android Keystore, nunca contraseña, preferencias simples, SQLite de negocio, logs o URLs. Keystore protege claves; no se atribuye automáticamente cifrado completo de la DB. [Android Keystore](https://developer.android.com/privacy-and-security/keystore).
+3. Antes de sync y después de reabrir con red, recuperar sesión desde almacén seguro y ejecutar me. Validar que actor/organización coinciden con dueño de la cola. CSRF solo en memoria, recuperado por login/me; enviar Cookie + X-CSRF-Token en cada mutación, y Origin igual al APP_ORIGIN configurado. El backend hoy tolera ausencia de Origin, pero el adaptador propuesto lo enviará explícitamente. No tratar Origin como autorización ni depender de SameSite del navegador en Android.
+4. No seguir redirecciones autenticadas hacia otro origen ni enviar cookie/CSRF fuera de API_BASE_URL, fuera de Path o por HTTP. Rechazar TLS inválido; no instalar callbacks que acepten todos los certificados ni desactivar Origin/CSRF/CORS. La prueba requiere HTTPS válido del entorno de pruebas. [Comunicaciones Android](https://developer.android.com/privacy-and-security/risks/cleartext-communications).
+5. Al cumplir 8 h, o recibir 401 antes, eliminar credencial local inválida y pausar sync; no borrar pendientes. Reautenticar online al mismo propietario y obtener nueva cookie/CSRF. No alargar la sesión usando la ventana local O5.
+6. CSRF_REJECTED: permitir un me y un reintento con CSRF actual, misma operación/ID/cuerpo; si vuelve a fallar, bloquear y mostrar error. ORIGIN_REJECTED es error de configuración, no se corrige retirando controles. 403/404 de permisos no se resuelven reautenticando en bucle.
+
+**Prueba pequeña propuesta NA-01–08, todavía no ejecutada.** No existe cliente Flutter ni SDK/herramientas disponibles en PATH. Diseñar/ejecutar este smoke tras aprobar O6, antes de implementar toda la cola; no se presenta una prueba Node/Chromium como prueba nativa. Archivo futuro integration_test/native_session_smoke_test.dart, datos ficticios y API HTTPS aislada:
+
+| Caso | Acción | Resultado esperado |
+| --- | --- | --- |
+| NA-01 | Login nativo y me con cookie recuperada | Mismo actor/org; flags de cookie y CSRF válidos; ningún secreto registrado |
+| NA-02 | POST logout con CSRF ausente/erróneo; luego me | 403 y sesión sigue activa; demuestra que no se desactiva CSRF para Android |
+| NA-03 | Cerrar proceso, reabrir antes de expirar, restaurar jar y llamar me | Mismo actor/org, CSRF recuperado; no usa una contraseña persistida |
+| NA-04 | Forzar expiración solo mediante fixture en DB desechable del servidor; me y nuevo login | 401; cola simulada preservada; nueva sesión del mismo actor, sin refresco ficticio ni esperar 8 h |
+| NA-05 | Logout correcto con CSRF; volver a usar la cookie anterior contra me | 204 y después 401; almacén local sin credencial |
+| NA-06 | Redirección/URL ajena, /q y /api/public/v1, o intento HTTP | Cookie/CSRF no salen del origen/path permitido; HTTP/TLS inválido rechazados |
+| NA-07 | Login B con recibos/cola simulada A y callback tardío A | No monta ni envía cola A con cookie B; callback se liga a A, sin contaminar B |
+| NA-08 | Error de red tras una petición y expiración/reinicio | Estado incierto retenido; no cambia la identidad de la operación al obtener sesión nueva |
+
+Fixture de expiración solo para test, sin reducir TTL/configuración productiva ni modificar reloj del SO. La cola de NA se simula; el test no acredita todavía persistencia/outbox offline completa. Comando previsto, no ejecutado: flutter test integration_test/native_session_smoke_test.dart -d <android-id>. Debe registrarse versión/SHA, dispositivo/Android, resultados y ausencia de fuga de credenciales; si falla, O6 no está técnicamente validada para integrar móvil.
+
+### O7/O8 — reconciliación y reintentos sin duplicar
+
+1. Guardar draft con UUID estable. Confirmar normaliza y congela schemaVersion/parcelId/harvestedAt/quantity/unit, dueño y captureId dentro de la transacción captura/outbox. Encabezados de sesión/CSRF cambian al reautenticar; **no forman parte del contenido de negocio** ni cambian su hash.
+2. Primer envío usa PUT /api/v1/sync/pre-lots/{captureId} e Idempotency-Key=captureId. Endpoint **propuesto, no existente**. Contrato servidor: permiso actual → bloqueo por identidad → recibo; mismo cuerpo canónico produce 200 con mismos IDs/acceptedAt, primera aceptación 201, distinto cuerpo 409. Alta cosecha/pre-lote, recibo y auditoría comparten transacción; si existe evento crítico también participa, sin éxito parcial.
+3. Corte/timeout/5xx/ACK malformado o proceso muerto antes de persistir ACK → uncertain. Servidor pudo confirmar. No declarar “no guardado”, borrar intención, regenerar UUID ni editar payload. Al reiniciar, sending sin ACK se recupera como uncertain.
+4. Con red/sesión válida del mismo dueño, repetir **el mismo PUT** para consultar/reconciliar por idempotencia, sin necesitar un GET nuevo que confunda ausencia con una operación aún en vuelo. Validar captureId, payload canónico e IDs de la respuesta antes de commit local synced + mapping.
+5. Dos requests concurrentes del mismo ID/cuerpo deben serializarse en DB y obtener un único resultado; la exclusión local es ayuda, no la garantía de servidor. Prueba de pérdida de respuesta: servidor confirma, cliente no recibe, reinicia y reenvía; contar exactamente una cosecha/pre-lote/recibo/audit.
+6. Mismo ID con contenido distinto → conflict, conservar original y respuesta mínima autorizada; no last-write-wins. Un 400/401/403 de un intento posterior no prueba que el anterior nunca se aceptó. En este incremento no se permite sustituir una operación ya intentada; resolución manual significa revisar/escalar, no crear otra captura equivalente con ID nuevo. Un contrato futuro de corrección/cierre sería otra decisión.
+7. Planificar cinco reintentos automáticos tras el envío inicial: 2/4/8/16/30 s más jitter 0–20 %. Son **seis intentos como máximo por ciclo**. Si Retry-After es mayor, esperar ese plazo sin truncarlo a 30 s. Después del quinto reintento fallido: pausa visible y botón de reintento, nunca pérdida de la fila.
+8. Persistir estado, contador total, ciclo, nextAttemptAt y cuerpo. Reiniciar app no reinicia el contador ni el ID. Un reintento manual puede abrir otro ciclo de espera con el mismo ID/cuerpo; conservar historial. Tras reboot o tiempo incierto, no acelerar un Retry-After; esperar/revalidar online y reconciliar.
+9. 401→auth_required; 403/404→forbidden y pausa; 409→conflict sin bucle; 400/422→validation_error conservado; 429→espera; timeout/5xx→uncertain/retry_wait. No hay reemplazo automático de capturas bloqueadas. Las peticiones se mantienen de una en una en primer plano.
+
+Ejemplo ficticio: ID X, 37.125 kg, respuesta perdida. Reenviar X+37.125 obtiene el preLotId original. X+38.000 da 409 y no altera 37.125. Y+37.125 no es “reintento”; el cliente tiene prohibido generarlo para resolver incertidumbre de X.
+
+### O9 — aislamiento, logout y cambio de cuenta
+
+- Montar un espacio SQLite privado por (organizationId, actorId), con owner también en filas/outbox/recibos; ninguna consulta, contador visible, worker o caché UI reutiliza el espacio de A al entrar B. La coincidencia del owner se verifica con me/login antes de sync.
+- Al salir: bloquear primero el perfil local y detener nuevos envíos; invalidar la generación de sesión del worker. Si hay red, intentar logout con cookie/CSRF; limpiar jar persistido y CSRF de memoria. Si no hay red, el cierre es local: no se afirma revocación inmediata en servidor; su sesión caduca a las 8 h. No persistir un token solo para enviarlo más tarde.
+- Una petición en vuelo puede haber llegado al servidor. Cancelarla localmente no revierte commit: su intención queda uncertain y ligada a A. Un callback tardío solo puede persistir su ACK en el espacio A bajo lock/transacción; nunca actualizar B ni disparar nuevos envíos. Si el almacén A ya está cerrado, conservar uncertain y reconciliar al volver A.
+- Cerrar sesión/cambiar cuenta **no borra** capturas pendientes. No hay vencimiento automático de la cola; caducar O5/O6 no caduca los hechos guardados. Un borrado explícito requiere al mismo propietario autenticado y advertencia con cantidad de pendientes; enviar/uncertain no se muestra como cancelación de hechos remotos.
+- Después de logout, ni leer ni enviar el espacio A se habilita solo por conocer un ID o desbloquear el teléfono: A debe volver a autenticarse online. B no recibe permiso aunque use el mismo dispositivo. El perfil todavía activo sin logout puede leer sus propios datos tras reiniciar/desbloquear el dispositivo, aunque su ventana de nuevas capturas haya vencido.
+- Datos ficticios y mínimos; SQLite privada no se describe como cifrado completo. Credenciales se protegen en almacén nativo/Keystore; si se requiere cifrar toda la DB o usar datos personales reales, seleccionar y probar ese mecanismo antes de ampliar el alcance. No se afirma protección frente a root/modificación de la app.
+
+### Aceptación propuesta y respuesta requerida
+
+Añadir a OF-01–16: límite 24 h exacto con suspensión/reinicio de app; reboot sin red conserva filas pero bloquea nueva confirmación; revocación durante desconexión y antes de replay; seis intentos/ciclo y Retry-After; logout offline sin falsa revocación remota; A→B con ACK tardío; NA-01–08 reales en Android. Ninguna de estas pruebas se declara ejecutada.
+
+Respuesta para adoptar: aprobar O1=A … O10=A **incluyendo explícitamente** O5 (24 h y bloqueo de nuevas capturas tras reboot sin validación online), O6 (smoke nativo como condición antes de integración), O7 (sin sustitución tras intento) y O9 (retención sin autoexpiración, login online del propietario tras logout), o indicar qué alternativa cambiar. La aceptación sigue siendo académica; no hay aprobación docente/agrícola inferida. La falta de parche de picomatch continúa como bloqueo separado del PR #7.

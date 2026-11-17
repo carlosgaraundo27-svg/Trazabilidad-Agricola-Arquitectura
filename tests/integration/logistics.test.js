@@ -255,11 +255,28 @@ test("Inventario y despacho HTTP/PostgreSQL conservan masa y autorización", asy
       );
       assert.equal(duplicate.status, 409, JSON.stringify(duplicate.body));
       assert.equal(duplicate.body.error.code, "GUIDE_REFERENCE_CONFLICT");
+      const inventoryBeforeCancel = await entryNow(first.entry.id);
+      const facts = async () =>
+        (
+          await db.query(
+            "SELECT (SELECT count(*) FROM inventory.movements WHERE entry_id=$1)::int AS movements,(SELECT count(*) FROM inventory.events WHERE shipment_id=$2)::int AS events,(SELECT count(*) FROM access.audit WHERE resource_id=$2)::int AS audit,(SELECT count(*) FROM inventory.requests WHERE response->>'id'=$2::text)::int AS requests",
+            [first.entry.id, first.shipment.id],
+          )
+        ).rows[0];
+      const factsBeforeCancel = await facts();
       r = await command(`/shipments/${first.shipment.id}/cancellation`, {
         ...versionInput(r.body),
         reason: "Cancelación previa",
       });
       assert.equal(r.status, 201);
+      assert.equal(r.body.state, "cancelled");
+      assert.deepEqual(await entryNow(first.entry.id), inventoryBeforeCancel);
+      assert.deepEqual(await facts(), {
+        movements: factsBeforeCancel.movements,
+        events: factsBeforeCancel.events + 1,
+        audit: factsBeforeCancel.audit + 1,
+        requests: factsBeforeCancel.requests + 1,
+      });
       const old = await command(
         `/shipments/${second.shipment.id}/transport`,
         {

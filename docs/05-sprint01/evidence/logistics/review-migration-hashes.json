@@ -1,0 +1,14 @@
+{
+  "base": "40679b4ad2b686292e6576426a1f7128de517477",
+  "format": "Hash de bytes Git canónicos, independiente de CRLF del worktree",
+  "files": {
+    "migrations/006_inventory.up.sql": {
+      "gitBlob": "2d26e246dd9da738b10b20f10e39adbce31750ee",
+      "sha256": "6a3bf10d0701ae639724c4fc0f40d7a48222c5bb34bba91836fc20174123c2a9"
+    },
+    "migrations/007_shipments.up.sql": {
+      "gitBlob": "deaa65e8fce7eff41c7d97d1fa309e9afe2bb506",
+      "sha256": "6f295834453f3c80a66ad885047155c91c047d501323849a3296e45443fe69a6"
+    }
+  }
+}

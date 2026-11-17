@@ -1,0 +1,49 @@
+{
+  "sha": "40679b4ad2b686292e6576426a1f7128de517477",
+  "checks": [
+    {
+      "id": 133785732964,
+      "name": "SonarCloud Code Analysis",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/runs/133785732964",
+      "output": {
+        "title": "Quality Gate passed",
+        "summary": "Issues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed.svg '') [20 New issues](https://sonarcloud.io/project/issues?id=carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura&pullRequest=7&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted.svg '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura&pullRequest=7&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed.svg '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura&pullRequest=7&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed.svg '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura&pullRequest=7&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed.svg '') [0.8% Duplication on New Code](https://sonarcloud.io/component_measures?id=carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura&pullRequest=7&metric=new_duplicated_lines_density&view=list)  \n  \n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura&pullRequest=7)\n\n",
+        "text": null,
+        "annotations_count": 20,
+        "annotations_url": "https://api.github.com/repos/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/check-runs/133785732964/annotations"
+      }
+    },
+    {
+      "id": 133785386710,
+      "name": "verify",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/44007229346/job/133785386710",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 2,
+        "annotations_url": "https://api.github.com/repos/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/check-runs/133785386710/annotations"
+      }
+    },
+    {
+      "id": 133785386380,
+      "name": "compose",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/44007229346/job/133785386380",
+      "output": {
+        "title": null,
+        "summary": null,
+        "text": null,
+        "annotations_count": 3,
+        "annotations_url": "https://api.github.com/repos/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/check-runs/133785386380/annotations"
+      }
+    }
+  ],
+  "prState": "open",
+  "merged": false
+}

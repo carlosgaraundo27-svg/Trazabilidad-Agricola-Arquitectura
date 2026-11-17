@@ -87,6 +87,15 @@ test("Logística revierte operación, movimiento, evento, auditoría y clave ant
         crypto.randomUUID(),
       )
     ).item;
+    const creationTime = new Date(shipment.createdAt).getTime(),
+      clockDeadline = Date.now() + 1000;
+    while (Date.now() < creationTime) {
+      assert.ok(
+        Date.now() < clockDeadline,
+        "El reloj del fixture debe alcanzar la creación registrada",
+      );
+      await new Promise((resolve) => setTimeout(resolve, 1));
+    }
     if (stage === "reserved" || stage === "in_transit")
       shipment = (
         await s.logistics.reserve(

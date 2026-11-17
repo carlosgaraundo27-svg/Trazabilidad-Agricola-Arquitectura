@@ -1,0 +1,218 @@
+{
+  "reviewedLocalHead": "aba1497089e72b15994d73e070b22c2e4a5adf4f",
+  "reviewedRemoteHead": "4453ec7b6a8fcdb0cca9d3b8fba613fb00b5f8ea",
+  "checks": [
+    {
+      "id": 133774873063,
+      "name": "public-evidence",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/44003897945/job/133774873063"
+    },
+    {
+      "id": 133774633329,
+      "name": "SonarCloud Code Analysis",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/runs/133774633329"
+    },
+    {
+      "id": 133774401106,
+      "name": "compose",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/44003897977/job/133774401106"
+    },
+    {
+      "id": 133774400749,
+      "name": "verify",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/44003897977/job/133774400749"
+    }
+  ],
+  "evidenceJob": 133774873063,
+  "total": 20,
+  "issues": [
+    {
+      "key": "AaHmZCF1eKABQuiq77Ev",
+      "rule": "javascript:S9382",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:scripts/test-compose.js",
+      "line": 63,
+      "message": "Unexpected `await` inside a loop."
+    },
+    {
+      "key": "AaHmZCEveKABQuiq77EN",
+      "rule": "plsql:S1192",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:migrations/006_inventory.up.sql",
+      "line": 10,
+      "message": "Define a constant instead of duplicating this literal 4 times."
+    },
+    {
+      "key": "AaHmZCEveKABQuiq77ER",
+      "rule": "plsql:S1192",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:migrations/006_inventory.up.sql",
+      "line": 10,
+      "message": "Define a constant instead of duplicating this literal 4 times."
+    },
+    {
+      "key": "AaHmZCEveKABQuiq77EJ",
+      "rule": "plsql:VarcharUsageCheck",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:migrations/006_inventory.up.sql",
+      "line": 11,
+      "message": "Use VARCHAR2 instead of VARCHAR."
+    },
+    {
+      "key": "AaHmZCEveKABQuiq77EK",
+      "rule": "plsql:VarcharUsageCheck",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:migrations/006_inventory.up.sql",
+      "line": 11,
+      "message": "Use VARCHAR2 instead of VARCHAR."
+    },
+    {
+      "key": "AaHmZCEveKABQuiq77EL",
+      "rule": "plsql:VarcharUsageCheck",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:migrations/006_inventory.up.sql",
+      "line": 13,
+      "message": "Use VARCHAR2 instead of VARCHAR."
+    },
+    {
+      "key": "AaHmZCEveKABQuiq77EM",
+      "rule": "plsql:S1192",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:migrations/006_inventory.up.sql",
+      "line": 26,
+      "message": "Define a constant instead of duplicating this literal 3 times."
+    },
+    {
+      "key": "AaHmZCEveKABQuiq77EO",
+      "rule": "plsql:S1192",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:migrations/006_inventory.up.sql",
+      "line": 26,
+      "message": "Define a constant instead of duplicating this literal 5 times."
+    },
+    {
+      "key": "AaHmZCCgeKABQuiq77D_",
+      "rule": "plsql:S1192",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:migrations/007_shipments.up.sql",
+      "line": 6,
+      "message": "Define a constant instead of duplicating this literal 4 times."
+    },
+    {
+      "key": "AaHmZCCgeKABQuiq77EB",
+      "rule": "plsql:S1192",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:migrations/007_shipments.up.sql",
+      "line": 6,
+      "message": "Define a constant instead of duplicating this literal 6 times."
+    },
+    {
+      "key": "AaHmZCCgeKABQuiq77EE",
+      "rule": "plsql:S1192",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:migrations/007_shipments.up.sql",
+      "line": 6,
+      "message": "Define a constant instead of duplicating this literal 5 times."
+    },
+    {
+      "key": "AaHmZCCgeKABQuiq77EF",
+      "rule": "plsql:S1192",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:migrations/007_shipments.up.sql",
+      "line": 6,
+      "message": "Define a constant instead of duplicating this literal 3 times."
+    },
+    {
+      "key": "AaHmZCCgeKABQuiq77EI",
+      "rule": "plsql:S1192",
+      "type": "CODE_SMELL",
+      "severity": "CRITICAL",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:migrations/007_shipments.up.sql",
+      "line": 6,
+      "message": "Define a constant instead of duplicating this literal 4 times."
+    },
+    {
+      "key": "AaHmZCCgeKABQuiq77D8",
+      "rule": "plsql:VarcharUsageCheck",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:migrations/007_shipments.up.sql",
+      "line": 25,
+      "message": "Use VARCHAR2 instead of VARCHAR."
+    },
+    {
+      "key": "AaHmZCCgeKABQuiq77D9",
+      "rule": "plsql:VarcharUsageCheck",
+      "type": "CODE_SMELL",
+      "severity": "MAJOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:migrations/007_shipments.up.sql",
+      "line": 82,
+      "message": "Use VARCHAR2 instead of VARCHAR."
+    },
+    {
+      "key": "AaHmZCF4eKABQuiq77E2",
+      "rule": "javascript:S9382",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:scripts/logistics-fixture.js",
+      "line": 28,
+      "message": "Unexpected `await` inside a loop."
+    },
+    {
+      "key": "AaHmZCF4eKABQuiq77E3",
+      "rule": "javascript:S9382",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:scripts/logistics-fixture.js",
+      "line": 40,
+      "message": "Unexpected `await` inside a loop."
+    },
+    {
+      "key": "AaHmZCF4eKABQuiq77E4",
+      "rule": "javascript:S9382",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:scripts/logistics-fixture.js",
+      "line": 54,
+      "message": "Unexpected `await` inside a loop."
+    },
+    {
+      "key": "AaHmZCF3eKABQuiq77E0",
+      "rule": "javascript:S9382",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:scripts/seed-logistics.js",
+      "line": 42,
+      "message": "Unexpected `await` inside a loop."
+    },
+    {
+      "key": "AaHmZCF3eKABQuiq77E1",
+      "rule": "javascript:S9382",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "component": "carlosgaraundo27-svg_Trazabilidad-Agricola-Arquitectura:scripts/seed-logistics.js",
+      "line": 47,
+      "message": "Unexpected `await` inside a loop."
+    }
+  ]
+}

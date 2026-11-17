@@ -107,6 +107,17 @@ test("Inventario y despacho HTTP/PostgreSQL conservan masa y autorización", asy
     });
     assert.equal(r.status, 201, JSON.stringify(r.body));
     let shipment = r.body;
+    // Start synthetic events after the DB-created instant, before arranging the race.
+    // Windows processes may sample wall time at different millisecond ticks.
+    const creationTime = Date.parse(shipment.createdAt),
+      clockDeadline = Date.now() + 1000;
+    while (Date.now() < creationTime) {
+      assert.ok(
+        Date.now() < clockDeadline,
+        "El reloj del fixture debe alcanzar la creación registrada",
+      );
+      await new Promise((resolve) => setTimeout(resolve, 1));
+    }
     if (stage === "reserved" || stage === "in_transit") {
       const r = await command(
         `/shipments/${shipment.id}/reservation`,
@@ -573,6 +584,136 @@ test("Inventario y despacho HTTP/PostgreSQL conservan masa y autorización", asy
         ["lotCode", "stages"],
       );
       assert.equal(JSON.stringify(after).includes("PRIVADO"), false);
+    },
+  );
+  await t.test(
+    "cada acción logística exige su concesión y no filtra otro centro",
+    async () => {
+      const f = await prepare(),
+        versions = versionInput(f.shipment),
+        ship = "/shipments/" + f.shipment.id,
+        stock = "/inventory/entries/" + f.entry.id;
+      const cases = [
+        ["inventory:read", () => call(stock, "GET", undefined, owner), 404],
+        [
+          "inventory:admit",
+          () =>
+            command("/inventory/entries", {
+              lotId: f.lot.id,
+              verifiedKg: f.lot.totalKg,
+              reference: "ACTUAL",
+              evidenceRef: "Conteo",
+            }),
+          404,
+        ],
+        [
+          "inventory:release",
+          () =>
+            command(stock + "/release", {
+              expectedVersion: f.entry.version,
+              reason: "Liberar",
+            }),
+          404,
+        ],
+        ["shipment:read", () => call(ship, "GET", undefined, owner), 404],
+        [
+          "shipment:create",
+          () => command("/shipments", { stockEntryId: f.entry.id }),
+          404,
+        ],
+        [
+          "shipment:update",
+          () =>
+            command(
+              ship + "/transport",
+              {
+                expectedVersion: f.shipment.version,
+                transport: transport(),
+                reason: "Corrección",
+              },
+              owner,
+              crypto.randomUUID(),
+              "PUT",
+            ),
+          404,
+        ],
+        [
+          "shipment:reserve",
+          () => command(ship + "/reservation", versions),
+          404,
+        ],
+        [
+          "shipment:dispatch",
+          () =>
+            command(ship + "/departure", {
+              ...versions,
+              departedAt: new Date().toISOString(),
+            }),
+          404,
+        ],
+        [
+          "shipment:deliver",
+          () =>
+            command(ship + "/delivery", {
+              ...versions,
+              receivedKg: f.shipment.quantityKg,
+              deliveredAt: new Date().toISOString(),
+              evidenceRef: "Entrega",
+            }),
+          404,
+        ],
+        [
+          "shipment:cancel",
+          () =>
+            command(ship + "/cancellation", {
+              ...versions,
+              reason: "Cancelar",
+            }),
+          404,
+        ],
+      ];
+      for (const [action, attempt, status] of cases) {
+        await db.query(
+          "DELETE FROM access.center_grants WHERE user_id=$1 AND center_id=$2 AND action=$3",
+          [logisticsIds.operator, intakeIds.center, action],
+        );
+        try {
+          const r = await attempt();
+          assert.equal(
+            r.status,
+            status,
+            action + ": " + JSON.stringify(r.body),
+          );
+        } finally {
+          await db.query(
+            "INSERT INTO access.center_grants VALUES($1,$2,$3,$4)",
+            [
+              logisticsIds.operator,
+              intakeIds.center,
+              f.lot.organizationId,
+              action,
+            ],
+          );
+        }
+      }
+      const other = await login("inventario2@example.test");
+      assert.equal((await call(ship, "GET", undefined, other)).status, 404);
+      assert.equal(
+        (
+          await call(
+            "/shipments?centerId=" + intakeIds.center,
+            "GET",
+            undefined,
+            other,
+          )
+        ).status,
+        403,
+      );
+      const current = await shipmentNow(f.shipment.id);
+      assert.equal(current.state, "draft");
+      assert.equal(current.version, f.shipment.version);
+      assert.equal(current.inventory.onHandKg, f.lot.totalKg);
+      assert.equal(current.inventory.reservedKg, "0.000");
     },
   );
   await t.test(

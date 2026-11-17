@@ -1,0 +1,52 @@
+{
+    "pr":  6,
+    "reviewedHead":  "d32e88fb330a80db24734ef1469e1ee6aba52d6c",
+    "mergeCommit":  "47d827c1ac2ae0fe3c8050279f5e0ecdcd562d05",
+    "prChecks":  [
+                     {
+                         "name":  "SonarCloud Code Analysis",
+                         "conclusion":  "success",
+                         "url":  "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/runs/133624509226",
+                         "id":  133624509226
+                     },
+                     {
+                         "name":  "compose",
+                         "conclusion":  "success",
+                         "url":  "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/43959869431/job/133624076694",
+                         "id":  133624076694
+                     },
+                     {
+                         "name":  "verify",
+                         "conclusion":  "success",
+                         "url":  "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/43959869431/job/133624076335",
+                         "id":  133624076335
+                     }
+                 ],
+    "mainChecks":  {
+                       "value":  [
+                                     {
+                                         "id":  133625976526,
+                                         "name":  "SonarCloud Code Analysis",
+                                         "status":  "completed",
+                                         "conclusion":  "success",
+                                         "url":  "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/runs/133625976526"
+                                     },
+                                     {
+                                         "id":  133625601006,
+                                         "name":  "verify",
+                                         "status":  "completed",
+                                         "conclusion":  "success",
+                                         "url":  "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/43960303931/job/133625601006"
+                                     },
+                                     {
+                                         "id":  133625600430,
+                                         "name":  "compose",
+                                         "status":  "completed",
+                                         "conclusion":  "success",
+                                         "url":  "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/43960303931/job/133625600430"
+                                     }
+                                 ],
+                       "Count":  3
+                   },
+    "note":  "SonarCloud, verify y compose de main aprobados después del merge de PR #6; sin rebajar el gate."
+}

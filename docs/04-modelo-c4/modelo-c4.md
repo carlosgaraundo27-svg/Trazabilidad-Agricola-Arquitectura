@@ -1,12 +1,12 @@
-# Modelo C4 — Acopio, Calidad y consulta pública QR académicos
+# Modelo C4 — Acopio, Calidad, QR y Logística académicos
 
-Revisión 2026-11-15. Estas vistas representan Acceso, Productores, Cosecha/pre-lotes, Acopio, Calidad manual y consolidación en Trazabilidad, con Express 5, React/Vite y PostgreSQL 18. Acopio responde a D1–D7 adoptadas por el usuario solo para prototipo académico: sin validación agrícola ni aprobación docente. [ADR-009/010](../02-arquitectura/07-decisiones-primer-recorrido.md) registra las decisiones. La [arquitectura objetivo](modelo-c4-objetivo.md) conserva las vistas anteriores de offline, pallets, ETL y demás módulos aún propuestos. QR por lote y Redis se incorporan en este incremento según ADR-013, sin mediciones de rendimiento.
+Revisión 2026-11-16. Estas vistas representan Acceso, Productores, Cosecha/pre-lotes, Acopio, Calidad manual, Trazabilidad, publicación QR y Logística, con Express 5, React/Vite y PostgreSQL 18. Las decisiones son del usuario para prototipo académico: sin validación agrícola ni aprobación docente. [ADR-009/010](../02-arquitectura/07-decisiones-primer-recorrido.md), ADR-012/013 y [ADR-014](../02-arquitectura/11-decisiones-inventario-despacho.md) conservan sus límites. La [arquitectura objetivo](modelo-c4-objetivo.md) mantiene offline, pallets, parciales, ETL y demás capacidades pendientes. Redis solo almacena DTO público; no hay mediciones de mejora de rendimiento ni caché de stock.
 
 Los identificadores S1/W1/B1/O1/S/P/H/Q/T1 mantienen continuidad con el diseño objetivo. Contenedor C4 significa aplicación o almacén lógico; no equivale a una imagen Docker. El portal W1 se ejecuta en el navegador y sus archivos compilados se sirven desde B1.
 
 ## 1. Alcance y evidencia
 
-El administrador registra productores y parcelas ficticios. El recolector consulta sus parcelas asignadas y registra una cosecha/pre-lote; organización, rol y asignación limitan las operaciones. Una cuenta sin concesiones no tiene operaciones de Acopio. El operario recibe/pesa/confirma/consolida solo en centros con concesión por acción; otra persona autorizada revisa las discrepancias. El lote se consolida pendiente de calidad; una proyección separada conserva evaluación manual y resultado. El responsable de calidad autorizado por centro captura y cierra solo con originales de todas las recepciones. No hay despacho, administración UI de usuarios/asignaciones, captura offline, logística, analítica ni liquidaciones. [Decisiones de Acopio](../02-arquitectura/08-decisiones-acopio.md).
+El administrador registra productores y parcelas ficticios. El recolector consulta sus parcelas asignadas y registra cosecha/pre-lote. Acopio recibe/pesa/confirma/consolida por concesiones de centro; otra persona revisa discrepancias. Calidad cierra manualmente solo con originales de todas las recepciones. G incorpora admisión explícita, liberación logística tras closed/accepted, reserva sin TTL, salida completa y entrega total. Calidad/QR no autorizan salida por sí solos. No hay empaque/pallets, parciales, devoluciones, administración UI de usuarios/asignaciones, offline, analítica ni liquidaciones. RF-10 parcial. [Decisiones de Acopio](../02-arquitectura/08-decisiones-acopio.md).
 
 Los diagramas describen implementación, no certifican por sí solos un despliegue. [Evidencia local, Compose y CI](../05-sprint01/cierre-primer-recorrido.md) registra qué se ejecutó realmente.
 
@@ -23,6 +23,7 @@ flowchart LR
   CALIDAD["Persona: Responsable de Calidad<br/>Mide, justifica y cierra en su centro"]
   PUBLICADOR["Persona: Responsable de publicación del centro"]
   VISITANTE["Persona: Visitante con QR del lote"]
+  LOGISTICA["Persona: Operador logístico<br/>Admite, libera, reserva, despacha y confirma entrega en su centro"]
   S1["Sistema S1: Trazabilidad académica<br/>Origen, cosecha, recepción, consolidación y calidad"]
   ADMIN -->|"Opera mediante navegador"| S1
   CAMPO -->|"Opera mediante navegador"| S1
@@ -31,6 +32,7 @@ flowchart LR
   CALIDAD -->|"Evaluación manual académica"| S1
   PUBLICADOR -->|"Aprueba campos públicos, publica y retira"| S1
   VISITANTE -->|"Consulta pública de solo lectura"| S1
+  LOGISTICA -->|"Acciones explícitas por organización y centro"| S1
 ```
 
 El productor es una entidad registrada por el administrador; este corte no implementa una cuenta de productor independiente. No hay sistemas externos ejecutables en este recorrido.
@@ -43,7 +45,7 @@ flowchart LR
   subgraph S1["Sistema S1"]
     W1["W1: Portal web<br/>React 19 / JavaScript, compilado por Vite 8<br/>Formularios y consulta de registros"]
     B1["B1: Backend monolítico modular<br/>Node 24 / Express 5 / JavaScript ESM<br/>REST, sesión y archivos estáticos"]
-    O1[("O1: PostgreSQL 18<br/>access, producers, harvest,<br/>intake, quality, traceability, publication<br/>Persistencia y transacciones")]
+    O1[("O1: PostgreSQL 18<br/>access, producers, harvest,<br/>intake, quality, traceability, publication,<br/>inventory, logistics<br/>Persistencia y transacciones")]
     R1[("R1: Redis 8<br/>Solo DTO público, TTL 300 s<br/>Caché prescindible, sin persistencia")]
   end
   USUARIO -->|"Interacción en navegador"| W1
@@ -64,7 +66,7 @@ HTTP está limitado a la demostración local; el modo de producción exige un or
 flowchart TB
   W1["W1: Portal React"]
   subgraph B1["B1: Un proceso Node / Express"]
-    E["E: Adaptador HTTP<br/>server/http.js + intake-http.js + quality-http.js + publication-http.js<br/>Validación, sesión, CSRF y rutas REST"]
+    E["E: Adaptador HTTP<br/>http.js + intake-http.js + quality-http.js<br/>publication-http.js + logistics-http.js<br/>Validación, sesión, CSRF y rutas REST"]
     ROOT["Ensamblador<br/>server/composition.js<br/>Inyecta repositorios, contratos y transacciones"]
     S["S: Acceso<br/>server/modules/access<br/>Login, ámbitos, autorización y auditoría"]
     P["P: Productores<br/>server/modules/producers<br/>Productor, parcela y contrato de origen"]
@@ -72,6 +74,7 @@ flowchart TB
     Q["Q: Acopio y Calidad<br/>server/modules/intake<br/>Recepción/originales, evaluación manual y cierre"]
     T1["T1: Trazabilidad<br/>server/modules/traceability<br/>Lotes, composición y eventos"]
     T2["T2: Publicación pública<br/>server/modules/publication<br/>Proyección aprobada, estados, lectura y guard DB"]
+    G["G: Logística e Inventario<br/>server/modules/logistics<br/>Admisión, reserva, salida y entrega completas"]
     CACHE["Puerto get/set/delete + adaptador<br/>server/adapters/public-cache.js<br/>node-redis, sin cola offline"]
     DB["Adaptador DB / unidad de trabajo<br/>server/db.js<br/>pg y conexión transaccional compartida"]
   end
@@ -88,6 +91,12 @@ flowchart TB
   ROOT -->|"Compone"| Q
   ROOT -->|"Compone"| T1
   ROOT -->|"Compone"| T2
+  ROOT -->|"Compone"| G
+  E -->|"Operaciones internas de inventario y despacho"| G
+  G -->|"requireCenter / audit, misma transacción"| S
+  G -->|"inventorySource / inventorySources"| T1
+  G -->|"eligibility: evaluación/versión/estado/resultado mínimos"| Q
+  G -->|"Repositorio propio / unitOfWork"| DB
   E -->|"Publicar, retirar y consultar DTO público"| T2
   T2 -->|"requireCenter y audit"| S
   T2 -->|"identity / identities, sin datos privados"| T1
@@ -223,3 +232,30 @@ flowchart TD
 ```
 
 Cada lectura obtiene estado/versión/hash bajo FOR SHARE en PostgreSQL antes de usar Redis. Publicación/actualización/retiro se serializan; revisión, auditoría y clave comparten transacción. Tras retirar, nuevas consultas son 404 aunque DELETE falle; DB caída implica 503, Redis caído usa DB. No hay eventos operativos públicos automáticos ni aprobación de calidad implícita. [ADR-013](../02-arquitectura/10-decisiones-publicacion-qr.md), [evidencia](../05-sprint01/evidence/qr/README.md). R1 es un almacén C4, T2 un componente del monolito, no un nuevo microservicio.
+
+## 10. C4 — Inventario, reserva, salida y entrega completos
+
+```mermaid
+flowchart TD
+  W["web/logistics: formularios y reintento de intención"]
+  E["logistics-http.js: sesión, CSRF, DTO estricto"]
+  G["logistics/application.js: comandos y unidad de trabajo"]
+  POL["domain.js + policies.js: kg exactos, elegibilidad y transiciones"]
+  T1["T1.inventorySource(s): identidad, total y composición inmutables"]
+  Q["Q.eligibility: closed/accepted sin captura privada"]
+  S["S.requireCenter / audit: permiso por acción, org y centro"]
+  REP["logistics/repository.js: bloqueos, movimientos, guías históricas y claves"]
+  O1[("O1: inventory + logistics, migraciones 006/007")]
+  W --> E
+  E --> G
+  G --> POL
+  G --> T1
+  G --> Q
+  G --> S
+  G --> REP
+  REP --> O1
+```
+
+G conserva A=H+T+E y R como subconjunto de H. Admisión única y explícita, sin backfill; reserva sin TTL; salida H→T; entrega T→E sin segundo descuento. Comando bloquea clave→lote→entrada→despacho y revalida versiones, elegibilidad y stock dentro de la transacción. Operación/movimiento/evento/guía/entrega/audit/request se confirman juntos; detalle/historia bloquean entrada compartida. FK compuestas y triggers protegen ámbito/identidad/históricos. El registro inmutable de guías conserva referencias anteriores incluso tras corrección o cancelación; alcance de unicidad académico org/centro.
+
+Sin flecha G→R1/T2: ni stock ni transporte pasan por caché/DTO público. Sin empaque/pallets, parciales, devoluciones ni edición ordinaria posterior a salida; RF-10 parcial. [Especificación](../03-diseno-de-software/07-especificacion-inventario-despacho-entrega.md), [evidencias](../05-sprint01/inventario-implementacion.md). Estas vistas no prueban CD, capacidad bajo carga ni aprobación docente/agrícola.

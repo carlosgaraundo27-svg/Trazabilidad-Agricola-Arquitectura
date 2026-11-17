@@ -188,6 +188,9 @@ test("Inventario: recorrido completo, reserva con respuesta perdida y entrega si
   await page.getByLabel("Referencia de guía").fill("DEMO-" + candidate.id);
   await page.getByLabel("Vehículo", { exact: true }).fill("Unidad ficticia");
   await page.getByLabel("Placa", { exact: true }).fill("DEMO-001");
+  await page.getByLabel("Placa", { exact: true }).focus();
+  await page.keyboard.press("Tab");
+  await expect(page.getByLabel("Chofer", { exact: true })).toBeFocused();
   await page
     .getByLabel("Chofer", { exact: true })
     .fill("Persona ficticia privada");
@@ -242,6 +245,11 @@ test("Inventario: recorrido completo, reserva con respuesta perdida y entrega si
         () => document.documentElement.scrollWidth <= innerWidth,
       ),
     ).toBe(true);
+    if (width === 320)
+      await page.screenshot({
+        path: "test-results/inventory-delivery-mobile.png",
+        fullPage: true,
+      });
   }
   await page.screenshot({
     path: "test-results/inventory-delivery.png",

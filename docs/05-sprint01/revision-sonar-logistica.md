@@ -33,7 +33,11 @@ Estos nueve casos se documentan como **avisos de mantenibilidad revisados que pu
 
 ## Otros avisos conservados y límites
 
+El análisis remoto de **4453ec7b6a8fcdb0cca9d3b8fba613fb00b5f8ea** confirmó Quality Gate aprobado, 20 avisos: 9 S1192, 5 VarcharUsageCheck y 6 S9382, sin BUG ni VULNERABILITY y con 0 hallazgos aceptados manualmente. Verify y Compose también aprobaron. [Reporte posterior por clave y checks](evidence/logistics/critical-after.json). Se cerraron ocho S1192 aplicables; no se presenta como resuelta toda la deuda crítica de mantenibilidad.
+
 - Cinco plsql:VarcharUsageCheck recomiendan VARCHAR2 (Oracle). Aquí se usa el tipo válido varchar(n) de [PostgreSQL 18](https://www.postgresql.org/docs/18/datatype-character.html), con límites intencionales. Son avisos de dialecto no aplicables; sustituirlo por VARCHAR2 rompería migraciones.
 - Seis javascript:S9382: tres await del fixture encadenan pre-lote→recepción→confirmación; dos del seed pertenecen a una misma conexión/transacción de cuentas y concesiones; el sondeo health tiene plazo de 60 s, timeout de petición de 2 s y pausa de 500 ms. Se conserva secuencia y no se declara mejora de rendimiento por paralelizarla.
 
 No se modifican Quality Gate, perfiles, exclusiones, permisos del analizador ni estados manuales de hallazgos. Las migraciones 001–005 permanecen intactas. 006/007 pertenecen al PR aún no integrado; pruebas en bases desechables nuevas, sin backfill ni borrado de históricos de la demo. El PR #7 sigue abierto y sin fusionar. Las decisiones son académicas, sin aprobación docente ni validación agrícola.
+
+Tras capturar el reporte completo por clave y comprobar los checks, se retira el workflow temporal logistics-issues.yml. La evidencia permanece versionada; el análisis ordinario y CI no se modifican ni excluyen.

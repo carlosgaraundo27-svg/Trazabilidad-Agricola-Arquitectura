@@ -61,3 +61,5 @@ Calidad académica implementada: [especificación Q1–Q9 adoptadas para el prot
 ## Revisión #7 y siguiente incremento propuesto
 
 [Revisión individual de 20 avisos y recorrido](05-sprint01/revision-pr7.md). PR #7 permanece sin fusionar. [Captura offline RF-03/DA01](03-diseno-de-software/08-especificacion-offline-cosecha.md) y [ADR-015 propuesta](02-arquitectura/12-propuesta-offline-movil.md): decisiones O1–O10 pendientes, sin implementar ni sustituir Flutter.
+
+[Diagnóstico picomatch, instalación/auditorías y bloqueo externo](05-sprint01/revision-picomatch.md): sin release corregido compatible disponible; PR #7 sin fusionar. Separado de los 20 avisos Sonar. La propuesta offline concreta O1–O10 sigue pendiente de decisión y prueba nativa.

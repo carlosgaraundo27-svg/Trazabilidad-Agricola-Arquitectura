@@ -2,6 +2,8 @@
 
 2026-11-16. Cabeza recibida **40679b4ad2b686292e6576426a1f7128de517477**, base main 47d827c. PR #7 abierto, sin fusionar. Se revisaron código, pruebas, 006/007, permisos y los [20 avisos por clave](evidence/logistics/critical-after.json); el check de 40679b4 confirma 20 abiertos, 0 aceptados y Quality Gate aprobado. No hay comentarios de revisión externos pendientes en GitHub al consultar este corte. Este documento distingue severidad del analizador de bloqueo técnico observado.
 
+**Actualización de seguridad 2026-11-17:** el bloqueo de picomatch se diagnostica en la [revisión separada](revision-picomatch.md). No hay release compatible corregido publicado en la consulta; verify sigue fallando y PR #7 no debe integrarse. Esto no cambia ni resuelve los 20 avisos Sonar/nueve DDL descritos abajo.
+
 ## Los nueve críticos DDL — plsql:S1192
 
 Todas las filas son CODE_SMELL/CRITICAL, no BUG ni VULNERABILITY. Las líneas corresponden a 40679b4. Se conservan **abiertas** en Sonar; no se modifica gate, perfil, exclusiones ni estado manual. Los valores repetidos se enumeraron en el archivo para verificar el contexto, sin confundir bloques SQL distintos con un único ámbito de constantes.

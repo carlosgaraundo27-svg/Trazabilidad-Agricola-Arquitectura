@@ -34,7 +34,7 @@ export function Logistics({ centers }) {
         entrega conservando cantidades y origen.
       </p>
       <label>
-        Centro logístico
+        <span>Centro logístico</span>
         <select
           value={centerId}
           disabled={disabled}
@@ -48,9 +48,9 @@ export function Logistics({ centers }) {
         </select>
       </label>
       <p role="alert">{error}</p>
-      <p role="status" ref={confirmation} tabIndex="-1">
+      <output ref={confirmation} tabIndex="-1">
         {busy ? "Procesando…" : notice}
-      </p>
+      </output>
       {pending && (
         <div className="confirmation">
           <p>

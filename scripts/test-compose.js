@@ -1,7 +1,7 @@
 import { spawn } from "node:child_process";
 import { mkdirSync, readdirSync, writeFileSync } from "node:fs";
 if (process.env.ALLOW_DEMO_SEED !== "true")
-  throw Error("Solo usar en una demo ficticia preparada.");
+  throw new Error("Solo usar en una demo ficticia preparada.");
 const env = {
   ...process.env,
   E2E_EXTERNAL_SERVER: "true",
@@ -62,7 +62,7 @@ async function ready() {
     }
     await new Promise((r) => setTimeout(r, 500));
   }
-  throw Error("La aplicación no recuperó health tras reiniciar.");
+  throw new Error("La aplicación no recuperó health tras reiniciar.");
 }
 let exitCode = 1;
 try {
@@ -77,7 +77,7 @@ try {
       "core",
     ))
   )
-    throw Error("Falló el recorrido existente en Compose.");
+    throw new Error("Falló el recorrido existente en Compose.");
   // Isolate the new suite's login budget without changing production limits or deleting facts.
   if (
     !(await run(
@@ -94,7 +94,7 @@ try {
       "restart-app",
     ))
   )
-    throw Error("No se pudo reiniciar app.");
+    throw new Error("No se pudo reiniciar app.");
   await ready();
   if (
     !(await run(
@@ -107,7 +107,7 @@ try {
       "logistics",
     ))
   )
-    throw Error("Falló Logística en Compose.");
+    throw new Error("Falló Logística en Compose.");
   exitCode = 0;
 } catch (error) {
   phases.push({ name: "failure", message: error.message });

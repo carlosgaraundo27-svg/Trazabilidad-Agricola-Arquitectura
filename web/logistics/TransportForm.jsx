@@ -33,7 +33,7 @@ export function TransportForm({ item, busy, onCommand }) {
         validez legal.
       </p>
       <label>
-        Referencia de guía
+        <span>Referencia de guía</span>
         <input
           name="guideReference"
           maxLength={120}
@@ -42,7 +42,7 @@ export function TransportForm({ item, busy, onCommand }) {
         />
       </label>
       <label>
-        Vehículo
+        <span>Vehículo</span>
         <input
           name="vehicleLabel"
           maxLength={120}
@@ -51,7 +51,7 @@ export function TransportForm({ item, busy, onCommand }) {
         />
       </label>
       <label>
-        Placa
+        <span>Placa</span>
         <input
           name="plate"
           maxLength={120}
@@ -60,7 +60,7 @@ export function TransportForm({ item, busy, onCommand }) {
         />
       </label>
       <label>
-        Chofer
+        <span>Chofer</span>
         <input
           name="driverName"
           maxLength={120}
@@ -69,7 +69,7 @@ export function TransportForm({ item, busy, onCommand }) {
         />
       </label>
       <label>
-        Precinto
+        <span>Precinto</span>
         <input
           name="sealReference"
           maxLength={120}
@@ -78,7 +78,7 @@ export function TransportForm({ item, busy, onCommand }) {
         />
       </label>
       <label>
-        Destino
+        <span>Destino</span>
         <input
           name="destinationLabel"
           maxLength={120}
@@ -87,7 +87,7 @@ export function TransportForm({ item, busy, onCommand }) {
         />
       </label>
       <label>
-        Motivo de corrección
+        <span>Motivo de corrección</span>
         <textarea name="reason" maxLength={500} required disabled={busy} />
       </label>
       <button type="submit" disabled={busy}>

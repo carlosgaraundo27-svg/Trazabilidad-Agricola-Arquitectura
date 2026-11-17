@@ -49,7 +49,7 @@ export function AdmissionForm({ lots, busy, onCommand }) {
           ))}
         </select>
         <label>
-          Peso verificado (kg)
+          <span>Peso verificado (kg)</span>
           <input
             name="verifiedKg"
             inputMode="decimal"
@@ -58,11 +58,11 @@ export function AdmissionForm({ lots, busy, onCommand }) {
           />
         </label>
         <label>
-          Referencia de admisión
+          <span>Referencia de admisión</span>
           <input name="reference" maxLength={120} required disabled={busy} />
         </label>
         <label>
-          Evidencia de admisión
+          <span>Evidencia de admisión</span>
           <textarea
             name="evidenceRef"
             maxLength={500}
@@ -133,7 +133,7 @@ export function InventoryDetail({ item, actions, busy, onCommand, onHistory }) {
             }}
           >
             <label>
-              Motivo de liberación
+              <span>Motivo de liberación</span>
               <textarea
                 name="reason"
                 maxLength={500}

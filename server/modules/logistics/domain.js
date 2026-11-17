@@ -9,7 +9,7 @@ export const kilograms = (value) =>
   `${value / 1000n}.${String(value % 1000n).padStart(3, "0")}`;
 export const kgInput = z
   .string()
-  .regex(/^(?:0|[1-9][0-9]{0,11})(?:\.[0-9]{1,3})?$/)
+  .regex(/^(?:0|[1-9]\d{0,11})(?:\.\d{1,3})?$/)
   .refine((v) => /[1-9]/.test(v), "La cantidad debe ser positiva.")
   .transform((v) => kilograms(milli(v)));
 const text = (max = 500) => z.string().trim().min(1).max(max);

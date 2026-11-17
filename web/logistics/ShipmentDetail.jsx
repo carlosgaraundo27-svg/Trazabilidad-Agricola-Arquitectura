@@ -25,9 +25,9 @@ export function ShipmentDetail({ item, actions, busy, onCommand, onHistory }) {
       aria-label="Detalle del despacho"
     >
       <h2>Detalle del despacho</h2>
-      <p role="status" aria-label="Estado del despacho" className="state-label">
+      <output aria-label="Estado del despacho" className="state-label">
         {shipmentStates[item.state]}
-      </p>
+      </output>
       <p>
         Lote <code>{item.lotId}</code> · Despacho <code>{item.id}</code>
       </p>
@@ -92,7 +92,7 @@ export function ShipmentDetail({ item, actions, busy, onCommand, onHistory }) {
           <h3>Confirmar salida física</h3>
           <p>La salida descontará una sola vez la existencia en centro.</p>
           <label>
-            Fecha de salida (hora de Lima)
+            <span>Fecha de salida (hora de Lima)</span>
             <input
               name="at"
               type="datetime-local"
@@ -130,7 +130,7 @@ export function ShipmentDetail({ item, actions, busy, onCommand, onHistory }) {
             física.
           </p>
           <label>
-            Motivo de cancelación
+            <span>Motivo de cancelación</span>
             <textarea name="reason" required maxLength={500} disabled={busy} />
           </label>
           <button type="submit" className="secondary" disabled={busy}>
@@ -162,7 +162,7 @@ export function ShipmentDetail({ item, actions, busy, onCommand, onHistory }) {
             requieren conciliación fuera de este alcance.
           </p>
           <label>
-            Cantidad recibida (kg)
+            <span>Cantidad recibida (kg)</span>
             <input
               name="receivedKg"
               inputMode="decimal"
@@ -172,7 +172,7 @@ export function ShipmentDetail({ item, actions, busy, onCommand, onHistory }) {
             />
           </label>
           <label>
-            Fecha de entrega (hora de Lima)
+            <span>Fecha de entrega (hora de Lima)</span>
             <input
               name="at"
               type="datetime-local"
@@ -183,7 +183,7 @@ export function ShipmentDetail({ item, actions, busy, onCommand, onHistory }) {
             />
           </label>
           <label>
-            Evidencia de entrega
+            <span>Evidencia de entrega</span>
             <textarea
               name="evidenceRef"
               required

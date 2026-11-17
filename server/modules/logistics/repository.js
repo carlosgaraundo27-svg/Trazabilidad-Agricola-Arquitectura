@@ -1,3 +1,8 @@
+function locking(mode, alias) {
+  if (mode === "update") return " FOR UPDATE OF " + alias;
+  if (mode === "share") return " FOR SHARE OF " + alias;
+  return "";
+}
 const entrySelect = `SELECT e.id,e.lot_id AS "lotId",e.center_id AS "centerId",e.admitted_kg::text AS "sourceKg",e.disposition,e.version,e.reference,e.evidence_ref AS "evidenceRef",e.created_by AS "createdBy",e.created_at AS "createdAt",e.release_evaluation_id AS "releaseEvaluationId",e.release_evaluation_version AS "releaseEvaluationVersion",e.release_reason AS "releaseReason",e.released_by AS "releasedBy",e.released_at AS "releasedAt" FROM inventory.entries e`;
 export function logisticsRepository() {
   return {
@@ -26,12 +31,7 @@ export function logisticsRepository() {
       ).rows;
     },
     async shipment(tx, actor, id, lock = "none") {
-      const clause =
-        lock === "update"
-          ? " FOR UPDATE OF s"
-          : lock === "share"
-            ? " FOR SHARE OF s"
-            : "";
+      const clause = locking(lock, "s");
       return (
         await tx.query(
           `SELECT s.id,s.entry_id AS "stockEntryId",e.lot_id AS "lotId",s.center_id AS "centerId",s.quantity_kg::text AS "quantityKg",s.state,s.version,s.transport,s.destination_label AS "destinationLabel",s.departed_at AS "departedAt",s.created_at AS "createdAt",s.updated_at AS "updatedAt",(SELECT jsonb_build_object('receivedKg',d.received_kg::text,'deliveredAt',d.delivered_at,'evidenceRef',d.evidence_ref,'actorId',d.actor_id,'recordedAt',d.recorded_at) FROM logistics.deliveries d WHERE d.shipment_id=s.id) AS delivery FROM logistics.shipments s JOIN inventory.entries e ON e.id=s.entry_id WHERE s.id=$1 AND s.organization_id=$2` +
@@ -99,12 +99,7 @@ export function logisticsRepository() {
       ).rows;
     },
     async entry(tx, actor, id, lock = "none") {
-      const clause =
-        lock === "update"
-          ? " FOR UPDATE OF e"
-          : lock === "share"
-            ? " FOR SHARE OF e"
-            : "";
+      const clause = locking(lock, "e");
       return (
         await tx.query(
           entrySelect + " WHERE e.id=$1 AND e.organization_id=$2" + clause,
@@ -192,11 +187,7 @@ export function logisticsRepository() {
       tx,
       actor,
       entry,
-      before,
-      after,
-      kind,
-      reason,
-      shipmentId = null,
+      { before, after, kind, reason, shipmentId = null },
     ) {
       await tx.query(
         "INSERT INTO inventory.events(id,entry_id,shipment_id,organization_id,center_id,actor_id,kind,version,payload) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9)",

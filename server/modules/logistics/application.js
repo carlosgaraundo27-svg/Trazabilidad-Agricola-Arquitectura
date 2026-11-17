@@ -1,6 +1,13 @@
 import { createHash } from "node:crypto";
 import { AppError, missing } from "../../shared/errors.js";
 import { balances, eligible } from "./domain.js";
+import {
+  requireEligible,
+  stockInsufficient,
+  validateStock,
+  validateDeparture,
+  validateDelivery,
+} from "./policies.js";
 const conflict = () =>
   new AppError(
     409,
@@ -117,14 +124,6 @@ export function logisticsService({
     await permission(tx, actor, entry.centerId, action);
     return entry;
   }
-  function requireEligible(summary) {
-    if (!eligible(summary))
-      throw new AppError(
-        422,
-        "QUALITY_NOT_APPROVED",
-        "Se requiere evaluación de Calidad cerrada con resultado Aprobado.",
-      );
-  }
   async function responseShipment(tx, actor, id) {
     const item = await repository.shipment(tx, actor, id, "share");
     return {
@@ -133,12 +132,6 @@ export function logisticsService({
       inventory: await responseEntry(tx, actor, item.stockEntryId),
     };
   }
-  const stockInsufficient = () =>
-    new AppError(
-      409,
-      "STOCK_INSUFFICIENT",
-      "No hay disponibilidad suficiente para reservar o despachar el lote completo. Revise la reserva vigente.",
-    );
   const stateFor = {
     reserved: ["draft"],
     dispatched: ["reserved"],
@@ -173,52 +166,10 @@ export function logisticsService({
           throw conflict();
         const before = await responseShipment(tx, actor, id),
           stock = before.inventory;
-        if (kind === "reserved" || kind === "dispatched") {
-          requireEligible(stock.qualitySummary);
-          if (entry.disposition !== "released")
-            throw new AppError(
-              422,
-              "INVENTORY_NOT_RELEASED",
-              "Libere explícitamente el inventario antes de reservar o salir.",
-            );
-          if (
-            (kind === "reserved" ? stock.unreservedKg : stock.reservedKg) !==
-              shipment.quantityKg ||
-            stock.onHandKg !== shipment.quantityKg
-          )
-            throw stockInsufficient();
-        }
-        if (kind === "dispatched") {
-          if (
-            !shipment.destinationLabel ||
-            Object.values(shipment.transport).some((v) => !v)
-          )
-            throw new AppError(
-              422,
-              "TRANSPORT_INCOMPLETE",
-              "Complete guía, vehículo, placa, chofer, precinto y destino antes de confirmar salida.",
-            );
-          if (
-            Date.parse(input.departedAt) <
-            new Date(shipment.createdAt).getTime()
-          )
-            throw new AppError(
-              422,
-              "DEPARTURE_TIME",
-              "La salida no puede ser anterior a la preparación del despacho.",
-            );
-        }
-        if (
-          kind === "delivered" &&
-          (input.receivedKg !== shipment.quantityKg ||
-            Date.parse(input.deliveredAt) <
-              new Date(shipment.departedAt).getTime())
-        )
-          throw new AppError(
-            422,
-            "DELIVERY_TOTAL",
-            "Confirme el total real después de la salida. Una diferencia requiere conciliación fuera de este alcance; no se crea merma.",
-          );
+        if (kind === "reserved" || kind === "dispatched")
+          validateStock(entry, shipment, stock, kind);
+        if (kind === "dispatched") validateDeparture(shipment, input);
+        if (kind === "delivered") validateDelivery(shipment, input);
         await repository.changeShipment(
           tx,
           actor,
@@ -226,12 +177,10 @@ export function logisticsService({
           nextState[kind],
           kind === "dispatched" ? input.departedAt : null,
         );
-        const effect =
-          kind === "cancelled"
-            ? shipment.state === "reserved"
-              ? "reservation_released"
-              : null
-            : kind;
+        let effect = kind;
+        if (kind === "cancelled")
+          effect =
+            shipment.state === "reserved" ? "reservation_released" : null;
         if (effect) {
           await repository.advanceEntry(tx, actor, entry.id);
           await repository.movement(
@@ -246,16 +195,13 @@ export function logisticsService({
         if (kind === "delivered")
           await repository.deliver(tx, actor, shipment, input);
         const item = await responseShipment(tx, actor, id);
-        await repository.event(
-          tx,
-          actor,
-          entry,
-          before,
-          item,
-          kind,
-          input.reason ?? input.evidenceRef,
-          id,
-        );
+        await repository.event(tx, actor, entry, {
+          before: before,
+          after: item,
+          kind: kind,
+          reason: input.reason ?? input.evidenceRef,
+          shipmentId: id,
+        });
         return item;
       },
     );
@@ -273,16 +219,13 @@ export function logisticsService({
           if (stock.onHandKg !== entry.sourceKg) throw stockInsufficient();
           const id = await repository.createShipment(tx, actor, entry, input),
             item = await responseShipment(tx, actor, id);
-          await repository.event(
-            tx,
-            actor,
-            entry,
-            null,
-            item,
-            "created",
-            null,
-            id,
-          );
+          await repository.event(tx, actor, entry, {
+            before: null,
+            after: item,
+            kind: "created",
+            reason: null,
+            shipmentId: id,
+          });
           return item;
         },
       );
@@ -303,16 +246,13 @@ export function logisticsService({
           const before = await responseShipment(tx, actor, id);
           await repository.correctTransport(tx, actor, id, input);
           const item = await responseShipment(tx, actor, id);
-          await repository.event(
-            tx,
-            actor,
-            entry,
-            before,
-            item,
-            "transport_corrected",
-            input.reason,
-            id,
-          );
+          await repository.event(tx, actor, entry, {
+            before: before,
+            after: item,
+            kind: "transport_corrected",
+            reason: input.reason,
+            shipmentId: id,
+          });
           return item;
         },
       );
@@ -372,15 +312,13 @@ export function logisticsService({
             entry = await repository.entry(tx, actor, id);
           await repository.movement(tx, actor, entry, "admitted");
           const item = await responseEntry(tx, actor, id);
-          await repository.event(
-            tx,
-            actor,
-            entry,
-            null,
-            item,
-            "admitted",
-            input.evidenceRef,
-          );
+          await repository.event(tx, actor, entry, {
+            before: null,
+            after: item,
+            kind: "admitted",
+            reason: input.evidenceRef,
+            shipmentId: null,
+          });
           return item;
         },
       );
@@ -403,15 +341,13 @@ export function logisticsService({
           const before = await responseEntry(tx, actor, id);
           await repository.release(tx, actor, entry, summary, input.reason);
           const item = await responseEntry(tx, actor, id);
-          await repository.event(
-            tx,
-            actor,
-            entry,
-            before,
-            item,
-            "released",
-            input.reason,
-          );
+          await repository.event(tx, actor, entry, {
+            before: before,
+            after: item,
+            kind: "released",
+            reason: input.reason,
+            shipmentId: null,
+          });
           return item;
         },
       );

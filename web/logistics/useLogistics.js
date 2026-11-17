@@ -73,7 +73,7 @@ export function useLogistics(centers) {
     }
   }
   async function execute(intent) {
-    if (inFlight.current) return;
+    if (inFlight.current) return false;
     inFlight.current = true;
     setBusy(true);
     setError("");
@@ -106,10 +106,10 @@ export function useLogistics(centers) {
       setBusy(false);
     }
   }
-  const command = (path, body, kind, method = "POST") => {
+  async function command(path, body, kind, method = "POST") {
     if (pending || inFlight.current) return false;
     return execute({ path, body, kind, method, key: crypto.randomUUID() });
-  };
+  }
   async function refresh() {
     if (pending) return;
     setBusy(true);

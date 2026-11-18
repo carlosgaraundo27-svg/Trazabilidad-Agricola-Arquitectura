@@ -3,6 +3,7 @@ import { preLotInput } from "../../server/modules/harvest/domain.js";
 import { receiptInput } from "../../server/modules/intake/domain.js";
 import { lotInput } from "../../server/modules/traceability/domain.js";
 import { test, expect } from "@playwright/test";
+import { navigateReady } from "./navigation.js";
 import { connectDatabase } from "../../server/db.js";
 import { ids } from "../../scripts/seed.js";
 import { intakeIds } from "../../scripts/seed-intake.js";
@@ -72,7 +73,11 @@ async function lotFixture(originalCount = 2) {
   }
 }
 async function login(page, email = "calidad@example.test") {
-  await page.goto("/");
+  await navigateReady(
+    page,
+    "/",
+    page.getByRole("heading", { name: "Iniciar sesión" }),
+  );
   await page.getByLabel("Correo electrónico").fill(email);
   await page.getByLabel("Contraseña").fill(process.env.DEMO_PASSWORD);
   await page.getByRole("button", { name: "Ingresar", exact: true }).click();
@@ -484,8 +489,7 @@ test("Calidad: creación concurrente recuperable y aislamiento de otro centro", 
     context = await browser.newContext(),
     other = await context.newPage();
   try {
-    await login(page);
-    await login(other);
+    await Promise.all([login(page), login(other)]);
     const secondCard = other
       .getByTestId("quality-lot")
       .filter({ hasText: lot.id });

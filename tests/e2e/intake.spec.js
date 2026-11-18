@@ -2,12 +2,23 @@ import { test, expect } from "@playwright/test";
 import { connectDatabase } from "../../server/db.js";
 import { ids } from "../../scripts/seed.js";
 import { intakeIds } from "../../scripts/seed-intake.js";
+import { navigateReady } from "./navigation.js";
 
-async function login(page, email) {
-  await page.goto("/");
+async function openLogin(page) {
+  await navigateReady(
+    page,
+    "/",
+    page.getByRole("heading", { name: "Iniciar sesión" }),
+  );
+}
+async function signIn(page, email) {
   await page.getByLabel("Correo electrónico").fill(email);
   await page.getByLabel("Contraseña").fill(process.env.DEMO_PASSWORD);
   await page.getByRole("button", { name: "Ingresar", exact: true }).click();
+}
+async function login(page, email) {
+  await openLogin(page);
+  await signIn(page, email);
 }
 async function logout(page) {
   await page.getByRole("button", { name: "Cerrar sesión" }).click();
@@ -219,14 +230,15 @@ test("Acopio: dos interfaces concurrentes no consumen dos veces", async ({
 }) => {
   const p = await createOrigin(),
     ref = "RACE-" + crypto.randomUUID().slice(0, 8);
-  await login(page, "acopio@example.test");
-  const row = await receive(page, p, ref);
-  await confirm(row);
-  await select(row);
   const context = await browser.newContext();
   const other = await context.newPage();
   try {
-    await login(other, "acopio@example.test");
+    await Promise.all([openLogin(page), openLogin(other)]);
+    await signIn(page, "acopio@example.test");
+    const row = await receive(page, p, ref);
+    await confirm(row);
+    await select(row);
+    await signIn(other, "acopio@example.test");
     await select(other.getByTestId("receipt-" + ref));
     const waits = [
       page.waitForResponse(

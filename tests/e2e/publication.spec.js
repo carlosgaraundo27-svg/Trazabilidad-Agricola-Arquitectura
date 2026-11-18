@@ -4,6 +4,7 @@ import { compose } from "../../server/composition.js";
 import { publicationLot } from "../../scripts/publication-fixture.js";
 import { PNG } from "pngjs";
 import jsQR from "jsqr";
+import { navigateReady } from "./navigation.js";
 test("publicar, consultar QR anónimo móvil, actualizar y retirar", async ({
   page,
   browser,
@@ -16,8 +17,29 @@ test("publicar, consultar QR anónimo móvil, actualizar y retirar", async ({
     await db.close();
   }
   const errors = [];
+  const context = await browser.newContext({
+      viewport: { width: 320, height: 740 },
+    }),
+    publicPage = await context.newPage();
+  const requests = [];
+  publicPage.on("request", (r) => requests.push(r.url()));
+  publicPage.on("pageerror", (e) => errors.push(e.message));
   page.on("pageerror", (e) => errors.push(e.message));
-  await page.goto("/");
+  // Independent anonymous and authenticated entry conditions load concurrently.
+  // Capture anonymous requests from its first navigation, including unavailable QR.
+  await Promise.all([
+    navigateReady(
+      page,
+      "/",
+      page.getByRole("heading", { name: "Iniciar sesión" }),
+    ),
+    navigateReady(
+      publicPage,
+      "/q/" + crypto.randomUUID(),
+      publicPage.getByRole("heading", { name: "Trazabilidad no disponible" }),
+    ),
+  ]);
+  expect(requests.some((u) => u.includes("/auth/"))).toBe(false);
   await page.getByLabel("Correo electrónico").fill("publicacion@example.test");
   await page.getByLabel("Contraseña").fill(process.env.DEMO_PASSWORD);
   await page.getByRole("button", { name: "Ingresar", exact: true }).click();
@@ -52,15 +74,12 @@ test("publicar, consultar QR anónimo móvil, actualizar y retirar", async ({
   await expect(
     page.getByRole("img", { name: "QR del lote publicado" }),
   ).toBeVisible();
-  const context = await browser.newContext({
-      viewport: { width: 320, height: 740 },
-    }),
-    publicPage = await context.newPage();
-  const requests = [];
-  publicPage.on("request", (r) => requests.push(r.url()));
-  publicPage.on("pageerror", (e) => errors.push(e.message));
   const publicPath = new URL(url).pathname;
-  await publicPage.goto(publicPath);
+  await navigateReady(
+    publicPage,
+    publicPath,
+    publicPage.getByRole("heading", { name: "Lote VV-E2E-001" }),
+  );
   await expect(
     publicPage.getByRole("heading", { name: "Lote VV-E2E-001" }),
   ).toBeVisible();

@@ -1,5 +1,14 @@
 # Diagnóstico de seguridad — picomatch en PR #7
 
+## Actualización oficial — 2026-11-18
+
+GitHub [retiró GHSA-fc5q-39xc-vjpf](https://github.com/advisories/GHSA-fc5q-39xc-vjpf) el 18 nov2026 a las 15:38:56 UTC. La referencia del [mantenedor](https://github.com/micromatch/picomatch/pull/235#issuecomment-6315749381) cuestiona su clasificación y advierte sobre globs definidos por actores no confiables. No hay versión parcheada publicada: registry latest continúa picomatch 4.0.7; Vite 8.3.8/tinyglobby 0.2.17/fdir 6.5.0 siguen iguales. No se instaló un parche, override, fork o cambio de build.
+
+Una consulta nueva está justificada por ese cambio oficial: **npm audit --audit-level=high --json completo exit 0, cero hallazgos**, sin omitir dev ni cambiar package.json/package-lock.json. [Evidencia](evidence/demo-recuperada-20261118/resultado.json). No se repitió instalación sin cambios. El bloqueo del 17 nov se conserva como histórico; dejó de reproducirse en el feed actual por la retirada, no porque hayamos corregido código vulnerable. No se declara seguridad absoluta ni se permiten patrones arbitrarios de usuarios.
+
+Los jobs remotos históricos fallidos no se convierten en verdes; no hubo push/nueva CI en esta tarea. Los 20 avisos Sonar/nueve críticos DDL permanecen abiertos y separados. Sin rebajar gate ni excluir archivos/auditorías. Las secciones inferiores documentan las comprobaciones del 17 nov y no describen el resultado actual.
+
+
 2026-11-17. Base revisada **3ab5b9517e460d490d21255b4837c97aa27efa35**, PR #7 abierto y **sin fusionar**. Este bloqueo es distinto de los [20 avisos Sonar/nueve críticos DDL](revision-pr7.md), que permanecen abiertos.
 
 ## Resultado y advisory exacto

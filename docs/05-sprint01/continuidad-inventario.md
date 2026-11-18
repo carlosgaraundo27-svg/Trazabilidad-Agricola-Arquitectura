@@ -1,5 +1,20 @@
 # Continuidad — Inventario, Reserva, Despacho y Entrega
 
+## Estado vigente — demo reconstruida y E2E, 2026-11-18
+
+Continuar en la copia RECUPERADO_20261117_213508/repos/repo-inventario, rama local fix/demo-recuperada-inventario, base 22c6e4f; no usar originales para cambios nuevos. [Guía](demo-inventario-recuperada.md), [evidencia](evidence/demo-recuperada-20261118/resultado.json), matriz actualizada con los 16 criterios transcritos; PDF/SDD sin resolver. Este estado sustituye las afirmaciones de estado actual de las notas históricas inferiores.
+
+Demo **NUEVA FICTICIA**, no recuperación de datos anteriores: http://127.0.0.1:3026, DB inventory_demo_20261118_151800, migraciones001–007. Cuenta inventario@example.test; contraseña solo en .local/demo-20261118_151800/credenciales-locales.txt. Hay lote de 73.125 kg aprobado ficticiamente y sin admisión para recorrido manual, más lote automatizado entregado. Scripts/seed/fixtures existentes sin cambios. Entrega replay 200, nueva clave 409, ledger sin cambios y una sola salida/entrega; persistencia tras stop/start de la **app**, no DB/contenedor/Windows. UI 390/1440 comprobada. No repetir seeds para comprobar persistencia.
+
+SQL 55433 identifica trazabilidad 001/dos pre-lotes y bases recovery_* de pruebas del 17 nov; no prueba demo anterior de Inventario. Nativas/respaldos físicos no arrancados. Docker denegó acceso en **un intento**; no repetir desde esta sesión ni cambiar permisos/políticas. Identidad del volumen, dump lógico/restauración pendientes: pegar el único bloque de PowerShell normal de la guía. No sustituir ese resultado por el nuevo fixture ni por integración aprobada.
+
+Checks del 18 nov: 23 unitarias, 113 integración en DB inventory_int_20261118_151800,4 enfocados y17 E2E completos, formato/check/build aprobados. Se reprodujeron tres timeouts de navegación; readiness sola no bastó. Cambio final: preparar contextos independientes en paralelo y esperar documento/UI sin recursos secundarios; todas las aserciones y límites originales conservados. Regresión nueva de recurso retenido roja con load, verde con commit+UI. No se bloqueó Kaspersky ni se confirma causa única a partir de su demora de 18.3 s.
+
+GHSA-fc5q-39xc-vjpf retirada oficialmente el 18 nov; registry latest 4.0.7 sin release parcheado. Auditoría **completa** exit 0/cero hallazgos con package/lock intactos; retiro de advisory, no parche nuestro ni certificación de ausencia de riesgo. Mantener patrones confiables. No afirmar verde remoto sin nueva ejecución. Los 20 avisos Sonar/nueve DDL siguen abiertos, sin gate/perfil/exclusiones modificados. Fuente y detalle en revision-picomatch.md.
+
+No ejecutar Flutter/Dart/SDK ni diagnose-android.js. O1–O10 siguen propuestas, sin implementación. Sin publicación/merge de PR #7. Antes de offline: respaldo/restauración verificable y decisiones pendientes. CI no es CD, caché no rendimiento medido; pallets/parcialidades/devoluciones/correcciones posteriores continúan diferidos. Sin aprobación docente/agrícola.
+
+
 Estado documental vigente 2026-11-17: matriz actualizada con los 16 criterios transcritos por el estudiante, pendiente de cotejo PDF y significado docente de SDD; ver última sección. O1–O10 pendientes, PR #7 sin fusionar. Las notas fechadas antes se conservan como historial.
 
 2026-11-16. Rama feat/inventario-despacho-entrega, [PR #7 abierto, sin fusionar](https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/pull/7). Base main **47d827c1ac2ae0fe3c8050279f5e0ecdcd562d05**: PR #6 corrigió los ocho defectos de fiabilidad y fue integrado conservando commits; verify/compose/SonarCloud de ese main aprobaron. [Revisión](revision-sonar-main.md), [checks posteriores al merge](evidence/sonar-main/after.json). Las notas anteriores sobre main rojo quedan sustituidas por esa comprobación, sin modificar el gate.

@@ -5662,6 +5662,184 @@
           }
         }
       }
+    },
+    "/api/v1/sync/pre-lots/{clientCaptureId}": {
+      "put": {
+        "summary": "Confirmar o reconciliar captura de cosecha por identidad estable",
+        "description": "Prototipo academico A, dependiente de PR7. Unicidad organizacion/clientCaptureId y propietario inmutable. Se revalidan sesion/rol/asignacion antes del replay. Misma identidad/cuerpo canonico obtiene el recibo; contenido distinto da409. Limite60 PUT/minuto por IP en esta instancia; no modifica alta online ni publica QR.",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "clientCaptureId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-CSRF-Token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": true,
+            "description": "UUID igual a clientCaptureId, sin distinguir mayusculas",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HarvestSyncInput"
+              },
+              "example": {
+                "schemaVersion": 1,
+                "parcelId": "40000000-0000-4000-8000-000000000001",
+                "harvestedAt": "2026-01-02T12:00:00Z",
+                "quantity": "37.125",
+                "unit": "kg"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Replay autorizado; mismos IDs/cuerpo/acceptedAt, sin otra alta ni auditoria",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HarvestSyncReceipt"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Primera aceptacion atomica",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HarvestSyncReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "INVALID_KEY: header ausente, invalido o distinto de ruta",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UNAUTHENTICATED: sesion vencida/revocada o usuario inactivo",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "FORBIDDEN/CSRF_REJECTED/ORIGIN_REJECTED",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NOT_FOUND: parcela no asignada o fuera del ambito",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "SYNC_ID_CONTENT_CONFLICT: identidad confirmada incompatible, sin revelar propietario",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Cuerpo demasiado grande",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Contrato estricto, dato o precision no validos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "RATE_LIMITED: esperar Retry-After",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Segundos hasta nuevo intento; no truncar en cliente",
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error temporal: conservar identidad/cuerpo y reconciliar",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -8662,6 +8840,125 @@
           "occurredAt",
           "payload"
         ]
+      },
+      "HarvestSyncInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "schemaVersion",
+          "parcelId",
+          "harvestedAt",
+          "quantity",
+          "unit"
+        ],
+        "properties": {
+          "schemaVersion": {
+            "type": "integer",
+            "const": 1
+          },
+          "parcelId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "harvestedAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\\.[0-9]{1,3})?(?:Z|[+-][0-9]{2}:[0-9]{2})$",
+            "description": "Instante no futuro con zona y segundos; hasta tres decimales, normalizado UTC."
+          },
+          "quantity": {
+            "type": "string",
+            "pattern": "^(?:0|[1-9][0-9]{0,8})(?:\\.[0-9]{1,3})?$",
+            "not": {
+              "enum": ["0", "0.0", "0.00", "0.000"]
+            },
+            "description": "Positiva; sin conversion ni redondeo. 37.1 equivale a 37.100; 37.1000 se rechaza."
+          },
+          "unit": {
+            "type": "string",
+            "enum": ["kg", "unidad"]
+          }
+        }
+      },
+      "HarvestSyncPayload": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "schemaVersion",
+          "parcelId",
+          "harvestedAt",
+          "quantity",
+          "unit"
+        ],
+        "properties": {
+          "schemaVersion": {
+            "type": "integer",
+            "const": 1
+          },
+          "parcelId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "harvestedAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3}Z$",
+            "description": "Instante no futuro con zona y segundos; hasta tres decimales, normalizado UTC."
+          },
+          "quantity": {
+            "type": "string",
+            "pattern": "^(?:0|[1-9][0-9]{0,8})\\.[0-9]{3}$",
+            "not": {
+              "enum": ["0", "0.0", "0.00", "0.000"]
+            },
+            "description": "Positiva; sin conversion ni redondeo. 37.1 equivale a 37.100; 37.1000 se rechaza."
+          },
+          "unit": {
+            "type": "string",
+            "enum": ["kg", "unidad"]
+          }
+        }
+      },
+      "HarvestSyncReceipt": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "clientCaptureId",
+          "preLotId",
+          "harvestId",
+          "status",
+          "acceptedAt",
+          "payload",
+          "replayed"
+        ],
+        "properties": {
+          "clientCaptureId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "preLotId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "harvestId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "status": {
+            "type": "string",
+            "const": "registrado"
+          },
+          "acceptedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/HarvestSyncPayload"
+          },
+          "replayed": {
+            "type": "boolean"
+          }
+        }
       }
     }
   }

@@ -1,5 +1,13 @@
 export function accessRepository() {
   return {
+    async activeSession(tx, actor) {
+      return (
+        await tx.query(
+          'SELECT u.id,u.organization_id AS "organizationId",u.role FROM access.users u JOIN access.sessions s ON s.user_id=u.id WHERE u.id=$1 AND u.organization_id=$2 AND u.active AND s.token_hash=$3 AND s.expires_at>clock_timestamp() FOR SHARE OF u,s',
+          [actor.id, actor.organizationId, actor.sessionHash],
+        )
+      ).rows[0];
+    },
     async centerGrant(tx, actor, centerId, action) {
       return (
         await tx.query(

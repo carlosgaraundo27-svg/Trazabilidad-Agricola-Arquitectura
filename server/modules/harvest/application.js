@@ -1,6 +1,13 @@
 import { AppError, missing } from "../../shared/errors.js";
 export function harvestService({ repository, unitOfWork, access, producers }) {
+  // Internal port: callers must authorize and validate origin in the same UoW.
+  async function record(tx, actor, input, key) {
+    const item = await repository.create(tx, actor, input, key);
+    await access.audit(tx, actor, "prelot:create", item.id);
+    return item;
+  }
   return {
+    record,
     async intakeOrigin(tx, actor, preLotId) {
       const origin = await repository.intakeOrigin(tx, actor, preLotId);
       if (!origin) throw missing();
@@ -48,9 +55,7 @@ export function harvestService({ repository, unitOfWork, access, producers }) {
             item: await repository.get(tx, existing.id),
           };
         }
-        const item = await repository.create(tx, actor, input, key);
-        await access.audit(tx, actor, "prelot:create", item.id);
-        return { replayed: false, item };
+        return { replayed: false, item: await record(tx, actor, input, key) };
       });
     },
     async list(actor, offset = 0) {

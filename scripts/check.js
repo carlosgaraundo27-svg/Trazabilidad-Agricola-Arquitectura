@@ -43,6 +43,7 @@ await SwaggerParser.validate(api);
 parseYaml(await readFile(".github/workflows/ci.yml", "utf8"));
 parseYaml(await readFile("compose.yaml", "utf8"));
 const expectedPaths = [
+  "/api/v1/sync/pre-lots/{clientCaptureId}",
   "/api/v1/inventory",
   "/api/v1/inventory/lots",
   "/api/v1/inventory/entries",
@@ -75,7 +76,7 @@ const expectedPaths = [
   "/q/{id}",
 ];
 if (
-  Object.keys(api.paths).length !== 37 ||
+  Object.keys(api.paths).length !== 38 ||
   expectedPaths.some((route) => !api.paths[route])
 )
   throw Error("Contrato API incompleto");

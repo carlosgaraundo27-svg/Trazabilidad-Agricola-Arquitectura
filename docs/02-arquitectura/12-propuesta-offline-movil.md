@@ -1,5 +1,7 @@
 # ADR-015 propuesta — Cliente de campo y sincronización offline
 
+**Actualización 2026-11-19:** autorización expresa para implementar/probar solo el servidor A en rama dependiente de #7. [Plan A–D](../03-diseno-de-software/10-plan-incrementos-offline.md): recibo inmutable, identidad organización/captura y propietario fijo, canonización v1 y alta/audit/recibo atómicos, revalidación antes de replay. Implementación A en H con migración008 aditiva; sin backfill ni cambios a la demo. Esta decisión parcial de servidor no adopta Flutter/SQLite/ventana24h ni el adaptador nativo pendientes. La propuesta móvil y B–D continúan pendientes, sin ejecución del SDK señalado.
+
 Fecha: 2026-11-16. **Estado: propuesta pendiente de decisión del usuario. Sin implementación.**
 
 RF-03/DA01 requieren captura durable en móvil y sincronización. Flutter es la tecnología móvil de referencia previa; el repositorio solo contiene cliente React en línea, sin M1/L1 ejecutables. ADR-003 acepta REST; ADR-009 acota el corte online. La UI adaptable existente no acredita offline.

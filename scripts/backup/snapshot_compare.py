@@ -2,7 +2,7 @@
 import argparse
 import copy
 import json
-from pathlib import Path
+from private_paths import private_path
 
 ORIGINAL_CHECK = "CHECK ((((value_c >= '-999999.99'::numeric) AND (value_c <= 999999.99)) AND (scale(value_c) <= 2)))"
 RESTORED_CHECK = "CHECK (((value_c >= '-999999.99'::numeric) AND (value_c <= 999999.99) AND (scale(value_c) <= 2)))"
@@ -46,11 +46,12 @@ def require_verified(source, restored):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('source', type=Path)
-    parser.add_argument('restored', type=Path)
+    parser.add_argument('source')
+    parser.add_argument('restored')
     args = parser.parse_args()
-    result = require_verified(json.loads(args.source.read_text(encoding='utf-8-sig')),
-                              json.loads(args.restored.read_text(encoding='utf-8-sig')))
+    source_path, restored_path = private_path(args.source), private_path(args.restored)
+    result = require_verified(json.loads(source_path.read_text(encoding='utf-8-sig')),
+                              json.loads(restored_path.read_text(encoding='utf-8-sig')))
     print(json.dumps(result))
 
 

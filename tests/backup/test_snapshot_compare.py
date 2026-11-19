@@ -43,7 +43,7 @@ class SnapshotComparison(unittest.TestCase):
             self.assertFalse(comparison['rawMatchesSnapshot'])
             self.assertTrue(comparison['matchesSnapshot'])
             self.assertEqual(len(comparison['representationDifferences']), 1)
-        self.assertEqual((a, b), saved)
+        self.assertEqual(saved, (a, b))
 
     def test_real_changes_and_unknown_forms_fail_closed(self):
         for replacement in [RESTORED_CHECK.replace('<= 2', '<= 3'),
@@ -51,8 +51,9 @@ class SnapshotComparison(unittest.TestCase):
                             RESTORED_CHECK.replace('AND', 'OR', 1),
                             RESTORED_CHECK.replace('-999999.99', '-999999.98'),
                             RESTORED_CHECK + ' NOT VALID', 'CHECK (true)']:
+            a, b = snapshot(), snapshot(replacement)
             with self.subTest(replacement=replacement), self.assertRaises(ValueError):
-                require_verified(snapshot(), snapshot(replacement))
+                require_verified(a, b)
 
     def test_identity_metadata_rows_foreign_keys_and_migrations_stay_strict(self):
         for section, field, value in [('constraints', 'name', 'other_check'),
@@ -64,17 +65,20 @@ class SnapshotComparison(unittest.TestCase):
                                       ('foreignKeyOrphans', 'orphans', 1)]:
             b = snapshot(RESTORED_CHECK)
             b[section][0][field] = value
+            a = snapshot()
             with self.subTest(field=field), self.assertRaises(ValueError):
-                require_verified(snapshot(), b)
+                require_verified(a, b)
         b = snapshot(RESTORED_CHECK)
         b['migrations'].append('008')
+        a = snapshot()
         with self.assertRaises(ValueError):
-            require_verified(snapshot(), b)
+            require_verified(a, b)
         for section in ['constraints', 'tables', 'migrations', 'foreignKeyOrphans']:
             b = snapshot()
             del b[section]
+            a = snapshot()
             with self.assertRaises(ValueError):
-                require_verified(snapshot(), b)
+                require_verified(a, b)
         b = snapshot()
         b['foreignKeyOrphans'][0]['orphans'] = 1
         with self.assertRaises(ValueError):
@@ -88,18 +92,19 @@ class SnapshotComparison(unittest.TestCase):
             require_verified(a, b)
 
     def test_cli_real_difference_exits_nonzero_and_preserves_inputs(self):
-        with tempfile.TemporaryDirectory() as tmp:
+        (ROOT / '.local').mkdir(exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=ROOT / '.local') as tmp:
             left, right = Path(tmp) / 'left.json', Path(tmp) / 'right.json'
             left.write_text(json.dumps(snapshot()), encoding='utf-8')
             right.write_text(json.dumps(snapshot('CHECK (true)')), encoding='utf-8')
             before = (left.read_bytes(), right.read_bytes())
             r = subprocess.run([sys.executable, str(ROOT / 'scripts/backup/snapshot_compare.py'),
-                                str(left), str(right)], capture_output=True)
+                                left.relative_to(ROOT).as_posix(), right.relative_to(ROOT).as_posix()], capture_output=True)
             self.assertNotEqual(r.returncode, 0)
-            self.assertEqual((left.read_bytes(), right.read_bytes()), before)
+            self.assertEqual(before, (left.read_bytes(), right.read_bytes()))
             right.write_text(json.dumps(snapshot(RESTORED_CHECK)), encoding='utf-8')
             r = subprocess.run([sys.executable, str(ROOT / 'scripts/backup/snapshot_compare.py'),
-                                str(left), str(right)], capture_output=True)
+                                left.relative_to(ROOT).as_posix(), right.relative_to(ROOT).as_posix()], capture_output=True)
             self.assertEqual(r.returncode, 0, r.stderr)
 
 

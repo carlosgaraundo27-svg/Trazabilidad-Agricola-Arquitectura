@@ -8,6 +8,7 @@ import subprocess
 
 from restore_docker import fingerprint, Session
 from snapshot_compare import compare_snapshots, ORIGINAL_CHECK, RESTORED_CHECK
+from private_paths import private_path
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -41,20 +42,21 @@ class ReadOnlySession:
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--report', required=True, type=Path)
-    parser.add_argument('--proof', required=True, type=Path)
-    parser.add_argument('--output', required=True, type=Path)
+    parser.add_argument('--report', required=True)
+    parser.add_argument('--proof', required=True)
+    parser.add_argument('--output', required=True)
     args = parser.parse_args()
-    if (ROOT / '.local').resolve() not in args.output.resolve().parents:
-        raise ValueError('Output must be a new private .local file')
-    proof = json.loads(args.proof.read_text(encoding='utf-8-sig'))
+    report_path = private_path(args.report)
+    proof_path = private_path(args.proof)
+    output_path = private_path(args.output, existing=False)
+    proof = json.loads(proof_path.read_text(encoding='utf-8-sig'))
     if (proof['status'] != 'isolated_check_verified' or len(proof['outcomes']) != 80
             or proof['truthTable'] != {'equivalent': True, 'cases': 27}
             or proof['changedConstraintDetected'] is not True
             or proof['definitions']['original'] != ORIGINAL_CHECK
             or proof['definitions']['restored'] != RESTORED_CHECK):
         raise ValueError('Missing isolated PostgreSQL evidence for the exact definitions')
-    original_bytes = args.report.read_bytes()
+    original_bytes = report_path.read_bytes()
     report = json.loads(original_bytes.decode('utf-8-sig'))
     if len(report['results']) != 1:
         raise ValueError('Select a single-database report')
@@ -64,9 +66,10 @@ def main():
     if urlparse(os.environ['BACKUP_VERIFICATION_URL']).path != '/' + expected_database:
         raise ValueError('Connection must target exactly the previously restored database')
     dump_name = previous['dump']
-    if Path(dump_name).name != dump_name:
+    import re
+    if not re.fullmatch(r'[0-9]+_[a-f0-9]{12}\.dump', dump_name):
         raise ValueError('Invalid archive path')
-    dump = args.report.parent / dump_name
+    dump = private_path((report_path.parent / dump_name).relative_to(ROOT).as_posix(), suffix='.dump')
     if (hashlib.sha256(dump.read_bytes()).hexdigest() != previous['sha256']
             or dump.stat().st_size != previous['bytes']):
         raise ValueError('Archive integrity differs from the preserved report')
@@ -95,14 +98,14 @@ def main():
                   'database': previous['database'], 'restoredDatabase': expected_database,
                   'comparison': comparison, 'migrations': live['migrations'],
                   'metadata': session.metadata, 'sourceMetadata': source_metadata,
-                  'isolatedProofSha256': hashlib.sha256(args.proof.read_bytes()).hexdigest(),
+                  'isolatedProofSha256': hashlib.sha256(proof_path.read_bytes()).hexdigest(),
                   'originalPgDumpVersion': report.get('pgDumpVersion'),
                   'originalPgRestoreVersion': report.get('pgRestoreVersion', 'not recorded'),
                   'source': current_source, 'restored': live,
                   'legacySourceDataMatches': True,
                   'legacyMetadataTrusted': False,
                   'limitations': 'Existing restoration independently revalidated with live read-only snapshots; not a new backup. Old report has U+FFFD in unit CHECK metadata. Owners/ACL not verified. Previous image provenance claim is not trusted (local placeholder).'}
-        with args.output.open('x', encoding='utf-8') as output:
+        with output_path.open('x', encoding='utf-8') as output:
             json.dump(result, output, ensure_ascii=False, indent=2)
         print(json.dumps({k: result[k] for k in ('status', 'restoredDatabase', 'comparison', 'migrations')}))
         if not verified:

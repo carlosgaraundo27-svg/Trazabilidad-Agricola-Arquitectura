@@ -1,4 +1,4 @@
-﻿"""Run from ordinary PowerShell with working Docker access. Never starts source DBs.
+"""Run from ordinary PowerShell with working Docker access. Never starts source DBs.
 
 Logical dumps + restore into NEW databases only. No physical data-directory access,
 container/volume removal, migrations, seed, permission changes or SDK execution.
@@ -21,7 +21,43 @@ DOCKER = Path(os.environ.get('LOCALAPPDATA', '')) / 'Programs/DockerDesktop/reso
 EXPECTED_SYSTEM_ID = '7707318725026357291'
 
 
+def database_name(value):
+    if not isinstance(value, str) or not re.fullmatch(r'[A-Za-z_][A-Za-z0-9_]{0,62}', value):
+        raise ValueError('Unsupported PostgreSQL database/role identifier')
+    return value
+
+
+def container_name(value):
+    if not isinstance(value, str) or not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_.-]{0,127}', value):
+        raise ValueError('Unsupported Docker container identifier')
+    return value
+
+
+def validate_command(args):
+    if args[:1] == ['inspect'] and len(args) == 2:
+        container_name(args[1])
+        return
+    if args[:2] == ['image', 'inspect'] and len(args) == 3:
+        if not re.fullmatch(r'sha256:[a-f0-9]{64}', args[2]):
+            raise ValueError('Invalid image config digest')
+        return
+    if args[:1] != ['exec']:
+        raise ValueError('Unsupported Docker operation')
+    tail = args[1:]
+    if tail[:1] == ['-i']:
+        tail = tail[1:]
+    if len(tail) < 2 or tail[1] not in ('psql', 'pg_dump', 'pg_restore', 'createdb'):
+        raise ValueError('Unsupported container command')
+    container_name(tail[0])
+    for flag in ('-U', '-d'):
+        if flag in tail:
+            database_name(tail[tail.index(flag) + 1])
+    if tail[1] == 'createdb':
+        database_name(tail[-1])
+
+
 def run(args, *, data=None, stdout=None, timeout=120):
+    validate_command(args)
     r = subprocess.run([str(DOCKER), *args], input=data, stdout=stdout or subprocess.PIPE,
                        stderr=subprocess.PIPE, timeout=timeout)
     if r.returncode:
@@ -57,20 +93,27 @@ def official_postgres_image(image_id):
         return json.loads(body)
 
     for ref in refs:
-        digest = ref.split('@', 1)[1]
-        doc = manifest(digest)
-        if 'manifests' in doc:
-            matches = [m for m in doc['manifests']
-                       if m.get('platform', {}).get('os') == info['Os']
-                       and m.get('platform', {}).get('architecture') == info['Architecture']]
-            for match in matches:
-                doc = manifest(match['digest'])
-                if doc.get('config', {}).get('digest') == image_id:
-                    return {'repositoryDigest': ref, 'platformManifest': match['digest'],
-                            'imageConfigDigest': image_id, 'officialHttpsVerified': True}
-        elif doc.get('config', {}).get('digest') == image_id:
-            return {'repositoryDigest': ref, 'imageConfigDigest': image_id, 'officialHttpsVerified': True}
+        doc = manifest(ref.split('@', 1)[1])
+        proof = platform_image_proof(doc, info, image_id, manifest)
+        if proof is not None:
+            return {'repositoryDigest': ref, **proof}
     raise RuntimeError('Local image config does not match official manifest')
+
+
+def platform_image_proof(doc, info, image_id, manifest):
+    if 'manifests' not in doc:
+        if doc.get('config', {}).get('digest') == image_id:
+            return {'imageConfigDigest': image_id, 'officialHttpsVerified': True}
+        return None
+    matches = [m for m in doc['manifests']
+               if m.get('platform', {}).get('os') == info['Os']
+               and m.get('platform', {}).get('architecture') == info['Architecture']]
+    for match in matches:
+        platform_doc = manifest(match['digest'])
+        if platform_doc.get('config', {}).get('digest') == image_id:
+            return {'platformManifest': match['digest'], 'imageConfigDigest': image_id,
+                    'officialHttpsVerified': True}
+    return None
 
 
 def ident(value):
@@ -80,6 +123,7 @@ def ident(value):
 class Session:
     """Persistent psql transaction holds the snapshot used by pg_dump."""
     def __init__(self, container, user, database, log):
+        container, user, database = container_name(container), database_name(user), database_name(database)
         self.log = log.open('xb')
         self.p = subprocess.Popen([str(DOCKER), 'exec', '-i', container,
                                    'psql', '-X', '-q', '-A', '-t', '-v', 'ON_ERROR_STOP=1',
@@ -162,6 +206,54 @@ def fingerprint(s):
     return result
 
 
+def backup_database(container, user, number, database, dest, report, base):
+    stem = str(number) + '_' + hashlib.sha256(database.encode()).hexdigest()[:12]
+    result = {'database': database, 'status': 'in_progress'}
+    report['results'].append(result)
+    source = Session(container, user, database, dest / (stem + '-source-psql.log'))
+    try:
+        source.start()
+        snapshot = source.sql('SELECT pg_export_snapshot();')[0]
+        if not re.fullmatch(r'[0-9A-F]+-[0-9A-F]+-\d+', snapshot):
+            raise RuntimeError('Unexpected exported snapshot')
+        before = fingerprint(source)
+        archive = dest / (stem + '.dump')
+        with archive.open('xb') as f:
+            run(['exec', container, 'pg_dump', '-U', user, '-d', database,
+                 '--format=custom', '--snapshot=' + snapshot], stdout=f, timeout=300)
+            f.flush()
+            os.fsync(f.fileno())
+        result.update({'dump': archive.name, 'bytes': archive.stat().st_size,
+                       'sha256': hashlib.sha256(archive.read_bytes()).hexdigest(), 'source': before})
+    finally:
+        source.close()
+    data = archive.read_bytes()
+    toc = run(['exec', '-i', container, 'pg_restore', '--list'], data=data)
+    (dest / (stem + '-toc.txt')).write_bytes(toc)
+    restored_db = 'recovery_restore_' + datetime.datetime.now().strftime('%Y%m%d_%H%M%S') + '_' + uuid.uuid4().hex[:10]
+    # Fresh random name and template0. Never --clean, dropdb, schema reset, or an existing target.
+    if run([*base, "SELECT count(*) FROM pg_database WHERE datname='" + restored_db + "'"]).decode().strip() != '0':
+        raise RuntimeError('Target database already exists; refusing overwrite')
+    run(['exec', container, 'createdb', '-U', user, '-T', 'template0', '--', restored_db])
+    result['restoredDatabase'] = restored_db
+    run(['exec', '-i', container, 'pg_restore', '-U', user, '-d', restored_db,
+         '--no-owner', '--no-privileges', '--exit-on-error', '--single-transaction'], data=data, timeout=300)
+    restored = Session(container, user, restored_db, dest / (stem + '-restore-psql.log'))
+    try:
+        restored.start()
+        after = fingerprint(restored)
+    finally:
+        restored.close()
+    result.update({'restored': after, **compare_snapshots(before, after)})
+    if not result['matchesSnapshot'] or not result['foreignKeysValid']:
+        result['status'] = 'failed_validation'
+        raise RuntimeError('Restoration differs from source snapshot; evidence preserved, no retry/overwrite')
+    result['status'] = 'restored_and_verified'
+    (dest / 'resultado.json').write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding='utf-8')
+    print(json.dumps({'database': database, 'restoredDatabase': restored_db,
+                      'status': result['status'], 'backup': str(archive)}))
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--source-container', required=True)
@@ -171,8 +263,10 @@ def main():
     p.add_argument('--expected-system-id', default=EXPECTED_SYSTEM_ID)
     p.add_argument('--execute', action='store_true', help='Dump and restore into newly created databases; otherwise inspect only')
     args = p.parse_args()
-    if not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_.-]*', args.source_container):
-        p.error('Invalid container name')
+    container_name(args.source_container)
+    database_name(args.user)
+    for database in args.database or []:
+        database_name(database)
     if not DOCKER.is_file():
         raise RuntimeError('Verified Docker Desktop client path unavailable')
     # Authenticode check without changing execution policy, permissions or exclusions.
@@ -203,6 +297,8 @@ def main():
     if not args.execute:
         return
     selected = databases if args.all_user_databases else (args.database or ['trazabilidad'])
+    for database in selected:
+        database_name(database)
     if any(v not in databases for v in selected):
         raise RuntimeError('Database does not exist; no source databases are created')
     dest = ROOT / ('datos-logicos_' + datetime.datetime.now().strftime('%Y%m%d_%H%M%S') + '_' + uuid.uuid4().hex[:6])
@@ -212,51 +308,7 @@ def main():
     (dest / 'PRIVADO.txt').write_text('Private logical database backups. Do not upload or commit. May contain sessions and password hashes.\n')
     try:
         for number, database in enumerate(selected):
-            stem = str(number) + '_' + hashlib.sha256(database.encode()).hexdigest()[:12]
-            result = {'database': database, 'status': 'in_progress'}
-            report['results'].append(result)
-            source = Session(args.source_container, args.user, database, dest / (stem + '-source-psql.log'))
-            try:
-                source.start()
-                snapshot = source.sql('SELECT pg_export_snapshot();')[0]
-                if not re.fullmatch(r'[0-9A-F]+-[0-9A-F]+-\d+', snapshot):
-                    raise RuntimeError('Unexpected exported snapshot')
-                before = fingerprint(source)
-                archive = dest / (stem + '.dump')
-                with archive.open('xb') as f:
-                    run(['exec', args.source_container, 'pg_dump', '-U', args.user, '-d', database,
-                         '--format=custom', '--snapshot=' + snapshot], stdout=f, timeout=300)
-                    f.flush()
-                    os.fsync(f.fileno())
-                result.update({'dump': archive.name, 'bytes': archive.stat().st_size,
-                               'sha256': hashlib.sha256(archive.read_bytes()).hexdigest(), 'source': before})
-            finally:
-                source.close()
-            data = archive.read_bytes()
-            toc = run(['exec', '-i', args.source_container, 'pg_restore', '--list'], data=data)
-            (dest / (stem + '-toc.txt')).write_bytes(toc)
-            restored_db = 'recovery_restore_' + datetime.datetime.now().strftime('%Y%m%d_%H%M%S') + '_' + uuid.uuid4().hex[:10]
-            # Fresh random name and template0. Never --clean, dropdb, schema reset, or an existing target.
-            if run([*base, "SELECT count(*) FROM pg_database WHERE datname='" + restored_db + "'"]).decode().strip() != '0':
-                raise RuntimeError('Target database already exists; refusing overwrite')
-            run(['exec', args.source_container, 'createdb', '-U', args.user, '-T', 'template0', '--', restored_db])
-            result['restoredDatabase'] = restored_db
-            run(['exec', '-i', args.source_container, 'pg_restore', '-U', args.user, '-d', restored_db,
-                 '--no-owner', '--no-privileges', '--exit-on-error', '--single-transaction'], data=data, timeout=300)
-            restored = Session(args.source_container, args.user, restored_db, dest / (stem + '-restore-psql.log'))
-            try:
-                restored.start()
-                after = fingerprint(restored)
-            finally:
-                restored.close()
-            result.update({'restored': after, **compare_snapshots(before, after)})
-            if not result['matchesSnapshot'] or not result['foreignKeysValid']:
-                result['status'] = 'failed_validation'
-                raise RuntimeError('Restoration differs from source snapshot; evidence preserved, no retry/overwrite')
-            result['status'] = 'restored_and_verified'
-            (dest / 'resultado.json').write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding='utf-8')
-            print(json.dumps({'database': database, 'restoredDatabase': restored_db,
-                              'status': result['status'], 'backup': str(archive)}))
+            backup_database(args.source_container, args.user, number, database, dest, report, base)
     except Exception as e:
         report['error'] = str(e)
         raise

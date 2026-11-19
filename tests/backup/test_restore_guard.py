@@ -12,6 +12,19 @@ from snapshot_compare import RESTORED_CHECK
 
 
 class RestoreGuard(unittest.TestCase):
+    def test_session_and_run_reject_option_injection_before_any_process(self):
+        with patch.object(restore_docker.subprocess, 'Popen') as popen, \
+             patch.object(restore_docker.subprocess, 'run') as run:
+            for container, user, database in [('container', '--help', 'fixture'),
+                                               ('container', 'demo', 'postgres://other/db'),
+                                               ('--privileged', 'demo', 'fixture')]:
+                with self.subTest(user=user), self.assertRaises(ValueError):
+                    restore_docker.Session(container, user, database, Path('never-created.log'))
+            with self.assertRaises(ValueError):
+                restore_docker.run(['exec', 'container', 'psql', '-U', '--help', '-d', 'fixture'])
+            popen.assert_not_called()
+            run.assert_not_called()
+
     def exercise(self, restored):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

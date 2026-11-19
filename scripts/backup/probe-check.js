@@ -87,8 +87,8 @@ try {
         } finally {
           await client.query("ROLLBACK TO SAVEPOINT sample");
         }
-        const expected =
-          value === null && notNull ? "23502" : accepted ? "accepted" : "23514";
+        let expected = accepted ? "accepted" : "23514";
+        if (value === null && notNull) expected = "23502";
         assert.equal(code, expected, `${table}: ${value}`);
         outcomes.push({ definition: label, notNull, value, code });
       }

@@ -1,5 +1,7 @@
 # Modelo C4 — Acopio, Calidad, QR y Logística académicos
 
+**Incremento servidor A, 2026-11-19, rama dependiente de #7:** B1 incorpora PUT sync dentro de H; S revalida sesión/rol vigente y P asignación bajo la misma UoW, O1/PostgreSQL conserva recibos inmutables por organización/captura. [Contrato/plan](../03-diseno-de-software/10-plan-incrementos-offline.md). No hay nuevo contenedor, cliente M1, almacén L1 ni ejecución Flutter; la captura local sigue fuera del corte. Solo probado en DB nuevas con008; demo001–007 intacta. Las vistas previas conservan el recorrido online.
+
 Revisión 2026-11-16. Estas vistas representan Acceso, Productores, Cosecha/pre-lotes, Acopio, Calidad manual, Trazabilidad, publicación QR y Logística, con Express 5, React/Vite y PostgreSQL 18. Las decisiones son del usuario para prototipo académico: sin validación agrícola ni aprobación docente. [ADR-009/010](../02-arquitectura/07-decisiones-primer-recorrido.md), ADR-012/013 y [ADR-014](../02-arquitectura/11-decisiones-inventario-despacho.md) conservan sus límites. La [arquitectura objetivo](modelo-c4-objetivo.md) mantiene offline, pallets, parciales, ETL y demás capacidades pendientes. Redis solo almacena DTO público; no hay mediciones de mejora de rendimiento ni caché de stock.
 
 Los identificadores S1/W1/B1/O1/S/P/H/Q/T1 mantienen continuidad con el diseño objetivo. Contenedor C4 significa aplicación o almacén lógico; no equivale a una imagen Docker. El portal W1 se ejecuta en el navegador y sus archivos compilados se sirven desde B1.
@@ -259,3 +261,18 @@ flowchart TD
 G conserva A=H+T+E y R como subconjunto de H. Admisión única y explícita, sin backfill; reserva sin TTL; salida H→T; entrega T→E sin segundo descuento. Comando bloquea clave→lote→entrada→despacho y revalida versiones, elegibilidad y stock dentro de la transacción. Operación/movimiento/evento/guía/entrega/audit/request se confirman juntos; detalle/historia bloquean entrada compartida. FK compuestas y triggers protegen ámbito/identidad/históricos. El registro inmutable de guías conserva referencias anteriores incluso tras corrección o cancelación; alcance de unicidad académico org/centro.
 
 Sin flecha G→R1/T2: ni stock ni transporte pasan por caché/DTO público. Sin empaque/pallets, parciales, devoluciones ni edición ordinaria posterior a salida; RF-10 parcial. [Especificación](../03-diseno-de-software/07-especificacion-inventario-despacho-entrega.md), [evidencias](../05-sprint01/inventario-implementacion.md). Estas vistas no prueban CD, capacidad bajo carga ni aprobación docente/agrícola.
+
+## 11. C4 — Recibo estable del servidor A dentro de H
+
+```mermaid
+flowchart LR
+  HTTP["harvest-sync-http: PUT, CSRF existente, cuota y DTO"] --> H["harvest/sync-application: identidad y UoW"]
+  H --> S["S: sesión activa y rol actual, FOR SHARE"]
+  H --> P["P: parcela y asignación vigente"]
+  H --> REC["H: record dentro de la misma UoW"]
+  H --> REP["H: sync-repository, lock por organización/captura"]
+  REP --> PG[("O1 PostgreSQL: recibos inmutables, 008")]
+  REC --> PG
+```
+
+Solo servidor probado. El consumidor Flutter/SQLite aún no existe; no añadirlo como contenedor implementado. Replay lee el resultado persistido después de autorizar, sin recrear historia. Redis y DTO QR no reciben capturas, recibos ni credenciales. [Aceptación/evidencia A](../05-sprint01/incremento-offline-A.md).

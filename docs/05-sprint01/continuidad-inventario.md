@@ -1,5 +1,19 @@
 # Continuidad — Inventario, Reserva, Despacho y Entrega
 
+## Estado vigente — servidor A separado y publicación bloqueada, 2026-11-19
+
+Carpeta única conservada: `C:\Users\leona\Documents\Proyect_Final_Arquitectura\RECUPERADO_20261117_213508\repos\repo-inventario`. Rama activa **feat/offline-servidor-recibos**, base **dd18ced**, código en **d282d1b/25a2a81**; commit documental actual con `git rev-parse HEAD`. La rama local **feat/inventario-despacho-entrega** avanzó por comparación de referencia22c6e4f→dd18ced conservando19b291d/0256966/dd18ced; **fix/demo-recuperada-inventario** sigue en dd18ced. Sin force, squash, merge o cambio del origin/bundle. [Plan A–D](../03-diseno-de-software/10-plan-incrementos-offline.md), [implementación/evidencias/SDK](incremento-offline-A.md).
+
+Publicación autorizada intentada y bloqueada: Schannel sin credenciales; OpenSSL, con TLS válido, no puede usar wincredman. No se cambió almacén/permisos/políticas. PR #7 consultado de nuevo: **abierto, sin fusionar, remoto22c6e4f**; verify histórico falla en audit, Compose histórico aprobado. Auditoría **completa actual dd18ced aprobada**, sin package/lock cambiados; no convierte CI remoto en verde. Comando de avance directo para PowerShell normal en la evidencia; no publicar A sobre la rama de #7. Faltan resultado de ese push y checks del SHA efectivamente publicado. Los20 avisos/nueve críticos DDL siguen abiertos, sin análisis de A remoto ni gate reducido.
+
+Servidor A implementado/probado en DB **nuevas offline_a_***: PUT sync, canonización, recibo inmutable, dueño fijo y UoW compartida para alta/audit/recibo; revalida sesión/rol/asignación después de esperar identidad y antes de replay. Migración008 aditiva, sin backfill; down con recibos bloqueado. **25 unitarias,128 integración PostgreSQL y17 E2E**, formato/contratos/build aprobados. Pérdida real de respuesta postcommit, nuevo proceso Node, carreras y rollback incluidos. No equivale a Android/offline completo ni CD; B–D siguen planificados.
+
+**Demo preservada, no migrada:** inventory_demo_20261118_151800 mantiene001–007 y huellas de todas las tablas iguales; ledger73.125kg sin doble descuento. Al leer estado final,3026 no respondía; no se arrancó ni regeneró la demo. Para operarla con su versión anterior: guardar/commit de trabajo, `git switch fix/demo-recuperada-inventario`, después `node .local/reactivacion-C-20261118/servidor.mjs`; Ctrl+C o `parar` detiene esa consola. No ejecutar migrate/seed del incremento A contra demo.env.
+
+No se encontró resultado nuevo del respaldo/restauración en ubicaciones previstas ni se recibió ruta/salida del usuario: **pendiente de verificar**, no declarar que terminó. No repetir Docker denegado; bloque único anterior conservado. Capturas de lectura no son dumps. Flutter/Dart no están en PATH; dart.exe señalado sigue ausente. ZIP coincide con registro previo; HEAD oficial actual expone CRC32C, sin nueva comparación MD5 ni prueba de seguridad. No ejecutar/restaurar SDK o seguir sus antiguos comandos de bootstrap. D: pospuesto y kit intacto.
+
+Siguiente: recibir/verificar backup/restauración y push normal de #7, comprobar CI de su SHA; después revisar A como rama dependiente. B requiere herramientas de procedencia verificable y NA-01–08 real en Android; no implementado. Sin aprobación docente/agrícola. Este bloque prevalece sobre estados actuales históricos inferiores.
+
 ## Estado vigente — continuar en C:, traslado pospuesto, 2026-11-18
 
 Carpeta única: `C:\Users\leona\Documents\Proyect_Final_Arquitectura\RECUPERADO_20261117_213508\repos\repo-inventario`. Rama **fix/demo-recuperada-inventario**, HEAD al iniciar **0256966abc7d578464017dae7bb0e700653f4f1e**, limpio; los cambios nuevos de esta tarea son documentales y su SHA se obtiene con `git rev-parse HEAD`. Conservar originales/respaldos y el kit MIGRACION_D_20261118_215214 intactos. D: no se activa ni sus checks bloquean C:.

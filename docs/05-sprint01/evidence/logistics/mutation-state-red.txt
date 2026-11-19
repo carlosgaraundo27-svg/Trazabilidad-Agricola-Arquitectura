@@ -1,0 +1,64 @@
+▶ Inventario y despacho HTTP/PostgreSQL conservan masa y autorización
+  ✔ instantes de salida y entrega conservan milisegundos de la API sin truncamiento oculto (188.7361ms)
+  ✔ guía normalizada no se reutiliza tras corrección ni cancelación (272.5251ms)
+  ✔ doble admisión y replay concurrentes conservan un solo ingreso (326.2651ms)
+  ✔ calidad pendiente, draft, observada y rechazada impiden liberar; accepted no autoriza solo (562.6643ms)
+  ✔ dos reservas distintas, stock insuficiente y cancelación liberan exactamente el saldo (214.7583ms)
+  ✔ doble salida y salida contra cancelación tienen un solo ganador (330.9013ms)
+  ✖ entrega distinta o prematura no fabrica pérdidas; dos confirmaciones no duplican entrega (165.7056ms)
+  ✔ permisos por acción, centro y organización y revocación antes de replay (251.8125ms)
+  ✔ transporte privado no altera el DTO público QR ni autoriza publicación (168.8943ms)
+  ✖ reserva, salida y entrega total no descuentan dos veces y replay es estable (160.5699ms)
+  ✔ admisión explícita única por cantidad real en cuarentena (7.7329ms)
+✖ Inventario y despacho HTTP/PostgreSQL conservan masa y autorización (3040.3211ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 9
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3449.5931
+
+✖ failing tests:
+
+test at tests\integration\logistics.test.js:414:11
+✖ entrega distinta o prematura no fabrica pérdidas; dos confirmaciones no duplican entrega (165.7056ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  500 !== 409
+
+      at TestContext.<anonymous> (file:///C:/Users/leona/Documents/Proyect_Final_Arquitectura/repo-inventario/tests/integration/logistics.test.js:446:14)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async TestContext.<anonymous> (file:///C:/Users/leona/Documents/Proyect_Final_Arquitectura/repo-inventario/tests/integration/logistics.test.js:414:3)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 500,
+    expected: 409,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\integration\logistics.test.js:578:11
+✖ reserva, salida y entrega total no descuentan dos veces y replay es estable (160.5699ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  500 !== 409
+
+      at TestContext.<anonymous> (file:///C:/Users/leona/Documents/Proyect_Final_Arquitectura/repo-inventario/tests/integration/logistics.test.js:676:14)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async TestContext.<anonymous> (file:///C:/Users/leona/Documents/Proyect_Final_Arquitectura/repo-inventario/tests/integration/logistics.test.js:578:3)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 500,
+    expected: 409,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+

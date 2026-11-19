@@ -1,0 +1,204 @@
+{
+  "at": "2026-11-18T20:43:50.901505+00:00",
+  "baseCommit": "22c6e4f61bf2f575b0106af1d262a0b11de8c040",
+  "branch": "fix/demo-recuperada-inventario",
+  "mode": "functional reconstruction with NEW fictional data; NOT recovery of prior Inventory records",
+  "demo": {
+    "url": "http://127.0.0.1:3026",
+    "database": "inventory_demo_20261118_151800",
+    "migrations": [
+      "001",
+      "002",
+      "003",
+      "004",
+      "005",
+      "006",
+      "007"
+    ],
+    "completedShipment": {
+      "state": "delivered",
+      "quantityKg": "73.125",
+      "onHandKg": "0.000",
+      "inTransitKg": "0.000",
+      "deliveredKg": "73.125"
+    },
+    "events": [
+      {
+        "kind": "admitted",
+        "admittedKg": "73.125",
+        "onHandKg": "73.125",
+        "reservedKg": "0.000",
+        "unreservedKg": "73.125",
+        "inTransitKg": "0.000",
+        "deliveredKg": "0.000"
+      },
+      {
+        "kind": "released",
+        "admittedKg": "73.125",
+        "onHandKg": "73.125",
+        "reservedKg": "0.000",
+        "unreservedKg": "73.125",
+        "inTransitKg": "0.000",
+        "deliveredKg": "0.000"
+      },
+      {
+        "kind": "created",
+        "admittedKg": "73.125",
+        "onHandKg": "73.125",
+        "reservedKg": "0.000",
+        "unreservedKg": "73.125",
+        "inTransitKg": "0.000",
+        "deliveredKg": "0.000"
+      },
+      {
+        "kind": "reserved",
+        "admittedKg": "73.125",
+        "onHandKg": "73.125",
+        "reservedKg": "73.125",
+        "unreservedKg": "0.000",
+        "inTransitKg": "0.000",
+        "deliveredKg": "0.000"
+      },
+      {
+        "kind": "dispatched",
+        "admittedKg": "73.125",
+        "onHandKg": "0.000",
+        "reservedKg": "0.000",
+        "unreservedKg": "0.000",
+        "inTransitKg": "73.125",
+        "deliveredKg": "0.000"
+      },
+      {
+        "kind": "delivered",
+        "admittedKg": "73.125",
+        "onHandKg": "0.000",
+        "reservedKg": "0.000",
+        "unreservedKg": "0.000",
+        "inTransitKg": "0.000",
+        "deliveredKg": "73.125"
+      }
+    ],
+    "deliveryReplayHttp": 200,
+    "deliveryNewKeyAfterCompletionHttp": 409,
+    "ledgerUnchangedOnReplayAndRejection": true,
+    "applicationRestartPersistence": true,
+    "databaseOrContainerRestartTested": false,
+    "uiWidths": [
+      390,
+      1440
+    ]
+  },
+  "checks": {
+    "unit": {
+      "passed": 23,
+      "failed": 0
+    },
+    "integration": {
+      "passed": 113,
+      "failed": 0,
+      "database": "inventory_int_20261118_151800"
+    },
+    "e2eFocused": {
+      "passed": 4,
+      "failed": 0
+    },
+    "e2eFull": {
+      "passed": 17,
+      "failed": 0,
+      "database": "inventory_e2e_20261118_151800"
+    },
+    "navigationRegression": {
+      "red": "UI visible but load awaited held secondary resource",
+      "green": "document commit + visible UI while secondary resource still held"
+    },
+    "static": [
+      {
+        "name": "unit",
+        "args": [
+          "test"
+        ],
+        "exit": 0
+      },
+      {
+        "name": "check",
+        "args": [
+          "run",
+          "check"
+        ],
+        "exit": 0
+      },
+      {
+        "name": "format",
+        "args": [
+          "run",
+          "format:check"
+        ],
+        "exit": 0
+      },
+      {
+        "name": "build",
+        "args": [
+          "run",
+          "build"
+        ],
+        "exit": 0
+      }
+    ]
+  },
+  "security": {
+    "fullAuditExit": 0,
+    "vulnerabilities": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    },
+    "picomatchVersion": "4.0.7",
+    "dependencyFilesChanged": false,
+    "advisoryWithdrawnAt": "2026-11-18T15:38:56Z",
+    "officialPatchedVersion": null,
+    "advisory": "https://github.com/advisories/GHSA-fc5q-39xc-vjpf",
+    "maintainerComment": "https://github.com/micromatch/picomatch/pull/235#issuecomment-6315749381",
+    "note": "Audit became green after upstream withdrawal, not a code patch. Existing patterns must remain trusted. No security exceptions or gate changes."
+  },
+  "dataLimits": {
+    "dockerAttemptsThisSession": 1,
+    "dockerAccess": "denied",
+    "actualContainerAndVolumeConfirmed": false,
+    "logicalDumpCreated": false,
+    "restorePerformed": false,
+    "priorInventoryDemoRecovered": false,
+    "historicalDemo": "trazabilidad migration001 with two pre-lots, not complete Inventory",
+    "oldRecoveryDatabases": "fixture/test records from 2026-11-17; not prior operational demo",
+    "manualNextStep": "normal PowerShell inventory + verified logical backup and restore into new databases only"
+  },
+  "sonar": {
+    "open": 20,
+    "criticalDdlMaintainability": 9,
+    "reanalysed": false
+  },
+  "remoteCi": {
+    "newCommitPublished": false,
+    "latestPr7ChecksRechecked": false,
+    "note": "Do not transfer local check results onto historical remote runs"
+  },
+  "migrationHashes": {
+    "001_initial.down.sql": "090d640f5c4a5b8c8e54953e60503e1cd7adea38fd024d0893117aec24d387c0",
+    "001_initial.up.sql": "c38bb5c57b66cd316696b39bfd6948a5b77801719ea034f65d9cab8db50445e8",
+    "002_intake.down.sql": "4eb6e09f7ab9027128984b4ae71be4d4e1262e922c9ab415547f1c592ee6a467",
+    "002_intake.up.sql": "40406b26d1f0f45837175d75856193c45882b25ed699400966f905193e9e054d",
+    "003_quality.down.sql": "d44dc9bc0e973f91fa63e3317d371d4a4647ecff4157255b51a2837b52a98494",
+    "003_quality.up.sql": "327f3f43416447768b407d61c40523b2a16c39663a5aa0a3f42ce62fbdd8ce32",
+    "004_receipt_temperature.down.sql": "ad1c22da46a98b62472b052b1eff54e867b5fd4f1aec108e93842a1b8907b342",
+    "004_receipt_temperature.up.sql": "b57d0e5a8d3efc11fb4cd883dd143f37c73f37a4714e086a1a0d31298fb04d79",
+    "005_publication.down.sql": "3111ef5fd02c6bccdded7cb793d438778d72764287dd7f6640a36c88d8bccaa0",
+    "005_publication.up.sql": "370501074150e7a42e592afbce6893faf6f5cdb535407cbe014c4a92db8568f0",
+    "006_inventory.down.sql": "8285359d83ff4402c297d1a43508f1f99ded8f503b0aa1be6be1f6e2cd832ec2",
+    "006_inventory.up.sql": "6a3bf10d0701ae639724c4fc0f40d7a48222c5bb34bba91836fc20174123c2a9",
+    "007_shipments.down.sql": "86bc6a92073c7c333789740f3d718c9b4bf43f873e9e09f2a30ed33cde3cdc68",
+    "007_shipments.up.sql": "6f295834453f3c80a66ad885047155c91c047d501323849a3296e45443fe69a6"
+  },
+  "testedCodeCommit": "19b291dc74887b1241bc84f461737a73384fef61"
+}

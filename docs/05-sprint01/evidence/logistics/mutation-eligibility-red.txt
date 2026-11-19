@@ -1,0 +1,210 @@
+▶ Inventario y despacho HTTP/PostgreSQL conservan masa y autorización
+  ✖ instantes de salida y entrega conservan milisegundos de la API sin truncamiento oculto (141.9062ms)
+  ✖ guía normalizada no se reutiliza tras corrección ni cancelación (111.3892ms)
+  ✔ doble admisión y replay concurrentes conservan un solo ingreso (312.7005ms)
+  ✖ calidad pendiente, draft, observada y rechazada impiden liberar; accepted no autoriza solo (98.5765ms)
+  ✖ dos reservas distintas, stock insuficiente y cancelación liberan exactamente el saldo (125.6968ms)
+  ✖ doble salida y salida contra cancelación tienen un solo ganador (109.8186ms)
+  ✖ entrega distinta o prematura no fabrica pérdidas; dos confirmaciones no duplican entrega (110.4369ms)
+  ✖ permisos por acción, centro y organización y revocación antes de replay (235.0611ms)
+  ✖ transporte privado no altera el DTO público QR ni autoriza publicación (100.7034ms)
+  ✖ reserva, salida y entrega total no descuentan dos veces y replay es estable (110.5796ms)
+  ✔ admisión explícita única por cantidad real en cuarentena (10.7305ms)
+✖ Inventario y despacho HTTP/PostgreSQL conservan masa y autorización (1916.817ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 2
+ℹ fail 10
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2328.8592
+
+✖ failing tests:
+
+test at tests\integration\logistics.test.js:169:11
+✖ instantes de salida y entrega conservan milisegundos de la API sin truncamiento oculto (141.9062ms)
+  AssertionError [ERR_ASSERTION]: {"error":{"code":"QUALITY_NOT_APPROVED","message":"Se requiere evaluación de Calidad cerrada con resultado Aprobado.","requestId":"a2d168ca-6ba5-462d-9d03-51ee1146caf9"}}
+
+  422 !== 201
+
+      at prepare (file:///C:/Users/leona/Documents/Proyect_Final_Arquitectura/repo-inventario/tests/integration/logistics.test.js:100:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (file:///C:/Users/leona/Documents/Proyect_Final_Arquitectura/repo-inventario/tests/integration/logistics.test.js:172:17)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async TestContext.<anonymous> (file:///C:/Users/leona/Documents/Proyect_Final_Arquitectura/repo-inventario/tests/integration/logistics.test.js:169:3)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 422,
+    expected: 201,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\integration\logistics.test.js:201:11
+✖ guía normalizada no se reutiliza tras corrección ni cancelación (111.3892ms)
+  AssertionError [ERR_ASSERTION]: {"error":{"code":"QUALITY_NOT_APPROVED","message":"Se requiere evaluación de Calidad cerrada con resultado Aprobado.","requestId":"abb32ea9-ec13-4a75-8a99-f0c956831cfb"}}
+
+  422 !== 201
+
+      at prepare (file:///C:/Users/leona/Documents/Proyect_Final_Arquitectura/repo-inventario/tests/integration/logistics.test.js:100:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (file:///C:/Users/leona/Documents/Proyect_Final_Arquitectura/repo-inventario/tests/integration/logistics.test.js:204:21)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async TestContext.<anonymous> (file:///C:/Users/leona/Documents/Proyect_Final_Arquitectura/repo-inventario/tests/integration/logistics.test.js:201:3)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 422,
+    expected: 201,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\integration\logistics.test.js:301:11
+✖ calidad pendiente, draft, observada y rechazada impiden liberar; accepted no autoriza solo (98.5765ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  500 !== 422
+
+      at TestContext.<anonymous> (file:///C:/Users/leona/Documents/Proyect_Final_Arquitectura/repo-inventario/tests/integration/logistics.test.js:313:16)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async TestContext.<anonymous> (file:///C:/Users/leona/Documents/Proyect_Final_Arquitectura/repo-inventario/tests/integration/logistics.test.js:301:3)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 500,
+    expected: 422,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\integration\logistics.test.js:328:11
+✖ dos reservas distintas, stock insuficiente y cancelación liberan exactamente el saldo (125.6968ms)
+  AssertionError [ERR_ASSERTION]: {"error":{"code":"QUALITY_NOT_APPROVED","message":"Se requiere evaluación de Calidad cerrada con resultado Aprobado.","requestId":"072cebda-e0f8-452a-b9d1-d5c31855cc7a"}}
+
+  422 !== 201
+
+      at prepare (file:///C:/Users/leona/Documents/Proyect_Final_Arquitectura/repo-inventario/tests/integration/logistics.test.js:100:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (file:///C:/Users/leona/Documents/Proyect_Final_Arquitectura/repo-inventario/tests/integration/logistics.test.js:331:17)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async TestContext.<anonymous> (file:///C:/Users/leona/Documents/Proyect_Final_Arquitectura/repo-inventario/tests/integration/logistics.test.js:328:3)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 422,
+    expected: 201,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\integration\logistics.test.js:379:11
+✖ doble salida y salida contra cancelación tienen un solo ganador (109.8186ms)
+  AssertionError [ERR_ASSERTION]: {"error":{"code":"QUALITY_NOT_APPROVED","message":"Se requiere evaluación de Calidad cerrada con resultado Aprobado.","requestId":"afa05dc1-afc7-45ab-9caf-0891b1b1442d"}}
+
+  422 !== 201
+
+      at prepare (file:///C:/Users/leona/Documents/Proyect_Final_Arquitectura/repo-inventario/tests/integration/logistics.test.js:100:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (file:///C:/Users/leona/Documents/Proyect_Final_Arquitectura/repo-inventario/tests/integration/logistics.test.js:383:19)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async TestContext.<anonymous> (file:///C:/Users/leona/Documents/Proyect_Final_Arquitectura/repo-inventario/tests/integration/logistics.test.js:379:3)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 422,
+    expected: 201,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\integration\logistics.test.js:414:11
+✖ entrega distinta o prematura no fabrica pérdidas; dos confirmaciones no duplican entrega (110.4369ms)
+  AssertionError [ERR_ASSERTION]: {"error":{"code":"QUALITY_NOT_APPROVED","message":"Se requiere evaluación de Calidad cerrada con resultado Aprobado.","requestId":"92e56890-3507-440c-a59c-95277e78940a"}}
+
+  422 !== 201
+
+      at prepare (file:///C:/Users/leona/Documents/Proyect_Final_Arquitectura/repo-inventario/tests/integration/logistics.test.js:100:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (file:///C:/Users/leona/Documents/Proyect_Final_Arquitectura/repo-inventario/tests/integration/logistics.test.js:417:17)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async TestContext.<anonymous> (file:///C:/Users/leona/Documents/Proyect_Final_Arquitectura/repo-inventario/tests/integration/logistics.test.js:414:3)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 422,
+    expected: 201,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\integration\logistics.test.js:474:11
+✖ permisos por acción, centro y organización y revocación antes de replay (235.0611ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  422 !== 201
+
+      at TestContext.<anonymous> (file:///C:/Users/leona/Documents/Proyect_Final_Arquitectura/repo-inventario/tests/integration/logistics.test.js:502:14)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async TestContext.<anonymous> (file:///C:/Users/leona/Documents/Proyect_Final_Arquitectura/repo-inventario/tests/integration/logistics.test.js:474:3)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 422,
+    expected: 201,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\integration\logistics.test.js:535:11
+✖ transporte privado no altera el DTO público QR ni autoriza publicación (100.7034ms)
+  AssertionError [ERR_ASSERTION]: {"error":{"code":"QUALITY_NOT_APPROVED","message":"Se requiere evaluación de Calidad cerrada con resultado Aprobado.","requestId":"de0bffdf-abd2-479c-bc3b-41d3bbd7131a"}}
+
+  422 !== 201
+
+      at prepare (file:///C:/Users/leona/Documents/Proyect_Final_Arquitectura/repo-inventario/tests/integration/logistics.test.js:100:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async TestContext.<anonymous> (file:///C:/Users/leona/Documents/Proyect_Final_Arquitectura/repo-inventario/tests/integration/logistics.test.js:538:17)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async TestContext.<anonymous> (file:///C:/Users/leona/Documents/Proyect_Final_Arquitectura/repo-inventario/tests/integration/logistics.test.js:535:3)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 422,
+    expected: 201,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\integration\logistics.test.js:578:11
+✖ reserva, salida y entrega total no descuentan dos veces y replay es estable (110.5796ms)
+  AssertionError [ERR_ASSERTION]: {"error":{"code":"QUALITY_NOT_APPROVED","message":"Se requiere evaluación de Calidad cerrada con resultado Aprobado.","requestId":"a3fdde6a-be04-4f05-b093-c2bba8301659"}}
+
+  422 !== 201
+
+      at TestContext.<anonymous> (file:///C:/Users/leona/Documents/Proyect_Final_Arquitectura/repo-inventario/tests/integration/logistics.test.js:595:14)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async TestContext.<anonymous> (file:///C:/Users/leona/Documents/Proyect_Final_Arquitectura/repo-inventario/tests/integration/logistics.test.js:578:3)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 422,
+    expected: 201,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+

@@ -56,6 +56,32 @@ function preLots() {
     ]),
   );
 }
+function logisticsSnapshot() {
+  return JSON.parse(
+    docker([
+      "compose",
+      "exec",
+      "-T",
+      "db",
+      "psql",
+      "-U",
+      "demo",
+      "-d",
+      "trazabilidad",
+      "-t",
+      "-A",
+      "-c",
+      `SELECT jsonb_build_object(
+    'entries',COALESCE((SELECT jsonb_agg(jsonb_build_array(id,lot_id,admitted_kg,disposition,version) ORDER BY id) FROM inventory.entries),'[]'::jsonb),
+    'movements',COALESCE((SELECT jsonb_agg(jsonb_build_array(id,entry_id,shipment_id,kind,amount_kg) ORDER BY id) FROM inventory.movements),'[]'::jsonb),
+    'shipments',COALESCE((SELECT jsonb_agg(jsonb_build_array(id,entry_id,quantity_kg,state,version) ORDER BY id) FROM logistics.shipments),'[]'::jsonb),
+    'deliveries',COALESCE((SELECT jsonb_agg(jsonb_build_array(shipment_id,received_kg,delivered_at) ORDER BY shipment_id) FROM logistics.deliveries),'[]'::jsonb),
+    'events',COALESCE((SELECT jsonb_agg(id ORDER BY id) FROM inventory.events),'[]'::jsonb),
+    'requests',COALESCE((SELECT jsonb_agg(jsonb_build_array(actor_id,request_key) ORDER BY actor_id,request_key) FROM inventory.requests),'[]'::jsonb),
+    'guides',COALESCE((SELECT jsonb_agg(jsonb_build_array(organization_id,center_id,reference,shipment_id) ORDER BY organization_id,center_id,reference) FROM logistics.guide_references),'[]'::jsonb))`,
+    ]),
+  );
+}
 try {
   docker(["version"]);
   if (docker(["info", "--format", "{{.OSType}}"]) !== "linux")
@@ -63,6 +89,7 @@ try {
   docker(["compose", "config", "--quiet"]);
   if (restart) {
     result.before = preLots();
+    result.beforeLogistics = logisticsSnapshot();
     docker(["compose", "down"]);
   }
   docker([
@@ -91,6 +118,13 @@ try {
   if (!restart)
     docker(["compose", "exec", "-T", "app", "node", "scripts/seed.js"]);
   result.after = preLots();
+  result.afterLogistics = logisticsSnapshot();
+  if (
+    restart &&
+    JSON.stringify(result.beforeLogistics) !==
+      JSON.stringify(result.afterLogistics)
+  )
+    throw new Error("Logistics facts or quantities changed after restart");
   if (restart && result.before.some((id) => !result.after.includes(id)))
     throw new Error("A previously stored pre-lot is missing");
   result.url = "http://localhost:" + (process.env.APP_PORT || "3000");

@@ -3,6 +3,7 @@ import { api } from "./api.js";
 import { Intake } from "./intake/Intake.jsx";
 import { Quality } from "./quality/Quality.jsx";
 import { PublicationAdmin } from "./publication/PublicationAdmin.jsx";
+import { Logistics } from "./logistics/Logistics.jsx";
 export function Workspace({ user, origin }) {
   const [centers, setCenters] = useState(null),
     [error, setError] = useState(""),
@@ -26,6 +27,18 @@ export function Workspace({ user, origin }) {
     quality = scoped("quality:read"),
     publication = scoped("publication:read");
   const views = [];
+  const logistics =
+    centers?.filter(
+      (c) =>
+        c.actions.includes("inventory:read") ||
+        c.actions.includes("shipment:read"),
+    ) ?? [];
+  if (logistics.length)
+    views.push({
+      id: "logistics",
+      label: "Inventario y despachos",
+      content: <Logistics centers={logistics} />,
+    });
   if (origin)
     views.push({ id: "origin", label: "Origen y cosecha", content: origin });
   if (intake.length)
@@ -58,6 +71,7 @@ export function Workspace({ user, origin }) {
         <nav className="workspace-tabs" aria-label="Área de trabajo">
           {views.map((view) => (
             <button
+              type="button"
               key={view.id}
               className="secondary"
               aria-pressed={active === view.id}

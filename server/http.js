@@ -14,6 +14,7 @@ import {
   publicLimiter,
 } from "./publication-http.js";
 import { qualityRouter } from "./quality-http.js";
+import { logisticsRouter } from "./logistics-http.js";
 const loginInput = z
   .object({
     email: z
@@ -182,6 +183,7 @@ export function createApp({
   api.use(intakeRouter(services));
   api.use(publicationRouter(services));
   api.use(qualityRouter(services));
+  api.use(logisticsRouter(services));
   app.use("/api/v1", api);
   app.use("/api", (req, res, next) =>
     next(new AppError(404, "NOT_FOUND", "Ruta no disponible.")),

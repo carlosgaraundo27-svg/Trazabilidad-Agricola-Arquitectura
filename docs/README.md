@@ -53,3 +53,13 @@ Calidad académica implementada: [especificación Q1–Q9 adoptadas para el prot
 ## Publicación pública QR
 
 [Contrato, estados y PQ-01–13](03-diseno-de-software/06-especificacion-publicacion-qr.md), [ADR-013 / ADR-005 / ADR-008](02-arquitectura/10-decisiones-publicacion-qr.md), [guía](../tecnologia/publicacion-qr.md), [evidencia](05-sprint01/evidence/qr/README.md), [revisión e integración de Calidad #4](05-sprint01/revision-pr4.md). Publicación no equivale a aprobar Calidad.
+
+## Inventario, Reserva, Despacho y Entrega
+
+[Especificación D1–D9 adoptadas](03-diseno-de-software/07-especificacion-inventario-despacho-entrega.md), [ADR-014](02-arquitectura/11-decisiones-inventario-despacho.md), [implementación y evidencia](05-sprint01/inventario-implementacion.md), [continuidad](05-sprint01/continuidad-inventario.md). Implementado en PR #7, sin fusionar, sobre main 47d827c. [Corrección de fiabilidad de main](05-sprint01/revision-sonar-main.md), [triage Sonar de Logística](05-sprint01/revision-sonar-logistica.md). RF-10 parcial, sin pallets/empaque. [Matriz de 16 criterios transcritos](05-sprint01/matriz-trabajo-final.md): Fuente: transcripción del estudiante, pendiente de cotejar con el PDF original; SDD por aclarar con la docente.
+
+## Revisión #7 y siguiente incremento propuesto
+
+[Revisión individual de 20 avisos y recorrido](05-sprint01/revision-pr7.md). PR #7 permanece sin fusionar. [Captura offline RF-03/DA01](03-diseno-de-software/08-especificacion-offline-cosecha.md) y [ADR-015 propuesta](02-arquitectura/12-propuesta-offline-movil.md): decisiones O1–O10 pendientes, sin implementar ni sustituir Flutter.
+
+[Diagnóstico picomatch, instalación/auditorías y bloqueo externo](05-sprint01/revision-picomatch.md): sin release corregido compatible disponible; PR #7 sin fusionar. Separado de los 20 avisos Sonar. La propuesta offline concreta O1–O10 sigue pendiente de decisión y prueba nativa.

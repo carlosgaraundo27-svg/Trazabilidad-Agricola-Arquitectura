@@ -1,5 +1,7 @@
 # Sprint 01 — Documentación de Arquitectura y Diseño
 
+[Demo local reconstruida de Inventario (18nov): guía, límites de recuperación y próximos comandos](demo-inventario-recuperada.md).
+
 **Proyecto:** Trazabilidad y Gestión Comercial de Palta Hass  
 **Curso:** Arquitectura de Software (IS-488) — UNSCH, 2026-II  
 **Entregable:** Documentación técnica de análisis, arquitectura y diseño  

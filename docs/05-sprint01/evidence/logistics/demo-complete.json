@@ -1,0 +1,10 @@
+{
+  "fictional": true,
+  "lotId": "5323299e-46a6-40ca-b578-e8461be4c398",
+  "shipmentId": "fc62dfd7-253d-4e47-a6f8-3efca70a15e5",
+  "state": "delivered",
+  "quantityKg": "73.125",
+  "onHandKg": "0.000",
+  "inTransitKg": "0.000",
+  "deliveredKg": "73.125"
+}

@@ -1,0 +1,20 @@
+{"event":"server_started","port":3015}
+
+Running 3 tests using 1 worker
+
+{"event":"server_started","port":3016}
+{"requestId":"3d7c9110-43c0-4119-9a0f-534538b45231","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+  ✓  1 tests\e2e\logistics.spec.js:70:1 › Inventario: cambiar entre despachos con igual versión no conserva formularios ajenos (948ms)
+{"requestId":"fd7e3a77-9df6-42cd-b27e-34bb13d36182","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+  ✓  2 tests\e2e\logistics.spec.js:142:1 › Inventario: recorrido completo, reserva con respuesta perdida y entrega sin doble descuento (1.4s)
+{"requestId":"e434c936-fa12-4267-a70f-99880bbee6a5","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+{"requestId":"b1ddf180-b643-4695-8cbc-3a113c06370c","method":"GET","status":401,"code":"UNAUTHENTICATED"}
+  ✓  3 tests\e2e\logistics.spec.js:260:1 › Inventario: reserva cancelable visible y cuenta de otro centro sin acceso (971ms)
+
+  3 passed (5.6s)
+.env not found. Continuing without it.
+(node:28456) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+.env not found. Continuing without it.
+(node:10812) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

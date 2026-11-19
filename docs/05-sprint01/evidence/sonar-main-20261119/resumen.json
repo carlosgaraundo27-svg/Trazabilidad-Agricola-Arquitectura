@@ -1,0 +1,23 @@
+{
+  "sourceSha": "6f0294d52fe63fac2ab855e1b129688b4c844186",
+  "apiRecords": 144,
+  "open": 128,
+  "closedFixed": 16,
+  "originCounts": {
+    "heredado-anterior-a-Inventario": 98,
+    "nuevo-A-herramientas-PR8": 10,
+    "nuevo-Inventario-PR7": 20
+  },
+  "openTypes": {
+    "VULNERABILITY": 5,
+    "CODE_SMELL": 123
+  },
+  "openSeverity": {
+    "MAJOR": 49,
+    "MINOR": 62,
+    "CRITICAL": 17
+  },
+  "currentReopened": 0,
+  "historicalReopen": "Not verifiable: all144 available changelog responses are empty.",
+  "method": "Match PR7 historical rule/file/message signatures; new backup-tool paths from PR8; remaining current issues inherited. Main keys differ from PR keys."
+}

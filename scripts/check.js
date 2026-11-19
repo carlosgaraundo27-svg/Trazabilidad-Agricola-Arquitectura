@@ -3,6 +3,7 @@ import { execFileSync } from "node:child_process";
 import path from "node:path";
 import SwaggerParser from "@apidevtools/swagger-parser";
 import { parse as parseYaml } from "yaml";
+import { markdownLinks } from "./markdown-links.js";
 for (const module of [
   "access",
   "producers",
@@ -89,8 +90,8 @@ async function walk(dir) {
     }
     if (!filename.endsWith(".md")) continue;
     const text = await readFile(filename, "utf8");
-    for (const match of text.matchAll(/\[[^\]]*\]\(([^)]+)\)/g)) {
-      const link = match[1].split("#")[0];
+    for (const target of markdownLinks(text)) {
+      const link = target.split("#")[0];
       if (!link || new RegExp("^(https?:|mailto:|app:|plugin:|/)").test(link))
         continue;
       await access(

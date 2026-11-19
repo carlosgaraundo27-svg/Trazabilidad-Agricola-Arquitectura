@@ -49,7 +49,7 @@ jobs:
       - run: npm run test:redis
       - run: npm run test:integration
       - run: npm run build
-      - run: npx playwright install --with-deps chromium
+      - run: node node_modules/@playwright/test/cli.js install --with-deps chromium
       - name: Crear base E2E independiente
         run: node --input-type=module -e "import pg from 'pg'; const c = new pg.Client({connectionString:process.env.DATABASE_URL}); await c.connect(); await c.query('CREATE DATABASE e2e'); await c.end();"
       - run: npm run test:e2e
@@ -77,7 +77,7 @@ jobs:
           node-version: "24"
           cache: npm
       - run: npm ci --ignore-scripts
-      - run: npx playwright install --with-deps chromium
+      - run: node node_modules/@playwright/test/cli.js install --with-deps chromium
       - run: node scripts/setup-env.js
       - run: node --env-file=.env scripts/verify-compose.js --test
       - run: node --env-file=.env scripts/test-compose.js

@@ -1,6 +1,20 @@
 # Continuidad — Inventario, Reserva, Despacho y Entrega
 
-## Estado vigente — CHECK equivalente y restauración revalidada, 2026-11-19
+## Estado vigente — diagnóstico Sonar, incidente Dart y reporte propuesto, 2026-11-19
+
+Carpeta activa única en C:, rama fix/sonar-ci-y-enlaces desde main6f0294d. PR #7/#8 ya integrados; no se repitieron merges, recuperación o respaldo. Main mantiene verify/Compose/Sonar aprobados. #9 sigue abierto/en borrador en6e1642b y contiene la preparación documental de B, sin cliente ni validación Android. Su continuidad/matriz más reciente se revisó desde ese commit; esta rama de corrección parte de main y no incorpora por accidente el borrador #9.
+
+**Sonar128:** [diagnóstico e inventario por regla/archivo/impacto](diagnostico-sonar-main-20261119.md). API devuelve144 registros:128 abiertos/16 FIXED. Los128 son98 heredados,20 del incremento Inventario y10 de A/herramientas;123 CODE_SMELL y5 VULNERABILITY,0 BUG abiertos. No REOPENED actual; reaperturas pasadas indeterminadas porque144 respuestas de historial públicas están vacías. No confundir totales de main con delta del PR ni inventar transiciones. Nueve críticos DDL siguen abiertos; no se reescribieron migraciones ni se aceptaron issues o cambiaron gates.
+
+**Corrección separada:** dos usos npx reemplazados por CLI local de Playwright1.65.0 fijado en lock (cuatro avisos de seguridad); regex de enlaces sustituida por recorrido lineal tras reproducir timeout con200000 corchetes.28 unitarias/check/formato locales aprobados; verificar checks del SHA que se publique antes de declararlo verde. Pendiente PATH de docker, de menor impacto, y el resto documentado. Main no recibe estas correcciones mientras el nuevo PR permanezca sin fusionar.
+
+**Android:** [evidencia y candidato oficial](incidente-dart-y-alternativa.md). B sigue bloqueado. Borrador privado para soporte en .local/sonar-reportes-20261119/BORRADOR-SOPORTE-KASPERSKY.md, sin envío. ZIP Dart anterior rehash coincide; hash del ejecutable/evento/fecha exacta no disponibles. Candidato Flutter3.47.9/Dart3.13.7 con metadatos oficiales/engine distinto, HEAD200 y SHA esperado; no descargado/escaneado/ejecutado ni declarado limpio. No checksum como prueba de seguridad. Único paso manual: exportar evento exacto de dart.exe desde Informes Kaspersky al directorio privado indicado; no restaurar cuarentena o cambiar protecciones.
+
+**Reportes:** [ROP-01 propuesto](../03-diseno-de-software/12-primer-reporte-operativo.md): salidas/entregas por centro para encargado logístico con shipment:read, cantidades exactas y duración de hechos concluidos. Lectura operativa, no ETL/Datamart ni RF-12 completo. Sin fórmulas agrícolas, liquidaciones o reglas no acordadas implementadas.
+
+Demo001–007 sin SQL, login, migrate/seed o reinicios. Sin ejecución SDK/antivirus alterado, D: o copias completas. Los bloques inferiores son históricos; las prohibiciones antiguas de merge no deshacen las integraciones ya autorizadas.
+
+## Histórico — CHECK equivalente y restauración revalidada, 2026-11-19
 
 Continuar en la única carpeta activa, rama feat/offline-servidor-recibos. Base publicada de esta revisión ce9c3f6; los commits nuevos de herramientas/recomendaciones/documentación avanzan A conservando su historia, sin mover Inventario de dd18ced ni fusionar PR. Origin sigue siendo el bundle privado: publicar solo hacia la URL GitHub explícita. HEAD final con git rev-parse HEAD; verificar los checks de ese SHA, sin trasladar el verde de ce9c3f6.
 

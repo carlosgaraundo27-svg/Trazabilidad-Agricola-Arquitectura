@@ -7,6 +7,11 @@ export function accessService({ repository, unitOfWork, passwords }) {
     new AppError(401, "UNAUTHENTICATED", "Credenciales o sesión no válidas.");
   let dummy;
   return {
+    async requireActiveSession(tx, actor) {
+      const current = await repository.activeSession(tx, actor);
+      if (!current) throw denied();
+      return current;
+    },
     authorize(actor, operation) {
       if (!allowed(actor.role, operation))
         throw new AppError(403, "FORBIDDEN", "Operación no permitida.");

@@ -15,6 +15,7 @@ import {
 } from "./publication-http.js";
 import { qualityRouter } from "./quality-http.js";
 import { logisticsRouter } from "./logistics-http.js";
+import { harvestSyncRouter } from "./harvest-sync-http.js";
 const loginInput = z
   .object({
     email: z
@@ -181,6 +182,7 @@ export function createApp({
     res.status(result.replayed ? 200 : 201).json(result.item);
   });
   api.use(intakeRouter(services));
+  api.use(harvestSyncRouter(services));
   api.use(publicationRouter(services));
   api.use(qualityRouter(services));
   api.use(logisticsRouter(services));

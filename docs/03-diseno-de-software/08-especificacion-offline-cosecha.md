@@ -1,5 +1,7 @@
 # Propuesta — Captura offline y sincronización de cosecha/pre-lotes
 
+**Corte 2026-11-19:** el usuario autoriza implementar/probar únicamente el servidor **A**, en rama separada dependiente de #7. [Plan A–D y aceptación A-01–08](10-plan-incrementos-offline.md). A implementa PUT/recibo/idempotencia y migración008 en bases nuevas de prueba; se registra en OpenAPI. No aplica008 a la demo, crea Flutter ni adopta por silencio las políticas locales O5/O6/O8/O9. B–D y las partes móviles de O1–O10 siguen propuestas. Las afirmaciones históricas de ausencia total de endpoints/migración corresponden al corte previo a A.
+
 Estado: **especificación para decisión, sin implementación**. Fecha 2026-11-16. No se autoriza automáticamente ningún valor recomendado. Traza RF-03/RF-04, HU02, DA01, RC01, EQ-02, ADR-003 REST, ADR-004 PostgreSQL y ADR-008 seguridad. [Requisitos](../01-analisis-de-sistema/03-requisitos-funcionales.md), [drivers](../01-analisis-de-sistema/06-drivers-arquitectonicos.md), [primer recorrido actual](03-especificacion-primer-recorrido.md). ADR-015 queda [propuesta](../02-arquitectura/12-propuesta-offline-movil.md).
 
 ## Objetivo y alcance inicial propuesto
@@ -72,7 +74,7 @@ Al iniciar: ejecutar migraciones locales conservando filas, cargar pendientes; s
 
 Cancelar localmente una captura nunca intentada puede sacar outbox conservando tombstone/auditoría local, si se adopta O7. Una captura enviada o uncertain no tiene cancelación segura en el contrato actual: no se afirmará que desapareció del servidor. No hay corrección/anulación de cosechas ya sincronizadas en este incremento.
 
-## Contrato backend propuesto (no registrado en OpenAPI vigente)
+## Contrato backend A (registrado en OpenAPI en la rama del incremento)
 
 O3=A: **PUT /api/v1/sync/pre-lots/{clientCaptureId}**, sesión vigente y CSRF; Idempotency-Key igual a clientCaptureId. No requiere ID de dispositivo como identidad de usuario. schemaVersion=1. Ejemplo ficticio:
 
@@ -90,7 +92,7 @@ No aceptar organizationId/actorId/status/receivedAt/preLotId del cliente. Obtene
 
 - 201 primera aceptación: clientCaptureId, preLotId, harvestId, status servidor, acceptedAt y payload canónico mínimo. 200 repetición idéntica: mismos IDs y hechos, sin segunda auditoría/alta; replay indicador explícito.
 - 409 SYNC_ID_CONTENT_CONFLICT: mismo ID ya aceptado con contenido distinto. Mensaje comprensible; no devolver contenido ajeno. No actualizar registro existente.
-- 401 AUTH_REQUIRED; 403/404 según convención de ámbito vigente; 400 contrato/esquema; 422 dato no permitido; 429 límite con Retry-After; 503 temporal.
+- 401 UNAUTHENTICATED (el futuro cliente lo mapea a auth_required); 403/404 según convención vigente; 400 clave ausente/distinta/inválida; 422 contrato/esquema/dato/precisión inválidos; 413 cuerpo demasiado grande; 429 límite con Retry-After; 500 temporal, resultado incierto que se reconcilia sin cambiar ID/cuerpo. A conserva los errores del adaptador HTTP existente.
 - Timeout/5xx con commit incierto **siempre** se tratan como uncertain y se reintentan con ID/cuerpo idénticos. No deducir “no guardado” de una respuesta ausente.
 - Sesión, usuario activo, permiso prelot:create y asignación vigente de parcela **se revalidan antes de replay**, bajo bloqueos de autorización; revocación impide leer la respuesta histórica por esa vía. No confiar en permisos ni reloj descargados.
 - Mismo captureId usado por otro actor/organización no da acceso al recurso. Ámbito propuesto: UUID aleatorio generado localmente, unicidad efectiva (organization_id, client_capture_id) y dueño actor inmutable; otra organización no comparte identidad ni recibo; devolución pública de conflicto sin revelar propietario. Cualquier colisión se resuelve manualmente, sin reasignar identidad.
@@ -99,9 +101,9 @@ Canonización versionada incluye parcelId, harvestedAt, quantity y unit, más sc
 
 Un GET de recibo podría ayudar a reconciliar, pero no es necesario para A: el PUT repetible devuelve el resultado con permisos vigentes. Proponerlo solo si existe consumidor/caso no cubierto.
 
-## Migraciones servidor y compatibilidad propuestas
+## Migraciones servidor y compatibilidad de A
 
-Migración **008+ disponible en ese momento**, sin editar 001–007 ni inventar captureId para históricos:
+Migración **008_harvest_sync**, sin editar 001–007 ni inventar captureId para históricos. Implementa las reglas siguientes; solo probada en bases nuevas, no aplicada a la demo:
 
 1. Tabla de recibos H (nombre tentativo harvest.sync_receipts), UUID del cliente, dueño/organización, schemaVersion/canonización, hash, cuerpo mínimo, IDs remotos y acceptedAt; FK compuestas, UNIQUE organización/captureId y hechos inmutables.
 2. Serializar clave/identidad por transacción; revalidar S/P, consultar recibo. Si coincide, devolver mismos IDs; distinto→409. Primera aceptación crea cosecha/pre-lote, audit y recibo en **una** UoW; fallo de evento/recibo/auditoría revierte todo.
@@ -109,7 +111,7 @@ Migración **008+ disponible en ese momento**, sin editar 001–007 ni inventar 
 4. Registros históricos sin recibo quedan sin recibo. No recrearlos, renumerarlos ni insertar movimientos para “sincronizarlos”.
 5. Probar instalación limpia, upgrade desde versión previa con filas reales ficticias, rollback de migración fallida y no alteración de cantidades/orígenes existentes. Down con datos aceptados requiere estrategia de conservación, no borrar historia para hacer verde.
 
-Nombres definitivos y nueva concesión (si se separa de prelot:create) pendientes de O3/O6 y revisión de contrato. No se amplían permisos silenciosamente.
+A usa harvest.sync_receipts y el permiso existente prelot:create, sin ampliar roles/concesiones. Conserva esquema/contrato online: nuevo puerto interno record comparte UoW sin otra transacción. El recibo completo queda almacenado inmutable; replay no reconstruye una respuesta cambiante. Idempotency-Key es la identidad sync, distinta de la clave aleatoria interna del alta online para impedir colisiones entre protocolos. Scope organización/captura con dueño inmutable. Bloqueo identidad→revalidación sesión/rol actual→asignación→recibo/alta, comprobando expiración después de la espera; sesiones y asignaciones se protegen con bloqueos hasta commit. Límite propio60 PUT/minuto por IP, con Retry-After, sin cambiar rutas anteriores ni afirmar límites compartidos entre instancias. Down con recibos se bloquea para conservar hechos.
 
 ## Pantallas propuestas
 

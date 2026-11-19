@@ -1,0 +1,95 @@
+{
+  "at": "2026-11-19T15:08:39.398796+00:00",
+  "branch": "feat/offline-servidor-recibos",
+  "codeCommit": "25a2a81a8b34ae769f18ed030635f8ef16d21ca8",
+  "parentPR7Local": "dd18ceddd185d72e32db7c5047e53bd5369434b7",
+  "published": false,
+  "scope": "Academic server A only, not complete RF-03/DA01; no teacher/agricultural validation",
+  "checks": {
+    "unit": {
+      "passed": 25,
+      "failed": 0
+    },
+    "integrationPostgreSQL": {
+      "passed": 128,
+      "failed": 0,
+      "database": "offline_a_1795100508427"
+    },
+    "E2E": {
+      "passed": 17,
+      "failed": 0,
+      "database": "offline_a_e2e_1795100260052",
+      "port": 3037
+    },
+    "format": "passed",
+    "contractsOpenAPIAndLinks": "passed;38 paths",
+    "build": "passed",
+    "fullAudit": {
+      "exit": 0,
+      "vulnerabilities": 0,
+      "scope": "dd18ced before authorized publication, same unchanged dependency lockfile; no dev omission"
+    }
+  },
+  "newServerTests": [
+    "canonical equivalents and strict precision",
+    "HTTP201 and authorized replay200",
+    "identity different-content409",
+    "same/different body concurrent requests",
+    "actual lost HTTP response after commit",
+    "different Node PID, same receipt/session",
+    "current owner/org/role/active-user/assignment/session checks",
+    "session expires during real identity-lock wait",
+    "SQL failures rollback harvest/prelot/audit/receipt",
+    "immutable update/delete/truncate and guarded down",
+    "upgrade preserves legacy rows; failed upgrade rolls back",
+    "rate429 Retry-After"
+  ],
+  "demo": {
+    "database": "inventory_demo_20261118_151800",
+    "migrations": [
+      "001",
+      "002",
+      "003",
+      "004",
+      "005",
+      "006",
+      "007"
+    ],
+    "allTableFingerprintsUnchanged": true,
+    "newMigrationApplied": false,
+    "health": "unavailable; no demo restart performed",
+    "logicalBackupAndRestore": "No new verifiable result supplied or found in expected location; still pending"
+  },
+  "remotePR7": {
+    "head": "22c6e4f61bf2f575b0106af1d262a0b11de8c040",
+    "state": "open",
+    "merged": false,
+    "verify": "historical failure in full npm audit",
+    "compose": "historical success",
+    "newPush": "blocked by local Git credentials; no force/config/credential-store changes",
+    "sonarOpen": 20,
+    "criticalDDLMaintainability": 9,
+    "newAnalysisOfA": false
+  },
+  "sdk": {
+    "executed": false,
+    "status": "blocked by reported Kaspersky incident",
+    "dartExePresent": false,
+    "recordedFlutter": "3.50.0",
+    "recordedSourceCommit": "ab2912035e160d9cad6306df307576da6128ebdb",
+    "recordedEngine": "371f77202a73e8dff57a8b3bff75bca55c090aee",
+    "artifactURL": "https://storage.googleapis.com/flutter_infra_release/flutter/371f77202a73e8dff57a8b3bff75bca55c090aee/dart-sdk-windows-x64.zip",
+    "artifactBytes": 231471855,
+    "sha256": "2e9d24952e7bda6b9532429f811211d2ac86dd274a212829f1e0916d40ad2f53",
+    "matchesPriorRecord": true,
+    "freshOfficialMd5Available": false,
+    "limitation": "Fresh HEAD200 exposes CRC32C only; prior official-MD5 verification retained. Hash/source transfer integrity is not proof of safety or false positive."
+  },
+  "notExecuted": [
+    "Flutter/Android native authentication",
+    "SQLite/outbox/offline client",
+    "Redis real/Compose rerun",
+    "remote CI or Sonar for A"
+  ],
+  "history": "19b291d/0256966/dd18ced preserved unchanged; target local PR7 branch advanced by CAS; origin backup bundle unchanged"
+}

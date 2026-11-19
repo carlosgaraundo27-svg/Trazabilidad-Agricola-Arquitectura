@@ -1,0 +1,7 @@
+{
+  "schema": "intake",
+  "table": "receipt_temperatures",
+  "name": "receipt_temperatures_value_c_check",
+  "original": "CHECK ((((value_c >= '-999999.99'::numeric) AND (value_c <= 999999.99)) AND (scale(value_c) <= 2)))",
+  "restored": "CHECK (((value_c >= '-999999.99'::numeric) AND (value_c <= 999999.99) AND (scale(value_c) <= 2)))"
+}

@@ -65,6 +65,37 @@ test("ROP-01: consulta, filtros, pendiente, vacío y recuperación sin datos pri
   const pending = rows.filter({ hasText: reportIds[1] });
   await expect(pending).toContainText("En tránsito");
   await expect(pending.getByText("Pendiente", { exact: true })).toHaveCount(3);
+  let releaseOld;
+  const oldBarrier = new Promise((resolve) => {
+    releaseOld = resolve;
+  });
+  await page.route(
+    "**/api/v1/reports/shipments?**",
+    async (route) => {
+      await oldBarrier;
+      await route.continue();
+    },
+    { times: 1 },
+  );
+  await page.getByLabel("Estado del reporte").selectOption("in_transit");
+  await apply.click();
+  await expect(
+    page.getByText("Consultando salidas y entregas…", { exact: true }),
+  ).toBeVisible();
+  await page.getByLabel("Estado del reporte").selectOption("delivered");
+  await apply.click();
+  await expect(rows).toHaveCount(2);
+  const oldResponse = page.waitForResponse(
+    (response) =>
+      response.url().includes("/reports/shipments?") &&
+      response.url().includes("state=in_transit"),
+  );
+  releaseOld();
+  await (await oldResponse).finished();
+  await expect(rows).toHaveCount(2);
+  await page.getByLabel("Estado del reporte").selectOption("");
+  await apply.click();
+  await expect(rows).toHaveCount(3);
   const lotId = (
     await rows
       .filter({ hasText: reportIds[2] })

@@ -1,5 +1,15 @@
 # Diagnóstico de Sonar main — corte 2026-11-19
 
+## Cierre vigente del PR #10
+
+Integrado con merge **18d57e9bcdc8f837765e648684dbf9310584c4f8**, conservando los cinco commits hasta907cd26. Sin cambios adicionales, revisiones bloqueantes, bypass o force push. La regresión también detectó la inversión temporal de una condición del extractor; restaurado y probado el árbol original antes de integrar.
+
+Checks de ese main: [verify](https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/44607672658/job/135855588816), [Compose](https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/44607672658/job/135855588224) y [Sonar](https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/runs/135856114009) **aprobados**. API Sonar confirma **CLOSED/FIXED** para las cuatro claves BZYP/BZYQ/BZYR/BZYS de githubactions:S6505/S8543 y la clave BZYE de javascript:S8786. [Evidencia saneada, claves completas y123 pendientes](evidence/sonar-main-20261119/tras-pr10.json).
+
+Main pasa128→**123 abiertos**:122 CODE_SMELL/1 VULNERABILITY/0 BUG;93 heredados+20 Inventario+10 A. Siguen PATH de Docker (S4036), nueve críticos DDL y los demás detallados en el inventario previo.21 FIXED totales fuera del contador. Cero aceptados; no se reescribieron migraciones/perfiles/gates ni se afirman reaperturas históricas inexistentes. S2699 apareció solo en el primer análisis del PR y desapareció en907cd26: no forma parte de esas cinco resoluciones de main.
+
+## Corte previo conservado —128 abiertos antes de integrar
+
 Main confirmado **6f0294d52fe63fac2ab855e1b129688b4c844186**, verify/Compose/Sonar aprobados según la [evidencia documental del borrador #9](https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/blob/6e1642b73bf517f14ad04108f685e0eab26091a6/docs/05-sprint01/integracion-inventario-offline-A.md). #9 sigue abierto, en borrador, cabeza6e1642b: B es preparación documental, no cliente ni validación Android. No se repitieron integración, recuperación o respaldo; demo001–007 sin operaciones.
 
 ## Inventario y comparación

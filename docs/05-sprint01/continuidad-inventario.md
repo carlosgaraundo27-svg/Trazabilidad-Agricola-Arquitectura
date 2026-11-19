@@ -1,6 +1,16 @@
 # Continuidad — Inventario, Reserva, Despacho y Entrega
 
-## Estado vigente — diagnóstico Sonar, incidente Dart y reporte propuesto, 2026-11-19
+## Estado vigente — cierre #10 y ROP-01, 2026-11-19
+
+Único repositorio activo en C:, rama **feat/reporte-operativo-rop01**, basada en main **18d57e9**. #10 integrado por autorización posterior del propietario conservando los cinco commits hasta907cd26; sin bypass o force push. Verify/Compose/Sonar de main aprobaron. [Cierre y cinco CLOSED/FIXED](diagnostico-sonar-main-20261119.md):128→123 abiertos,122 CODE_SMELL y1 VULNERABILITY;93 heredados,20 Inventario,10 A. Pendientes PATH de Docker/nueve críticos DDL y resto del inventario; no resueltos por el gate.
+
+**ROP-01 implementado en rama separada, por publicar/revisar sin fusionar:** [contrato completado antes del código](../03-diseno-de-software/12-primer-reporte-operativo.md), [implementación y recorrido manual](reporte-operativo-rop01.md). API y pantalla sobre concesión shipment:read, sesión/organización/centro revalidados, una fila por despacho, kg/textos exactos, fechas/duración UTC, filtros de salida/estado/lote y cursor estable. Sin totales, datos personales de transporte, QR, ETL/datamart o mutación de historia. Check/OpenAPI/formato/build,30 unitarias,5 resultados de integración ROP aislada y E2E Chrome con estados/filtros/teclado/320–1440 aprobados localmente; el SHA publicado debe verificar CI propio y registrar los enlaces en el PR. No atribuir checks antiguos a una cabeza nueva.
+
+**Prueba manual aislada prevista:** http://127.0.0.1:3041, inventario@example.test, credencial solo en .local/rop01-manual/credenciales.txt. Confirmar health antes de afirmar disponible. Base PGlite nueva/privada001–008, cuatro despachos ficticios, sin demo.env, DB demo001–007 o puerto3026. No repetir respaldo/recuperación, instalaciones o migración a D:; no se crean copias del repositorio.
+
+**B permanece pendiente, #9 abierto/en borrador y solo documental.** Borrador de soporte intacto y no enviado en .local/sonar-reportes-20261119/BORRADOR-SOPORTE-KASPERSKY.md. Único paso manual Android: exportar evento exacto de dart.exe desde Informes Kaspersky a .local/sonar-reportes-20261119/evento-kaspersky.txt (o formato ofrecido). No ejecutar/restaurar SDK o cambiar antivirus. ROP web no valida Android.
+
+## Histórico — diagnóstico Sonar, incidente Dart y reporte propuesto, 2026-11-19
 
 La primera publicación de #10 (81b1482) aprobó verify/Compose/Sonar, pero dejó S2699 sobre la prueba hija: se añadió aserción explícita sin debilitar el timeout ni la validación. El detalle está en el diagnóstico; el estado final depende de los checks de la nueva cabeza, enlazados en #10.
 

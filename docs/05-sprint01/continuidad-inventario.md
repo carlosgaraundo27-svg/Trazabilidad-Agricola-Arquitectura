@@ -2,6 +2,8 @@
 
 ## Estado vigente — diagnóstico Sonar, incidente Dart y reporte propuesto, 2026-11-19
 
+La primera publicación de #10 (81b1482) aprobó verify/Compose/Sonar, pero dejó S2699 sobre la prueba hija: se añadió aserción explícita sin debilitar el timeout ni la validación. El detalle está en el diagnóstico; el estado final depende de los checks de la nueva cabeza, enlazados en #10.
+
 Carpeta activa única en C:, rama fix/sonar-ci-y-enlaces desde main6f0294d. PR #7/#8 ya integrados; no se repitieron merges, recuperación o respaldo. Main mantiene verify/Compose/Sonar aprobados. #9 sigue abierto/en borrador en6e1642b y contiene la preparación documental de B, sin cliente ni validación Android. Su continuidad/matriz más reciente se revisó desde ese commit; esta rama de corrección parte de main y no incorpora por accidente el borrador #9.
 
 **Sonar128:** [diagnóstico e inventario por regla/archivo/impacto](diagnostico-sonar-main-20261119.md). API devuelve144 registros:128 abiertos/16 FIXED. Los128 son98 heredados,20 del incremento Inventario y10 de A/herramientas;123 CODE_SMELL y5 VULNERABILITY,0 BUG abiertos. No REOPENED actual; reaperturas pasadas indeterminadas porque144 respuestas de historial públicas están vacías. No confundir totales de main con delta del PR ni inventar transiciones. Nueve críticos DDL siguen abiertos; no se reescribieron migraciones ni se aceptaron issues o cambiaron gates.

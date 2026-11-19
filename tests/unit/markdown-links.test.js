@@ -26,9 +26,13 @@ test("etiquetas sin cerrar no bloquean la comprobación de enlaces", async () =>
   const script = fileURLToPath(
     new URL("../fixtures/markdown-links-stress.js", import.meta.url),
   );
-  await promisify(execFile)(process.execPath, [script], {
-    timeout: 2000,
-    windowsHide: true,
-    env: { ...process.env, NODE_OPTIONS: "", NODE_PATH: "" },
-  });
+  await assert.doesNotReject(
+    () =>
+      promisify(execFile)(process.execPath, [script], {
+        timeout: 2000,
+        windowsHide: true,
+        env: { ...process.env, NODE_OPTIONS: "", NODE_PATH: "" },
+      }),
+    "El proceso debe comprobar los enlaces y terminar antes del timeout",
+  );
 });

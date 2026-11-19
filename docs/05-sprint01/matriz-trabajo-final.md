@@ -6,7 +6,7 @@
 
 [ROP-01](reporte-operativo-rop01.md) implementado en rama feat/reporte-operativo-rop01: API/pantalla de salidas y entregas por centro, antes especificado y ahora probado localmente con30 unitarias,5 resultados de integración aislada ROP y un E2E Chrome con filtros, estados, teclado y320–1440px. Publicado en [PR #11](https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/pull/11), abierto y sin fusionar; comprobar los checks de su SHA actual, registrados en la descripción; no fusionar ROP automáticamente. Consulta operativa, sin ETL/datamart/indicadores agrícolas, sin añadir criterio17. Esquema/demo001–007 intactos; desarrollo/pruebas aislados001–008 con hechos ficticios.
 
-B sigue pendiente: #9 en borrador, solo preparación documental, sin cliente o validación Android. Mantener soporte/evento Kaspersky y protecciones. [Continuidad vigente](continuidad-inventario.md); los bloques históricos inferiores no ordenan repetir procedimientos ya cerrados. Próximos pasos actuales: revisar PR ROP por SHA; exportar evento exacto de Dart para completar soporte; cotejar PDF/SDD con docente y cerrar las brechas de despliegue/carga/informe aún pendientes.
+B sigue pendiente: #9 en borrador, solo preparación documental, sin cliente o validación Android. Mantener soporte/evento Kaspersky y protecciones. [Continuidad vigente](continuidad-inventario.md); los bloques históricos inferiores no ordenan repetir procedimientos ya cerrados. Próximos pasos actuales: revisar PR ROP por SHA; presentar el caso al soporte Kaspersky (CSV ya exportado/analizado); cotejar PDF/SDD con docente y cerrar las brechas de despliegue/carga/informe aún pendientes.
 
 ## Fuente transcrita y alcance de evaluación
 

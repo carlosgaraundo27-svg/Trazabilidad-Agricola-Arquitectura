@@ -32,4 +32,4 @@ URL local prevista: http://127.0.0.1:3041. Solo declararla disponible tras compr
 
 Esta instancia utiliza su propio archivo PGlite y puerto3041; no reutiliza demo.env, DB inventory_demo_20261118_151800 ni puerto3026. La guía privada de arranque/parada identifica únicamente este proceso; no detener otros Node/PostgreSQL.
 
-B sigue pendiente y #9 en borrador, solo documental. Se conserva .local/sonar-reportes-20261119/BORRADOR-SOPORTE-KASPERSKY.md sin enviar. Único paso manual Android: exportar el evento exacto de dart.exe desde Informes de Kaspersky a .local/sonar-reportes-20261119/evento-kaspersky.txt (o formato ofrecido), sin ejecutar/restaurar SDK o cambiar protecciones.
+B sigue pendiente y #9 en borrador, solo documental. Se conserva .local/sonar-reportes-20261119/BORRADOR-SOPORTE-KASPERSKY.md sin enviar. El CSV ya fue exportado y analizado en privado. Pendiente actual: presentar el caso al soporte Kaspersky y registrar identificador/dictamen, sin repetir exportación, enviar el informe automáticamente, ejecutar/restaurar el SDK señalado o cambiar protecciones.

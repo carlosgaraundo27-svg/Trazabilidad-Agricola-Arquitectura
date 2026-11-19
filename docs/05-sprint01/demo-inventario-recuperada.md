@@ -1,5 +1,7 @@
 # Demo de Inventario desde la copia recuperada — 2026-11-18
 
+**Actualización de operación:** traslado a D: pospuesto; continuar únicamente en C:. Ver [reactivación, respaldo pendiente y estado real del PR](reactivacion-demo-C.md). Las comprobaciones de esta guía son la ejecución previa; el acceso autenticado/replay no se repitieron antes del respaldo lógico. No repetir la preparación o seeds inferiores para reactivar la demo existente.
+
 **Reconstrucción funcional con datos ficticios nuevos; no recuperación de registros anteriores de Inventario.** Base de código 22c6e4f, rama local `fix/demo-recuperada-inventario`. No se fusionó ni publicó el PR #7. No se ejecutó Flutter/Dart/SDK ni se implementó offline. Se preservaron originales y respaldos.
 
 ## Carpeta, URL y cuentas

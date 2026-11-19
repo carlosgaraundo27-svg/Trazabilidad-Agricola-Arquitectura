@@ -1,5 +1,19 @@
 # Continuidad — Inventario, Reserva, Despacho y Entrega
 
+## Estado vigente — continuar en C:, traslado pospuesto, 2026-11-18
+
+Carpeta única: `C:\Users\leona\Documents\Proyect_Final_Arquitectura\RECUPERADO_20261117_213508\repos\repo-inventario`. Rama **fix/demo-recuperada-inventario**, HEAD al iniciar **0256966abc7d578464017dae7bb0e700653f4f1e**, limpio; los cambios nuevos de esta tarea son documentales y su SHA se obtiene con `git rev-parse HEAD`. Conservar originales/respaldos y el kit MIGRACION_D_20261118_215214 intactos. D: no se activa ni sus checks bloquean C:.
+
+[Estado y único bloque PowerShell de respaldo](reactivacion-demo-C.md). Demo existente **http://127.0.0.1:3026**, configuración privada `.local/demo-20261118_151800/demo.env`, DB **inventory_demo_20261118_151800**, cluster **7707318725026357291** en 55433 y migraciones **001–007**. Sin seeds/migraciones nuevos. Iniciar desde la raíz con `node .local/reactivacion-C-20261118/servidor.mjs`; detener con Ctrl+C o `parar` en esa consola. No imprimir contraseñas ni iniciar dos servidores.
+
+Comprobaciones **de esta reactivación**: salud/página200, me anónimo401, pantalla de acceso390/1440, huellas/conteos de todas las tablas iguales tras stop/start de solo la app; una admisión/reserva/salida/entrega de73.125kg, sin descuento adicional. 23 unitarias, check/formato/build aprobados. Primera parada propia abrupta por stdin cerrado; no se probó reinicio de DB/contenedor/Windows. El auxiliar visual inicial falló por codificación/espera; al usar navigateReady existente aprobó sin cambiar límites/aserciones. No se atribuye causa al antivirus.
+
+**Respaldo lógico/restauración y volumen efectivo pendientes** por Docker denegado previamente, sin repetir el intento aquí ni cambiar permisos. Copia privada del helper existente bajo `.local/reactivacion-C-20261118/`, que escribe dumps/restauraciones nuevos sin tocar fuentes. Antes de login (crea sesión), replay o nuevas operaciones: ejecutar el bloque y revisar `restored_and_verified`. No se probaron ahora login autenticado, integración, E2E completos, Redis o Compose; los resultados 23/113/17 y replay200/nueva clave409 de la nota anterior son evidencia previa, no ejecución nueva. Las huellas no sustituyen un dump restaurable.
+
+PR #7 consultado: **abierto, no fusionado**, cabeza **22c6e4f**, rama feat/inventario-despacho-entrega. Faltan allí **19b291d** y **0256966**, además de este estado documental; avance directo posible sin divergencia observada, preservando commits. Incorporación preparada localmente, **sin push**, sin cambiar origin (bundle local), sin force/merge. Verify remoto22c6e4f sigue fallido en audit, Compose aprobado; no atribuir verde remoto al audit local previo. Los **20 avisos Sonar/nueve críticos DDL siguen abiertos**. No se repitió instalación/auditoría sin cambios; retirada de advisory documentada previamente no es parche nuestro.
+
+Siguiente tarea ejecutable: respaldo/restauración de la demo, login/replay con evidencia nueva, incorporación/publicación y checks del SHA final antes de evaluar cierre. O1–O10 siguen pendientes según la sección final de la especificación; no ejecutar Flutter/Dart/SDK, implementar offline ni fusionar PR. Este bloque sustituye afirmaciones de estado actual inferiores; conserva su historia.
+
 ## Estado vigente — demo reconstruida y E2E, 2026-11-18
 
 Continuar en la copia RECUPERADO_20261117_213508/repos/repo-inventario, rama local fix/demo-recuperada-inventario, base 22c6e4f; no usar originales para cambios nuevos. [Guía](demo-inventario-recuperada.md), [evidencia](evidence/demo-recuperada-20261118/resultado.json), matriz actualizada con los 16 criterios transcritos; PDF/SDD sin resolver. Este estado sustituye las afirmaciones de estado actual de las notas históricas inferiores.

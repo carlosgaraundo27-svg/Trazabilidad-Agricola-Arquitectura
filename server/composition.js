@@ -18,6 +18,8 @@ import { publicationRepository } from "./modules/publication/repository.js";
 import { noCache } from "./adapters/public-cache.js";
 import { logisticsRepository } from "./modules/logistics/repository.js";
 import { logisticsService } from "./modules/logistics/application.js";
+import { reportsRepository } from "./modules/reports/repository.js";
+import { reportsService } from "./modules/reports/application.js";
 export function compose(
   db,
   {
@@ -86,6 +88,11 @@ export function compose(
     quality,
   });
   return {
+    reports: reportsService({
+      repository: reportsRepository(),
+      unitOfWork,
+      access,
+    }),
     access,
     producers,
     harvest,

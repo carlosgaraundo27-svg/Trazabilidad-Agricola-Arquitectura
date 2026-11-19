@@ -19,7 +19,7 @@ export const syncInput = z
       .transform((v) => new Date(v).toISOString()),
     quantity: z
       .string()
-      .regex(/^(?:0|[1-9][0-9]{0,8})(?:\.[0-9]{1,3})?$/)
+      .regex(/^(?:0|[1-9]\d{0,8})(?:\.\d{1,3})?$/)
       .refine((v) => /[1-9]/.test(v), "La cantidad debe ser positiva.")
       .transform((v) => {
         const [whole, fraction = ""] = v.split(".");

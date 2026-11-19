@@ -61,3 +61,24 @@ test("sync rechaza precisión extra, futuro, campos privados y versiones no sopo
     "0.001",
   );
 });
+
+test("sync acepta solo cantidades ASCII completas, sin espacios o terminadores", () => {
+  for (const quantity of [
+    "1\n",
+    "1\r",
+    "1\u2028",
+    "1\u2029",
+    " 1",
+    "1 ",
+    "01",
+    "+1",
+    "1e2",
+    "١٢.٣",
+    "１２.３",
+  ])
+    assert.equal(
+      syncInput.safeParse({ ...input, quantity }).success,
+      false,
+      JSON.stringify(quantity),
+    );
+});

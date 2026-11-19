@@ -1,5 +1,7 @@
 # Plan del prototipo offline — 2026-11-19
 
+**Estado posterior a publicación manual:** [#7 y #8, checks aprobados por SHA y respaldo pendiente de aceptación](../05-sprint01/publicacion-inventario-offline-A.md). A publicado en ce9c3f6, base dd18ced; ambos PR abiertos, sin fusionar. [Preparación concreta de B](../05-sprint01/preparacion-offline-B.md): contratos nativos/SQLite y pruebas diseñadas, sin ejecución del SDK señalado ni cliente Android implementado. Las notas inferiores de bloqueo de publicación son históricas.
+
 RF-03/DA01, sobre PR #7. Autorización actual: implementar/probar **A en rama separada**; O1–O10 son base de propuesta académica, no aprobación docente/agrícola ni autorización para ejecutar el SDK señalado. Rama `feat/offline-servidor-recibos`, base `dd18ced` (incluye 19b291d/0256966). No fusionar #7 ni aplicar migraciones a la demo. El respaldo/restauración de la demo continúa pendiente sin resultado nuevo verificable; no bloquea tests en bases NUEVAS aisladas.
 
 ## A — Contrato y servidor

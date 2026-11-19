@@ -1,5 +1,9 @@
 # Incremento A — servidor de recibos de cosecha
 
+**Revisión posterior:** [A revisado y recomendaciones de dígitos atendidas](revision-offline-A.md), [CHECK/restauración revalidados y límites de procedencia/ACL](revision-respaldo-check.md). Estos documentos prevalecen sobre los estados históricos de respaldo y los avisos nuevos pendientes de abajo. Consultar CI/Sonar del HEAD final publicado, no trasladar el verde de ce9c3f6.
+
+**Actualización posterior a publicación manual:** [PR #8 abierto](https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/pull/8), cabeza ce9c3f6, base feat/inventario-despacho-entrega/dd18ced. Verify/Compose/Sonar de ambos SHA aprobados; dos avisos nuevos de A y20/nueveDDL de #7 permanecen documentados. [Estado por SHA, respaldo inconsistente y límites](publicacion-inventario-offline-A.md), [preparación B sin SDK](preparacion-offline-B.md). Los estados de publicación bloqueada y respaldo no encontrado inferiores son históricos; el respaldo encontrado aún no se acepta porque matchesSnapshot=false.
+
 2026-11-19. Prototipo académico autorizado solo para servidor/contrato/pruebas, sin aprobación docente ni validación agrícola. Rama `feat/offline-servidor-recibos`, base **dd18ced**, dependiente del PR #7. [Plan A–D](../03-diseno-de-software/10-plan-incrementos-offline.md), [especificación](../03-diseno-de-software/08-especificacion-offline-cosecha.md), [OpenAPI](../03-diseno-de-software/openapi.json). B–D no implementados. No se ejecutó Flutter/Dart ni se alteró antivirus. D: pospuesto, kit conservado intacto.
 
 Código guardado en **d282d1b** (canonización) y **25a2a81a8b34ae769f18ed030635f8ef16d21ca8** (servidor/contrato/pruebas); cambios posteriores de esta rama son evidencia y continuidad. [Resumen verificable sin secretos](evidence/offline-A-20261119/resultado.json). No se publicó esta rama ni tiene checks remotos.

@@ -33,32 +33,61 @@ def container_name(value):
     return value
 
 
-def validate_command(args):
+TOOL_FORMS = {
+    'psql': [('--version',), ('-X', '-A', '-t', '-v', 'ON_ERROR_STOP=1', '-U', '@name', '-d', '@name', '-c', '@query')],
+    'pg_dump': [('--version',), ('-U', '@name', '-d', '@name', '--format=custom', '@snapshot')],
+    'pg_restore': [('--version',), ('--list',), ('-U', '@name', '-d', '@name', '--no-owner', '--no-privileges', '--exit-on-error', '--single-transaction')],
+    'createdb': [('-U', '@name', '-T', 'template0', '--', '@name')],
+}
+METADATA_QUERIES = {
+    'SELECT system_identifier::text FROM pg_control_system()',
+    'SELECT rolsuper FROM pg_roles WHERE rolname=current_user',
+    'SELECT datname FROM pg_database WHERE datallowconn AND NOT datistemplate ORDER BY datname',
+    'SELECT version()',
+}
+
+
+def allowed_token(value, specification):
+    if specification == '@name':
+        return bool(re.fullmatch(r'[A-Za-z_][A-Za-z0-9_]{0,62}', value))
+    if specification == '@snapshot':
+        return bool(re.fullmatch(r'--snapshot=[0-9A-F]+-[0-9A-F]+-\d+', value))
+    if specification == '@query':
+        return value in METADATA_QUERIES or bool(re.fullmatch(
+            r"SELECT count\(\*\) FROM pg_database WHERE datname='recovery_restore_\d{8}_\d{6}_[a-f0-9]{10}'", value))
+    return value == specification
+
+
+def tool_arguments(tool, values):
+    for form in TOOL_FORMS.get(tool, []):
+        if len(form) == len(values) and all(allowed_token(value, spec) for value, spec in zip(values, form)):
+            # Rebuild literal flags from the fixed grammar, not caller-supplied switches.
+            return [value if spec.startswith('@') else spec for value, spec in zip(values, form)]
+    raise ValueError('Unsupported tool flags or metadata query')
+
+
+def command_arguments(args):
     if args[:1] == ['inspect'] and len(args) == 2:
-        container_name(args[1])
-        return
+        return ['inspect', container_name(args[1])]
     if args[:2] == ['image', 'inspect'] and len(args) == 3:
         if not re.fullmatch(r'sha256:[a-f0-9]{64}', args[2]):
             raise ValueError('Invalid image config digest')
-        return
+        return ['image', 'inspect', args[2]]
     if args[:1] != ['exec']:
         raise ValueError('Unsupported Docker operation')
     tail = args[1:]
+    options = []
     if tail[:1] == ['-i']:
+        options = ['-i']
         tail = tail[1:]
     if len(tail) < 2 or tail[1] not in ('psql', 'pg_dump', 'pg_restore', 'createdb'):
         raise ValueError('Unsupported container command')
-    container_name(tail[0])
-    for flag in ('-U', '-d'):
-        if flag in tail:
-            database_name(tail[tail.index(flag) + 1])
-    if tail[1] == 'createdb':
-        database_name(tail[-1])
+    return ['exec', *options, container_name(tail[0]), tail[1], *tool_arguments(tail[1], tail[2:])]
 
 
 def run(args, *, data=None, stdout=None, timeout=120):
-    validate_command(args)
-    r = subprocess.run([str(DOCKER), *args], input=data, stdout=stdout or subprocess.PIPE,
+    safe_args = command_arguments(args)
+    r = subprocess.run([str(DOCKER), *safe_args], input=data, stdout=stdout or subprocess.PIPE,
                        stderr=subprocess.PIPE, timeout=timeout)
     if r.returncode:
         raise RuntimeError('Docker command failed: ' + str(args[:2]) + '\n' +

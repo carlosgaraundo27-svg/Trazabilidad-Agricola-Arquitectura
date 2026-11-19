@@ -12,6 +12,19 @@ from snapshot_compare import RESTORED_CHECK
 
 
 class RestoreGuard(unittest.TestCase):
+    def test_supported_commands_use_only_the_fixed_grammar(self):
+        commands = [['inspect', 'container'],
+                    ['image', 'inspect', 'sha256:' + 'a' * 64],
+                    ['exec', 'container', 'pg_dump', '--version'],
+                    ['exec', '-i', 'container', 'pg_restore', '--list'],
+                    ['exec', 'container', 'pg_dump', '-U', 'demo', '-d', 'fixture', '--format=custom', '--snapshot=A-B-1'],
+                    ['exec', 'container', 'createdb', '-U', 'demo', '-T', 'template0', '--', 'recovery_restore_20261119_110302_a7612a0f41'],
+                    ['exec', '-i', 'container', 'pg_restore', '-U', 'demo', '-d', 'fixture', '--no-owner', '--no-privileges', '--exit-on-error', '--single-transaction']]
+        for query in restore_docker.METADATA_QUERIES:
+            commands.append(['exec', 'container', 'psql', '-X', '-A', '-t', '-v', 'ON_ERROR_STOP=1', '-U', 'demo', '-d', 'postgres', '-c', query])
+        for command in commands:
+            self.assertEqual(restore_docker.command_arguments(command), command)
+
     def test_session_and_run_reject_option_injection_before_any_process(self):
         with patch.object(restore_docker.subprocess, 'Popen') as popen, \
              patch.object(restore_docker.subprocess, 'run') as run:
@@ -23,6 +36,17 @@ class RestoreGuard(unittest.TestCase):
             with self.assertRaises(ValueError):
                 restore_docker.run(['exec', 'container', 'psql', '-U', '--help', '-d', 'fixture'])
             popen.assert_not_called()
+            run.assert_not_called()
+
+    def test_run_rejects_unapproved_tool_flags_and_sql(self):
+        with patch.object(restore_docker.subprocess, 'run') as run:
+            for tail in [['psql', '--output=/tmp/forbidden'],
+                         ['psql', '-U', 'demo', '-d', 'fixture', '-c', '\\! whoami'],
+                         ['pg_dump', '-U', 'demo', '-d', 'fixture', '--file=/tmp/forbidden'],
+                         ['createdb', '-U', 'demo', '-T', 'other', '--', 'fixture'],
+                         ['pg_dump', '-U', 'demo', '-d', 'fixture', '--format=custom', '--snapshot=bad']]:
+                with self.subTest(tail=tail), self.assertRaises(ValueError):
+                    restore_docker.run(['exec', 'container', *tail])
             run.assert_not_called()
 
     def exercise(self, restored):

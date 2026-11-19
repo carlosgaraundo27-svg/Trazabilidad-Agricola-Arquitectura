@@ -44,6 +44,8 @@ jobs:
       - run: npm run format:check
       - run: npm run check
       - run: npm test
+      - name: Backup snapshot comparator and failure guards
+        run: python3 -m unittest discover -s tests/backup -v
       - run: npm run test:redis
       - run: npm run test:integration
       - run: npm run build

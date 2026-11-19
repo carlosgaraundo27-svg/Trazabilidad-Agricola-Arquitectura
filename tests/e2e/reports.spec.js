@@ -171,6 +171,21 @@ test("ROP-01: consulta, filtros, pendiente, vacío y recuperación sin datos pri
       });
   }
   await page.getByLabel("Centro del reporte").focus();
+  await page.setViewportSize({ width: 320, height: 900 });
+  const scrollRegion = page.getByRole("region", {
+    name: "Tabla de salidas y entregas",
+    exact: true,
+  });
+  await scrollRegion.focus();
+  await expect(scrollRegion).toBeFocused();
+  const beforeScroll = await scrollRegion.evaluate(
+    (element) => element.scrollLeft,
+  );
+  await page.keyboard.press("ArrowRight");
+  await expect
+    .poll(() => scrollRegion.evaluate((element) => element.scrollLeft))
+    .toBeGreaterThan(beforeScroll);
+  await page.getByLabel("Centro del reporte").focus();
   await page.keyboard.press("Tab");
   await expect(page.getByLabel("Salida desde (UTC, inclusiva)")).toBeFocused();
   expect(errors).toEqual([]);

@@ -33,7 +33,7 @@ export function ShipmentReport({ centers }) {
         </div>
       )}
       {!r.query && (
-        <p role="status">Selecciona los filtros y consulta el reporte.</p>
+        <output>Selecciona los filtros y consulta el reporte.</output>
       )}
       {r.data && r.query && (
         <>
@@ -51,7 +51,7 @@ export function ShipmentReport({ centers }) {
           {r.data.items.length ? (
             <ReportTable items={r.data.items} />
           ) : (
-            <p role="status">No hay salidas que coincidan con estos filtros.</p>
+            <output>No hay salidas que coincidan con estos filtros.</output>
           )}
           <nav className="pagination" aria-label="Páginas del reporte">
             <button

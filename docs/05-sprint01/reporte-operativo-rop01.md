@@ -14,7 +14,13 @@ Una fila por despacho; PK/joins por organización/centro, sin movimientos/evento
 
 No se mide capacidad productiva con cuatro despachos. El timeout5s y el rango acotado son guardas, no evidencia de P95. La página es consistente; no promete un snapshot histórico único entre páginas si cambian estados concurrentemente. PostgreSQL001–008 se prueba en CI; PGlite no es Android ni certificación de producción.
 
-## Recorrido manual aislado
+## Revisión CI/Sonar de la primera publicación
+
+bd2d657 aprobó verify (PostgreSQL/E2E completo) y el gate Sonar, pero falló Compose al preparar ROP: el runner externo no pasaba TEST_ALLOW_DB_WRITE=true al helper nuevo. Se añade la autorización explícita únicamente al entorno de pruebas ya protegido por ALLOW_DEMO_SEED; se conservan la guarda y todos los tests/gates. No se ejecuta Docker local ni se debilitan restricciones para repetirlo. Comprobar el resultado de la cabeza corregida, no usar el verde parcial anterior.
+
+Sonar inicial:17 CODE_SMELL, sin BUG/vulnerabilidades nuevas. Se atienden cinco etiquetas con span y tres usos de semántica nativa (section/output). Se conservan las ocho recomendaciones S9382 de await en el fixture: admisión/liberación/reserva/salida/entrega dependen de la operación anterior y no se paralelizan por un contador. También se conserva tabindex0 en la región desplazable pese a S6845: permite leer todas las columnas con teclado en navegadores que no la enfocan automáticamente, conforme a [MDN overflow/accesibilidad](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/overflow). E2E verifica foco y desplazamiento con flecha derecha a320px. No se aceptan/suprimen issues; registrar el recuento efectivo del SHA final en el PR.
+
+## Recorrido manual aislado vigente
 
 URL local prevista: http://127.0.0.1:3041. Solo declararla disponible tras comprobar health y el proceso preparado. Usuario ficticio autorizado: **inventario@example.test**, concesión shipment:read en Acopio ficticio Norte. La contraseña generada se conserva exclusivamente en .local/rop01-manual/credenciales.txt; no se publica ni se pega en el chat.
 

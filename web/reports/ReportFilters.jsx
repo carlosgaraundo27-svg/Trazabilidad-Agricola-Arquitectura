@@ -12,7 +12,7 @@ export function ReportFilters({
     <form onSubmit={onApply} aria-label="Filtros de salidas y entregas">
       <div className="report-filters">
         <label>
-          Centro del reporte
+          <span>Centro del reporte</span>
           <select
             value={filters.centerId}
             onChange={(e) => onChange("centerId", e.target.value)}
@@ -25,7 +25,7 @@ export function ReportFilters({
           </select>
         </label>
         <label>
-          Salida desde (UTC, inclusiva)
+          <span>Salida desde (UTC, inclusiva)</span>
           <input
             type="datetime-local"
             step="0.001"
@@ -35,7 +35,7 @@ export function ReportFilters({
           />
         </label>
         <label>
-          Salida hasta (UTC, exclusiva)
+          <span>Salida hasta (UTC, exclusiva)</span>
           <input
             type="datetime-local"
             step="0.001"
@@ -45,7 +45,7 @@ export function ReportFilters({
           />
         </label>
         <label>
-          Estado del reporte
+          <span>Estado del reporte</span>
           <select
             value={filters.state}
             onChange={(e) => onChange("state", e.target.value)}
@@ -61,7 +61,7 @@ export function ReportFilters({
           </select>
         </label>
         <label>
-          Lote exacto (opcional)
+          <span>Lote exacto (opcional)</span>
           <input
             type="text"
             value={filters.lotId}

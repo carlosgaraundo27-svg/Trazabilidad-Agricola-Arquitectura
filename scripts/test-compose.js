@@ -5,6 +5,7 @@ if (process.env.ALLOW_DEMO_SEED !== "true")
 const env = {
   ...process.env,
   E2E_EXTERNAL_SERVER: "true",
+  TEST_ALLOW_DB_WRITE: "true",
   E2E_BASE_URL: "http://localhost:" + (process.env.APP_PORT || "3000"),
   DATABASE_URL:
     "postgres://demo:" +

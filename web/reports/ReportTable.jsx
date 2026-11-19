@@ -3,9 +3,8 @@ import { shipmentStates } from "../logistics/ShipmentDetail.jsx";
 
 export function ReportTable({ items }) {
   return (
-    <div
+    <section
       className="report-table"
-      role="region"
       aria-label="Tabla de salidas y entregas"
       tabIndex="0"
     >
@@ -65,6 +64,6 @@ export function ReportTable({ items }) {
           ))}
         </tbody>
       </table>
-    </div>
+    </section>
   );
 }

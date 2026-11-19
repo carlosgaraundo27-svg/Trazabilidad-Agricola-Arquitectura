@@ -1,6 +1,102 @@
 # Continuidad — Inventario, Reserva, Despacho y Entrega
 
-## Estado vigente — servidor A separado y publicación bloqueada, 2026-11-19
+## Estado vigente — espacio de trabajo identificado, 2026-11-19
+
+**Única carpeta para abrir en Codex:** `C:\Users\leona\Documents\Proyect_Final_Arquitectura\RECUPERADO_20261117_213508\repos\repo-inventario`. Es un repositorio independiente: `.git` directorio, git-dir=common-dir propio, sin commondir externo/alternates. El workspace padre no tiene Git. Su `LEER_PRIMERO.md` es el índice local de carpetas y enlaza aquí; este bloque es el único procedimiento vigente. Los bloques inferiores quedan históricos.
+
+**Rama activa:** feat/offline-servidor-recibos; HEAD recibido **9c9cb3c06f725ffcb5975d27d69777e0c29e53d2**, limpio antes de esta organización. Código A en d282d1b/25a2a81, documentación A en9c9cb3c; esta actualización solo añade documentación y se guarda aparte, sin cambiar de rama. HEAD documental actual: `git rev-parse HEAD`. Objetivo: verificar respaldo/restauración y publicar Inventario antes de Flutter, sin nuevos módulos.
+
+### Relación real de ramas y publicación
+
+| Línea | Referencia local observada | Publicación verificada el19nov |
+| --- | --- | --- |
+| main | **No hay rama local main**. refs/remotes/origin/main apunta a47d827c; es referencia conservada del bundle | main GitHub=**47d827c1ac2ae0fe3c8050279f5e0ecdcd562d05** |
+| Inventario / #7 | feat/inventario-despacho-entrega y fix/demo-recuperada-inventario=**dd18ceddd185d72e32db7c5047e53bd5369434b7** | [PR #7](https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/pull/7) abierto, sin fusionar; rama remota aún=**22c6e4f61bf2f575b0106af1d262a0b11de8c040** |
+| Offline A | feat/offline-servidor-recibos=9c9cb3c al inicio; tres commits de A después de dd18ced, más la organización documental actual | No apareció rama remota A en la consulta; publicación no realizada/verificada |
+
+Relación de antecesores, sin merges nuevos:
+
+```text
+47d827c main publicado
+  ... 22c6e4f PR #7 publicado
+        19b291d -> 0256966 -> dd18ced Inventario local / demo recuperada
+                              d282d1b -> 25a2a81 -> 9c9cb3c offline A local
+                                                    + organización documental
+```
+
+Comprobación antes de esta edición: main→Inventario local0/19 de diferencia; Inventario→A0/3; main→A0/22. Cambian solo los conteos de A al añadir el commit documental. No es que A esté integrado en main o en #7. Los tres commits19b291d/0256966/dd18ced faltan en la cabeza publicada de #7. El origin **no apunta a GitHub**, sino a `C:\Users\leona\Documents\Proyect_Final_Arquitectura\RECUPERACION_20261117_211416\all-refs.bundle`; no hacer push/fetch/prune suponiendo un remoto público. El GitHub del proyecto es `https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura.git`. No se cambió configuración/remoto ni se repitió ningún push.
+
+### Demo y datos: estado actual y pendientes
+
+URL prevista **http://127.0.0.1:3026**. Windows netstat firmado no mostró entradas de3026/3037/3038/3001 en esta revisión; no se presenta como demo iniciada. Las sondas TCP cortas dieron10035/espera: por sí solas no certifican puerto libre. Un proceso Node observado no se atribuyó al proyecto ni se detuvo. No se cambió de rama ni se inició servidor, Docker, PostgreSQL o SDK.
+
+Inventario usa **inventory_demo_20261118_151800**, migraciones **001–007**, configuración privada `.local/demo-20261118_151800/demo.env`. La contraseña está únicamente en su archivo privado local, nunca imprimirlo. A necesita **008** y una DB **nueva/aislada**: no usar demo.env, migrar la demo ni ejecutar seeds otra vez. Los directorios físicos PG18 de los originales se conservan sin arrancarlos. Proyecto/volumen efectivo Docker y dump/restauración siguen pendientes de evidencia nueva; no se ejecutó SQL o respaldo durante esta organización.
+
+El [bloque PowerShell de respaldo existente](reactivacion-demo-C.md#único-bloque-para-docker-y-respaldorestauración-en-powershell-normal) y `.local/reactivacion-C-20261118/RESPALDAR_POWERSHELL_NORMAL.ps1` continúan conservados. Copiar su contenido en PowerShell normal, sin modificar ExecutionPolicy. Primero revisar si ya existe resultado del usuario; no repetir respaldos/intentonas a ciegas. Exigir dump privado, restauración en base nueva y `restored_and_verified`/comparación aprobada. Los resultados de lectura y las pruebas de A no sustituyen esa evidencia. No se recibió ni halló un resultado nuevo en la carpeta prevista.
+
+### Cambiar entre Inventario y offline A
+
+No cambiar archivos/rama debajo de un servidor activo, aunque solo parezca un cambio documental. **Primero detener únicamente la ejecución identificada de este repositorio** con Ctrl+C o `parar` en la consola del lanzador. No matar todos los node.exe ni PostgreSQL. Si no puede identificarse el proceso o puerto, detener el procedimiento; no forzar el switch. El estado Git limpio tampoco prueba que no haya servidor.
+
+En la carpeta única, comprobar Git y puertos **antes de elegir una de las dos versiones**:
+
+```powershell
+Set-Location -LiteralPath 'C:\Users\leona\Documents\Proyect_Final_Arquitectura\RECUPERADO_20261117_213508\repos\repo-inventario'
+git status --short --branch
+if ($LASTEXITCODE -ne 0) { throw 'No continuar fuera del repositorio.' }
+$Pending = @(git status --porcelain=v1 --untracked-files=normal)
+if ($LASTEXITCODE -ne 0 -or $Pending.Count) { throw 'Conservar/revisar y guardar los cambios antes de cambiar de rama; no reset, clean o stash automático.' }
+$Netstat = Join-Path $env:WINDIR 'System32\netstat.exe'
+if ((Get-AuthenticodeSignature -LiteralPath $Netstat).Status -ne 'Valid') { throw 'Herramienta no verificada; detenerse.' }
+$Tcp = @(& $Netstat -ano -p TCP)
+if ($LASTEXITCODE -ne 0) { throw 'No se pudo comprobar la tabla TCP.' }
+$Related = @($Tcp | Where-Object { $_ -match '^\s*TCP\s+\S+:(3026|3037|3038|3001)\s+' })
+if ($Related.Count) { $Related; throw 'Hay entradas de puertos del proyecto: identificar estado/proceso y confirmar parada antes de continuar.' }
+# Si se usó otro puerto, comprobarlo también y cerrar su servidor identificado.
+git log -1 --oneline
+```
+
+Los archivos ignorados (`.local`, configuración, credenciales) no aparecen en ese status: conservarlos. No ponerlos en Git para conseguir árbol limpio. Si hay trabajo, guardar mediante commits revisados en su rama o acordar su conservación antes del cambio; nunca descartarlo automáticamente.
+
+**Opción Inventario:** después de cumplir las comprobaciones, ejecutar solo este destino:
+
+```powershell
+git switch fix/demo-recuperada-inventario
+if ($LASTEXITCODE -ne 0) { throw 'Switch rechazado; conservar todo y revisar.' }
+git status --short --branch
+git log -1 --oneline
+# Esperado: dd18ced. Mismas fuentes que feat/inventario-despacho-entrega local.
+& 'C:\Program Files\nodejs\node.exe' .local/reactivacion-C-20261118/servidor.mjs
+```
+
+No necesita008. Usa la demo ya existente001–007, sin seed/migrate. El lanzador rechaza otro directorio, DB o puerto ocupado. Parar con Ctrl+C o `parar` en esa misma consola. No ejecutar operaciones que escriben datos antes del respaldo verificable. La [guía funcional del recorrido](demo-inventario-recuperada.md) conserva los pasos; los resultados publicados allí son históricos.
+
+**Opción A:** después de parar Inventario y repetir las comprobaciones, ejecutar solo este destino:
+
+```powershell
+git switch feat/offline-servidor-recibos
+if ($LASTEXITCODE -ne 0) { throw 'Switch rechazado; conservar todo y revisar.' }
+git status --short --branch
+git log -1 --oneline
+# No iniciar el lanzador demo.env bajo esta versión.
+```
+
+Elegir una DB NUEVA/aislada y configuración propia001–008 para probar A, con puerto distinto de3026. Seguir [reproducción y evidencia A](incremento-offline-A.md#reproducción-sin-tocar-datos-existentes), nunca reutilizar DATABASE_URL heredada de Inventario. No aplicar down de008 contra recibos aceptados ni conectar después la versión Inventario a esa base de A como si fuera su demo. No hay cliente Flutter/SQLite/outbox por este cambio de rama.
+
+### Tres siguientes pasos y verificaciones de esta organización
+
+1. Recibir/revisar el respaldo/restauración o, si no existe, ejecutar una vez el bloque preparado desde PowerShell normal, con la app identificada detenida; conservar salida y datos.
+2. Publicar los tres commits de Inventario desde PowerShell normal con las credenciales del propietario, sin exponerlas. No repetir el fallo desde esta sesión ni publicar HEAD de A. Comando autorizado, condicionado a que el remoto no haya avanzado de forma divergente:
+
+```powershell
+git -c http.sslBackend=openssl push https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura.git dd18ced:refs/heads/feat/inventario-despacho-entrega
+```
+
+3. Verificar cabeza y verify/Compose/Sonar del SHA publicado, después login/recorrido/replay de demo respaldada y cierre de Inventario; revisar A como incremento dependiente. No fusionar #7. Fallo remoto histórico22c6e4f en audit≠auditoría completa local posterior0; no hay CI remoto de A. Los20 avisos Sonar/nueve críticos DDL siguen abiertos.
+
+Esta tarea solo revisa metadatos, carpetas y documentación; no repite suites/build/audit, pushes, Docker o pruebas SQL. La evidencia anterior de A es25 unitarias/128 integración/17 E2E, no ejecución nueva. No se movieron carpetas/copias completas/volúmenes/SDK ni se cambió de rama. Originales, datos y kit D conservados. B–D siguen propuestos; no ejecutar el SDK detectado ni sus antiguos comandos de bootstrap. Sin aprobación docente/agrícola inferida.
+
+## Histórico — servidor A separado y publicación bloqueada, 2026-11-19
 
 Carpeta única conservada: `C:\Users\leona\Documents\Proyect_Final_Arquitectura\RECUPERADO_20261117_213508\repos\repo-inventario`. Rama activa **feat/offline-servidor-recibos**, base **dd18ced**, código en **d282d1b/25a2a81**; commit documental actual con `git rev-parse HEAD`. La rama local **feat/inventario-despacho-entrega** avanzó por comparación de referencia22c6e4f→dd18ced conservando19b291d/0256966/dd18ced; **fix/demo-recuperada-inventario** sigue en dd18ced. Sin force, squash, merge o cambio del origin/bundle. [Plan A–D](../03-diseno-de-software/10-plan-incrementos-offline.md), [implementación/evidencias/SDK](incremento-offline-A.md).
 
@@ -14,7 +110,7 @@ No se encontró resultado nuevo del respaldo/restauración en ubicaciones previs
 
 Siguiente: recibir/verificar backup/restauración y push normal de #7, comprobar CI de su SHA; después revisar A como rama dependiente. B requiere herramientas de procedencia verificable y NA-01–08 real en Android; no implementado. Sin aprobación docente/agrícola. Este bloque prevalece sobre estados actuales históricos inferiores.
 
-## Estado vigente — continuar en C:, traslado pospuesto, 2026-11-18
+## Histórico — continuar en C:, traslado pospuesto, 2026-11-18
 
 Carpeta única: `C:\Users\leona\Documents\Proyect_Final_Arquitectura\RECUPERADO_20261117_213508\repos\repo-inventario`. Rama **fix/demo-recuperada-inventario**, HEAD al iniciar **0256966abc7d578464017dae7bb0e700653f4f1e**, limpio; los cambios nuevos de esta tarea son documentales y su SHA se obtiene con `git rev-parse HEAD`. Conservar originales/respaldos y el kit MIGRACION_D_20261118_215214 intactos. D: no se activa ni sus checks bloquean C:.
 
@@ -28,7 +124,7 @@ PR #7 consultado: **abierto, no fusionado**, cabeza **22c6e4f**, rama feat/inven
 
 Siguiente tarea ejecutable: respaldo/restauración de la demo, login/replay con evidencia nueva, incorporación/publicación y checks del SHA final antes de evaluar cierre. O1–O10 siguen pendientes según la sección final de la especificación; no ejecutar Flutter/Dart/SDK, implementar offline ni fusionar PR. Este bloque sustituye afirmaciones de estado actual inferiores; conserva su historia.
 
-## Estado vigente — demo reconstruida y E2E, 2026-11-18
+## Histórico — demo reconstruida y E2E, 2026-11-18
 
 Continuar en la copia RECUPERADO_20261117_213508/repos/repo-inventario, rama local fix/demo-recuperada-inventario, base 22c6e4f; no usar originales para cambios nuevos. [Guía](demo-inventario-recuperada.md), [evidencia](evidence/demo-recuperada-20261118/resultado.json), matriz actualizada con los 16 criterios transcritos; PDF/SDD sin resolver. Este estado sustituye las afirmaciones de estado actual de las notas históricas inferiores.
 

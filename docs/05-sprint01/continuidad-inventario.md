@@ -1,6 +1,20 @@
 # Continuidad — Inventario, Reserva, Despacho y Entrega
 
-## Estado vigente — CHECK equivalente y restauración revalidada, 2026-11-19
+## Estado vigente — Inventario y A integrados; B bloqueado por herramientas, 2026-11-19
+
+Única carpeta activa en C: RECUPERADO_20261117_213508/repos/repo-inventario. Rama actual docs/preparacion-B-tras-integracion, desde main6f0294d; HEAD documental con git rev-parse HEAD. Sin otra copia del repositorio. Origin sigue siendo el bundle privado, no GitHub; fetch/push con URL explícita. LEER_PRIMERO.md del workspace se actualiza a este corte conservando su clasificación de carpetas.
+
+**Integraciones autorizadas:** #7 dd18ced→main con merge c8676b695ee64dcca1044104a5935bbf908c6dfe; tras verde de main se retargeteó #8 y se comprobó su diff41 archivos. #8 cabeza5cef72e→main con merge6f0294d52fe63fac2ab855e1b129688b4c844186. Padres/árboles comprobados; todos los commits conservados. Ambos PR fusionados sin squash/rebase/force/bypass. [Seis checks de main aprobados y revisión](integracion-inventario-offline-A.md).
+
+**Sonar pendiente:** main reporta118 tras #7 y128 tras #8,0 aceptados; ámbito distinto de los20/nueve críticos DDL de #7 y diez de A. No se presentan como resueltos por el gate ni se afirma triage global de los128. CI no es CD/despliegue persistente.
+
+**Demo intacta:** no SQL, Docker, login, migrate/seed, reinicios o configuración en esta tarea. Sigue001–007, no008. Versión operativa conservada fix/demo-recuperada-inventario/dd18ced; no migrarla con el main nuevo. Respaldo revalidado/reportes privados preservados con límites ACL/procedencia ya registrados.
+
+**B:** [contratos y criterios terminados](../03-diseno-de-software/11-contratos-incremento-B.md), sin cliente implementado ni validación Android. Kaspersky21.27 activo; falta dictamen del incidente y no se identificó SDK alternativo verificable. No ejecutar SDK señalado, restaurar cuarentena o cambiar exclusiones. [Preparación y único paso manual](preparacion-offline-B.md): tramitar el evento exacto con soporte y obtener caso/dictamen verificable. Después herramientas alternativas verificadas/analizadas antes de ejecutar, DB nueva android_b_dev_*001–008 con fixtures ficticios y HTTPS; nunca demo.env. NA-01–08/SB-01–06 sin ejecutar.
+
+Este bloque prevalece sobre prohibiciones de merge/estados históricos inferiores: el propietario autorizó #7/#8 en esta tarea. No adopta por silencio O5/reintentos/retención de C ni implica aprobación docente/agrícola. No migrar a D: ni duplicar repositorios.
+
+## Histórico — CHECK equivalente y restauración revalidada, 2026-11-19
 
 Continuar en la única carpeta activa, rama feat/offline-servidor-recibos. Base publicada de esta revisión ce9c3f6; los commits nuevos de herramientas/recomendaciones/documentación avanzan A conservando su historia, sin mover Inventario de dd18ced ni fusionar PR. Origin sigue siendo el bundle privado: publicar solo hacia la URL GitHub explícita. HEAD final con git rev-parse HEAD; verificar los checks de ese SHA, sin trasladar el verde de ce9c3f6.
 

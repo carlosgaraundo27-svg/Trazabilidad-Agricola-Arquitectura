@@ -9,23 +9,56 @@ permissions:
 jobs:
   jest:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: fiction_jest_only
+          POSTGRES_DB: jest_business
+        ports: ["55442:5432"]
+        options: >-
+          --health-cmd "pg_isready -U test -d jest_business"
+          --health-interval 5s --health-timeout 3s --health-retries 10
+    env:
+      JEST_DATABASE_URL: postgres://test:fiction_jest_only@127.0.0.1:55442/jest_business
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: "24"
           cache: npm
       - run: npm ci --ignore-scripts
-      - run: npm run test:coverage
+      - run: npm run test:coverage -- --json --outputFile=coverage/jest/results.json
+      - run: git rev-parse HEAD > coverage/jest/source-sha.txt
       - name: Coverage HTML and LCOV by tested SHA
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: jest-coverage-${{ github.event.pull_request.head.sha || github.sha }}
           path: coverage/jest/
+          if-no-files-found: error
+          retention-days: 14
+      - name: Require Sonar CI credential
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: test -n "$SONAR_TOKEN"
+      - name: Import LCOV and evaluate existing Sonar gate
+        uses: SonarSource/sonarqube-scan-action@v7
+        with:
+          args: -Dsonar.qualitygate.wait=true
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Sonar analysis task identity
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sonar-task-${{ github.event.pull_request.head.sha || github.sha }}
+          path: coverage/jest/sonar-task.txt
           if-no-files-found: error
           retention-days: 14
   verify:

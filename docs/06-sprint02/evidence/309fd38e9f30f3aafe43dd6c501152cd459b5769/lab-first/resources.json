@@ -1,0 +1,27 @@
+{
+  "sourceSha": "309fd38e9f30f3aafe43dd6c501152cd459b5769",
+  "sampleIntervalSeconds": 3,
+  "frames": [
+    {
+      "at": "2026-11-20T19:58:28.022Z",
+      "hostCpuPercent": 0,
+      "availableMemoryBytes": 15473471488,
+      "totalMemoryBytes": 16759439360,
+      "appRssKb": 126580,
+      "containers": [
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 3.78,
+          "memoryPercent": 0.25,
+          "memoryUsage": "39.84MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.21,
+          "memoryPercent": 0.04,
+          "memoryUsage": "5.828MiB / 15.61GiB"
+        }
+      ]
+    }
+  ]
+}

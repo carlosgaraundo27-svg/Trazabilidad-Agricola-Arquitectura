@@ -1,0 +1,471 @@
+{
+  "sourceSha": "02ca31bd03dc1626bc9f0c610405b8a673c0fe07",
+  "fixtureSha": "02ca31bd03dc1626bc9f0c610405b8a673c0fe07",
+  "measuredAt": "2026-11-20T20:12:59.918Z",
+  "mode": "degraded",
+  "requests": 50,
+  "counts": {
+    "sql": 100,
+    "gate": 50,
+    "snapshot": 50,
+    "hits": 0,
+    "misses": 0,
+    "errors": 50
+  },
+  "milliseconds": [
+    5.771463000000011,
+    1.5397389999999973,
+    1.1170620000000042,
+    1.3014630000000125,
+    1.2146849999999745,
+    1.107609999999994,
+    0.9819080000000042,
+    1.1389420000000143,
+    1.112686999999994,
+    1.0848349999999982,
+    4.5026169999999865,
+    1.0808879999999874,
+    0.7895870000000116,
+    0.7980929999999944,
+    1.0645109999999818,
+    0.960250000000002,
+    0.9373099999999965,
+    0.9482329999999877,
+    0.7859760000000051,
+    0.6940679999999873,
+    0.8955749999999796,
+    1.1191450000000032,
+    1.0519990000000234,
+    1.0582190000000082,
+    1.1152590000000373,
+    1.0722500000000537,
+    0.8495289999999613,
+    1.0904499999999757,
+    0.9717810000000213,
+    0.7250339999999937,
+    0.6797770000000014,
+    0.7872250000000349,
+    1.1157889999999497,
+    1.2515199999999709,
+    1.1268190000000118,
+    1.04001999999997,
+    0.9969270000000279,
+    0.988997999999981,
+    1.0147529999999847,
+    1.0746469999999704,
+    1.1175359999999728,
+    0.8797839999999724,
+    1.1952269999999885,
+    1.0769319999999993,
+    1.0609019999999987,
+    0.9612850000000321,
+    0.7527240000000006,
+    1.0133639999999673,
+    1.1273180000000025,
+    0.980246999999963
+  ],
+  "p95": 1.5397389999999973,
+  "events": [
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    }
+  ],
+  "limitation": "Caso de uso y PostgreSQL/Redis reales, secuencial; excluye HTTP, red cliente y concurrencia. Fría = clave Redis ausente, no buffers PostgreSQL fríos."
+}

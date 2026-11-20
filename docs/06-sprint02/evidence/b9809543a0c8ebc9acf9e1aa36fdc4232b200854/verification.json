@@ -1,0 +1,1437 @@
+{
+  "sourceSha": "b9809543a0c8ebc9acf9e1aa36fdc4232b200854",
+  "measuredAt": "2026-11-20T15:31:02.184Z",
+  "node": "v24.16.0",
+  "platform": "win32",
+  "isolation": "Procesos secuenciales; sin .env ni URLs de servicios; dobles de puertos y PGlite en memoria en node:test existente. Sin acceso a Android.",
+  "checks": [
+    {
+      "name": "jest",
+      "command": [
+        "node",
+        "--experimental-vm-modules",
+        "node_modules/jest/bin/jest.js",
+        "--runInBand",
+        "--coverage",
+        "--json",
+        "--outputFile=.local/sprint02/b9809543a0c8ebc9acf9e1aa36fdc4232b200854/jest.json"
+      ],
+      "exitCode": 0,
+      "milliseconds": 1361
+    },
+    {
+      "name": "node-test",
+      "command": [
+        "node",
+        "--test",
+        "--test-concurrency=1",
+        "tests/unit/*.test.js"
+      ],
+      "exitCode": 0,
+      "milliseconds": 3087
+    },
+    {
+      "name": "check",
+      "command": [
+        "node",
+        "scripts/check.js"
+      ],
+      "exitCode": 0,
+      "milliseconds": 1458
+    },
+    {
+      "name": "format",
+      "command": [
+        "node",
+        "node_modules/prettier/bin/prettier.cjs",
+        "--check",
+        "server",
+        "web",
+        "scripts",
+        "tests",
+        "*.js",
+        "*.json",
+        ".github/workflows/ci.yml",
+        "compose*.yaml"
+      ],
+      "exitCode": 1,
+      "milliseconds": 783
+    },
+    {
+      "name": "format-crlf-diagnostic",
+      "command": [
+        "node",
+        "node_modules/prettier/bin/prettier.cjs",
+        "--check",
+        "server",
+        "web",
+        "scripts",
+        "tests",
+        "*.js",
+        "*.json",
+        ".github/workflows/ci.yml",
+        "compose*.yaml",
+        "--end-of-line",
+        "auto"
+      ],
+      "exitCode": 0,
+      "milliseconds": 783
+    }
+  ],
+  "jest": {
+    "suites": 4,
+    "passed": 38,
+    "failed": 0,
+    "pending": 0
+  },
+  "nodeTest": {
+    "passed": 45,
+    "failed": 0
+  },
+  "coverage": {
+    "scope": "Todo server/**/*.js; web y Flutter no medidos por Jest; node:test no se agrega",
+    "totals": {
+      "lines": {
+        "total": 3997,
+        "covered": 339,
+        "skipped": 0,
+        "pct": 8.48
+      },
+      "statements": {
+        "total": 3997,
+        "covered": 339,
+        "skipped": 0,
+        "pct": 8.48
+      },
+      "functions": {
+        "total": 73,
+        "covered": 19,
+        "skipped": 0,
+        "pct": 26.02
+      },
+      "branches": {
+        "total": 110,
+        "covered": 72,
+        "skipped": 0,
+        "pct": 65.45
+      },
+      "branchesTrue": {
+        "total": 0,
+        "covered": 0,
+        "skipped": 0,
+        "pct": 100
+      }
+    },
+    "files": [
+      {
+        "path": "server/composition.js",
+        "lines": {
+          "total": 105,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "statements": {
+          "total": 105,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        }
+      },
+      {
+        "path": "server/db.js",
+        "lines": {
+          "total": 42,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "statements": {
+          "total": 42,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        }
+      },
+      {
+        "path": "server/harvest-sync-http.js",
+        "lines": {
+          "total": 47,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "statements": {
+          "total": 47,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        }
+      },
+      {
+        "path": "server/http.js",
+        "lines": {
+          "total": 241,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "statements": {
+          "total": 241,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        }
+      },
+      {
+        "path": "server/intake-http.js",
+        "lines": {
+          "total": 101,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "statements": {
+          "total": 101,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        }
+      },
+      {
+        "path": "server/logistics-http.js",
+        "lines": {
+          "total": 148,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "statements": {
+          "total": 148,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        }
+      },
+      {
+        "path": "server/main.js",
+        "lines": {
+          "total": 33,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "statements": {
+          "total": 33,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        }
+      },
+      {
+        "path": "server/publication-http.js",
+        "lines": {
+          "total": 96,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "statements": {
+          "total": 96,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        }
+      },
+      {
+        "path": "server/quality-http.js",
+        "lines": {
+          "total": 63,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "statements": {
+          "total": 63,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        }
+      },
+      {
+        "path": "server/reports-http.js",
+        "lines": {
+          "total": 15,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "statements": {
+          "total": 15,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        }
+      },
+      {
+        "path": "server/adapters/public-cache.js",
+        "lines": {
+          "total": 45,
+          "covered": 8,
+          "skipped": 0,
+          "pct": 17.77
+        },
+        "functions": {
+          "total": 5,
+          "covered": 2,
+          "skipped": 0,
+          "pct": 40
+        },
+        "statements": {
+          "total": 45,
+          "covered": 8,
+          "skipped": 0,
+          "pct": 17.77
+        },
+        "branches": {
+          "total": 3,
+          "covered": 3,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      {
+        "path": "server/modules/access/application.js",
+        "lines": {
+          "total": 81,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "statements": {
+          "total": 81,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        }
+      },
+      {
+        "path": "server/modules/access/domain.js",
+        "lines": {
+          "total": 6,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "statements": {
+          "total": 6,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        }
+      },
+      {
+        "path": "server/modules/access/password.js",
+        "lines": {
+          "total": 12,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "statements": {
+          "total": 12,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        }
+      },
+      {
+        "path": "server/modules/access/repository.js",
+        "lines": {
+          "total": 75,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "statements": {
+          "total": 75,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        }
+      },
+      {
+        "path": "server/modules/harvest/application.js",
+        "lines": {
+          "total": 68,
+          "covered": 43,
+          "skipped": 0,
+          "pct": 63.23
+        },
+        "functions": {
+          "total": 6,
+          "covered": 3,
+          "skipped": 0,
+          "pct": 50
+        },
+        "statements": {
+          "total": 68,
+          "covered": 43,
+          "skipped": 0,
+          "pct": 63.23
+        },
+        "branches": {
+          "total": 10,
+          "covered": 10,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      {
+        "path": "server/modules/harvest/domain.js",
+        "lines": {
+          "total": 20,
+          "covered": 20,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 0,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 100
+        },
+        "statements": {
+          "total": 20,
+          "covered": 20,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 5,
+          "covered": 5,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      {
+        "path": "server/modules/harvest/repository.js",
+        "lines": {
+          "total": 81,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "statements": {
+          "total": 81,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        }
+      },
+      {
+        "path": "server/modules/harvest/sync-application.js",
+        "lines": {
+          "total": 87,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "statements": {
+          "total": 87,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        }
+      },
+      {
+        "path": "server/modules/harvest/sync-domain.js",
+        "lines": {
+          "total": 33,
+          "covered": 33,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "statements": {
+          "total": 33,
+          "covered": 33,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 7,
+          "covered": 7,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      {
+        "path": "server/modules/harvest/sync-repository.js",
+        "lines": {
+          "total": 34,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "statements": {
+          "total": 34,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        }
+      },
+      {
+        "path": "server/modules/intake/application.js",
+        "lines": {
+          "total": 237,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "statements": {
+          "total": 237,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        }
+      },
+      {
+        "path": "server/modules/intake/domain.js",
+        "lines": {
+          "total": 74,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "statements": {
+          "total": 74,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        }
+      },
+      {
+        "path": "server/modules/intake/measurement-domain.js",
+        "lines": {
+          "total": 30,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "statements": {
+          "total": 30,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        }
+      },
+      {
+        "path": "server/modules/intake/quality-application.js",
+        "lines": {
+          "total": 245,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "statements": {
+          "total": 245,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        }
+      },
+      {
+        "path": "server/modules/intake/quality-domain.js",
+        "lines": {
+          "total": 100,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "statements": {
+          "total": 100,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        }
+      },
+      {
+        "path": "server/modules/intake/quality-repository.js",
+        "lines": {
+          "total": 114,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "statements": {
+          "total": 114,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        }
+      },
+      {
+        "path": "server/modules/intake/repository.js",
+        "lines": {
+          "total": 140,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "statements": {
+          "total": 140,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        }
+      },
+      {
+        "path": "server/modules/logistics/application.js",
+        "lines": {
+          "total": 407,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "statements": {
+          "total": 407,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        }
+      },
+      {
+        "path": "server/modules/logistics/domain.js",
+        "lines": {
+          "total": 118,
+          "covered": 118,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 7,
+          "covered": 7,
+          "skipped": 0,
+          "pct": 100
+        },
+        "statements": {
+          "total": 118,
+          "covered": 118,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 21,
+          "covered": 21,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      {
+        "path": "server/modules/logistics/policies.js",
+        "lines": {
+          "total": 59,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "statements": {
+          "total": 59,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        }
+      },
+      {
+        "path": "server/modules/logistics/repository.js",
+        "lines": {
+          "total": 242,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "statements": {
+          "total": 242,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        }
+      },
+      {
+        "path": "server/modules/producers/application.js",
+        "lines": {
+          "total": 68,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "statements": {
+          "total": 68,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        }
+      },
+      {
+        "path": "server/modules/producers/domain.js",
+        "lines": {
+          "total": 12,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "statements": {
+          "total": 12,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        }
+      },
+      {
+        "path": "server/modules/producers/repository.js",
+        "lines": {
+          "total": 83,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "statements": {
+          "total": 83,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        }
+      },
+      {
+        "path": "server/modules/publication/application.js",
+        "lines": {
+          "total": 173,
+          "covered": 69,
+          "skipped": 0,
+          "pct": 39.88
+        },
+        "functions": {
+          "total": 12,
+          "covered": 3,
+          "skipped": 0,
+          "pct": 25
+        },
+        "statements": {
+          "total": 173,
+          "covered": 69,
+          "skipped": 0,
+          "pct": 39.88
+        },
+        "branches": {
+          "total": 20,
+          "covered": 19,
+          "skipped": 0,
+          "pct": 95
+        }
+      },
+      {
+        "path": "server/modules/publication/domain.js",
+        "lines": {
+          "total": 54,
+          "covered": 40,
+          "skipped": 0,
+          "pct": 74.07
+        },
+        "functions": {
+          "total": 3,
+          "covered": 2,
+          "skipped": 0,
+          "pct": 66.66
+        },
+        "statements": {
+          "total": 54,
+          "covered": 40,
+          "skipped": 0,
+          "pct": 74.07
+        },
+        "branches": {
+          "total": 4,
+          "covered": 4,
+          "skipped": 0,
+          "pct": 100
+        }
+      },
+      {
+        "path": "server/modules/publication/repository.js",
+        "lines": {
+          "total": 83,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "statements": {
+          "total": 83,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        }
+      },
+      {
+        "path": "server/modules/reports/application.js",
+        "lines": {
+          "total": 46,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "statements": {
+          "total": 46,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        }
+      },
+      {
+        "path": "server/modules/reports/domain.js",
+        "lines": {
+          "total": 41,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "statements": {
+          "total": 41,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        }
+      },
+      {
+        "path": "server/modules/reports/repository.js",
+        "lines": {
+          "total": 41,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "statements": {
+          "total": 41,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        }
+      },
+      {
+        "path": "server/modules/traceability/application.js",
+        "lines": {
+          "total": 40,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "statements": {
+          "total": 40,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        }
+      },
+      {
+        "path": "server/modules/traceability/domain.js",
+        "lines": {
+          "total": 32,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "statements": {
+          "total": 32,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        }
+      },
+      {
+        "path": "server/modules/traceability/repository.js",
+        "lines": {
+          "total": 117,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "functions": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "statements": {
+          "total": 117,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        },
+        "branches": {
+          "total": 1,
+          "covered": 0,
+          "skipped": 0,
+          "pct": 0
+        }
+      },
+      {
+        "path": "server/shared/errors.js",
+        "lines": {
+          "total": 8,
+          "covered": 8,
+          "skipped": 0,
+          "pct": 100
+        },
+        "functions": {
+          "total": 2,
+          "covered": 2,
+          "skipped": 0,
+          "pct": 100
+        },
+        "statements": {
+          "total": 8,
+          "covered": 8,
+          "skipped": 0,
+          "pct": 100
+        },
+        "branches": {
+          "total": 3,
+          "covered": 3,
+          "skipped": 0,
+          "pct": 100
+        }
+      }
+    ]
+  },
+  "artifacts": [
+    "coverage/jest/index.html",
+    "coverage/jest/lcov.info"
+  ],
+  "fileSha256": {
+    ".github/workflows/ci.yml": "197d5e8fb8d5c80c86a0f140dd1466a4dfb1b6cc8075c8182e5b36b00642afd2",
+    "jest.config.js": "ed277a3b5f36313195f03d4b88b79d7345956f50c588cda4c11da6a1a040e536",
+    "package-lock.json": "c1a744d63236c52142610573395083844645b0276cd2ab865e7104df7b6aa5a0",
+    "package.json": "ca7b69644610950d92833932603577ae618ba9175e93c8e5ccde09264aa714af",
+    "scripts/sprint02/analyze-postgres.js": "c88ce51080079f236dd9bd248e913324a46839dd69ab4cd1db9825264de0c5a5",
+    "scripts/sprint02/compare-cache.js": "86b5ac32adc8189d89cee499c1deca25d186f634650f2d8551fb70fede6bfbf2",
+    "scripts/sprint02/compose.yaml": "d6c9807f12e7cc02eaf918a1e447ca7477e101a0468d994be0abaa3b4242d6c9",
+    "scripts/sprint02/git.js": "469f89be9ec73b6763d9ffc1ff7d9f5db0b010a1e6f8b3f382c0b6981b2d8f73",
+    "scripts/sprint02/lab-config.js": "ee7ea9a12d14fcfd138f14675b873e133eeae4d0cde6e402d08f407b72e2edd0",
+    "scripts/sprint02/prepare-lab.js": "8729ebecf006720d4d7923371c9b94b732b733b690d81126a3098a7672e6c75a",
+    "scripts/sprint02/qr-load.js": "ec3bec9d11dbfc871638dbce8d2604c95775d508fc16de80dedd552fc8fee58c",
+    "scripts/sprint02/record-tests.js": "58c684addb1f90ad48cdfde7692ad1e08b5ddcb06c6e9c8c3aa4437049306c89",
+    "server/adapters/public-cache.js": "b2d9c14b1a317ff285e90b6e82a7006f16f6a660b2fe52f471d31570a295b2d0",
+    "server/composition.js": "ca2f39c9fd1149c9b9f8ae41ef5741c21f99f2c0e6b5a66db21fea31069b8ae6",
+    "server/db.js": "2ce35f6c1014cb827894be08d661cbe5476fda6981afad458f13fe1323868d1b",
+    "server/harvest-sync-http.js": "d7758d93cfa4ccfcb82aa9496563ff9eace9678c29969eb74cfa59e8fc9dad9b",
+    "server/http.js": "ece810d26c4841e29e4e72d87b183e7e18407f2173d2d262864397d2719091da",
+    "server/intake-http.js": "324c59858835c8c49143a0dc1a95c149bc659c282b96f97fbdfd18d35f1be368",
+    "server/logistics-http.js": "af598b12b2bf6ce8b88ba9f582116b29644b83dd3f8f1a01d6ea25f551ec2b57",
+    "server/main.js": "22008c064e9e52af879f22fc823b10982b3d694be52c7e4f7b523f0b1e7f4241",
+    "server/modules/access/application.js": "b3c4715937e988d46b42738cd06d8ef590cd1ec617ef0fc1156179f901f6f940",
+    "server/modules/access/domain.js": "77c594f026438810a772630cf11efa2dd1e1453d660996b674f5743ab2686a7d",
+    "server/modules/access/password.js": "75e89b4da82e0ee9371fe15d73ea263347cf3b6a5b757ddbcfdfa3e3e1322c67",
+    "server/modules/access/repository.js": "c3398bda3f50c4c1ff0a44a32201c0079f21b206c56182fd391637c15a9319c2",
+    "server/modules/harvest/application.js": "d10c0f912a351075a2f01fbc70aa7872c53c5d9f1bdb7e46dc4b98868eafe727",
+    "server/modules/harvest/domain.js": "4b62e0c20e077f260808eeef5649bfa8090f484e0e379e4d8fcb7059537b9662",
+    "server/modules/harvest/repository.js": "c64d64291edb2a1883b139ca67c4641099372e1736f8b8f13fe1a3e645beb4d5",
+    "server/modules/harvest/sync-application.js": "74e9076692147a56ef34a720aff764434b5ef677df7d5dd3337b2c6c1807d1b7",
+    "server/modules/harvest/sync-domain.js": "e56bc6e8a5331c9f32212c532edc13f7b06eb1f4a786de12613cade8b66bd183",
+    "server/modules/harvest/sync-repository.js": "e9f67f21ab371b308ae19a781b8d0f854163e9fb9be2fefd5684deca5855c8bd",
+    "server/modules/intake/application.js": "237446ec70e5f13be79861185f8f8691122eaa8a5406d93a93bb48e250171ba4",
+    "server/modules/intake/domain.js": "9641e6d33343d3e62ce90efda4daceaaf24170dab221a6e39902ee53edf5d416",
+    "server/modules/intake/measurement-domain.js": "f046ee635c116f0c5540c2efcc8ed638cf20a83101d5b8bfb4353d6731646ef6",
+    "server/modules/intake/quality-application.js": "adf2911564dddee1839c5267ffe71bdcd36d4f6230a8f7cd29bc580bc291120c",
+    "server/modules/intake/quality-domain.js": "57c3984d1a55594b3aecc056b343efcff79845258dae27ed099c1fc4500f7fc8",
+    "server/modules/intake/quality-repository.js": "86b181d1d5870b7cb497976a0a599708e973befcd4e71c79209345a612c7e29b",
+    "server/modules/intake/repository.js": "006e7976441f32df0e7e47b310e7cbacf2af934fb4158dc5c4fe2e049bed1512",
+    "server/modules/logistics/application.js": "021a6446fb91530cf69b0bec90f78bfc18d56e6c3cbedf2f053afee11101041f",
+    "server/modules/logistics/domain.js": "55e8ab975bf510c21ef4a27a2f7ddf9a0046c0d574daa72f6a5a053cd6f612aa",
+    "server/modules/logistics/policies.js": "9520ebfb6b562c85775fe9ef3da73377e3b685a731a8f74f2d20f3215e18a1f8",
+    "server/modules/logistics/repository.js": "a86d48fd407be15e987dd087101062bb229f7c41d0e1f106547b84e548ec9cb3",
+    "server/modules/producers/application.js": "e747ddec68c0938e2880dd57a7e101f1a98322e15363360d99d5800091d2e051",
+    "server/modules/producers/domain.js": "c341866abfdd433b1a5905bf09df28ee1cc2e6a91cbe8c9f85ac4daf21c3092c",
+    "server/modules/producers/repository.js": "9d872f3442de8293c41585bcb3739c825a83a1bcfed16eba5f4b15e623fdc88b",
+    "server/modules/publication/application.js": "498a0d792e9b271de8c9f6f685abf29e66ae02f2a238263ba05bf7bfb6f32132",
+    "server/modules/publication/domain.js": "a2bd94909e4e90dc379ac28c10b248c991f6b0d3dacba4ee09ba558604ef3878",
+    "server/modules/publication/repository.js": "d53d3ce89f85200ced7be4babc96e7a94899006be8693f843db5da00684ba181",
+    "server/modules/reports/application.js": "3ea4509fb702693d11c615a2b01e0b6b9b8ee14c63913ef675909b977459e2cb",
+    "server/modules/reports/domain.js": "49a1dff4f54f5c45ba85b1f2bef13b9fde82c4bdb81e7f48bcc9779ba33bf5e5",
+    "server/modules/reports/repository.js": "09dfa4cf7a4105bb9b994f0a24e90a000aefdfcccad8be46ebde4b5b3b18b273",
+    "server/modules/traceability/application.js": "ddfe45ba83872ed9ac7e42131c5a7af8ab9e62053efc20b258e521b348f49a95",
+    "server/modules/traceability/domain.js": "c603b5b237c4f0400dc828ab8b7da17227c14071613443884fae4d8b1725d37c",
+    "server/modules/traceability/repository.js": "5b1135282c946317358b2bdab1fd339ccfc100a3edaa1460eb461d87671ca207",
+    "server/publication-http.js": "e6a74fbb755bda1dbf366b671a5107398f1b0b4e6132d192f0b48eb7951abc4c",
+    "server/quality-http.js": "e5975a7ecee6439f894f3b23e5e634875f74a4dc3ff7a3eadf3225891a0f6a89",
+    "server/reports-http.js": "0aefb3444253446eceaab3340d106b4ed94b604d70eef332ab34bfb74517aea9",
+    "server/shared/errors.js": "c4714382a27c4c9cf5c9dae9cba0a55c59c2e0bdcc52fd51293e62f3ab8e8c4f",
+    "tests/jest/harvest-application.test.js": "a6533c7d7022ae9ca2172569abbb297fd56f48fecbc0272b0de6ae71686fd20d",
+    "tests/jest/harvest-domain.test.js": "65f34509dcfd7fc5c131e55ec82a2cb83dfa281aa8f1bbbf99156f90f5fa53ea",
+    "tests/jest/inventory.test.js": "d9b327abf477b21ed51b3bf8d0440b3d00e8b9edcd1d7ee133066f0c684b2dba",
+    "tests/jest/publication-query.test.js": "469da103777fc44c5bdf966ae4e91828523a471cf575dbb22071ce233c15e815",
+    "tests/unit/android-capture-faults.test.js": "321b4fa4d762d3d80a94cfb6a8037eda8006cee9d0a64016e175e2d81204ea77",
+    "tests/unit/android-fixture-config.test.js": "1c2e1aef5483742a44d0ca04188386e70b37f7cbf0f9dd5f20413167caf7a50d",
+    "tests/unit/docker-executable.test.js": "7146358bddd88689f59280d77699109177a29026b38a62963af4c4472cf7b21e",
+    "tests/unit/domain.test.js": "8817a19153648a3cb6ab790bf397a190b0b82e21b0666a8f825477d0eb9b3f3e",
+    "tests/unit/harvest-sync.test.js": "a9f5d1cab7071217a3beaf408d1941a5e222207445324fc115f5b11b9473acb7",
+    "tests/unit/intake.test.js": "4c7aecbf275ebcd1aab87a14521f89d30cadda0531970346bd94015818bfc88b",
+    "tests/unit/logistics.test.js": "c212c5088b1c6615214a6181dacaf24d2c60cc5e7ab1418a9e5a8f04142823b9",
+    "tests/unit/lot-order.test.js": "c41c1ac9ace8dbb18440d04436148c6ff957a1188bbca5f689d4db439ed069f2",
+    "tests/unit/markdown-links.test.js": "0c247f0e35aa7630603f0b705d7040e3337e2e078f7d399b5bc8f465ee458e3f",
+    "tests/unit/offline-catalog.test.js": "8a052d1df96ec99176a4a78aad44cde78b6a4c4a652199dcb97d1981ac897a74",
+    "tests/unit/password.test.js": "4227e776429cc29345e94e85eea090ed1941ccd36e8c054ae5427eec927b8cf0",
+    "tests/unit/public-query.test.js": "ecc41a3506ec7eb1d34c8d50a8e946ad37ee7db13e68f079fa93c59465883b70",
+    "tests/unit/publication.test.js": "71bd6ca976cab24558364a6f58064672f0774b2ae18a002258fe03598a7c54e5",
+    "tests/unit/quality-locks.test.js": "28ef1d240e3ca72ff9cb165098c6d7c68f5508ee67ffb2893606b614562bd2d5",
+    "tests/unit/quality.test.js": "a517a118781987ccb3fc342420add144ff242d50e3e513a09f1c9377f280a6ac",
+    "tests/unit/reports.test.js": "30afd982ab4b305d841324e57f642edd62042400354b785f1145c088791e0248",
+    "tests/unit/sprint02-lab-config.test.js": "d9ef34dbfb4e3926da847e31b08cb9c9c180d603c5b75e41dbf8f64d6582486f",
+    "tests/unit/sprint02-load.test.js": "33884fba5250469d848a9986eb3cc8628fa451ef0afb310999ff629e745306ad"
+  },
+  "notRun": [
+    "k6",
+    "PostgreSQL real local",
+    "Redis real local",
+    "Playwright local",
+    "Flutter local",
+    "Android 24h",
+    "corte de energía"
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "sourceSha": "5fd294c76f360d09ab1ade5c2d870b30d3754234",
+  "jest": {
+    "suites": 9,
+    "passed": 100,
+    "failed": 0,
+    "pending": 0
+  },
+  "nodeTest": {
+    "passed": 52,
+    "failed": 0
+  },
+  "lines": {
+    "total": 3997,
+    "covered": 3304,
+    "skipped": 0,
+    "pct": 82.66
+  },
+  "checks": [
+    {
+      "name": "jest",
+      "exitCode": 0
+    },
+    {
+      "name": "node-test",
+      "exitCode": 0
+    },
+    {
+      "name": "check",
+      "exitCode": 0
+    },
+    {
+      "name": "format",
+      "exitCode": 0
+    }
+  ],
+  "environment": "GitHub-hosted Ubuntu; PostgreSQL18 dedicado jest_business y jest_http; sin servicios Android",
+  "runUrl": "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/44815768255",
+  "jobId": 136563557792,
+  "coverageScope": "45 server/**/*.js, 3997 lines; no exclusions added; tooling c8 separate",
+  "permissionVariants": {
+    "denials": 15,
+    "scope": "SEC01-07; count individual requests, not Jest test names",
+    "redisPoisoning": {
+      "passed": 3,
+      "total": 3,
+      "scope": "Real Redis and HTTP on the same hosted runner; DTO and repaired cache validated"
+    }
+  },
+  "localUnitGuardEvidence": {
+    "firstRed": {
+      "passed": 8,
+      "failed": 2,
+      "reason": "capacity profile and server CPU/p99 behavior absent"
+    },
+    "mutation": {
+      "passed": 5,
+      "failed": 1,
+      "mutation": "server CPU80 ->800 only in loader memory",
+      "caughtBy": "registra p99 y detiene si el proceso servidor llega al presupuesto de un núcleo",
+      "sourceFilesModified": false
+    },
+    "focusedGreen": {
+      "passed": 11,
+      "failed": 0
+    }
+  },
+  "measuredAt": "2026-11-20T20:58:28.730Z"
+}

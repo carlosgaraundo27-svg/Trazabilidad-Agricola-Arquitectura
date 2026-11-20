@@ -1,0 +1,23 @@
+# Continuidad de preparación Sprint 2
+
+Repositorio activo único, rama `chore/preparacion-sprint02`. [PR15](https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/pull/15) existente en borrador, base `feat/offline-captura-outbox-sync`. No duplicar ni fusionar15/14. Origin sigue siendo bundle privado; push solo esta rama a URL GitHub explícita. Comprobar HEAD/status/cabeza remota antes de editar. No crear copias ni mover históricos.
+
+Código de medición actual: **5fd294c76f360d09ab1ade5c2d870b30d3754234**. Sus seis checks remotos aprobaron: Jest, verify, Compose, laboratory, sonar y SonarCloud. [Registro CI](evidence/5fd294c76f360d09ab1ade5c2d870b30d3754234/ci-remoto.json). Los cambios documentales y refuerzos de aserciones posteriores requieren checks de su propia cabeza, que se registran en PR15; no atribuir un check a otro SHA.
+
+Ejecutados en CI: **100 Jest,9 suites;52 node:test**, sin fallos/pendientes. Cobertura backend **3.304/3.997 líneas,82,66 %**, mismos45 archivos, sin exclusiones ni reglas cambiadas. Base histórica8,48 % (339 líneas), luego71,52 % (2.859). No fue88,48 %. HTML/LCOV por SHA14d. Sonar importó tres LCOV y aprobó **86,7 % de código nuevo**, con gate80 intacto; incluye herramientas/laboratorio y no es la métrica Jest. PDF sin mínimo porcentual.
+
+**No ejecutar Jest completo ni record-tests local:** ahora incluye HTTP y exige runner independiente con JEST_HTTP_DATABASE_URL validada/jest_http. CI crea jest_business y jest_http separados con credenciales efímeras. Unitarias puras/check sí se verificaron sin red/dispositivo. node:test, Playwright y Flutter se conservan; no ejecutar Flutter/ADB aquí.
+
+[Resultados nuevos](resultados-capacidad.md) y [protocolo](capacidad-y-permisos.md): abuso10VU usa una IP/clave y reproduce1.320 de1.500 HTTP429,0 5xx,exit99. Se conserva como control de abuso, sin atribuir saturación. Capacidad separada llegó a **2.000 VU y2.000 claves/IP observadas**,33.987 respuestas correctas,0 429/5xx,313,679req/s de promedio de etapa y p95/p99 de2,266/5,253ms. IP del socket=req.ip, trust proxy=false; sin X-Forwarded-For ni cambios al límite60/min/IP. Lectores anónimos, pausa5s,100 publicaciones ficticias, meseta60s: no producción ni100VU/10min. V8/observador y colocación en runner añaden sobrecarga/interferencia.
+
+Redis del runner cayó y volvió a funcionar con el **mismo proceso/adaptador**; fallback correcto, evento de recuperación y lectura caliente posterior. Tres contaminaciones Redis+HTTP produjeron DTO saneado y reparación de clave. La observación de reconexión no es RTO garantizado. SEC-01–07: **15/15 denegaciones HTTP definidas**, aparte de3/3 contaminaciones SEC-08. No es una auditoría exhaustiva ni100 pruebas de permisos. Errores500/503 de DB/contrato se inyectaron; no se hizo caer PostgreSQL.
+
+Evidencia por SHA en [índice](evidence/README.md), [matriz8/5](matriz-cumplimiento.md), [reporte](reporte-verificacion.md) y [guía](guia-demostracion.md). Conservar cortes anteriores, incluido primer laboratorio309 fallido por orden JSON y gates Sonar fallidos. El paquete no cambia producción, migraciones, clientes ni límites para aprobar. Deuda:19 moderadas dev transitivas,0 altas/críticas; sin audit fix. Git Windows mantiene ruta absoluta/PATH fijo de hijo; S4036 histórico CLOSED/FIXED. Avisos de secuencialidad/estilo siguen sin supresiones.
+
+SQL en la misma transacción, fixtures dependientes, muestras de caché, caída/recuperación, sync/replays y etapas/reposo k6 son deliberadamente secuenciales. Paralelizarlos altera estados, ventanas o carga. No repetir suites locales ya verificadas sin cambio/fallo que lo justifique.
+
+Pendientes: cobertura HTTP/errores fuera del conjunto definido y contención; repetición/escala/recuperación extensa Redis/SQL; estabilidad100VU/10min y topología productiva/NAT/proxy/TLS/IPv6; Android50/SQLite real,24h y energía; disponibilidad mensual; ETL/Datamart y validación agrícola/docente. Sync50 del servidor sigue siendo cola RAM/loopback, no validación Android.
+
+**D11 Android permanece sin intervención y pendiente de comprobación.** [Continuidad histórica](../05-sprint01/continuidad-inventario.md), [matriz D](../05-sprint01/incremento-D-matriz-android.md); LEER_PRIMERO.md está fuera del repo. No teléfono, ADB/Flutter, reinicio/reinstalación, cuenta/sesión/reloj, reverse3043 ni servicios asociados. No aprobar24h por plazo transcurrido ni ejecutar cortes de energía.
+
+Para finalizar: enlaces/check, revisión de secretos/diff, commit explícito, push de rama existente, actualizar PR15 y verificar checks del SHA final. Nunca publicar .env, tokens, dumps, bases privadas, APK/SQLite/WAL/certificados ni antivirus.

@@ -1,0 +1,1393 @@
+{
+  "sourceSha": "d8227d047a6e6f35028fe4494c53924b0c151758",
+  "startedAt": "2026-11-20T20:03:16.947Z",
+  "platform": {
+    "type": "Linux",
+    "release": "7.0.0-1020-azure",
+    "cpuModel": "AMD EPYC 7763 64-Core Processor",
+    "cpuCount": 4,
+    "totalMemoryBytes": 16759431168
+  },
+  "steps": [
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "compose",
+        "-f",
+        "scripts/sprint02/compose.yaml",
+        "up",
+        "-d",
+        "--wait",
+        "db",
+        "redis"
+      ],
+      "code": 0,
+      "milliseconds": 12071
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "pull",
+        "grafana/k6:latest"
+      ],
+      "code": 0,
+      "milliseconds": 904
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "image",
+        "inspect",
+        "postgres:18",
+        "redis:8-alpine",
+        "grafana/k6:latest"
+      ],
+      "code": 0,
+      "milliseconds": 123
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "run",
+        "--rm",
+        "grafana/k6:latest",
+        "version"
+      ],
+      "code": 0,
+      "milliseconds": 304
+    },
+    {
+      "executable": "/opt/hostedtoolcache/node/24.22.3/x64/bin/node",
+      "args": [
+        "scripts/sprint02/prepare-lab.js"
+      ],
+      "code": 0,
+      "milliseconds": 12023
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "compose",
+        "-f",
+        "scripts/sprint02/compose.yaml",
+        "exec",
+        "-T",
+        "db",
+        "psql",
+        "-U",
+        "sprint02",
+        "-d",
+        "sprint02_lab",
+        "-c",
+        "ANALYZE;"
+      ],
+      "code": 0,
+      "milliseconds": 254
+    },
+    {
+      "executable": "/opt/hostedtoolcache/node/24.22.3/x64/bin/node",
+      "args": [
+        "scripts/sprint02/analyze-postgres.js"
+      ],
+      "code": 0,
+      "milliseconds": 105
+    },
+    {
+      "executable": "/opt/hostedtoolcache/node/24.22.3/x64/bin/node",
+      "args": [
+        "scripts/sprint02/compare-cache.js"
+      ],
+      "code": 0,
+      "milliseconds": 426
+    },
+    {
+      "executable": "/opt/hostedtoolcache/node/24.22.3/x64/bin/node",
+      "args": [
+        "scripts/sprint02/compare-cache.js"
+      ],
+      "code": 0,
+      "milliseconds": 515
+    },
+    {
+      "executable": "/opt/hostedtoolcache/node/24.22.3/x64/bin/node",
+      "args": [
+        "scripts/sprint02/compare-cache.js"
+      ],
+      "code": 0,
+      "milliseconds": 463
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "compose",
+        "-f",
+        "scripts/sprint02/compose.yaml",
+        "stop",
+        "redis"
+      ],
+      "code": 0,
+      "milliseconds": 244
+    },
+    {
+      "executable": "/opt/hostedtoolcache/node/24.22.3/x64/bin/node",
+      "args": [
+        "scripts/sprint02/compare-cache.js"
+      ],
+      "code": 0,
+      "milliseconds": 655
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "compose",
+        "-f",
+        "scripts/sprint02/compose.yaml",
+        "up",
+        "-d",
+        "redis"
+      ],
+      "code": 0,
+      "milliseconds": 287
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2073
+    },
+    {
+      "executable": "/opt/hostedtoolcache/node/24.22.3/x64/bin/node",
+      "args": [
+        "scripts/sprint02/sync50.js"
+      ],
+      "code": 0,
+      "milliseconds": 685
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2064
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1073
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2060
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1069
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2061
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1069
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2061
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1072
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2061
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1071
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2060
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1069
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2061
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1071
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "run",
+        "--rm",
+        "--network",
+        "host",
+        "--name",
+        "sprint02-k6",
+        "--user",
+        "1001:1001",
+        "-v",
+        "/home/runner/work/Trazabilidad-Agricola-Arquitectura/Trazabilidad-Agricola-Arquitectura:/work",
+        "-w",
+        "/work",
+        "-e",
+        "SPRINT02_INDEPENDENT_HOST=true",
+        "-e",
+        "SPRINT02_BASE_URL=http://127.0.0.1:3302",
+        "-e",
+        "SPRINT02_SOURCE_SHA=d8227d047a6e6f35028fe4494c53924b0c151758",
+        "-e",
+        "SPRINT02_PUBLIC_ID=df1c1fe1-ba60-471f-9f3e-385ad830ab56",
+        "-e",
+        "SPRINT02_STAGE=smoke",
+        "grafana/k6:latest",
+        "run",
+        "scripts/sprint02/qr-load.js"
+      ],
+      "code": 0,
+      "milliseconds": 45401
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2076
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1081
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2057
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1061
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2053
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1059
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2050
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1056
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2051
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1058
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2054
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1062
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2051
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1055
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2052
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1056
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2051
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1055
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2052
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1056
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2052
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2061
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1068
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2060
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1068
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2060
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1069
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2061
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1070
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2068
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1078
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2060
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1069
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2059
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1069
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2058
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1068
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2065
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1072
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2060
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1068
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2062
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1071
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2061
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1068
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2060
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1069
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2060
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1067
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2060
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1067
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2059
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1066
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2062
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1068
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2062
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1071
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2060
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1068
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2063
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1068
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2059
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1066
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2062
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1070
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2058
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1067
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2059
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1070
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2061
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1068
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2059
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1068
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2060
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1069
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2059
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1068
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2063
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1072
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2062
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1070
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "run",
+        "--rm",
+        "--network",
+        "host",
+        "--name",
+        "sprint02-k6",
+        "--user",
+        "1001:1001",
+        "-v",
+        "/home/runner/work/Trazabilidad-Agricola-Arquitectura/Trazabilidad-Agricola-Arquitectura:/work",
+        "-w",
+        "/work",
+        "-e",
+        "SPRINT02_INDEPENDENT_HOST=true",
+        "-e",
+        "SPRINT02_BASE_URL=http://127.0.0.1:3302",
+        "-e",
+        "SPRINT02_SOURCE_SHA=d8227d047a6e6f35028fe4494c53924b0c151758",
+        "-e",
+        "SPRINT02_PUBLIC_ID=df1c1fe1-ba60-471f-9f3e-385ad830ab56",
+        "-e",
+        "SPRINT02_STAGE=10",
+        "grafana/k6:latest",
+        "run",
+        "scripts/sprint02/qr-load.js"
+      ],
+      "code": 99,
+      "milliseconds": 180552
+    }
+  ],
+  "phases": [
+    {
+      "file": "scripts/sprint02/analyze-postgres.js",
+      "mode": null,
+      "elapsedMilliseconds": 105,
+      "hostCpuBusyPercent": 29.268292682926834,
+      "freeMemoryBytesAfter": 15597961216,
+      "totalMemoryBytes": 16759431168,
+      "scope": "Promedio del host durante todo el subproceso, incluye arranque; no pico ni CPU individual del servidor/generador."
+    },
+    {
+      "file": "scripts/sprint02/compare-cache.js",
+      "mode": "none",
+      "elapsedMilliseconds": 427,
+      "hostCpuBusyPercent": 32.35294117647059,
+      "freeMemoryBytesAfter": 15588118528,
+      "totalMemoryBytes": 16759431168,
+      "scope": "Promedio del host durante todo el subproceso, incluye arranque; no pico ni CPU individual del servidor/generador."
+    },
+    {
+      "file": "scripts/sprint02/compare-cache.js",
+      "mode": "cold",
+      "elapsedMilliseconds": 516,
+      "hostCpuBusyPercent": 33.49753694581281,
+      "freeMemoryBytesAfter": 15578275840,
+      "totalMemoryBytes": 16759431168,
+      "scope": "Promedio del host durante todo el subproceso, incluye arranque; no pico ni CPU individual del servidor/generador."
+    },
+    {
+      "file": "scripts/sprint02/compare-cache.js",
+      "mode": "warm",
+      "elapsedMilliseconds": 463,
+      "hostCpuBusyPercent": 37.362637362637365,
+      "freeMemoryBytesAfter": 15529422848,
+      "totalMemoryBytes": 16759431168,
+      "scope": "Promedio del host durante todo el subproceso, incluye arranque; no pico ni CPU individual del servidor/generador."
+    },
+    {
+      "file": "scripts/sprint02/compare-cache.js",
+      "mode": "degraded",
+      "elapsedMilliseconds": 655,
+      "hostCpuBusyPercent": 22.779922779922778,
+      "freeMemoryBytesAfter": 15494451200,
+      "totalMemoryBytes": 16759431168,
+      "scope": "Promedio del host durante todo el subproceso, incluye arranque; no pico ni CPU individual del servidor/generador."
+    },
+    {
+      "file": "scripts/sprint02/sync50.js",
+      "mode": null,
+      "elapsedMilliseconds": 685,
+      "hostCpuBusyPercent": 46.64179104477611,
+      "freeMemoryBytesAfter": 15420903424,
+      "totalMemoryBytes": 16759431168,
+      "scope": "Promedio del host durante todo el subproceso, incluye arranque; no pico ni CPU individual del servidor/generador."
+    }
+  ],
+  "stages": [
+    {
+      "stage": "smoke",
+      "exitCode": 0,
+      "assessment": {
+        "requests": 40,
+        "throughput": 0.8859858759158189,
+        "p95CorrectMs": 2.9371573,
+        "limited429": 0,
+        "server5xx": 0,
+        "correctRate": 1,
+        "canAdvance": true,
+        "stopReason": null
+      },
+      "resourceFrames": 14
+    },
+    {
+      "stage": "10",
+      "exitCode": 99,
+      "assessment": {
+        "requests": 1500,
+        "throughput": 8.31839970685001,
+        "p95CorrectMs": 23.280359449999978,
+        "limited429": 1320,
+        "server5xx": 0,
+        "correctRate": 0.12,
+        "canAdvance": false,
+        "stopReason": "rate_limit_429"
+      },
+      "resourceFrames": 61
+    }
+  ],
+  "status": "completed_with_observed_limit",
+  "images": [
+    {
+      "id": "sha256:eb63372c1e05c755f55fa30cbd07aecc443676fc6c0fa90b9002d01537841e1a",
+      "repoDigests": [
+        "postgres@sha256:eb63372c1e05c755f55fa30cbd07aecc443676fc6c0fa90b9002d01537841e1a"
+      ]
+    },
+    {
+      "id": "sha256:7958cfbb9d152f87dadfbc89f1b0b15938f0b81ff8982feb327476f4911935c3",
+      "repoDigests": [
+        "redis@sha256:7958cfbb9d152f87dadfbc89f1b0b15938f0b81ff8982feb327476f4911935c3"
+      ]
+    },
+    {
+      "id": "sha256:3d8e5c7f1d53ec59408c2ffbd9943602a0985ffcbd4a2430ec00f3ffca89796e",
+      "repoDigests": [
+        "grafana/k6@sha256:3d8e5c7f1d53ec59408c2ffbd9943602a0985ffcbd4a2430ec00f3ffca89796e"
+      ]
+    }
+  ],
+  "node": "v24.22.3",
+  "k6": "k6 v2.4.0 (commit/dd9395906d, go1.27.3, linux/amd64)",
+  "endedAt": "2026-11-20T20:08:36.130Z"
+}

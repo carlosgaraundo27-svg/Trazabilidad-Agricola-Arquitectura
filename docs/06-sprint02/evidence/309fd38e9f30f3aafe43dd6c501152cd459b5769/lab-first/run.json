@@ -1,0 +1,201 @@
+{
+  "sourceSha": "309fd38e9f30f3aafe43dd6c501152cd459b5769",
+  "startedAt": "2026-11-20T19:57:56.493Z",
+  "platform": {
+    "type": "Linux",
+    "release": "7.0.0-1019-azure",
+    "cpuModel": "AMD EPYC 9V45 96-Core Processor",
+    "cpuCount": 4,
+    "totalMemoryBytes": 16759439360
+  },
+  "steps": [
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "compose",
+        "-f",
+        "scripts/sprint02/compose.yaml",
+        "up",
+        "-d",
+        "--wait",
+        "db",
+        "redis"
+      ],
+      "code": 0,
+      "milliseconds": 16497
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "pull",
+        "grafana/k6:latest"
+      ],
+      "code": 0,
+      "milliseconds": 1473
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "image",
+        "inspect",
+        "postgres:18",
+        "redis:8-alpine",
+        "grafana/k6:latest"
+      ],
+      "code": 0,
+      "milliseconds": 61
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "run",
+        "--rm",
+        "grafana/k6:latest",
+        "version"
+      ],
+      "code": 0,
+      "milliseconds": 611
+    },
+    {
+      "executable": "/opt/hostedtoolcache/node/24.22.2/x64/bin/node",
+      "args": [
+        "scripts/sprint02/prepare-lab.js"
+      ],
+      "code": 0,
+      "milliseconds": 7698
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "compose",
+        "-f",
+        "scripts/sprint02/compose.yaml",
+        "exec",
+        "-T",
+        "db",
+        "psql",
+        "-U",
+        "sprint02",
+        "-d",
+        "sprint02_lab",
+        "-c",
+        "ANALYZE;"
+      ],
+      "code": 0,
+      "milliseconds": 268
+    },
+    {
+      "executable": "/opt/hostedtoolcache/node/24.22.2/x64/bin/node",
+      "args": [
+        "scripts/sprint02/analyze-postgres.js"
+      ],
+      "code": 0,
+      "milliseconds": 75
+    },
+    {
+      "executable": "/opt/hostedtoolcache/node/24.22.2/x64/bin/node",
+      "args": [
+        "scripts/sprint02/compare-cache.js"
+      ],
+      "code": 0,
+      "milliseconds": 278
+    },
+    {
+      "executable": "/opt/hostedtoolcache/node/24.22.2/x64/bin/node",
+      "args": [
+        "scripts/sprint02/compare-cache.js"
+      ],
+      "code": 0,
+      "milliseconds": 344
+    },
+    {
+      "executable": "/opt/hostedtoolcache/node/24.22.2/x64/bin/node",
+      "args": [
+        "scripts/sprint02/compare-cache.js"
+      ],
+      "code": 0,
+      "milliseconds": 296
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "compose",
+        "-f",
+        "scripts/sprint02/compose.yaml",
+        "stop",
+        "redis"
+      ],
+      "code": 0,
+      "milliseconds": 281
+    },
+    {
+      "executable": "/opt/hostedtoolcache/node/24.22.2/x64/bin/node",
+      "args": [
+        "scripts/sprint02/compare-cache.js"
+      ],
+      "code": 0,
+      "milliseconds": 329
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "compose",
+        "-f",
+        "scripts/sprint02/compose.yaml",
+        "up",
+        "-d",
+        "redis"
+      ],
+      "code": 0,
+      "milliseconds": 211
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2045
+    },
+    {
+      "executable": "/opt/hostedtoolcache/node/24.22.2/x64/bin/node",
+      "args": [
+        "scripts/sprint02/sync50.js"
+      ],
+      "code": 1,
+      "milliseconds": 468
+    }
+  ],
+  "stages": [],
+  "status": "failed",
+  "images": [
+    {
+      "id": "sha256:eb63372c1e05c755f55fa30cbd07aecc443676fc6c0fa90b9002d01537841e1a",
+      "repoDigests": [
+        "postgres@sha256:eb63372c1e05c755f55fa30cbd07aecc443676fc6c0fa90b9002d01537841e1a"
+      ]
+    },
+    {
+      "id": "sha256:7958cfbb9d152f87dadfbc89f1b0b15938f0b81ff8982feb327476f4911935c3",
+      "repoDigests": [
+        "redis@sha256:7958cfbb9d152f87dadfbc89f1b0b15938f0b81ff8982feb327476f4911935c3"
+      ]
+    },
+    {
+      "id": "sha256:3d8e5c7f1d53ec59408c2ffbd9943602a0985ffcbd4a2430ec00f3ffca89796e",
+      "repoDigests": [
+        "grafana/k6@sha256:3d8e5c7f1d53ec59408c2ffbd9943602a0985ffcbd4a2430ec00f3ffca89796e"
+      ]
+    }
+  ],
+  "node": "v24.22.2",
+  "k6": "k6 v2.4.0 (commit/dd9395906d, go1.27.3, linux/amd64)",
+  "failure": {
+    "name": "Error",
+    "message": "scripts/sprint02/sync50.js: exit 1; "
+  },
+  "endedAt": "2026-11-20T19:58:28.504Z"
+}

@@ -1,0 +1,152 @@
+{
+  "sourceSha": "20be52d72d7ebbe488a660307230d9857f44d4b5",
+  "checkedAt": "2026-11-20T20:29:41.948Z",
+  "runUrl": "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/44810576669",
+  "jobs": [
+    {
+      "name": "verify",
+      "id": 136545762604,
+      "url": "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/44810576669/job/136545762604",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "compose",
+      "id": 136545763033,
+      "url": "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/44810576669/job/136545763033",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "laboratory / laboratory",
+      "id": 136545763247,
+      "url": "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/44810576669/job/136545763247",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "jest",
+      "id": 136545763300,
+      "url": "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/44810576669/job/136545763300",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "sonar",
+      "id": 136548811268,
+      "url": "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/44810576669/job/136548811268",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "checks": [
+    {
+      "name": "SonarCloud Code Analysis",
+      "url": "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/runs/136549585840",
+      "conclusion": "success",
+      "sourceSha": "20be52d72d7ebbe488a660307230d9857f44d4b5"
+    },
+    {
+      "name": "sonar",
+      "url": "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/44810576669/job/136548811268",
+      "conclusion": "success",
+      "sourceSha": "20be52d72d7ebbe488a660307230d9857f44d4b5"
+    },
+    {
+      "name": "jest",
+      "url": "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/44810576669/job/136545763300",
+      "conclusion": "success",
+      "sourceSha": "20be52d72d7ebbe488a660307230d9857f44d4b5"
+    },
+    {
+      "name": "laboratory / laboratory",
+      "url": "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/44810576669/job/136545763247",
+      "conclusion": "success",
+      "sourceSha": "20be52d72d7ebbe488a660307230d9857f44d4b5"
+    },
+    {
+      "name": "compose",
+      "url": "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/44810576669/job/136545763033",
+      "conclusion": "success",
+      "sourceSha": "20be52d72d7ebbe488a660307230d9857f44d4b5"
+    },
+    {
+      "name": "verify",
+      "url": "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/44810576669/job/136545762604",
+      "conclusion": "success",
+      "sourceSha": "20be52d72d7ebbe488a660307230d9857f44d4b5"
+    }
+  ],
+  "artifacts": [
+    {
+      "name": "lab-coverage-20be52d72d7ebbe488a660307230d9857f44d4b5",
+      "id": 14668735042,
+      "bytes": 20006,
+      "digest": "sha256:06f3fa86b580ac382d3fa1fee238f4bfceeb55cac506fbc17362f700ac269a91",
+      "expired": false
+    },
+    {
+      "name": "sprint02-measurements-20be52d72d7ebbe488a660307230d9857f44d4b5",
+      "id": 14668180148,
+      "bytes": 30302,
+      "digest": "sha256:e2941423660b83ae01db4d27c1465cfe410e39fa3d1109529e0237dec3c2cfb6",
+      "expired": false
+    },
+    {
+      "name": "sonar-task-20be52d72d7ebbe488a660307230d9857f44d4b5",
+      "id": 14667166976,
+      "bytes": 325,
+      "digest": "sha256:24a5a0500baf95d25d6f8fcd06448e97baaa51472449afe8f37d7eba007c4632",
+      "expired": false
+    },
+    {
+      "name": "jest-tools-coverage-20be52d72d7ebbe488a660307230d9857f44d4b5",
+      "id": 14666030144,
+      "bytes": 13568,
+      "digest": "sha256:d61d1670866a54cc5be25680f401265be82cd0efaa935af425e882013febca1e",
+      "expired": false
+    },
+    {
+      "name": "jest-coverage-20be52d72d7ebbe488a660307230d9857f44d4b5",
+      "id": 14664209897,
+      "bytes": 238797,
+      "digest": "sha256:33b3cb704c54ac044514b9eb1489256440547841b9265e2c3347f1b0e179fb2c",
+      "expired": false
+    },
+    {
+      "name": "playwright-results",
+      "id": 14663509557,
+      "bytes": 2360981,
+      "digest": "sha256:90472f55e5a8ddc4505b3922d526ded8aa8ec0b9a498b60477e12cdaa938f14c",
+      "expired": false
+    }
+  ],
+  "jest": {
+    "passed": 83,
+    "suites": 8,
+    "failed": 0,
+    "linesCovered": 2859,
+    "linesTotal": 3997,
+    "pct": 71.52
+  },
+  "nodeTest": {
+    "passed": 49,
+    "failed": 0
+  },
+  "sonar": {
+    "lcovImported": [
+      "coverage/jest/lcov.info",
+      "coverage/jest-tools/lcov.info",
+      "coverage/lab/lcov.info"
+    ],
+    "gate": "OK",
+    "newCoverage": 87.1,
+    "requiredNewCoverage": 80,
+    "security": "A",
+    "reliability": "A",
+    "maintainability": "A",
+    "newDuplication": 0,
+    "hotspotsReviewed": 100
+  },
+  "scope": "Sonar combines real Jest and Node tooling/laboratory LCOV; not the Jest percentage. Lab success can mean completed_with_observed_limit; inspect raw artifact."
+}

@@ -1,0 +1,508 @@
+{
+  "sourceSha": "02ca31bd03dc1626bc9f0c610405b8a673c0fe07",
+  "createdAt": "2026-11-20T20:12:58.114Z",
+  "publications": [
+    {
+      "lotId": "a4a8bd47-a091-44c2-af29-b44fe63de647",
+      "publicId": "53830270-3e92-47e6-9827-a7de3d329f01",
+      "version": 1
+    },
+    {
+      "lotId": "bc675a5c-d644-4954-89fa-c0fc904c5466",
+      "publicId": "2b181534-3445-49f4-8933-5b2a6952227b",
+      "version": 1
+    },
+    {
+      "lotId": "d89c04a4-5d36-47de-a5af-0f6a53fc07b7",
+      "publicId": "395fbc2b-397c-4cd8-a75c-640468508040",
+      "version": 1
+    },
+    {
+      "lotId": "0abf2652-5aab-4444-ae95-514ab20e67d5",
+      "publicId": "3499d703-3c4c-4e51-878a-558437c8b476",
+      "version": 1
+    },
+    {
+      "lotId": "9009ae6f-133f-4af7-86e0-4fbc28d66387",
+      "publicId": "ddd54261-8685-4b05-b26d-9d09e28268ce",
+      "version": 1
+    },
+    {
+      "lotId": "36b9112c-d68a-42c9-bbba-038fe28a7f15",
+      "publicId": "03a1101e-1c9d-41c2-b06b-bd8f9b178844",
+      "version": 1
+    },
+    {
+      "lotId": "2b180a45-6c56-49d0-af64-8a3f634dace8",
+      "publicId": "86840cd5-e464-4216-aafc-ae12bc63eb86",
+      "version": 1
+    },
+    {
+      "lotId": "42506875-f171-4c6c-921e-2d5d3f777005",
+      "publicId": "10d54822-d3e7-4328-906a-1361d4dc6d0b",
+      "version": 1
+    },
+    {
+      "lotId": "4bc26715-9f8f-455a-a8f9-44b78ea370a3",
+      "publicId": "2f2bfe50-9478-4722-8e0a-4a35cdf7d3da",
+      "version": 1
+    },
+    {
+      "lotId": "b418112b-8199-4de9-a6a2-42353b8b0e21",
+      "publicId": "6d84aa3e-5250-497d-a1a3-32ba3709e66d",
+      "version": 1
+    },
+    {
+      "lotId": "b0d6c096-deda-4030-9f93-d20969495bdc",
+      "publicId": "ae9eb819-f863-4862-ad6c-df12ede5477c",
+      "version": 1
+    },
+    {
+      "lotId": "f404b5eb-2fcc-4ad0-9c9b-efe895f797b3",
+      "publicId": "bd4d82b2-ee4f-4719-ac68-a04d74e81b72",
+      "version": 1
+    },
+    {
+      "lotId": "7eebfb59-c535-41c9-af07-cbcaf2936d6a",
+      "publicId": "38aa58c7-4f9d-4d32-a16c-43fbb8eaafb9",
+      "version": 1
+    },
+    {
+      "lotId": "ce7fc96e-da0c-4b02-a6d2-c1f358e9a126",
+      "publicId": "3e10467f-6ba8-4094-9cbb-ecff4f308cf9",
+      "version": 1
+    },
+    {
+      "lotId": "95a8316e-7ff3-499d-b814-4b6ff8d419d3",
+      "publicId": "a01758f0-ad24-4744-b374-d8ab64ebea47",
+      "version": 1
+    },
+    {
+      "lotId": "10bf7c17-828f-46c5-98f9-63227420efab",
+      "publicId": "9c435f7e-dfeb-4449-849e-d0d52945a3c3",
+      "version": 1
+    },
+    {
+      "lotId": "e43c4fa1-9373-4a6e-a777-6ec2721c95a0",
+      "publicId": "8e3cca0a-0a92-4076-b468-c73f5769036d",
+      "version": 1
+    },
+    {
+      "lotId": "80af413f-cf8a-4020-8598-5f4d960d9a37",
+      "publicId": "4270812d-879f-4527-a417-b516f3d4ceb4",
+      "version": 1
+    },
+    {
+      "lotId": "e025fe2c-381b-4b03-9e88-fc421064b168",
+      "publicId": "1602e346-240e-41ef-adfd-ca2886c19d93",
+      "version": 1
+    },
+    {
+      "lotId": "758b6808-f3e5-4b2a-b073-9563f1c5d940",
+      "publicId": "7d730166-7840-4ead-b5cc-f5845f73ea09",
+      "version": 1
+    },
+    {
+      "lotId": "a3abd42a-8beb-4220-9c1e-ab55091e5074",
+      "publicId": "569f7750-3b06-42f9-a997-ec284c32c6c5",
+      "version": 1
+    },
+    {
+      "lotId": "8993de29-8beb-4fb1-af6f-d3b23fd91b63",
+      "publicId": "f210c174-2600-4805-8581-dd73c67b02c4",
+      "version": 1
+    },
+    {
+      "lotId": "28502b81-eb10-4f29-be42-730152b6ccdc",
+      "publicId": "0b7ccebc-e662-4ad4-bc66-b23d28900bd6",
+      "version": 1
+    },
+    {
+      "lotId": "36442ac2-976f-4c6d-8e03-b9f68e49c7fe",
+      "publicId": "c779621e-c85d-4cd5-960b-1493e1161a6c",
+      "version": 1
+    },
+    {
+      "lotId": "8a73b994-5f2c-4e45-9d16-cd0a0ee55fc0",
+      "publicId": "7817e655-cbdd-4662-8591-7586128c21a1",
+      "version": 1
+    },
+    {
+      "lotId": "6823b62d-9bed-41e7-a78f-c1f5ae7eaa8c",
+      "publicId": "327b2f5f-738c-459d-a3c3-2d974dc0f4c6",
+      "version": 1
+    },
+    {
+      "lotId": "48528a26-6144-410b-8e6f-d0c70831ea42",
+      "publicId": "5257a082-7aa8-4c7d-8368-00179a389508",
+      "version": 1
+    },
+    {
+      "lotId": "9304a1cc-5d03-4383-8949-dafc6be7d17e",
+      "publicId": "c6002353-1e8d-4fbc-a3cf-71f6c6e091d6",
+      "version": 1
+    },
+    {
+      "lotId": "3bd73760-d5e4-445e-82a5-83a1efdd827b",
+      "publicId": "09b334bc-eddb-403d-b1e7-9fa482efde54",
+      "version": 1
+    },
+    {
+      "lotId": "1ee92a09-e697-4e62-b10d-4376ebe55daa",
+      "publicId": "96c2b761-c64e-4212-9300-6c84e16ca886",
+      "version": 1
+    },
+    {
+      "lotId": "ab5dda60-d045-4fce-93c6-9a3587029a9d",
+      "publicId": "20a91815-437e-4018-9b7e-52a99e46a174",
+      "version": 1
+    },
+    {
+      "lotId": "f77284a0-9f90-4547-a234-b857e494816c",
+      "publicId": "b2a1a7f9-10ca-41e2-a4a6-06f80ff601a1",
+      "version": 1
+    },
+    {
+      "lotId": "af112b95-eb7d-41de-88cc-ec9575c5bd0c",
+      "publicId": "f238d51e-e953-4765-af5a-8b6810dda3bf",
+      "version": 1
+    },
+    {
+      "lotId": "48e8557c-4295-435d-8bb0-a83e5977dc04",
+      "publicId": "adfdcd6d-da92-41b7-9c21-871eca56c230",
+      "version": 1
+    },
+    {
+      "lotId": "fb81dbe0-aea8-40c5-abf3-58bab819ab56",
+      "publicId": "d6e3bd58-479d-453a-8dd5-0597f64f7d4e",
+      "version": 1
+    },
+    {
+      "lotId": "53ac6789-aec9-4ad6-86c5-551e959f8723",
+      "publicId": "a68dd5ed-c9c8-4bfe-8f2e-afed61f91a30",
+      "version": 1
+    },
+    {
+      "lotId": "639ec386-da23-4a34-a7b7-9b6af1fd86f1",
+      "publicId": "a7d4bbb8-cb7d-4bfc-b848-ea7bb17b9047",
+      "version": 1
+    },
+    {
+      "lotId": "b2173bfd-1a49-49e4-8efe-1b8baaa8278f",
+      "publicId": "ff7f7279-5d77-497d-865a-31c8c2cc4828",
+      "version": 1
+    },
+    {
+      "lotId": "d3fd6112-a70d-4202-92b0-8a3f49b3570b",
+      "publicId": "f1ea9b61-4632-4cd0-817f-0bee65c8bc80",
+      "version": 1
+    },
+    {
+      "lotId": "352c2227-c1e1-4d84-b59a-a16d37d05cf7",
+      "publicId": "d4ea3333-40c8-4953-8163-5e01d94f6c7b",
+      "version": 1
+    },
+    {
+      "lotId": "4252a5ab-4e13-4497-80fa-35112770199f",
+      "publicId": "da47401b-92d0-4256-ba07-2fd14eb20995",
+      "version": 1
+    },
+    {
+      "lotId": "d6aeda2e-d5a7-4bb0-8a88-11056d8f33e7",
+      "publicId": "cd88c03e-03db-4c9d-baf5-997d07268c26",
+      "version": 1
+    },
+    {
+      "lotId": "23b87a2f-4e82-436e-98e4-5cef3e1a6f47",
+      "publicId": "61a55de2-b959-4b4a-9790-48c0a9c7da7c",
+      "version": 1
+    },
+    {
+      "lotId": "6ffa0786-49a2-4f1c-9061-4ac84388c1e5",
+      "publicId": "45ee4eb9-8a5f-40a5-bf58-3fbefa04d253",
+      "version": 1
+    },
+    {
+      "lotId": "5d32459a-81f3-4880-beb9-6e2467db002d",
+      "publicId": "18bb4e1e-192b-43af-ac3f-bcb3cb6099c7",
+      "version": 1
+    },
+    {
+      "lotId": "4f9d69c4-ad82-4f53-943b-16a0d98ecd37",
+      "publicId": "37c7b41e-e873-46f1-b814-9fc21de0e2c3",
+      "version": 1
+    },
+    {
+      "lotId": "b6b62e84-3ed8-47b7-8ab8-b22d19532477",
+      "publicId": "beda4409-8f16-4814-8ade-985603da1a01",
+      "version": 1
+    },
+    {
+      "lotId": "6819d33d-88da-43ac-b759-3c49b2168c0d",
+      "publicId": "2db96dc5-1775-4f3f-9c7a-33c920d1c37e",
+      "version": 1
+    },
+    {
+      "lotId": "96cef488-a6fa-4a5c-bfc0-66dbd283825a",
+      "publicId": "0d176a50-67f8-4d3d-9e35-eb2f20b0bcaf",
+      "version": 1
+    },
+    {
+      "lotId": "02fb7c21-8445-4dbc-8c80-08deb9e303f7",
+      "publicId": "9c75746a-42a1-46d8-99b7-c2c5cc67496f",
+      "version": 1
+    },
+    {
+      "lotId": "0de90ffe-e6b9-402e-bddc-dd09874fd576",
+      "publicId": "66acf355-90d8-49cc-b5a8-06d64e26ec6f",
+      "version": 1
+    },
+    {
+      "lotId": "43d9c37e-df64-403d-9c4c-17134fae7e5f",
+      "publicId": "a199ee68-cde1-449c-93d7-9b1591b66afc",
+      "version": 1
+    },
+    {
+      "lotId": "fbc086d7-6a90-4b9a-b1d9-8a94eecb331b",
+      "publicId": "30b137c8-7159-4973-ab2a-2a177bcb860a",
+      "version": 1
+    },
+    {
+      "lotId": "e60b95c2-7497-4325-93f9-c11855c5738f",
+      "publicId": "054c71ec-094d-4054-bff3-a50dfd9fc1e1",
+      "version": 1
+    },
+    {
+      "lotId": "0279d90e-e54e-4b8b-8489-f2487f5f38dc",
+      "publicId": "c7ba28ba-8faf-4480-a11a-09b5f679267b",
+      "version": 1
+    },
+    {
+      "lotId": "deee4f8a-85d2-449f-bcb7-4adf2d55de4f",
+      "publicId": "bcda04a1-4454-46f6-964f-3a3a6b47a68c",
+      "version": 1
+    },
+    {
+      "lotId": "b292a053-4c09-44a1-8f44-ee8b0a1909aa",
+      "publicId": "0572ff15-2cc5-4125-a497-04a3edb17cde",
+      "version": 1
+    },
+    {
+      "lotId": "f4f2b5d4-960c-4384-9d12-0695da198f48",
+      "publicId": "c76de6fe-3fc6-457c-ab5d-4cf9325e6749",
+      "version": 1
+    },
+    {
+      "lotId": "47b8ffb2-6136-42a4-894a-d16f0e11fc4c",
+      "publicId": "7152ecdf-7f2d-4478-af5f-85d8c432da52",
+      "version": 1
+    },
+    {
+      "lotId": "883e60e5-f460-4978-891a-9e90cd6b70ad",
+      "publicId": "7808450b-730f-4727-bcfe-cc6559028c60",
+      "version": 1
+    },
+    {
+      "lotId": "4d25f4b8-3e6b-4cdf-9896-5e66ce7f5420",
+      "publicId": "d042f730-a409-42c9-a476-ff86c8beecbf",
+      "version": 1
+    },
+    {
+      "lotId": "6f7401e6-badf-45b3-ab5e-330654e60c53",
+      "publicId": "fff2e9a1-326f-4507-ae24-4a8813210fa0",
+      "version": 1
+    },
+    {
+      "lotId": "5373889b-e023-434c-a281-1ca13e421fb3",
+      "publicId": "3bdbed99-305c-45c6-86f2-c5bedb0ecdda",
+      "version": 1
+    },
+    {
+      "lotId": "4ddd3d17-96c0-4c33-ad99-9330034aede2",
+      "publicId": "79447435-c80f-4ff1-b54a-3e2344c7150d",
+      "version": 1
+    },
+    {
+      "lotId": "6a29d93a-cede-4cdb-94a1-01a0efcb24da",
+      "publicId": "0bc718c5-cd0d-402c-bdbb-10f312cdb962",
+      "version": 1
+    },
+    {
+      "lotId": "07c02934-649d-4e47-aa7c-9d1339a6f3f5",
+      "publicId": "7dc44d16-8c93-462e-8a59-fb0e6c6d5677",
+      "version": 1
+    },
+    {
+      "lotId": "1e807af6-2361-4ffb-b31b-00d6b64d1049",
+      "publicId": "e8797739-d2ac-4c80-9375-b2f9b13b550b",
+      "version": 1
+    },
+    {
+      "lotId": "6209ac32-3140-41a1-94b7-4ae2adba21f5",
+      "publicId": "42e81aa5-30e8-42c4-907f-42b52458464b",
+      "version": 1
+    },
+    {
+      "lotId": "d52a53b5-c9bf-436a-aff7-52b4b6a2c921",
+      "publicId": "bcaf6209-6347-4102-8e35-3f5173ace037",
+      "version": 1
+    },
+    {
+      "lotId": "f21bb87e-985e-4470-8c18-c0118506e2ff",
+      "publicId": "3fce9716-4835-4b05-9373-6f335efbb08d",
+      "version": 1
+    },
+    {
+      "lotId": "99eee203-4d21-43f7-861d-a45631c25fa6",
+      "publicId": "615e6ab7-3796-4f02-a569-8e50d48b7090",
+      "version": 1
+    },
+    {
+      "lotId": "dff7a893-3b7e-493b-abe9-1b7d394cb2a7",
+      "publicId": "3178e3fc-7da6-4510-ac1f-2918b5cc67f7",
+      "version": 1
+    },
+    {
+      "lotId": "053bbca5-4ea7-428a-b914-47c09d0bffbd",
+      "publicId": "2be3570b-9d4c-43ca-b27a-387635fd06c5",
+      "version": 1
+    },
+    {
+      "lotId": "a07cc42d-62d0-4284-8898-28fe5240dd22",
+      "publicId": "6869fe12-9cab-452f-8d1d-86903515c2a7",
+      "version": 1
+    },
+    {
+      "lotId": "c732468b-5743-43fd-ad1d-cd441a4afc79",
+      "publicId": "bd3e573b-360e-42fe-92c7-51b04b68c3d6",
+      "version": 1
+    },
+    {
+      "lotId": "2a7943cb-05b4-4d38-a554-47e8f5e13f55",
+      "publicId": "dda5dc47-5821-42c6-b1cd-c0b47bd2e54e",
+      "version": 1
+    },
+    {
+      "lotId": "1db56954-9b5d-447c-883d-fd5340a16b6d",
+      "publicId": "f07cfe18-833d-471c-adef-194dc31078c4",
+      "version": 1
+    },
+    {
+      "lotId": "0d76c428-ca3d-42b5-9033-92c5f90c04a9",
+      "publicId": "c2ae1050-3ec6-47a8-9c06-018eb8aa3a60",
+      "version": 1
+    },
+    {
+      "lotId": "3899b298-d98f-4be7-bc3c-29531359e8df",
+      "publicId": "04f7b82b-c8b7-498e-9cde-91abe2ddba3e",
+      "version": 1
+    },
+    {
+      "lotId": "cb34c8ef-c210-4eb7-bb09-e38a4852d3ce",
+      "publicId": "6d4aef1f-aa4a-46d7-807c-d990152a58cf",
+      "version": 1
+    },
+    {
+      "lotId": "acc59c44-d490-4b16-9239-a823d5782faa",
+      "publicId": "fca0e391-e537-44a8-91d6-b772aa2ae4bf",
+      "version": 1
+    },
+    {
+      "lotId": "b10f9a2f-f810-40f2-ba88-b57681f5646f",
+      "publicId": "097816e9-2e45-47d5-8bf1-e4ef856ca566",
+      "version": 1
+    },
+    {
+      "lotId": "08b87962-a8cf-4c6c-8b5e-e4cf4ffeed23",
+      "publicId": "a368490f-6e77-43f8-a942-f2296e092a62",
+      "version": 1
+    },
+    {
+      "lotId": "88bad64e-7ecc-4610-93a9-8c14a5649def",
+      "publicId": "13fae255-ac46-4478-8edf-00003d56c57a",
+      "version": 1
+    },
+    {
+      "lotId": "9c42a408-71fe-4170-a218-811511c24431",
+      "publicId": "32e9eb6e-05bd-4857-ac0c-77ff38fb4477",
+      "version": 1
+    },
+    {
+      "lotId": "5fa0404c-3d5f-4e6e-bb7a-3996b8eca740",
+      "publicId": "716531d5-2bb9-4c16-9d74-47e1d9f0e92c",
+      "version": 1
+    },
+    {
+      "lotId": "ca88acbe-ab0b-466e-b063-79b293b0be6e",
+      "publicId": "0acfb4d0-7358-4f78-9b8c-edf50f51e1a0",
+      "version": 1
+    },
+    {
+      "lotId": "1b587bbc-20ec-47c7-b6e1-f5def8839baf",
+      "publicId": "bb731341-bebd-473a-a24a-12d1c5ab2627",
+      "version": 1
+    },
+    {
+      "lotId": "4d38fa5a-5e8d-4bf4-a059-6a527ab61b42",
+      "publicId": "7ac57b76-4b34-4c05-9200-621778ea9a0f",
+      "version": 1
+    },
+    {
+      "lotId": "d33d3c2e-4c5e-4e38-9d7c-49cdc5f8def2",
+      "publicId": "74059ec0-adbf-409b-b5f1-2452b5f06ab6",
+      "version": 1
+    },
+    {
+      "lotId": "e4cdded2-ae66-4649-b1f2-c07b7ecae5ed",
+      "publicId": "7f50e07b-78aa-48b6-ad47-d6ce9b8a0881",
+      "version": 1
+    },
+    {
+      "lotId": "81fb01e5-2a47-44b6-97e9-b2358b0b6137",
+      "publicId": "854c2604-5583-486c-8587-079dca3000e9",
+      "version": 1
+    },
+    {
+      "lotId": "540c9d06-6575-434c-8c5a-240cced64093",
+      "publicId": "fb44e3c3-cd36-40d6-8bf6-c8d42909cde9",
+      "version": 1
+    },
+    {
+      "lotId": "9b91fd29-b268-4e2f-a0e8-ebba52d5958f",
+      "publicId": "6eb12f96-54ff-49f4-bbb4-370a3df1db79",
+      "version": 1
+    },
+    {
+      "lotId": "1f3b94d0-38cc-4401-b9f2-388c6f1d2507",
+      "publicId": "81a767d8-810d-44af-94da-9c03e574d60a",
+      "version": 1
+    },
+    {
+      "lotId": "f04d886e-7062-4028-8a80-a12833e484d3",
+      "publicId": "2737dd52-808d-4efb-b508-0d08c3d9252a",
+      "version": 1
+    },
+    {
+      "lotId": "f76c3398-20a4-4698-852c-fd9d35fdbac5",
+      "publicId": "62e38753-5ad7-449e-9bbc-7c133a86227e",
+      "version": 1
+    },
+    {
+      "lotId": "98d0e2f4-bcf5-478c-94a5-3eab3a8cb3c7",
+      "publicId": "7d5ed022-9834-4897-8279-08a913a59d0a",
+      "version": 1
+    },
+    {
+      "lotId": "0fe48c92-6bea-49e9-8a72-dfdd262089c5",
+      "publicId": "64f05670-8957-4fd4-aa64-b014d430b984",
+      "version": 1
+    },
+    {
+      "lotId": "fb9878fa-6821-45b9-9b0c-92a771360f47",
+      "publicId": "a1fccc32-e9f0-41d4-bb3f-ec0e31efd2ae",
+      "version": 1
+    }
+  ],
+  "reportFixtureShipments": 4,
+  "note": "Solo datos ficticios; no es un dataset productivo representativo."
+}

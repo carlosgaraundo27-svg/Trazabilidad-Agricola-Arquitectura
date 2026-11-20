@@ -1,5 +1,19 @@
 # Matriz de cumplimiento del trabajo final — 16 criterios transcritos
 
+## Corte vigente — main consolidado y B preparado para integrar
+
+2026-11-19, Lima. PR12 integrado en320e8bc y PR11 en e305239, conservando commits. Los tres checks de main320e8bc y de ROP5e1df50 aprobaron antes del segundo merge; verificar los posteriores de main e305239. B/#13 partía de f4eaa1a (referencia esperada confirmada) y se actualiza con ambos merges sin cambiar su núcleo Dart/Kotlin. Conflictos solo documentales resueltos conservando decisiones/históricos. Publicar cabeza actualizada, comprobar checks y luego integrar #13 por merge si no hay bloqueos. PR9 sigue borrador documental a reconciliar; no inferir implementación móvil desde su diff.
+
+B implementado/probado en HONOR Android16/API36: nueve casos nativos de aceptación+uno preparatorio, diez unitarias, análisis/APK debug y compilación release ofuscada;17 avisos de su cabeza inicial CLOSED/FIXED. SDK independiente verificado, sin reinstalar ni ejecutar el señalado. Sin atribuir cobertura a toda NA/SB; límites de restauración/clave física/DWARF/firma release conservados.
+
+C aprobado para rama propia: O1/O2/O3/O4/O6/O7/O9/O10 por el alcance y A/B. O5/O8 aprobados expresamente por el propietario:24h desde identidad+catálogo completos, distinto de cookie8h, bloquear confirmaciones tras reboot sin revalidar; inicial+cinco reintentos2/4/8/16/30s+jitter0–20%/Retry-After mayor íntegro, contador/plazos durables y pausa sin borrar. Mantener ID/cuerpo tras incertidumbre y aislar dueño. Solo primer plano; no aprobación docente/agrícola, PWA/iOS, nuevas reglas, sustitutos o corrección de hechos aceptados.
+
+Avisos pendientes conservados: nueve ROP CODE_SMELL, tres S7780 de rutas Docker, nueve críticos DDL/deuda heredada. Consultar Sonar main para el cierre real S4036, sin confundir gate con cero avisos. Demo001–007 intacta, sin SQL/reinicio/aplicar008; C usará datos ficticios aislados. CSV ya exportado/analizado, soporte pendiente de presentación/dictamen; no tocar antivirus/cuarentena ni SDK señalado. Los cortes inferiores son históricos.
+
+
+
+### Cortes históricos reconciliados
+
 ## Corte vigente — B Android, ROP revisado y seguridad separada
 
 2026-11-19: main18d57e9 con #7/#8/#10 integrados/checks aprobados;123 avisos Sonar, una vulnerabilidad. ROP/#11 en5f738c8 abierto y aprobado, nueve CODE_SMELL conservados. S4036 Docker/PATH corregida separadamente en PR12/eeaa763 con checks aprobados, sin fusionar ni cerrar todavía el hallazgo de main; tres S7780 menores del PR12 pendientes. No se bajaron gates ni reescribieron DDL.
@@ -8,6 +22,15 @@
 
 CSV Kaspersky ya exportado/analizado; borrador privado actualizado, pendiente presentar al soporte y conservar caso/dictamen. Análisis negativo nuevo no resuelve incidente anterior. Demo001–007 intacta; B usa nueva base aislada001–008 y datos ficticios. Los cortes inferiores son históricos y no reabren respaldos, integraciones o exportaciones ya terminados.
 
+## Corte vigente — ROP-01, 2026-11-19
+
+#7/#8 ya integrados; #10 integrado por merge18d57e9 conservando commits hasta907cd26. Verify/Compose/Sonar de main aprobados; Sonar123 abiertos, cinco CLOSED/FIXED nuevos, deuda restante conservada [aquí](diagnostico-sonar-main-20261119.md). El fallo audit22c6e4f y la publicación pendiente de las secciones históricas no son estado actual. No se repiten recuperación, respaldos o integración.
+
+[ROP-01](reporte-operativo-rop01.md) implementado en rama feat/reporte-operativo-rop01: API/pantalla de salidas y entregas por centro, antes especificado y ahora probado localmente con30 unitarias,5 resultados de integración aislada ROP y un E2E Chrome con filtros, estados, teclado y320–1440px. Publicado en [PR #11](https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/pull/11), abierto y sin fusionar; comprobar los checks de su SHA actual, registrados en la descripción; no fusionar ROP automáticamente. Consulta operativa, sin ETL/datamart/indicadores agrícolas, sin añadir criterio17. Esquema/demo001–007 intactos; desarrollo/pruebas aislados001–008 con hechos ficticios.
+
+B sigue pendiente: #9 en borrador, solo preparación documental, sin cliente o validación Android. Mantener soporte/evento Kaspersky y protecciones. [Continuidad vigente](continuidad-inventario.md); los bloques históricos inferiores no ordenan repetir procedimientos ya cerrados. Próximos pasos actuales: revisar PR ROP por SHA; presentar el caso al soporte Kaspersky (CSV ya exportado/analizado); cotejar PDF/SDD con docente y cerrar las brechas de despliegue/carga/informe aún pendientes.
+
+## Fuente transcrita y alcance de evaluación
 
 Actualización: 2026-11-18. Fuente: **“transcripción proporcionada por el estudiante; pendiente de cotejar con el PDF original”**. Se conserva el orden y la redacción de los 16 criterios recibidos. **No se ha leído el PDF original** en esta sesión. No se atribuye aprobación docente ni se inventan ponderaciones, notas o requisitos adicionales. Esta matriz sustituye las áreas provisionales P01–P16 del seguimiento anterior.
 
@@ -15,7 +38,7 @@ Los estados son una **autoevaluación técnica del alcance indicado**: cumplido 
 
 Se separa implementado (artefacto/código existente), probado (ejecución identificada) y demostrado en despliegue (evidencia de un entorno instalado y su operación). Los jobs con Compose son pruebas en runners desechables: no acreditan un entorno persistente ni despliegue continuo.
 
-## Corte de evidencia y límites
+## Corte histórico de evidencia y límites
 
 - **2026-11-19, servidor A separado:** [plan A–D](../03-diseno-de-software/10-plan-incrementos-offline.md) y [evidencia actual](incremento-offline-A.md):25 unitarias,128 integración PostgreSQL,17 E2E existentes, check/formato/build aprobados. Recibos/008 solo en DB nuevas, demo001–007 íntegra. Flutter/SQLite/outbox no implementados. Publicación de19b291d/0256966/dd18ced autorizada y preparada localmente, pero bloqueada por credenciales Git; remoto #7 sigue22c6e4f y verify histórico fallido, no hay CI de A. Falta resultado verificable de backup/restauración. Se mantiene la fuente transcrita y SDD por aclarar, sin CD o rendimiento medido.
 
@@ -38,15 +61,15 @@ Se separa implementado (artefacto/código existente), probado (ejecución identi
 | **3. Arquitectura de bajo y alto nivel.** | C1–C4, módulos/puertos, decisiones y separación entre arquitectura implementada y objetivo | **Cumplido** | Mantener consistencia al incorporar móvil/despliegue; las vistas objetivo no acreditan componentes ejecutados |
 | **4. Desarrollo basado en SDD.** | Interpretación literal de SDD **sin definir por inferencia** | **Pendiente** | Preguntar a la docente qué significa SDD y qué artefactos/proceso espera; después contrastar evidencia existente |
 | **5. Pruebas unitarias e integración.** | Reglas, permisos, DB real, cantidades, concurrencia, idempotencia y rollback del corte implementado | **Cumplido** | Mantener suites al evolucionar; no extender este estado a offline ni capacidades sin implementar |
-| **6. Pruebas End to End.** | Recorridos de origen, Acopio, Calidad, QR y Logística en navegador | **Cumplido** | Conservar 17 E2E aprobados localmente; ejecutar CI del SHA que se publique y añadir Android/offline cuando exista el cliente. Chromium no demuestra Flutter |
+| **6. Pruebas End to End.** | Recorridos de origen, Acopio, Calidad, QR, Logística y reporte operativo en navegador | **Cumplido en el alcance web probado** | ROP agrega recorrido de consulta/filtros/estados con evidencia local. Comprobar suite CI del SHA final; Android/offline no validados por Chromium |
 | **7. Interfaz y experiencia de usuario.** | Formularios React, estados/errores y consulta QR adaptable; pruebas de interacción y tamaños | **Parcial** | Cliente móvil de campo inexistente y evaluación de uso con usuarios no aportada. Decidir plataforma y preparar validación del recorrido real |
 | **8. Escalabilidad del frontend y backend.** | Capacidad de evolucionar/atender carga en W1/B1, con evidencia de límites | **Pendiente** | Hay una instancia B1 y límite por IP en memoria. Definir escenario/topología, sesiones/proxy/límites compartidos si se replica y medir; modularidad/contenerización no prueban escala |
 | **9. Escalabilidad de base de datos.** | Esquema, índices, consultas acotadas y estrategia de crecimiento de PostgreSQL | **Parcial** | Integridad y concurrencia funcionales probadas; capacidad/crecimiento no medidos. Definir dataset/carga y revisar planes, conexiones y recursos antes de elegir cambios |
 | **10. Configuración de dominio y/o subdominio DNS y CDN.** | Resolución de dominio/subdominio y configuración verificable de CDN según el alcance que se confirme | **Pendiente** | No hay evidencia de DNS/CDN operativos. Elegir entorno/dominio, configurar y demostrar resolución/TLS/política de caché; PUBLIC_BASE_URL no configura DNS |
 | **11. Implementación de caché.** | Redis por puerto/adaptador para DTO público QR, con expiración e invalidación segura | **Cumplido** | Sin medición de mejora de rendimiento; medirla solo antes de afirmarla. Conservar guard PostgreSQL y no-store público frente a retiro |
-| **12. CI/CD.** | Automatización de integración y de despliegue, evaluadas por separado | **Parcial** | CI implementada; último verify remoto consultado22c6e4f conserva fallo histórico en audit. Advisory retirada y audit completo local previo en0 no sustituyen nueva ejecución remota del SHA a publicar. Incorporar avances sin reescribir commits y comprobar CI; CD a entorno persistente sigue sin demostrarse. Elegir staging/despliegue/rollback con evidencia, sin rebajar gates |
+| **12. CI/CD.** | Automatización de integración y de despliegue, evaluadas por separado | **Parcial** | CI de main18d57e9 aprobada en verify/Compose/Sonar; comprobar además el SHA de ROP. CD a entorno persistente sin demostrar. Elegir staging/despliegue/rollback con evidencia, sin rebajar gates |
 | **13. Pruebas de carga k6.** | Scripts, entorno/dataset y resultados reproducibles de carga | **Pendiente** | No hay scripts/resultados k6 versionados. Definir perfil, ejecutar baseline y documentar latencia/errores/recursos; contemplar 429 sin desactivar controles |
-| **14. Código fuente y base de datos en GitHub.** | Fuente, esquema ejecutable, migraciones y datos ficticios reproducibles versionados; sin credenciales ni datos personales reales | **Parcial** | Corte anterior publicado con001–007; avances recuperados y008/A aún locales por bloqueo de credenciales. Publicar commits revisados conservando historial y verificar SHA/checks. Cotejar PDF/docente; no inferir entrega de instancia, volumen o dump privado |
+| **14. Código fuente y base de datos en GitHub.** | Fuente, esquema ejecutable, migraciones y datos ficticios reproducibles versionados; sin credenciales ni datos personales reales | **Parcial frente a entrega final** | Inventario/A/008 y correcciones #10 publicados e integrados; ROP se publica en PR separado, no fusionado. Cotejar PDF/docente; no inferir entrega de instancia, volumen o dump privado |
 | **15. Informe final.** | Documento final que consolide problema, diseño, implementación, resultados y límites frente a estos 16 criterios | **Parcial** | Documentación técnica dispersa existente; informe final consolidado no aportado. Prepararlo tras confirmar SDD/PDF, citando ejecuciones y pendientes |
 | **16. Presentación y dominio del tema.** | Presentación, demostración y defensa explicable por el estudiante | **Pendiente** | No hay archivo de diapositivas/ensayo ni defensa evidenciada. Preparar guion, material y ensayo con preguntas; documentación o CI no acreditan dominio personal |
 
@@ -96,11 +119,11 @@ La app aplica migraciones al arrancar. Cada demo crea un lote nuevo; no es un me
 
 ## Pendientes funcionales relacionados, sin añadir criterios a la transcripción
 
-RF-03/DA01 offline no cumplidos todavía; RF-10 parcial por empaque/pallets diferidos. Parcialidades, devoluciones y correcciones posteriores siguen fuera del incremento. Reportes/ETL/Datamart permanecen proyectados dentro del sistema objetivo, sin añadirlos como un criterio 17 ni afirmar que la transcripción los exige literalmente.
+RF-03/DA01 offline no cumplidos todavía; RF-10 parcial por empaque/pallets diferidos. Parcialidades, devoluciones y correcciones posteriores siguen fuera del incremento. ROP-01 operativo implementado y probado en su rama, con CI propio por verificar; ETL/Datamart e indicadores agrícolas permanecen proyectados, sin añadir criterio17 ni atribuirlo literalmente a la transcripción.
 
 [O1–O10: preguntas, recomendación, consecuencias y dependencias](../03-diseno-de-software/08-especificacion-offline-cosecha.md) permanecen propuestas. Flutter no está implementado; UI responsive no sustituye cliente móvil. El significado de SDD se consulta a la docente antes de evaluar el criterio 4.
 
-## Bloqueo actual de CI — no confundir con los 20 avisos Sonar
+## Histórico del bloqueo de CI — no confundir con los avisos Sonar
 
 **Histórico del 17 nov.** El18nov la advisory fue retirada y audit completo local aprobó con el mismo lockfile; eso no reejecuta los jobs remotos antiguos ni constituye un parche. Los 20 avisos Sonar siguen abiertos. Ver corte actual y guía de demo antes de interpretar las notas siguientes.
 
@@ -108,7 +131,7 @@ El [verify de a1ec289](https://github.com/carlosgaraundo27-svg/Trazabilidad-Agri
 
 [Compose de a1ec289](https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/44188460340/job/134411156649) y [SonarCloud](https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/runs/134411475306) aprobaron. La deuda de 20 avisos/nueve DDL continúa separada de esta advisory. La integración de PR #7 no está habilitada mientras la comprobación pertinente permanezca fallida. [Triage específico y evidencia](revision-picomatch.md): registry confirma latest picomatch 4.0.7, Vite 8.3.8/tinyglobby 0.2.17/fdir 6.5.0 ya instalados; ningún release corregido disponible en esta consulta. Instalación limpia y revalidación del lockfile por npm no lo cambian; audit completo sigue fallando, audit omit=dev solo diagnostica producción. Siguiente tarea: aplicar un parche publicado verificable o evaluar otra solución en un incremento específico, sin afirmar remediación mientras tanto. No ejecutar audit fix --force sin revisar su propuesta de cambio mayor, ni omitir audit, excluir dependencias o rebajar severidad para obtener verde. En esta tarea solo se documenta, sin cambiar package.json/package-lock.json ni reglas offline.
 
-## Orden propuesto de siguientes pasos
+## Histórico — orden propuesto de siguientes pasos
 
 1. Identificar volumen y obtener/restaurar dumps con el bloque PowerShell de la guía; no avanzar a offline suponiendo recuperados datos anteriores. Mantener auditoría completa y ejecutar CI del SHA que se publique: el retiro oficial de la advisory no actualiza jobs históricos. Sin merge. Cotejar PDF y aclarar SDD con la docente.
 2. Resolver O1–O10 (incluidas retención/catálogo y tratamiento de capturas bloqueadas), delimitar Android y preparar su prueba de reinicio/sincronización; implementar solo después de decisión.

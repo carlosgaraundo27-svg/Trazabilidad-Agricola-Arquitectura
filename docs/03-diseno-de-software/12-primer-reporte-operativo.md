@@ -1,46 +1,59 @@
-# Propuesta ROP-01 — despachos salidos y entregas por centro
+﻿# ROP-01 — salidas y entregas por centro
 
-Estado: **especificación para revisión, no implementada**. Fuente: RF-12/HU08, DA05/EQ-07 y los hechos logísticos ya implementados. No cubre mermas, rendimiento agrícola o liquidaciones: sus definiciones/reglas siguen pendientes. [RF-12](../01-analisis-de-sistema/03-requisitos-funcionales.md), [diseño de Reportes](01-diseno-interno.md), [matriz más reciente en el borrador #9](https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/blob/6e1642b73bf517f14ad04108f685e0eab26091a6/docs/05-sprint01/matriz-trabajo-final.md). Esa matriz conserva Reportes/ETL/Datamart proyectados y no los añade como criterio17 a la transcripción.
+Estado: **alcance autorizado; contrato completado antes del código**. RF-12/HU08 se cubren solo en esta consulta operativa. No es ETL/datamart ni implementación de indicadores agrícolas, mermas o liquidaciones. [Requisitos](../01-analisis-de-sistema/03-requisitos-funcionales.md) y [matriz](../05-sprint01/matriz-trabajo-final.md).
 
-## Objetivo y usuario
+## Usuario, objetivo y fuentes
 
-Permitir al encargado logístico autorizado localizar salidas de su centro, distinguir las que siguen en tránsito de las entregadas y consultar el tiempo transcurrido entre salida y entrega. Es un listado operativo de hechos, sin declarar eficiencia del transporte, incumplimientos de SLA o indicadores agrícolas.
+El encargado logístico consulta salidas de sus centros, distingue tránsito y entrega y ve la duración entre hechos registrados. Reutiliza sesión y concesión shipment:read; ser administrador no sustituye esa concesión.
 
-Usuario inicial: actor interno con sesión vigente y concesión **shipment:read** para el centro solicitado, conforme al modelo existente. No habilita acceso público QR ni acceso del comprador: la política de compradores/liquidaciones necesita acuerdo propio. El nombre del rol o ser administrador no sustituye la concesión de centro.
+Fuentes: logistics.shipments, inventory.entries para lotId, access.centers para nombre y logistics.deliveries para recepción. Una fila por shipmentId. Joins por identidad, organización y centro; deliveries tiene PK shipment_id y entries/centers identidad única. No unir movimientos, eventos ni contribuciones que multipliquen filas. Solo lectura: no modifica cantidades, estados o historia.
 
-## Fuente y campos mínimos
+Campos públicos internos del DTO: shipmentId, centerId, centerName, lotId, state, quantityKg, receivedKg nullable, unit, departedAt, deliveredAt nullable, durationSeconds nullable y dataIssue boolean. Unidad kg conforme al contrato logístico existente; cantidades como texto decimal exacto de tres posiciones, sin Number ni conversiones de unidad. No hay totales de página o selección.
 
-Fuente transaccional PostgreSQL: logistics.shipments, logistics.deliveries y inventory.entries solo para identificar lote. Relacionar por shipment_id/entry_id y verificar organization_id/center_id en todos los joins. La entrega es0..1 por despacho; evitar joins a movimientos/eventos que multipliquen filas. No usar datos ficticios como históricos recuperados.
+Se excluyen guía, destino, chofer, placa, precinto, transporte, evidencia y actor personal. No se conecta al QR, API pública o caché pública. Cache-Control: no-store, como el resto de la API autenticada.
 
-Una fila por shipmentId: lotId, centerId, referencia interna de guía, state, quantityKg y receivedKg como textos decimales exactos de tres posiciones, departedAt, deliveredAt y durationSeconds nullable. Solo estados **in_transit** y **delivered**, nombres reales del esquema. No incluir borradores/reservas/cancelaciones sin salida en este primer listado, ni contraseña, cookie, actor personal, chofer, placa o transporte JSON completo.
+## API y filtros
 
-## Filtros y permisos
+GET /api/v1/reports/shipments, dentro de la API autenticada actual:
 
-- Centro obligatorio; organización proviene de la sesión, nunca de un organizationId libre del cliente.
-- Intervalo obligatorio sobre departedAt: desde inclusivo/hasta exclusivo, instantes con zona normalizados a UTC. Mostrar zona explícita; si se ofrece calendario Lima, documentar su conversión sin cambiar el reloj del sistema.
-- Estado opcional entre los dos admitidos; lotId o shipmentId exactos opcionales. No búsqueda libre de personas.
-- Página acotada a100 como patrón existente; orden estable departedAt/id. Antes de implementar, acordar el límite máximo de rango con dataset y revisar plan/índices; no abrir escaneo histórico ilimitado ni inventar un benchmark.
+| Parámetro | Contrato |
+| --- | --- |
+| centerId | UUID obligatorio, centro autorizado de la organización de sesión |
+| from | Instante ISO8601 con zona, inclusivo sobre departedAt |
+| to | Instante ISO8601 con zona, exclusivo sobre departedAt; posterior a from |
+| state | Opcional: in_transit o delivered; nunca filtra createdAt/deliveredAt |
+| lotId | UUID opcional, igualdad exacta sobre entries.lot_id |
+| limit | Entero 1–100, predeterminado 25 |
+| afterDepartedAt, afterShipmentId | Cursor opcional; ambos presentes o ambos ausentes |
 
-Aplicar sesión/organización/concesión actual **antes de leer o devolver resultados**; misma validación para cada página y eventual exportación futura. Sin sesión401; sin permiso403 conforme al listado existente; no devolver filas ni totales de otro centro/organización. Entradas/rangos inválidos422. DTO explícito y consultas parametrizadas; no serializar entidades/transportes completos. No crear un permiso nuevo ni modificar administración de roles en esta especificación.
+Instantes con hasta tres decimales, normalizados a UTC; sin fechas locales ambiguas. Ventana máxima técnica de 31 días por consulta, sin implicación de negocio ni promesa de rendimiento productivo. SELECT parametrizado y timeout de consulta de 5s; antes de ampliar volumen se medirá plan/dataset y se evaluarán índices en migración nueva, nunca reescribiendo las publicadas.
 
-## Cálculo y límites semánticos
+Orden ascendente (departedAt, shipmentId). Paginación por cursor exclusivo sobre esa pareja; limit+1 decide nextCursor, sin COUNT o carga histórica completa. Respuesta: items, limit, nextCursor nullable, generatedAt (UTC), timeZone=UTC y dateField=departedAt. El cursor procede de la última fila visible y mantiene los mismos filtros. Un empate temporal se ordena por UUID. Cada página es una lectura consistente; cambios concurrentes de estado pueden cambiar la selección entre páginas, sin prometer snapshot histórico global.
 
-Para entrega existente: durationSeconds = deliveredAt − departedAt, usando diferencia temporal exacta con precisión de milisegundos, expresada como texto decimal en segundos; sin redondear mediante Number. Ejemplo:10:00:00Z→11:30:00Z produce5400.000s. No es tiempo de conducción pura: incluye cualquier parada entre ambos hechos.
+Autenticar y revalidar sesión/concesión en cada página **antes** de consultar datos; organización exclusivamente de sesión y presente en todos los joins. No sesión/expirada:401; sin concesión/centro ajeno:403, sin filas/totales. Parámetros inválidos/desconocidos, rango vacío/invertido/largo o cursor incompleto:422. Timeout:503 sin SQL interno. Reutiliza errores y componentes de acceso existentes, sin crear permisos.
 
-En tránsito: deliveredAt/receivedKg/durationSeconds son null, no cero ni una entrega asumida. No sustituir entrega ausente por la hora actual. Para delivered sin entrega o tiempo negativo, señalar inconsistencia de datos y no fabricar fecha/duración; el esquema/servicio actual ya rechaza esos casos al registrar hechos. No calcular pérdida como diferencia de cantidades ni extrapolar productividad, merma, pago o conversión de unidades. No agregar promedios, percentiles o denominadores de negocio en esta primera versión.
+## Fechas y cálculos
 
-Cada página se obtiene en lectura consistente y muestra generatedAt; puede cambiar entre consultas. No prometer un corte histórico coherente entre varias páginas sin diseñar snapshot/cursor temporal. Exportación masiva queda fuera del primer incremento hasta acordar consistencia, límites y privacidad.
+Salida/entrega se devuelven como ISO8601 UTC con milisegundos. Duración solo con salida y entrega existentes y ordenadas: deliveredAt−departedAt, segundos como texto con tres posiciones, calculados en PostgreSQL sin coma flotante. 10:00Z→11:30Z=5400.000; igualdad=0.000. Incluye paradas; no es tiempo de conducción ni SLA.
 
-## Aceptación antes de implementar
+En tránsito: receivedKg, deliveredAt y durationSeconds null; nunca cero, hora actual o entrega asumida. Estado delivered sin recepción, entrega anterior a salida o recepción discordante con tránsito: dataIssue=true y duración null. Se muestran hechos disponibles, sin reparar historia. No calcula merma, eficiencia, promedio, pago o productividad.
 
-1. Fixture NUEVO/aislado: una salida en tránsito y una entregada; cada despacho aparece una vez pese a sus múltiples movimientos/eventos.
-2. Límite temporal: salida exactamente desde entra; exactamente hasta no entra; cambio de zona representa el mismo instante.
-3. Salida/entrega del ejemplo producen5400.000; igualdad de instantes produce0.000; milisegundos se conservan; tránsito produce null.
-4. Actor sin sesión/concesión y otra organización no obtienen filas ni cantidades; cambios de permiso se revalidan en la siguiente lectura.
-5. La respuesta excluye transporte/personas/secretos y no llega al DTO/caché QR; los filtros no admiten organización arbitraria o SQL libre.
-6. Las cantidades coinciden con los hechos registrados, sin doble suma o descuentos. No se corrigen datos durante una lectura.
-7. Página/plan de consulta acotados se verifican con dataset acordado y operaciones concurrentes; EQ-07/P95 siguen metas propuestas, no resultados medidos.
+## Pantalla
 
-## Operación frente a analítica
+Nueva pestaña Reportes operativos solo con centros shipment:read, usando navegación, API, botones, etiquetas, estados y estilos existentes. Centro obligatorio, desde/hasta **de salida en UTC**, estado y lote exacto; aplicar filtros reinicia paginación. Desde inclusivo/hasta exclusivo y zona visibles. Fechas de pantalla usan UTC, no zona implícita del navegador. Cursor siguiente/anterior con filtros aplicados estables; no mezclar resultados con filtros aún sin aplicar.
 
-ROP-01 es una consulta operativa acotada sobre OLTP. No implementa AnalyticsRepository/Datamart, ETL, modelo dimensional, agregados históricos ni el RF-12 completo. Analítica requerirá después definir grano/hechos/dimensiones, reglas de indicadores, cargas incrementales/idempotentes, frescura, conciliación, retención y pruebas de aislamiento de carga con DA05. No usar este listado para afirmar que ese trabajo existe.
+Carga accesible, vacío explícito, error con reintento y página con filas. Sin datos anteriores mientras carga/error; respuestas de solicitudes obsoletas o de una vista desmontada no sustituyen las actuales. Tabla con cabeceras semánticas, contenedor horizontal acotado en móviles, navegación por teclado y sin depender solo del color. No edición, exportación masiva o enlaces QR.
+
+## Criterios de aceptación verificables
+
+1. Base aislada nueva con datos ficticios y esquema actual; demo 001–007 sin acceso/migración/seed.
+2. Una salida en tránsito y otra entregada, con múltiples movimientos/eventos: cada shipmentId aparece una sola vez; borradores/reservas/cancelados sin salida no aparecen.
+3. Cantidades exactas de tres decimales y unidad kg, incluidas fracciones; respuesta y pantalla no redondean ni suman unidades.
+4. from incluye y to excluye la salida exacta; offset horario equivalente produce la misma selección; precisión milisegundo y validación de límites/rango/estado/lote/cursor.
+5. Entrega pendiente deja tres campos null; diferencia válida, igualdad y milisegundos exactos. No se cambia ningún hecho al leer.
+6. Sin sesión, sesión expirada, otra organización/centro y revocación de shipment:read entre páginas se rechazan; DTO excluye datos privados y ruta pública no expone el reporte.
+7. Páginas pequeñas con empate de salida recorren todos los IDs una sola vez, orden estable, límite máximo y última página/cursor correctos. No totales ambiguos.
+8. E2E real del login, pestaña, filtros de fecha/estado/lote, vacío, carga, error/reintento y resultados de tránsito/entrega. Verificar teclado y disposición móvil/escritorio; no atribuirlo a Android.
+9. OpenAPI, documentación y matriz reflejan reporte operativo implementado y sus límites. CI del SHA final del PR aprobado antes de declarar listo; publicar sin fusionar.
+
+Analítica futura requerirá grano, dimensiones, indicadores acordados, cargas incrementales/idempotentes, frescura, conciliación, retención y aislamiento de carga. Este reporte no acredita ese trabajo.

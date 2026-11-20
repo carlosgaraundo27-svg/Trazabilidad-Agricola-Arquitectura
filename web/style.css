@@ -522,3 +522,44 @@ output {
   display: block;
   margin-block: 1rem;
 }
+.report-filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: 1rem;
+}
+.report-table {
+  padding: 0;
+  max-width: 100%;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+.report-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+.report-table caption {
+  text-align: left;
+  padding: 1rem;
+  color: var(--muted);
+}
+.report-table th,
+.report-table td {
+  text-align: left;
+  vertical-align: top;
+  padding: 0.75rem;
+  border-top: 1px solid var(--line);
+  min-width: 8rem;
+}
+.report-table th {
+  font-weight: 600;
+}
+.report-table time {
+  white-space: nowrap;
+}
+.report-table:focus-visible {
+  outline: 3px solid #b46b21;
+  outline-offset: 3px;
+}

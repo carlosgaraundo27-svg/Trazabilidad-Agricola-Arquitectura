@@ -1,5 +1,19 @@
 # Continuidad — Inventario, Reserva, Despacho y Entrega
 
+## Corte vigente — main consolidado y B preparado para integrar
+
+2026-11-19, Lima. PR12 integrado en320e8bc y PR11 en e305239, conservando commits. Los tres checks de main320e8bc y de ROP5e1df50 aprobaron antes del segundo merge; verificar los posteriores de main e305239. B/#13 partía de f4eaa1a (referencia esperada confirmada) y se actualiza con ambos merges sin cambiar su núcleo Dart/Kotlin. Conflictos solo documentales resueltos conservando decisiones/históricos. Publicar cabeza actualizada, comprobar checks y luego integrar #13 por merge si no hay bloqueos. PR9 sigue borrador documental a reconciliar; no inferir implementación móvil desde su diff.
+
+B implementado/probado en HONOR Android16/API36: nueve casos nativos de aceptación+uno preparatorio, diez unitarias, análisis/APK debug y compilación release ofuscada;17 avisos de su cabeza inicial CLOSED/FIXED. SDK independiente verificado, sin reinstalar ni ejecutar el señalado. Sin atribuir cobertura a toda NA/SB; límites de restauración/clave física/DWARF/firma release conservados.
+
+C aprobado para rama propia: O1/O2/O3/O4/O6/O7/O9/O10 por el alcance y A/B. O5/O8 aprobados expresamente por el propietario:24h desde identidad+catálogo completos, distinto de cookie8h, bloquear confirmaciones tras reboot sin revalidar; inicial+cinco reintentos2/4/8/16/30s+jitter0–20%/Retry-After mayor íntegro, contador/plazos durables y pausa sin borrar. Mantener ID/cuerpo tras incertidumbre y aislar dueño. Solo primer plano; no aprobación docente/agrícola, PWA/iOS, nuevas reglas, sustitutos o corrección de hechos aceptados.
+
+Avisos pendientes conservados: nueve ROP CODE_SMELL, tres S7780 de rutas Docker, nueve críticos DDL/deuda heredada. Consultar Sonar main para el cierre real S4036, sin confundir gate con cero avisos. Demo001–007 intacta, sin SQL/reinicio/aplicar008; C usará datos ficticios aislados. CSV ya exportado/analizado, soporte pendiente de presentación/dictamen; no tocar antivirus/cuarentena ni SDK señalado. Los cortes inferiores son históricos.
+
+
+
+### Cortes históricos reconciliados
+
 ## Estado vigente — B probado en Android físico, 2026-11-19
 
 Rama activa **feat/android-sesion-sqlite**, base main **18d57e9**. [B: implementación, pruebas y límites](incremento-B-android.md), [SDK independiente](sdk-android-independiente.md). Sesión nativa y SQLite privados implementados; nueve casos de aceptación Android y uno de preparación aprobados, diez unitarias/análisis/APK aprobados. Puertos locales confirmación/ACK de B implementados y probados; no se afirma C/interfaz de captura/replay ni toda la matriz NA/SB. PR9 sigue borrador documental. [PR13 de B](https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/pull/13) abierto sin fusionar. Base de codigo db913b6; Sonar inicial rechazo17 hallazgos, corregidos sin suprimir ni bajar el gate (R8/firma release y generacion PFX, ademas de plantilla/auxiliares). Release ofuscada compila sin firma debug; aviso DWARF y limites documentados. Comprobar checks de la cabeza posterior; no usar como resultado actual el fallo de db913b6.
@@ -13,6 +27,43 @@ Rama activa **feat/android-sesion-sqlite**, base main **18d57e9**. [B: implement
 Demo001–007 intacta. Solo backend B HTTPS3042/PGlite nueva001–008, datos ficticios; ni demo.env ni Docker/respaldos/recuperación se repitieron. Sin traslado D: o copia nueva del repositorio. Revisar procesos existentes antes de arrancar otro backend.
 
 ## Histórico — los cortes siguientes no sustituyen el estado vigente
+## Estado vigente — consolidación autorizada y decisiones C
+
+2026-11-19, Lima. #12 integrado por merge conservando eeaa763 en main320e8bc; verify/Sonar aprobados y Compose en comprobación. Rama de trabajo feat/reporte-operativo-rop01 actualizada con ese main, conservando ambos historiales; único conflicto documental reconciliado sin descartar decisiones. No hay cambios del comportamiento ROP: se conserva su revisión de permisos/precisión/fechas/cursor/duplicados. Comprobar los checks de su cabeza actualizada antes de integrar #11.
+
+#13/B permanece publicado en f4eaa1a con nueve casos nativos de aceptación+uno preparatorio y diez unitarias, gates aprobados. No atribuirle ausencia de implementación por los cortes históricos inferiores. Se integrará después de #11 si su diff actualizado y checks no tienen bloqueos; PR9 documental se reconciliará conservando decisiones.
+
+C autorizado en rama propia posterior: O1/O2/O3/O4/O6/O7/O9/O10 aprobados por el alcance explícito actual y A/B; O5 y O8 aprobados expresamente en las respuestas del propietario de esta sesión:24h desde validación online+catálogo, bloqueo de nuevas confirmaciones tras reboot sin revalidación, cookie8h independiente; inicial+cinco reintentos2/4/8/16/30s con jitter0–20%, Retry-After mayor íntegro, pausa durable sin borrar. No se infiere aprobación docente/agrícola ni se habilita segundo plano/corrección de hechos sincronizados/exportación de datos.
+
+Avisos conocidos: ROP9 CODE_SMELL, seguridad3 S7780 menores/nueve críticos DDL y deuda heredada siguen documentados. Consultar reanálisis de main para el cierre real S4036; gate no demuestra cero avisos. Demo001–007 intacta; C usará backend/base ficticios aislados. SDK oficial independiente ya verificado, sin reinstalar; SDK señalado/cuarentena/antivirus intactos. CSV ya analizado; caso de soporte pendiente de presentación, no exportación.
+
+
+## Cortes históricos reconciliados de ROP y seguridad
+
+## Estado vigente — cierre #10 y ROP-01, 2026-11-19
+
+Único repositorio activo en C:, rama **feat/reporte-operativo-rop01**, basada en main **18d57e9**. #10 integrado por autorización posterior del propietario conservando los cinco commits hasta907cd26; sin bypass o force push. Verify/Compose/Sonar de main aprobaron. [Cierre y cinco CLOSED/FIXED](diagnostico-sonar-main-20261119.md):128→123 abiertos,122 CODE_SMELL y1 VULNERABILITY;93 heredados,20 Inventario,10 A. Pendientes PATH de Docker/nueve críticos DDL y resto del inventario; no resueltos por el gate.
+
+**ROP-01 publicado en [PR #11](https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/pull/11), abierto y sin fusionar:** [contrato completado antes del código](../03-diseno-de-software/12-primer-reporte-operativo.md), [implementación y recorrido manual](reporte-operativo-rop01.md). API y pantalla sobre concesión shipment:read, sesión/organización/centro revalidados, una fila por despacho, kg/textos exactos, fechas/duración UTC, filtros de salida/estado/lote y cursor estable. Sin totales, datos personales de transporte, QR, ETL/datamart o mutación de historia. Check/OpenAPI/formato/build,30 unitarias,5 resultados de integración ROP aislada y E2E Chrome con estados/filtros/teclado/320–1440 aprobados localmente; el SHA publicado debe verificar CI propio y registrar los enlaces en el PR. No atribuir checks antiguos a una cabeza nueva.
+
+**Prueba manual aislada prevista:** http://127.0.0.1:3041, inventario@example.test, credencial solo en .local/rop01-manual/credenciales.txt. Confirmar health antes de afirmar disponible. Base PGlite nueva/privada001–008, cuatro despachos ficticios, sin demo.env, DB demo001–007 o puerto3026. No repetir respaldo/recuperación, instalaciones o migración a D:; no se crean copias del repositorio.
+
+**B permanece pendiente, #9 abierto/en borrador y solo documental.** Borrador de soporte intacto y no enviado en .local/sonar-reportes-20261119/BORRADOR-SOPORTE-KASPERSKY.md. Exportación y análisis del CSV ya cumplidos, con evidencia privada preservada. Pendiente actual: presentar el caso al soporte Kaspersky y conservar identificador/dictamen; no volver a exportar el CSV. No ejecutar/restaurar SDK o cambiar antivirus. ROP web no valida Android.
+
+## Histórico — diagnóstico Sonar, incidente Dart y reporte propuesto, 2026-11-19
+## Estado vigente — revisión ROP y vulnerabilidad separada, 2026-11-19
+
+Rama activa **fix/docker-ejecutable-confiable**, desde main18d57e9. [Corrección S4036](correccion-docker-path.md): resolver Docker por ruta fija/canónica y verificación de permisos, sin PATH/fallback.31 unitarias/check/formato locales aprobados; publicar como PR separado de ROP y comprobar su SHA. Main conserva123 avisos/una vulnerabilidad hasta integración autorizada y reanálisis, no se silencian hallazgos ni cambia el gate.
+
+**ROP-01/#11** permanece abierto y sin fusionar. Referencia28962fe revisada: sin defecto funcional/seguridad nuevo;7 pruebas enfocadas aprobadas. Actualización documental5f738c8 conserva la lógica y corrige el pendiente Kaspersky; verify/Compose/Sonar de esa cabeza aprobados. Sus9 CODE_SMELL siguen documentados (8 await secuenciales del fixture y foco de tabla desplazable). [Revisión en su propia rama](https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/blob/5f738c8/docs/05-sprint01/revision-rop01.md).
+
+**CSV ya exportado y analizado:** original/copia privada y borrador para soporte conservados fuera de Git. El pendiente del incidente es **presentar el caso al soporte** y conservar identificador/dictamen. No volver a pedir exportación. No se publica contenido, rutas o hashes del informe privado.
+
+**SDK independiente autorizado:** Flutter estable3.50.0/revisiónab291203 del catálogo oficial actual, ZIP SHA-256 verificado en carpeta de herramientas separada del proyecto y del SDK señalado. Misma revisión registrada en el incidente: no implica falso positivo o resolución. Kaspersky actualizado informa análisis ZIP terminado sin detecciones, con5 objetos protegidos por contraseña como límite. Instalación/inspección/análisis posteriores aún deben quedar verificados antes de ejecutar; B y pruebas Android pendientes, sin avance a C. Ver estado final del procedimiento privado y entrega antes de asumir herramientas habilitadas.
+
+No se ejecutó Docker local, SDK señalado, restauración de cuarentena, modificación de políticas/exclusiones, demo001–007 o nuevas copias del repositorio. El servidor de desarrollo ROP se detuvo de forma identificada antes de cambiar de rama; no afirmar3041 activo desde esta rama de seguridad.
+
+## Histórico — cierre #10 y ROP-01
 
 ## Estado vigente — diagnóstico Sonar, incidente Dart y reporte propuesto, 2026-11-19
 

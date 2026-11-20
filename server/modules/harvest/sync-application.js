@@ -1,5 +1,6 @@
 import { AppError } from "../../shared/errors.js";
 import { payloadDigest } from "./sync-domain.js";
+import { createHash } from "node:crypto";
 
 export function harvestSyncService({
   repository,
@@ -9,6 +10,35 @@ export function harvestSyncService({
   harvest,
 }) {
   return {
+    async catalog(actor) {
+      return unitOfWork(async (tx) => {
+        const current = await access.requireActiveSession(tx, actor);
+        access.authorize(current, "prelot:create");
+        const parcels = await producers.assignedCatalog(tx, current);
+        if (parcels.length > 1000)
+          throw new AppError(
+            503,
+            "CATALOG_TOO_LARGE",
+            "El catálogo completo excede el límite técnico; no se descargó parcialmente.",
+          );
+        const data = {
+          owner: {
+            organizationId: current.organizationId,
+            actorId: current.id,
+          },
+          parcels,
+          units: ["kg", "unidad"],
+          quantity: { wholeDigits: 9, decimalPlaces: 3 },
+        };
+        return {
+          ...data,
+          version: createHash("sha256")
+            .update(JSON.stringify(data))
+            .digest("hex"),
+          generatedAt: new Date().toISOString(),
+        };
+      });
+    },
     async accept(actor, id, input) {
       return unitOfWork(async (tx) => {
         // Wait for this identity before checking time-sensitive authorization.

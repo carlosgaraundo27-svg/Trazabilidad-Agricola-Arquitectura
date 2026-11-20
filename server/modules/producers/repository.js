@@ -1,5 +1,13 @@
 export function producersRepository() {
   return {
+    async assignedCatalog(tx, actor, ids) {
+      return (
+        await tx.query(
+          "SELECT id,name FROM producers.parcels WHERE organization_id=$1 AND id=ANY($2::uuid[]) ORDER BY id LIMIT 1001",
+          [actor.organizationId, ids],
+        )
+      ).rows;
+    },
     async intakeOrigins(tx, actor, parcelIds) {
       return (
         await tx.query(

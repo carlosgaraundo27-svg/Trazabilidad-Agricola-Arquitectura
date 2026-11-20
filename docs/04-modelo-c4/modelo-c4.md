@@ -1,3 +1,20 @@
+# C4 — extensión implementada A/B/C
+
+C agrega M1 (aplicación Flutter Android) y L1 (SQLite privado por organización/actor) a B1 Express y O1 PostgreSQL existentes. Keystore cifra cookie/perfil fuera de L1; CSRF solo en memoria. M1 tiene sesión, formulario de borrador y worker foreground único; L1 contiene catálogo mínimo, captura/outbox atómicas, ciclos/plazos y recibos inmutables. GET sync/catalog y PUT sync/pre-lots viajan HTTPS; B1/S/P revalidan sesión/rol/asignación antes de replay, H guarda alta/audit/recibo atómicos. La demo histórica permanece001–007. [Contrato C](../03-diseno-de-software/13-incremento-C-captura-offline.md).
+
+```mermaid
+flowchart LR
+  U[Recolector autorizado] --> M1[Flutter Android: sesión, captura, worker foreground]
+  M1 --> K[Android Keystore: cookie y perfil cifrados]
+  M1 --> L1[(SQLite privado por organización y usuario)]
+  M1 -->|HTTPS catálogo y PUT idempotente| B1[Express: S acceso, P asignaciones, H cosecha/recibo]
+  B1 --> O1[(PostgreSQL001–008: hechos y recibos)]
+```
+
+Este corte no implementa ETL/datamart, ejecución en segundo plano, iOS o reglas agronómicas. Los diagramas históricos inferiores conservan el recorrido online y no describen el estado vigente de M1/L1.
+
+## Histórico preservado
+
 # Modelo C4 — Acopio, Calidad, QR y Logística académicos
 
 **Incremento servidor A, 2026-11-19, rama dependiente de #7:** B1 incorpora PUT sync dentro de H; S revalida sesión/rol vigente y P asignación bajo la misma UoW, O1/PostgreSQL conserva recibos inmutables por organización/captura. [Contrato/plan](../03-diseno-de-software/10-plan-incrementos-offline.md). No hay nuevo contenedor, cliente M1, almacén L1 ni ejecución Flutter; la captura local sigue fuera del corte. Solo probado en DB nuevas con008; demo001–007 intacta. Las vistas previas conservan el recorrido online.

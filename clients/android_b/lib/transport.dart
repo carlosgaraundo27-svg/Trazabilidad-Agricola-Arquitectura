@@ -3,6 +3,29 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'session.dart';
+import 'capture_catalog.dart';
+import 'capture_contract.dart';
+import 'capture_policy.dart';
+
+CaptureReceipt parseCaptureResponse(
+  int status,
+  Map<String, dynamic> body,
+  String id,
+  Map<String, dynamic> payload,
+) {
+  final replayed = body['replayed'];
+  if (!((status == 201 && replayed == false) ||
+      (status == 200 && replayed == true))) {
+    throw const SessionFailure(Failure.protocol);
+  }
+  final receipt = CaptureReceipt.parse({...body}..remove('replayed'));
+  if (receipt.id != id ||
+      receipt.payload.canonical !=
+          PayloadV1.parse(payload, rejectFuture: false).canonical) {
+    throw const SessionFailure(Failure.conflict);
+  }
+  return receipt;
+}
 
 class HttpsSessionApi implements SessionApi {
   final Destination destination;
@@ -25,6 +48,9 @@ class HttpsSessionApi implements SessionApi {
     Map<String, String>? body,
     Credential? credential,
     String? csrf,
+    String? frozen,
+    String? idempotencyKey,
+    int maxBytes = 65536,
   }) async {
     final uri = destination.origin.resolve(path);
     if (!destination.allow(uri) ||
@@ -33,7 +59,7 @@ class HttpsSessionApi implements SessionApi {
       throw const SessionFailure(Failure.protocol);
     }
     if (credential?.expired ?? false) {
-      throw const SessionFailure(Failure.needsLogin);
+      throw const SessionFailure(Failure.needsLogin, localExpiry: true);
     }
     final client = HttpClient(context: context)
       ..connectionTimeout = const Duration(seconds: 10);
@@ -48,6 +74,13 @@ class HttpsSessionApi implements SessionApi {
           request.cookies.add(Cookie('session', credential.value));
         }
         if (csrf != null) request.headers.set('X-CSRF-Token', csrf);
+        if (idempotencyKey != null) {
+          request.headers.set('Idempotency-Key', idempotencyKey);
+        }
+        if (frozen != null) {
+          request.headers.contentType = ContentType.json;
+          request.write(frozen);
+        }
         if (body != null) {
           request.headers.contentType = ContentType.json;
           request.write(jsonEncode(body));
@@ -58,21 +91,32 @@ class HttpsSessionApi implements SessionApi {
             path == '/api/v1/auth/login'
                 ? Failure.invalidCredentials
                 : Failure.needsLogin,
+            status: 401,
           );
         }
-        if (response.statusCode == 403) {
-          throw const SessionFailure(Failure.permission);
+        if ([403, 404].contains(response.statusCode)) {
+          throw SessionFailure(Failure.permission, status: response.statusCode);
         }
         if (response.statusCode == 409) {
-          throw const SessionFailure(Failure.conflict);
+          throw const SessionFailure(Failure.conflict, status: 409);
         }
-        if (![200, 204].contains(response.statusCode)) {
-          throw const SessionFailure(Failure.protocol);
+        if (response.statusCode == 429 || response.statusCode >= 500) {
+          throw SessionFailure(
+            Failure.network,
+            status: response.statusCode,
+            retryAfter: parseRetryAfter(
+              response.headers.value('retry-after'),
+              response.headers.value('date'),
+            ),
+          );
+        }
+        if (![200, 201, 204].contains(response.statusCode)) {
+          throw SessionFailure(Failure.protocol, status: response.statusCode);
         }
         final bytes = <int>[];
         await for (final chunk in response) {
           bytes.addAll(chunk);
-          if (bytes.length > 65536) {
+          if (bytes.length > maxBytes) {
             throw const SessionFailure(Failure.protocol);
           }
         }
@@ -101,6 +145,38 @@ class HttpsSessionApi implements SessionApi {
       _clients.remove(client);
       client.close(force: true);
     }
+  }
+
+  Future<CatalogSnapshot> catalog(Credential credential) async =>
+      CatalogSnapshot.parse(
+        (await _request(
+          'GET',
+          '/api/v1/sync/catalog',
+          credential: credential,
+          maxBytes: 524288,
+        )).body,
+      );
+  Future<CaptureReceipt> sendCapture(
+    Credential credential,
+    String csrf,
+    String id,
+    String frozen,
+  ) async {
+    captureId(id);
+    final result = await _request(
+      'PUT',
+      '/api/v1/sync/pre-lots/$id',
+      credential: credential,
+      csrf: csrf,
+      frozen: frozen,
+      idempotencyKey: id,
+    );
+    return parseCaptureResponse(
+      result.status,
+      result.body,
+      id,
+      jsonDecode(frozen) as Map<String, dynamic>,
+    );
   }
 
   @override

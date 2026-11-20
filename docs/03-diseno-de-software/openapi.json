@@ -6008,6 +6008,117 @@
           }
         }
       }
+    },
+    "/api/v1/sync/catalog": {
+      "get": {
+        "summary": "Catálogo completo mínimo de parcelas asignadas para captura offline",
+        "operationId": "offlineCatalog",
+        "security": [
+          {
+            "sessionCookie": []
+          }
+        ],
+        "description": "Revalida sesión activa, prelot:create, organización y asignaciones en la misma unidad de trabajo. No concede aceptación offline: PUT revalida antes de replay. Máximo técnico 1000 parcelas; jamás retorna catálogo parcial. generatedAt UTC ancla la ventana local24h y no cambia cookie8h. Sin coordenadas/contactos/productor. HTTPS requerido para Android.",
+        "responses": {
+          "200": {
+            "description": "Instantánea completa (puede estar vacía)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "owner",
+                    "parcels",
+                    "units",
+                    "quantity",
+                    "version",
+                    "generatedAt"
+                  ],
+                  "properties": {
+                    "owner": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": ["organizationId", "actorId"],
+                      "properties": {
+                        "organizationId": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "actorId": {
+                          "type": "string",
+                          "format": "uuid"
+                        }
+                      }
+                    },
+                    "parcels": {
+                      "type": "array",
+                      "maxItems": 1000,
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": ["id", "name"],
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "name": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 200
+                          }
+                        }
+                      }
+                    },
+                    "units": {
+                      "type": "array",
+                      "minItems": 2,
+                      "maxItems": 2,
+                      "items": {
+                        "type": "string",
+                        "enum": ["kg", "unidad"]
+                      }
+                    },
+                    "quantity": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": ["wholeDigits", "decimalPlaces"],
+                      "properties": {
+                        "wholeDigits": {
+                          "type": "integer",
+                          "const": 9
+                        },
+                        "decimalPlaces": {
+                          "type": "integer",
+                          "const": 3
+                        }
+                      }
+                    },
+                    "version": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{64}$"
+                    },
+                    "generatedAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Sesión ausente, caducada o revocada"
+          },
+          "403": {
+            "description": "Sin permiso prelot:create"
+          },
+          "503": {
+            "description": "CATALOG_TOO_LARGE: no se descarga parcialmente"
+          }
+        }
+      }
     }
   },
   "components": {

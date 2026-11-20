@@ -1,29 +1,8 @@
-import 'dart:convert';
-
-import 'package:flutter/services.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'session.dart';
 import 'capture_contract.dart';
-
-class KeystoreVault implements Vault {
-  final Uri origin;
-  static const channel = MethodChannel('org.trazabilidad/session-vault');
-  KeystoreVault(this.origin);
-  @override
-  Future<Credential?> read() async {
-    final text = await channel.invokeMethod<String>('read');
-    return text == null
-        ? null
-        : Credential.fromJson(jsonDecode(text) as Map<String, dynamic>, origin);
-  }
-
-  @override
-  Future<void> write(Credential credential) =>
-      channel.invokeMethod<void>('write', jsonEncode(credential.toJson()));
-  @override
-  Future<void> clear() => channel.invokeMethod<void>('clear');
-}
+export 'credential_vault.dart';
 
 /// Private owner-specific SQLite, without credentials. No capture UI, sender or
 /// retry worker is part of B. Contract tables preserve the boundary for C.
@@ -76,7 +55,7 @@ class SqliteWorkspace implements Workspace {
     final directory = await getDatabasesPath();
     final database = await openDatabase(
       '$directory/b_${owner.key}.sqlite',
-      version: 1,
+      version: 2,
       singleInstance: false,
       onConfigure: (db) async {
         await db.execute('PRAGMA foreign_keys = ON');
@@ -93,6 +72,10 @@ class SqliteWorkspace implements Workspace {
           'actor_id': owner.actorId,
           'schema_version': 1,
         });
+        await upgradeC(db);
+      },
+      onUpgrade: (db, oldVersion, newVersion) async {
+        if (oldVersion < 2) await upgradeC(db);
       },
     );
     try {
@@ -125,6 +108,37 @@ class SqliteWorkspace implements Workspace {
       rethrow;
     }
   }
+
+  Future<T> transaction<T>(
+    WorkspaceLease lease,
+    Future<T> Function(Transaction) operation,
+  ) async {
+    final db = _checked(lease);
+    return db.transaction((tx) async {
+      _checked(lease);
+      final result = await operation(tx);
+      _checked(lease);
+      return result;
+    });
+  }
+
+  static Future<void> upgradeC(DatabaseExecutor db) async {
+    for (final statement in schemaC) {
+      await db.execute(statement);
+    }
+  }
+
+  // workspace.schema_version=1 remains the owner contract; PRAGMA user_version=2
+  // describes this additive local migration. Published server DDL is untouched.
+  static const schemaC = <String>[
+    'CREATE TABLE catalog_parcels(id TEXT PRIMARY KEY NOT NULL,name TEXT NOT NULL,enabled INTEGER NOT NULL CHECK(enabled IN (0,1)))',
+    'CREATE TABLE catalog_meta(id INTEGER PRIMARY KEY CHECK(id=1),version TEXT NOT NULL)',
+    'ALTER TABLE outbox ADD COLUMN cycle INTEGER NOT NULL DEFAULT 1',
+    'ALTER TABLE outbox ADD COLUMN cycle_attempts INTEGER NOT NULL DEFAULT 0',
+    'ALTER TABLE outbox ADD COLUMN deadline TEXT',
+    'ALTER TABLE outbox ADD COLUMN retry_delay_ms INTEGER NOT NULL DEFAULT 0',
+    'ALTER TABLE outbox ADD COLUMN last_code TEXT',
+  ];
 
   Future<void> saveDraft(
     WorkspaceLease lease,

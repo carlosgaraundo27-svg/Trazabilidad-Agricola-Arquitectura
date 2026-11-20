@@ -1,3 +1,11 @@
+# ADR-015 — decisiones de campo Android adoptadas para C
+
+Estado actual: aceptada técnicamente por el propietario, 2026-11-19. A y B ya integrados; C implementado en rama propia, sujeto a revisión y checks antes de publicar su resultado. O1–O10 y sus límites están registrados en [contrato C](../03-diseno-de-software/13-incremento-C-captura-offline.md). O5 y O8 se aprobaron expresamente:24h con continuidad monotónica/bloqueo tras reboot; inicial+5 con2/4/8/16/30s+jitter0–20% y Retry-After mayor, durables. No son decisiones inferidas por silencio.
+
+Flutter Android, Keystore y SQLite privado separan autoridad de sesión del hecho local. Al confirmar: UUID/cuerpo inmutables y captura/outbox en una transacción. Al sincronizar: mismo PUT/ID/cuerpo; servidor revalida antes de replay y emite recibo inmutable. Cookie8h no determina ventana24h; expiración local conserva perfil, rechazo remoto bloquea confirmación, logout elimina autoridad y conserva filas. Migración SQLite2 aditiva; migrations001–008 servidor intactas. Catálogo mínimo completo, cap técnico1000 sin parcial. Fuera de C: iOS/PWA, segundo plano, conversiones, corrección de hechos aceptados, exportación/backup de dispositivo y SLA. No implica aprobación agrícola/docente.
+
+## Histórico preservado
+
 # ADR-015 propuesta — Cliente de campo y sincronización offline
 
 **Actualización 2026-11-19:** autorización expresa para implementar/probar solo el servidor A en rama dependiente de #7. [Plan A–D](../03-diseno-de-software/10-plan-incrementos-offline.md): recibo inmutable, identidad organización/captura y propietario fijo, canonización v1 y alta/audit/recibo atómicos, revalidación antes de replay. Implementación A en H con migración008 aditiva; sin backfill ni cambios a la demo. Esta decisión parcial de servidor no adopta Flutter/SQLite/ventana24h ni el adaptador nativo pendientes. La propuesta móvil y B–D continúan pendientes, sin ejecución del SDK señalado.

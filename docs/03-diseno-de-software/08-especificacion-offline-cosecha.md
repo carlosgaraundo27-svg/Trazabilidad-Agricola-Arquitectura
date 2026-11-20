@@ -1,3 +1,9 @@
+# Offline — estado vigente A/B/C
+
+A/B integrados en main0ed299f; C se desarrolla por el alcance y decisiones aprobados del [contrato13](13-incremento-C-captura-offline.md), que prevalece para O1–O10 sobre las propuestas históricas siguientes. No persisten preguntas funcionales bloqueantes para este corte. Demo001–007 intacta; aceptación en Android real/base aislada, no navegador. Resultados y límites en [continuidad](../05-sprint01/continuidad-inventario.md).
+
+## Histórico preservado
+
 # Propuesta — Captura offline y sincronización de cosecha/pre-lotes
 
 **Corte 2026-11-19:** el usuario autoriza implementar/probar únicamente el servidor **A**, en rama separada dependiente de #7. [Plan A–D y aceptación A-01–08](10-plan-incrementos-offline.md). A implementa PUT/recibo/idempotencia y migración008 en bases nuevas de prueba; se registra en OpenAPI. No aplica008 a la demo, crea Flutter ni adopta por silencio las políticas locales O5/O6/O8/O9. B–D y las partes móviles de O1–O10 siguen propuestas. Las afirmaciones históricas de ausencia total de endpoints/migración corresponden al corte previo a A.

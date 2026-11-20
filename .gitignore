@@ -27,5 +27,6 @@ dist/
 playwright-report/
 test-results/
 .npm-cache/
+coverage/
 __pycache__/
 *.pyc

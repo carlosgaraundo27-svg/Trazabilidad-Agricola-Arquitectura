@@ -7,6 +7,27 @@ on:
 permissions:
   contents: read
 jobs:
+  jest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm run test:coverage
+      - name: Coverage HTML and LCOV by tested SHA
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jest-coverage-${{ github.event.pull_request.head.sha || github.sha }}
+          path: coverage/jest/
+          if-no-files-found: error
+          retention-days: 14
   verify:
     runs-on: ubuntu-latest
     timeout-minutes: 15

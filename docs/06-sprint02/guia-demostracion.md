@@ -4,17 +4,16 @@
 
 Todo parte de la raíz del repositorio. [Evidencia por SHA](evidence/README.md) y [mediciones ejecutadas](mediciones-ejecutadas.md) fijan código/entorno. Comparar antes de reutilizar resultados en otra cabeza. El manifiesto local02ca registra hashes; CI usa PostgreSQL dedicado validado, nunca servicios heredados.
 
-En Windows usar `npm.cmd` porque la política de PowerShell bloquea `npm.ps1`; no cambiar esa política. Las pruebas aisladas ya ejecutadas se reproducen con:
+En Windows usar `npm.cmd` porque la política de PowerShell bloquea `npm.ps1`; no cambiar esa política. Las pruebas locales puras ya ejecutadas se reproducen con:
 
 ```powershell
 node --version
-npm.cmd run test:coverage
 node --test --test-concurrency=1 tests/unit/*.test.js
 npm.cmd run check
 npm.cmd run format:check
 ```
 
-No cargar `.env` para esas pruebas. `node scripts/sprint02/record-tests.js` las ejecuta secuencialmente, quita variables DB/Redis heredadas y escribe evidencia sanitizada nueva por SHA; los logs quedan en `.local/sprint02/<SHA>`. Si el formato local CRLF falla, conserva exit1 y añade diagnóstico `--end-of-line auto`; **no omite ni sustituye** el gate original. Los JSON de Jest con paths absolutos permanecen privados; el manifiesto publicado usa rutas relativas. El HTML está en `coverage/jest/index.html` y LCOV en `coverage/jest/lcov.info`. No versionar todo coverage.
+No cargar `.env` para esas pruebas. Desde5fd294c, Jest completo incluye HTTP y exige runner independiente/URL JEST_HTTP_DATABASE_URL validada: **no ejecutar `npm run test:coverage` ni `record-tests.js` aquí mientras D11 comparte host**. CI prepara jest_business y jest_http separados y produce HTML/LCOV. `node scripts/sprint02/record-tests.js` las ejecuta secuencialmente, quita variables DB/Redis heredadas y escribe evidencia sanitizada nueva por SHA; los logs quedan en `.local/sprint02/<SHA>`. Si el formato local CRLF falla, conserva exit1 y añade diagnóstico `--end-of-line auto`; **no omite ni sustituye** el gate original. Los JSON de Jest con paths absolutos permanecen privados; el manifiesto publicado usa rutas relativas. El HTML está en `coverage/jest/index.html` y LCOV en `coverage/jest/lcov.info`. No versionar todo coverage. [Protocolo nuevo de capacidad/Redis/permisos](capacidad-y-permisos.md) mantiene los controles; `SPRINT02_TRAFFIC_PROFILE=capacity` es otro modelo de tráfico, no un límite relajado.
 
 No ejecutar en esta máquina `npm ci`, build, integración, E2E, Docker, Redis/k6, seeds/migraciones o herramientas Flutter/ADB mientras el ensayo pueda compartir recursos. CI ejecuta instalación/build/SQL/Redis/Playwright en runners ajenos; Flutter test se conserva y se ejecutará solo en SDK/runner independiente, sin seleccionar el dispositivo del ensayo. No iniciar los backends históricos Android.
 
@@ -134,6 +133,8 @@ JS
 Este ejemplo manual específico no se ejecutó y no modifica la sesión del teléfono; los resultados HTTP reales de sync50 se enlazan aparte. Si no coincide, preservar status/código público y clasificar fallo; no cambiar regla o expectativa para aprobar. La matriz completa negativa incluye sesión expirada, org/centro y CSRF: [EQ-04](validacion-atributos.md).
 
 ## k6 en etapas con revisión
+
+El protocolo automático actual ejecuta primero abuso de1 IP y luego, solo si su límite observado es429, capacidad con orígenes TCP reales distintos. [Procedimiento y diferencias](capacidad-y-permisos.md), [resultados5fd](resultados-capacidad.md). El selector `SPRINT02_TRAFFIC_PROFILE=capacity` mantiene60/min/IP; pausa5s/lectura y meseta de60 s. Las instrucciones siguientes corresponden al perfil de abuso previo; no usarlas para simular clientes independientes por cabeceras.
 
 Con app3302 del runner activa, usar ID público de `lab-fixture.json`:
 

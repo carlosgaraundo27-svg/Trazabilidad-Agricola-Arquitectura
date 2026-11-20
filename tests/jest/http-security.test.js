@@ -132,6 +132,7 @@ const create = (auth, body = input, key = crypto.randomUUID()) =>
   });
 function rejected(r, status, code) {
   expect(r.status).toBe(status);
+  expect(Object.keys(r.body)).toEqual(["error"]);
   expect(r.body.error).toMatchObject({ code, requestId: expect.any(String) });
   expect(r.headers.get("x-request-id")).toBe(r.body.error.requestId);
 }

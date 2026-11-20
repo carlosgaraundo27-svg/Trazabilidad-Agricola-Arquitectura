@@ -21,6 +21,7 @@ El PDF pide implementar el estilo y enfoque arquitectónicos; especificaciones S
 | Candidato histórico | `2758271ad96aa8735f35644efe42b2a02a9ff539` | Base38 Jest/45 node:test/8,48 %, laboratorio todavía preparado. |
 | Cobertura y laboratorio nuevos | `02ca31bd03dc1626bc9f0c610405b8a673c0fe07` | 83 Jest/49 node:test; PG/Redis/sync50/k6 reales aislados y Sonar LCOV importado. |
 | Registrador real CI | `20be52d72d7ebbe488a660307230d9857f44d4b5` | Mismas pruebas/producción; publica manifiesto remoto,83 Jest/49 node:test y2859/3997 líneas71,52 % comprobados en su job Jest. |
+| Capacidad, HTTP y recuperación Redis | `5fd294c76f360d09ab1ade5c2d870b30d3754234` |100 Jest/52 node:test,82,66 % de backend; screening con2.000 VU y claves/IP distintas, recuperación del mismo adaptador Redis y15 negativos HTTP. [Resultados y alcance](resultados-capacidad.md). |
 
 Los commits documentales posteriores incorporan el reporte de ese candidato. El [manifiesto](evidence/2758271ad96aa8735f35644efe42b2a02a9ff539/verification.json) contiene SHA256 de los archivos ensayados. Si cambia código, pruebas, dependencias o CI, generar nueva evidencia, sin sobrescribir la anterior. No atribuir resultados antiguos al nuevo SHA por semejanza de ramas. Para una cabeza posterior que solo cambia documentos, comparar los archivos de código con el candidato antes de reutilizar esta evidencia; CI deberá comprobar la cabeza publicada.
 

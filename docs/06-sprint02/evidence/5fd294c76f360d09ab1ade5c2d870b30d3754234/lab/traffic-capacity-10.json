@@ -1,0 +1,27 @@
+{
+  "sourceSha": "5fd294c76f360d09ab1ade5c2d870b30d3754234",
+  "observation": {
+    "requests": 168,
+    "distinctKeys": 10,
+    "distinctVUs": 10,
+    "oneKeyPerVU": true,
+    "trustProxyFalse": true,
+    "socketMatchesIp": true,
+    "statuses": {
+      "200": 168
+    },
+    "keys": {
+      "127.16.0.4": 21,
+      "127.16.0.2": 20,
+      "127.16.0.1": 19,
+      "127.16.0.3": 18,
+      "127.16.0.6": 17,
+      "127.16.0.5": 16,
+      "127.16.0.7": 15,
+      "127.16.0.9": 15,
+      "127.16.0.8": 14,
+      "127.16.0.10": 13
+    },
+    "firstLimited": null
+  }
+}

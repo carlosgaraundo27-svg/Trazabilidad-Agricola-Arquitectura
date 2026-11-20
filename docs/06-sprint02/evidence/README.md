@@ -2,6 +2,7 @@
 
 | Código ensayado | Archivo | Contenido |
 | --- | --- | --- |
+| `5fd294c76f360d09ab1ade5c2d870b30d3754234` | [verification-ci.json](5fd294c76f360d09ab1ade5c2d870b30d3754234/verification-ci.json) |100 Jest/52 node:test remotos,3304/3997 líneas82,66 %, mismos45 archivos;15 negativos HTTP y guardas locales con mutación detectada. [Laboratorio completo](5fd294c76f360d09ab1ade5c2d870b30d3754234/lab/run.json): screening2000/33987 respuestas correctas; abuso1320 HTTP429; recuperación/3 contaminaciones Redis aprobadas. [Seis checks/LCOV/Sonar86,7 % nuevo](5fd294c76f360d09ab1ade5c2d870b30d3754234/ci-remoto.json). |
 | `20be52d72d7ebbe488a660307230d9857f44d4b5` | [ci-remoto.json](20be52d72d7ebbe488a660307230d9857f44d4b5/ci-remoto.json) | Seis checks remotos aprobados,83Jest/49node:test/2859 de3997 líneas71,52 %, HTML/LCOV artifact e importación Sonar;87,1 % nuevo/gate80 intacto. |
 | `02ca31bd03dc1626bc9f0c610405b8a673c0fe07` | [verification.json](02ca31bd03dc1626bc9f0c610405b8a673c0fe07/verification.json), [laboratorio](02ca31bd03dc1626bc9f0c610405b8a673c0fe07/lab/run.json) | Local83Jest/49node/71,47 %, CRLF fallido conservado. Laboratorio real perfilado: cuatro modos Redis, planes, sync50, k6 detenido10VU/429. |
 | `d8227d047a6e6f35028fe4494c53924b0c151758` | [laboratorio](d8227d047a6e6f35028fe4494c53924b0c151758/lab/run.json) | Corrida independiente sin perfilado: sync50/0,393929s y k6 exit99/429; recursos/SQL/Redis completos. |

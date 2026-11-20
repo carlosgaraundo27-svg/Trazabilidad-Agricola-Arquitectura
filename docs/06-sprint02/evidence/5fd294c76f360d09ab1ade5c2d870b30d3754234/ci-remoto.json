@@ -1,0 +1,110 @@
+{
+  "sourceSha": "5fd294c76f360d09ab1ade5c2d870b30d3754234",
+  "runId": 44815768255,
+  "checkedAt": "2026-11-20T21:26:27.359Z",
+  "checks": [
+    {
+      "name": "SonarCloud Code Analysis",
+      "sourceSha": "5fd294c76f360d09ab1ade5c2d870b30d3754234",
+      "conclusion": "success",
+      "url": "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/runs/136574182135"
+    },
+    {
+      "name": "sonar",
+      "sourceSha": "5fd294c76f360d09ab1ade5c2d870b30d3754234",
+      "conclusion": "success",
+      "url": "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/44815768255/job/136573372695"
+    },
+    {
+      "name": "laboratory / laboratory",
+      "sourceSha": "5fd294c76f360d09ab1ade5c2d870b30d3754234",
+      "conclusion": "success",
+      "url": "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/44815768255/job/136563557793"
+    },
+    {
+      "name": "jest",
+      "sourceSha": "5fd294c76f360d09ab1ade5c2d870b30d3754234",
+      "conclusion": "success",
+      "url": "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/44815768255/job/136563557792"
+    },
+    {
+      "name": "compose",
+      "sourceSha": "5fd294c76f360d09ab1ade5c2d870b30d3754234",
+      "conclusion": "success",
+      "url": "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/44815768255/job/136563557734"
+    },
+    {
+      "name": "verify",
+      "sourceSha": "5fd294c76f360d09ab1ade5c2d870b30d3754234",
+      "conclusion": "success",
+      "url": "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/44815768255/job/136563557169"
+    }
+  ],
+  "artifacts": [
+    {
+      "name": "sprint02-measurements-5fd294c76f360d09ab1ade5c2d870b30d3754234",
+      "id": 14671290864,
+      "bytes": 92512,
+      "digest": "sha256:1a5cc95f07cd6fbee23b3c2e8190bccdfb4743820751e032fac3d24bb97cdb11",
+      "expired": false
+    },
+    {
+      "name": "lab-coverage-5fd294c76f360d09ab1ade5c2d870b30d3754234",
+      "id": 14670962266,
+      "bytes": 21254,
+      "digest": "sha256:162ccfab470a294ce94810fdd4e0596df660c51e8fb3bf9a316431af4f07a620",
+      "expired": false
+    },
+    {
+      "name": "sonar-task-5fd294c76f360d09ab1ade5c2d870b30d3754234",
+      "id": 14669694366,
+      "bytes": 324,
+      "digest": "sha256:d98ee3149ed63d46d3705da611ed8ce6311af420bffade4f23f5baf5cf85fb5e",
+      "expired": false
+    },
+    {
+      "name": "playwright-results",
+      "id": 14669651015,
+      "bytes": 2366855,
+      "digest": "sha256:c746f32caabef03bceabdd9f7b1efe0f022989480285688a9c14edce40c5e398",
+      "expired": false
+    },
+    {
+      "name": "jest-coverage-5fd294c76f360d09ab1ade5c2d870b30d3754234",
+      "id": 14668824548,
+      "bytes": 244067,
+      "digest": "sha256:baa32940f5aafba96304ffd469e45bbd47db8555a3e738cfa373cd747dc375c5",
+      "expired": false
+    },
+    {
+      "name": "jest-tools-coverage-5fd294c76f360d09ab1ade5c2d870b30d3754234",
+      "id": 14667554802,
+      "bytes": 14090,
+      "digest": "sha256:ee51cea0359a32e858f4e90d5d614dd1336a570d131bd2ad946037d5c992a8a7",
+      "expired": false
+    }
+  ],
+  "sonar": {
+    "gate": "OK",
+    "newCoverage": 86.7,
+    "threshold": 80,
+    "security": "A",
+    "reliability": "A",
+    "maintainability": "A",
+    "duplication": 0,
+    "hotspotsReviewed": 100,
+    "lcovImported": true
+  },
+  "lab": {
+    "status": "completed_with_observed_limit",
+    "capacity": "completed_short_screening_2000",
+    "abuse429": 1320,
+    "capacity2000Correct": 33987
+  },
+  "jest": {
+    "tests": 100,
+    "linesCovered": 3304,
+    "linesTotal": 3997,
+    "pct": 82.66
+  }
+}

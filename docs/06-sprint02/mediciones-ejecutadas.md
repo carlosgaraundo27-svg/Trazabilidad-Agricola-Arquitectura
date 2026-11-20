@@ -1,5 +1,7 @@
 # Mediciones ejecutadas en laboratorio independiente
 
+**Nuevo corte5fd:** [screening2.000 VU, observación de IPs, permisos y caída/recuperación Redis](resultados-capacidad.md). Las tablas siguientes preservan sus SHA anteriores y no se renuevan artificialmente.
+
 ## Procedencia y método
 
 Datos ficticios en GitHub-hosted Ubuntu, ajenos al teléfono/servicios locales. [D822 sin perfilado](evidence/d8227d047a6e6f35028fe4494c53924b0c151758/lab/run.json), [02ca con NODE_V8_COVERAGE](evidence/02ca31bd03dc1626bc9f0c610405b8a673c0fe07/lab/run.json) y [primer fallo309](evidence/309fd38e9f30f3aafe43dd6c501152cd459b5769/lab-first/run.json) conservados sin sobrescribir. Perfilado/hardware distintos: diferencias entre corridas no acreditan optimización.
@@ -59,7 +61,7 @@ Cola cliente solo RAM; HTTP/PostgreSQL reales en loopback. Desde primer envío h
 
 [smoke02ca](evidence/02ca31bd03dc1626bc9f0c610405b8a673c0fe07/lab/k6-smoke.json), [10 VU02ca](evidence/02ca31bd03dc1626bc9f0c610405b8a673c0fe07/lab/k6-10.json). JSON incluye métricas/thresholds; logs k6 en artifact por SHA. Throughput incluye rechazos. p95 solo200 evita que429 rápidos aparenten mejora.
 
-Smoke verificó respuestas/recursos antes de avanzar, con61s entre ventanas. A10 VU: **88 %429**,12 % correctas;0 5xx observado en esa ventana. Exit99 y stopReason=rate_limit_429 conservados. No se ejecutaron50/100/250/500/1000/2000 ni meseta100VU/10min EQ-01. Job verde significa protocolo completado con límite observado, **no carga aprobada**. Rate limit60/min/IP intacto; falta topología distribuida de tráfico legítimamente admitido.
+Smoke verificó respuestas/recursos antes de avanzar, con61s entre ventanas. A10 VU: **88 %429**,12 % correctas;0 5xx observado en esa ventana. Exit99 y stopReason=rate_limit_429 conservados. No se ejecutaron50/100/250/500/1000/2000 ni meseta100 VU / 10 min EQ-01. Job verde significa protocolo completado con límite observado, **no carga aprobada**. Rate limit60/min/IP intacto; falta topología distribuida de tráfico legítimamente admitido.
 
 Recursos02ca:95 muestras/3 s, CPUhost máxima6,03 %, disponible mínima14,052GiB, CPUk6 Docker máxima1,07 % sumada (normalizar/4 vCPU), RSSapp máxima142,43MiB. D822:96 muestras, CPUhost≤10 %, disponible≥14,359GiB, k6≤1,28 %, RSSapp≤143,36MiB. Smoke:14 muestras/presencia del generador. Sin agotamiento observado; muestreo puede perder picos. No certifica capacidad2000 ni SLA.
 

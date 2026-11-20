@@ -14,6 +14,8 @@ const source = readFileSync(
 
 function load(overrides = {}, response = { status: 429 }) {
   const metrics = {};
+  const calls = [],
+    sleeps = [];
   class Metric {
     constructor(name) {
       this.name = name;
@@ -33,16 +35,21 @@ function load(overrides = {}, response = { status: 429 }) {
     },
     Rate: Metric,
     Trend: Metric,
-    http: { get: () => response },
+    http: {
+      get: (url, options) => {
+        calls.push({ url, options });
+        return response;
+      },
+    },
     check: () => {},
-    sleep: () => {},
+    sleep: (seconds) => sleeps.push(seconds),
     __VU: 1,
     __ITER: 0,
   };
   const result = runInNewContext(source + "\n({options,qrRequest});", context, {
     timeout: 1000,
   });
-  return { ...result, metrics };
+  return { ...result, metrics, calls, sleeps, context };
 }
 
 test("k6 solo admite etapas definidas y host/puerto independientes, sin abrir red", () => {
@@ -53,13 +60,25 @@ test("k6 solo admite etapas definidas y host/puerto independientes, sin abrir re
 });
 
 test("capacidad es otro perfil: cinco segundos por origen y p99 visible, sin cambiar abuso", () => {
-  const { options } = load({
+  const first = "11111111-1111-4111-8111-111111111111",
+    second = "22222222-2222-4222-8222-222222222222";
+  const run = load({
     SPRINT02_TRAFFIC_PROFILE: "capacity",
     SPRINT02_STAGE: "100",
+    SPRINT02_PUBLIC_IDS: JSON.stringify([first, second]),
   });
+  const { options } = run;
   assert.equal(options.scenarios.qr.stages[1].duration, "60s");
   assert.ok(options.summaryTrendStats.includes("p(99)"));
   assert.throws(() => load({ SPRINT02_TRAFFIC_PROFILE: "bypass" }));
+  run.qrRequest();
+  run.context.__ITER = 1;
+  run.qrRequest();
+  assert.deepEqual(run.sleeps, [5, 5]);
+  assert.ok(run.calls[0].url.endsWith(first));
+  assert.ok(run.calls[1].url.endsWith(second));
+  assert.equal(run.calls[0].options.headers["X-Forwarded-For"], undefined);
+  assert.equal(run.calls[0].options.headers["X-Sprint02-VU"], "1");
 });
 
 test("k6 define progresión a 2000 y meseta de 100 VU durante 10 minutos", () => {

@@ -6,10 +6,10 @@ Fuente: [siete escenarios Sprint 1](../01-analisis-de-sistema/08-escenarios-atri
 
 | ID | Estímulo / entorno y respuesta | Medida / protocolo | Evidencia actual y faltante |
 | --- | --- | --- | --- |
-| EQ-01 | Consumidores consultan QR publicado bajo concurrencia ficticia; solo DTO aprobado. API, PostgreSQL y Redis dedicados. | Propuesta: p95 ≤2 s y <1 % 5xx, 100 VU durante 10 min. Medir 200 correctos, 429, errores negocio/transporte/5xx, latencia y recursos; comparar caché. | SQL/Redis reales y k6 ejecutados en runner: smoke1VU correcto,10VU falló88 %429/0 5xx, paró antes de100VU/10min y2000. EQ-01 no cerrado. |
+| EQ-01 | Consumidores consultan QR publicado bajo concurrencia ficticia; solo DTO aprobado. API, PostgreSQL y Redis dedicados. | Propuesta: p95 ≤2 s y <1 % 5xx, 100 VU durante 10 min. Medir 200 correctos, 429, errores negocio/transporte/5xx, latencia y recursos; comparar caché. | SQL/Redis reales y k6 ejecutados en runner: smoke1VU correcto,10VU falló88 %429/0 5xx, paró antes de100 VU / 10 min y2000. En5fd el screening separado sí alcanzó2.000 VU sin429/5xx; meseta de60 s, sin cerrar100 VU / 10 min. [resultados5fd](resultados-capacidad.md). EQ-01 no cerrado. |
 | EQ-02 | Recolector pierde red, confirma localmente y recupera conexión. | 100 % de registros de prueba una sola vez; 50 pendientes ≤60 s con conexión estable documentada. IDs/hashes y conteos independientes antes/después; diferenciar confirmación local y ACK remoto. | Android previo C/D en PR14; servidor HTTP/PGR real50/50 ACK en0,255371s y5 replays sin duplicar. Cola RAM, no valida lote Android50/SQLite. 24 h y energía no aprobados. No usar el teléfono actual para preparar el lote. |
 | EQ-03 | Operación crítica durante ventana de servicio; caída no confirma escritura inexistente. | Propuesta mensual ≥99,5 %. Acordar endpoints/calendario/sondeo; disponibilidad = tiempo disponible / tiempo elegible; conservar intervalos y faltantes de monitoreo. | Sin ventana mensual ni resultado calculable. Reinicio/rollback de tests no demuestra disponibilidad mensual. |
-| EQ-04 | Anónimo o actor sin permiso intenta operación; datos internos no salen por QR. | Propuesta 100 % de negativos rechazados y cero campos sensibles del conjunto revisado. Matriz siguiente; contar casos ejecutados/rechazados, nunca usar total de tests como denominador. | Jest83 incluye permisos, revocación, errores y DTO; negocio SQL real en CI aprobado. Matriz HTTP íntegra pendiente de reejecución externa. |
+| EQ-04 | Anónimo o actor sin permiso intenta operación; datos internos no salen por QR. | Propuesta 100 % de negativos rechazados y cero campos sensibles del conjunto revisado. Matriz siguiente; contar casos ejecutados/rechazados, nunca usar total de tests como denominador. | Jest100/82,66 % en5fd294c;15 denegaciones SEC-01–07 ejecutadas por HTTP/PostgreSQL en CI. SEC-08 real se verifica aparte en laboratorio; no se usa el total Jest como denominador. |
 | EQ-05 | Alteración de hechos cerrados, replay y carreras. | 100 % intentos cerrados del conjunto rechazados; 100 % comandos críticos exitosos con auditoría definida. Comparar cosecha/prelote/recibo/audit y movimientos por separado; inducir fallo de escritura y exigir rollback. | Jest prueba intención/masa y persistencia real con rollback por fallo de audit en CI; suites reales `api`, `intake`, `quality`, `logistics-sql/rollback`, `harvest-sync` existentes. Contención y reejecución reales pendientes. |
 | EQ-06 | Cambio de regla localizado, sin infraestructura en dominio. | Diff por responsabilidad, regresiones aprobadas y revisión de imports. Registrar archivos/razón y límites del chequeo. | Preparación sin cambios en reglas; Jest/node:test/check aprobados. No se simuló un cambio agrícola ni se mide costo futuro de mantenimiento. |
 | EQ-07 | Reporte analítico concurrente con transacciones; cargas separadas. | Propuesta p95 ≤3 s y sin incremento de errores sobre umbral a acordar. Dataset/grano/indicadores y baseline transaccional antes de comparar. | **ETL/Datamart no demostrado.** ROP-01 conserva utilidad operativa, pero no sustituye este escenario. Pendiente de alcance docente/implementación. |
@@ -18,16 +18,16 @@ Fuente: [siete escenarios Sprint 1](../01-analisis-de-sistema/08-escenarios-atri
 
 | Caso | Entrada / acción | Resultado esperado | Resultado nuevo |
 | --- | --- | --- | --- |
-| SEC-01 | GET protegido sin cookie | 401, sin filas | Pendiente HTTP |
-| SEC-02 | Sesión expirada/inactiva | 401 | Pendiente HTTP |
-| SEC-03 | Collector crea productor; admin captura cosecha | 403 en cada caso | Rol puro comprobado en node:test; HTTP pendiente |
-| SEC-04 | Actor consulta parcela/recibo de otra organización | 404 en recurso, sin filtración | Pendiente HTTP |
-| SEC-05 | Actor solicita listado de centro sin concesión | 403 | Pendiente HTTP |
-| SEC-06 | Revocación de origen antes de replay cosecha | 404 y ningún hecho/audit nuevo | Jest fake y SQL persistido aprobados; HTTP negativo específico pendiente |
-| SEC-07 | Escritura con CSRF ausente/ajeno u Origin no permitido | 403 | Pendiente HTTP |
-| SEC-08 | Caché contiene campo privado, hash ajeno o JSON corrupto | Solo DTO aprobado desde snapshot | 3 variantes Jest aprobadas; Redis/HTTP pendiente |
+| SEC-01 | GET protegido sin cookie | 401, sin filas | **1/1 HTTP aprobado**,5fd294c |
+| SEC-02 | Sesión expirada/inactiva/logout | 401 | **3/3 HTTP aprobados**, estado de sesión solo en DB efímera |
+| SEC-03 | Collector crea productor; admin captura cosecha | 403 en cada caso | **2/2 HTTP aprobados**, sin audit/efecto nuevo |
+| SEC-04 | Captura con origen ajeno/sin asignación; replay de otro actor | 404 para origen no autorizado;409 identidad ajena dentro de misma organización | **4/4 HTTP aprobados**; error genérico sin contenido del recibo. UUID sync tiene ámbito de organización, no unicidad global. |
+| SEC-05 | Actor solicita reporte de centro sin concesión | 403 CENTER_FORBIDDEN | **1/1 HTTP aprobado** |
+| SEC-06 | Revocación de origen antes de replay cosecha | 404 y ningún hecho/audit nuevo | **1/1 HTTP aprobado**, conteos independientes sin incremento tras rechazo |
+| SEC-07 | Escritura con CSRF ausente/ajeno u Origin no permitido | 403 | **3/3 HTTP aprobados**, productor no persistido |
+| SEC-08 | Caché contiene campo privado, hash ajeno o JSON corrupto | Solo DTO aprobado desde snapshot | **3/3 Redis+HTTP reales aprobadas en5fd**: DTO aprobado y clave reparada |
 
-Este cuadro no declara 8/8 HTTP: ejecutados nuevos sobre HTTP = 0, resultado HTTP aún no calculable. En Jest las 3 variantes de contaminación se recuperan correctamente; son comportamiento de proyección, no rechazo de autenticación. Enumerar subcasos por separado al ejecutar para que numerador/denominador no cambien por agrupación editorial.
+SEC-01–07: **15/15 denegaciones HTTP del conjunto definido**,5fd294c; no cobertura exhaustiva de permisos del producto. SEC-08 tiene tres variantes distintas de contaminación, cuyo éxito es200 con DTO aprobado/reparación de clave, no rechazo de autenticación. Redis+HTTP real5fd confirmó3/3 variantes, aparte de15/15 denegaciones; recuperación del mismo adaptador también comprobada. [resultados5fd](resultados-capacidad.md). [Prueba concreta](../../tests/jest/http-security.test.js), [manifiesto](evidence/5fd294c76f360d09ab1ade5c2d870b30d3754234/verification-ci.json).
 
 ## PostgreSQL: análisis de código y medición prevista
 
@@ -52,9 +52,11 @@ Leer del plan: estimadas/reales, loops, filas descartadas, scan/sort, buffers hi
 | warm | Redis disponible, una lectura previa fuera de muestra | 50 hits, 50 guard y 0 snapshots; no prometer cero consultas DB. |
 | degraded | Detener exclusivamente Redis del Compose externo; confirmar PING fallido | 50 errores GET y 50 snapshots; caída real de ese Redis, no doble ni sustitución por noCache. |
 
-Las aserciones bloquean etiquetar caliente/degradado si no se cumplen sus contadores. El script no detiene servicios; la guía restringe ese paso al host independiente. Reanudar Redis y repetir warm para recuperación, archivando resultados anteriores. Medir además TTL, memoria/evicciones y retirada con invalidación fallida mediante la suite Redis/SQL existente. No extrapolar 50 lecturas a disponibilidad. Las cuatro condiciones reales ya se ejecutaron con resultados y límites en [mediciones](mediciones-ejecutadas.md). Recuperación warm comparada/TTL/evicciones siguen pendientes.
+Las aserciones bloquean etiquetar caliente/degradado si no se cumplen sus contadores. El script no detiene servicios; la guía restringe ese paso al host independiente. Reanudar Redis y repetir warm para recuperación, archivando resultados anteriores. Medir además TTL, memoria/evicciones y retirada con invalidación fallida mediante la suite Redis/SQL existente. No extrapolar 50 lecturas a disponibilidad. Las cuatro condiciones reales ya se ejecutaron con resultados y límites en [mediciones](mediciones-ejecutadas.md). Recuperación funcional de mismo adaptador y lectura caliente posterior comprobadas en5fd ([resultados5fd](resultados-capacidad.md)). Comparación repetida/TTL/evicciones/estabilidad siguen pendientes.
 
-## k6 progresivo hasta 2.000 VU
+## k6 progresivo hasta2.000 VU
+
+El ensayo anterior conserva su función de control de abuso con una clave/IP. El [nuevo protocolo separado](capacidad-y-permisos.md) define lectores anónimos/orígenes TCP independientes y screening progresivo, con observación del servidor. Su meseta de60 s **no sustituye** el criterio previo100 VU / 10 min de este plan; no se declara EQ-01 cerrado por ese screening.
 
 [qr-load.js](../../scripts/sprint02/qr-load.js) usa `ramping-vus` y una etapa elegida por ejecución. No inicia automáticamente todas. Solo acepta `http://127.0.0.1:3302` en otro host, ID ficticio y SHA explícitos. El generador y servicio quedan colocados; registrar esta interferencia, no confundir saturación del generador con saturación del backend. Para generación distribuida se requiere otro plan revisado, sin falsificar IP mediante cabeceras ni desactivar seguridad. [Documentación k6](https://grafana.com/docs/k6/latest/using-k6/scenarios/executors/ramping-vus/).
 

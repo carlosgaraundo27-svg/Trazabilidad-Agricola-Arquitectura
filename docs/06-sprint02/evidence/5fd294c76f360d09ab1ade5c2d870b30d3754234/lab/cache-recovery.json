@@ -1,0 +1,73 @@
+{
+  "sourceSha": "5fd294c76f360d09ab1ade5c2d870b30d3754234",
+  "scope": "Mismo proceso HTTP y adaptador Redis productivos a través de caída/reconexión reales; datos ficticios.",
+  "requests": [
+    {
+      "phase": "available",
+      "status": 200,
+      "milliseconds": 10.54638899999918
+    },
+    {
+      "phase": "redis-down-fallback",
+      "status": 200,
+      "milliseconds": 4.39676899999904
+    },
+    {
+      "phase": "recovered",
+      "status": 200,
+      "milliseconds": 3.5826489999999467
+    },
+    {
+      "phase": "recovered-warm",
+      "status": 200,
+      "milliseconds": 2.3858689999979106
+    },
+    {
+      "phase": "corrupt-json",
+      "status": 200,
+      "milliseconds": 2.3099940000029164
+    },
+    {
+      "phase": "private-property",
+      "status": 200,
+      "milliseconds": 2.9838589999999385
+    },
+    {
+      "phase": "wrong-hash",
+      "status": 200,
+      "milliseconds": 2.321060000002035
+    }
+  ],
+  "poisoning": [
+    {
+      "name": "corrupt-json",
+      "responseAndRepairedCacheValid": true
+    },
+    {
+      "name": "private-property",
+      "responseAndRepairedCacheValid": true
+    },
+    {
+      "name": "wrong-hash",
+      "responseAndRepairedCacheValid": true
+    }
+  ],
+  "reconnectObservedMilliseconds": 401.3348079999996,
+  "events": [
+    {
+      "event": "public_cache_connection_degraded"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "get"
+    },
+    {
+      "event": "public_cache_degraded",
+      "operation": "set"
+    },
+    {
+      "event": "public_cache_recovered"
+    }
+  ],
+  "passed": true
+}

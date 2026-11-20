@@ -1,0 +1,18 @@
+{
+  "sourceSha": "5fd294c76f360d09ab1ade5c2d870b30d3754234",
+  "observation": {
+    "requests": 5,
+    "distinctKeys": 1,
+    "distinctVUs": 1,
+    "oneKeyPerVU": true,
+    "trustProxyFalse": true,
+    "socketMatchesIp": true,
+    "statuses": {
+      "200": 5
+    },
+    "keys": {
+      "127.16.0.1": 5
+    },
+    "firstLimited": null
+  }
+}

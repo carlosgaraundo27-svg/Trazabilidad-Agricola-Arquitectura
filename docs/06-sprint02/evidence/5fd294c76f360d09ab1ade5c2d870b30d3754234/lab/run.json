@@ -1,0 +1,4815 @@
+{
+  "sourceSha": "5fd294c76f360d09ab1ade5c2d870b30d3754234",
+  "startedAt": "2026-11-20T20:56:10.632Z",
+  "platform": {
+    "type": "Linux",
+    "release": "7.0.0-1020-azure",
+    "cpuModel": "AMD EPYC 9V45 96-Core Processor",
+    "cpuCount": 4,
+    "totalMemoryBytes": 16759431168,
+    "clockTicksPerSecond": 100,
+    "processLimits": "Limit                     Soft Limit           Hard Limit           Units     \nMax cpu time              unlimited            unlimited            seconds   \nMax file size             unlimited            unlimited            bytes     \nMax data size             unlimited            unlimited            bytes     \nMax stack size            16777216             unlimited            bytes     \nMax core file size        unlimited            unlimited            bytes     \nMax resident set          unlimited            unlimited            bytes     \nMax processes             58121                58121                processes \nMax open files            65536                65536                files     \nMax locked memory         8388608              8388608              bytes     \nMax address space         unlimited            unlimited            bytes     \nMax file locks            unlimited            unlimited            locks     \nMax pending signals       58121                58121                signals   \nMax msgqueue size         819200               819200               bytes     \nMax nice priority         0                    0                    \nMax realtime priority     0                    0                    \nMax realtime timeout      unlimited            unlimited            us        \n"
+  },
+  "steps": [
+    {
+      "executable": "/usr/bin/getconf",
+      "args": [
+        "CLK_TCK"
+      ],
+      "code": 0,
+      "milliseconds": 9
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "compose",
+        "-f",
+        "scripts/sprint02/compose.yaml",
+        "up",
+        "-d",
+        "--wait",
+        "db",
+        "redis"
+      ],
+      "code": 0,
+      "milliseconds": 15405
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "pull",
+        "grafana/k6:latest"
+      ],
+      "code": 0,
+      "milliseconds": 1464
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "image",
+        "inspect",
+        "postgres:18",
+        "redis:8-alpine",
+        "grafana/k6:latest"
+      ],
+      "code": 0,
+      "milliseconds": 69
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "run",
+        "--rm",
+        "grafana/k6:latest",
+        "version"
+      ],
+      "code": 0,
+      "milliseconds": 614
+    },
+    {
+      "executable": "/opt/hostedtoolcache/node/24.22.3/x64/bin/node",
+      "args": [
+        "scripts/sprint02/prepare-lab.js"
+      ],
+      "code": 0,
+      "milliseconds": 8007
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "compose",
+        "-f",
+        "scripts/sprint02/compose.yaml",
+        "exec",
+        "-T",
+        "db",
+        "psql",
+        "-U",
+        "sprint02",
+        "-d",
+        "sprint02_lab",
+        "-c",
+        "ANALYZE;"
+      ],
+      "code": 0,
+      "milliseconds": 313
+    },
+    {
+      "executable": "/opt/hostedtoolcache/node/24.22.3/x64/bin/node",
+      "args": [
+        "scripts/sprint02/analyze-postgres.js"
+      ],
+      "code": 0,
+      "milliseconds": 89
+    },
+    {
+      "executable": "/opt/hostedtoolcache/node/24.22.3/x64/bin/node",
+      "args": [
+        "scripts/sprint02/compare-cache.js"
+      ],
+      "code": 0,
+      "milliseconds": 308
+    },
+    {
+      "executable": "/opt/hostedtoolcache/node/24.22.3/x64/bin/node",
+      "args": [
+        "scripts/sprint02/compare-cache.js"
+      ],
+      "code": 0,
+      "milliseconds": 354
+    },
+    {
+      "executable": "/opt/hostedtoolcache/node/24.22.3/x64/bin/node",
+      "args": [
+        "scripts/sprint02/compare-cache.js"
+      ],
+      "code": 0,
+      "milliseconds": 338
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "compose",
+        "-f",
+        "scripts/sprint02/compose.yaml",
+        "stop",
+        "redis"
+      ],
+      "code": 0,
+      "milliseconds": 313
+    },
+    {
+      "executable": "/opt/hostedtoolcache/node/24.22.3/x64/bin/node",
+      "args": [
+        "scripts/sprint02/compare-cache.js"
+      ],
+      "code": 0,
+      "milliseconds": 361
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "compose",
+        "-f",
+        "scripts/sprint02/compose.yaml",
+        "up",
+        "-d",
+        "redis"
+      ],
+      "code": 0,
+      "milliseconds": 209
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2050
+    },
+    {
+      "executable": "/opt/hostedtoolcache/node/24.22.3/x64/bin/node",
+      "args": [
+        "scripts/sprint02/sync50.js"
+      ],
+      "code": 0,
+      "milliseconds": 499
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "compose",
+        "-f",
+        "scripts/sprint02/compose.yaml",
+        "stop",
+        "redis"
+      ],
+      "code": 0,
+      "milliseconds": 172
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "compose",
+        "-f",
+        "scripts/sprint02/compose.yaml",
+        "up",
+        "-d",
+        "redis"
+      ],
+      "code": 0,
+      "milliseconds": 204
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2034
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2037
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2049
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1057
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2046
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1054
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2039
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1045
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2038
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1045
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2038
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1044
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2037
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1045
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2081
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "run",
+        "--rm",
+        "--network",
+        "host",
+        "--name",
+        "sprint02-k6",
+        "--user",
+        "1001:1001",
+        "--ulimit",
+        "nofile=8192:8192",
+        "-v",
+        "/home/runner/work/Trazabilidad-Agricola-Arquitectura/Trazabilidad-Agricola-Arquitectura:/work",
+        "-w",
+        "/work",
+        "-e",
+        "SPRINT02_INDEPENDENT_HOST=true",
+        "-e",
+        "SPRINT02_BASE_URL=http://127.0.0.1:3302",
+        "-e",
+        "SPRINT02_SOURCE_SHA=5fd294c76f360d09ab1ade5c2d870b30d3754234",
+        "-e",
+        "SPRINT02_PUBLIC_ID=5f4b040c-382d-4c05-abbd-5e0cb1299211",
+        "-e",
+        "SPRINT02_STAGE=smoke",
+        "-e",
+        "SPRINT02_TRAFFIC_PROFILE=abuse",
+        "-e",
+        "SPRINT02_PUBLIC_IDS=[\"5f4b040c-382d-4c05-abbd-5e0cb1299211\",\"71e76ff8-7cc0-4fb8-8d41-fefbcb6fac04\",\"a54be446-831e-4f1f-a601-07e379fdb631\",\"d3920017-f687-4491-ac36-462a4147a4ea\",\"e4f74660-aacf-4847-993f-7fe7891ff97e\",\"2f7a6108-e0d9-4191-a5cf-2d42e55887cc\",\"adbbd9fa-c472-4ffb-8ce3-94a93cdeb411\",\"94df256e-aa6f-4462-bbaf-e17fde4cecce\",\"164e7934-7738-4a03-a7a4-f1bed02133c6\",\"68fb5fe2-77c6-4712-be3d-ffc4cef22e77\",\"cdb1820d-58cc-44a7-9bfe-9135d947dbfd\",\"c1329a0d-3891-42be-b2ba-b55f67749873\",\"e93aa479-ed49-4f71-b815-bf9adb1dd0ba\",\"090ef886-5dbd-4689-ae95-36739de14e9b\",\"f7a02f5a-0cdc-4403-aacf-0b2a779c5e74\",\"c6cd91d1-27d8-4cfa-a3cf-4b8e17d0617f\",\"05f35457-2449-4b3c-930d-6ab34c601768\",\"828ce28a-7b33-41f6-bdaa-7887c3f238aa\",\"39bb9d9f-425e-4050-92a7-c8f204000b1b\",\"271b3067-1052-4110-a944-69c649ae891a\",\"c9f13bc8-c242-4185-8e6d-3d0603dd8be0\",\"3f4f791e-49e0-4766-860e-99088438244b\",\"dae54e33-7b4a-4110-b269-4a7f018a0654\",\"71e4d986-71d4-45db-8784-d2f45a2b21ff\",\"e729682e-669e-419c-bc7e-a3d07552a75b\",\"c392a86e-b59a-4a7d-9932-fa19002c0542\",\"131f4319-bbe2-48b2-8da9-e02d74c9090d\",\"d31e2f48-1ebf-4d5d-8604-7216ebd98b2b\",\"b8a1f9e3-b516-493d-90d0-bb255ea250de\",\"09cfef92-ce40-49ef-a15b-6d024cd30b20\",\"910d43c4-51dc-4429-87b1-1c7739140417\",\"194a5647-ff58-42ae-b8e6-6e7ff77dacf5\",\"a0b15cf9-b279-4789-ac40-bbdb0c1b7c6f\",\"4f4efd0b-a8ef-4a88-a142-78bc991d08f9\",\"c01af658-6b14-46ce-8dce-bd9479f109f8\",\"f7b3f64b-5b98-4fdc-a970-c893ca916a5e\",\"dccba452-4fda-4f21-8714-63fecf200fab\",\"dadbc71e-c069-41a5-8412-96fc80147046\",\"d8baffeb-fccb-4dd9-9439-5ca0937c3604\",\"1099f06d-2734-4a47-bb4d-fa5f108b9034\",\"6248cb4f-119b-4ead-a2f4-e8f5de29de71\",\"49812f73-9285-4d2e-8a73-40a2555b315f\",\"9bb4f88c-efd5-4aec-b98a-1177934ef14f\",\"d8b7a49b-6eea-4275-94b1-68f3dd13f9a9\",\"6563d23d-d0b9-41d6-b92b-5390c6f0a2b8\",\"66bc7578-d7e0-423e-819f-4930d2438e3f\",\"c04e0a91-c477-44e9-9654-7a014dd4b5eb\",\"7311fc5f-6336-43be-ba70-5f50afacec11\",\"93c6e788-1cee-4eca-ae63-98a5d0132eb8\",\"53ca9112-d680-47a2-9498-ce9fbcda643e\",\"57a0285c-8414-4fb6-a54b-1d7b4d14a60b\",\"de827a80-6ea8-4229-8c8a-48c7c48766b6\",\"5af286c1-deb9-4b14-b993-6be8425add5b\",\"365a17fb-4977-443b-b932-a3f206621d97\",\"e5b44703-b5f4-431e-8320-c1a7dd913689\",\"9383bec1-3ad5-4e43-9d20-5156981b99ad\",\"c05cc95b-005b-48b4-b501-59c590895ec7\",\"b48cbe38-e50e-49e8-9dda-23b040989a37\",\"5370e9b1-d550-4262-b074-997ab85daf42\",\"225757dc-ceb9-4402-ab6a-31dc7f429a3b\",\"1de227b3-85aa-4912-b38a-30f622eb5301\",\"ffb9fe1c-af83-42d9-b669-e1529b091302\",\"d7fcfbcb-934f-43f6-99f3-9865958c71c8\",\"b47b1c79-7917-45bd-a624-e7fa323b5f47\",\"08f6c00b-49e3-4931-9bd0-890d3817c482\",\"3310216c-d01c-4470-bd26-6ab8ea9913f5\",\"f960ee27-fab5-4db1-8cd6-3eb7da32613e\",\"25a23f6e-e8a9-4e0f-b8cf-1e0d80e74a90\",\"c00df408-c084-4041-8b16-11d1ca6d468c\",\"d3a0870f-ae22-4f38-88bb-f2962d5b360a\",\"9a61e9ca-8278-4917-b838-48dfb5ed2f04\",\"0ea95300-edc7-4975-a5a3-9399ca5c4d56\",\"b992dfe2-9216-4fad-abef-aca8ab36fb8e\",\"1ac44e92-dd28-42b9-85d5-707623279d59\",\"6ed92057-9f03-4046-8670-1b3d0b6581f9\",\"29723a51-280d-4eaf-84a6-2570e9a943cd\",\"3d285da6-e944-4e9e-9151-773130bcd942\",\"b9c256b3-fb8e-4499-83da-69629e0bab94\",\"f02ce081-4cb1-4043-960b-844d2963ef34\",\"bf2eeabf-6788-4b00-a0a0-4a9c34f00183\",\"de6d9b29-0124-4cc4-8958-014d9d4058f4\",\"391fd50b-0595-487d-a629-28427b7806c3\",\"f1e59dff-0d45-4e11-83f3-5eb255ad8c5e\",\"306b4065-fca5-4c05-be6f-337968b0ef62\",\"acf2e38a-7e1a-4793-8893-1dc3eb70f347\",\"8456efe8-bea6-4d0b-b204-e3595fc4d526\",\"17dcc9cd-7ed7-488a-a1c6-ac3387be3e1b\",\"4ea5fc44-f218-4b4b-9d5c-abc292918695\",\"d8807467-112c-41ab-8d48-1e3bdfd70207\",\"a799e9e4-4a62-4c92-9437-6bc496433459\",\"07f201b0-9e21-4c82-91b6-e1e53887ac17\",\"7165d905-c1c8-47df-9b7e-d30f88b43816\",\"4643f3b6-460c-40e9-ace7-60d6ec8d011a\",\"5c80e834-f493-4363-8941-ab61ee839375\",\"c3d165d4-b618-4941-a47c-a703e0ba29b8\",\"0d9fcef1-bfe7-44af-9386-06ced6c48154\",\"17b9ebb9-a1ce-49b3-a37d-4cd2ce6b2d91\",\"a905969b-20a8-4aee-b751-c8c818e8328a\",\"4efde257-fb07-4501-a0d0-63895eb51348\",\"3ed4295f-0096-4f7c-81e2-6f8f1ee785da\"]",
+        "grafana/k6:latest",
+        "run",
+        "scripts/sprint02/qr-load.js"
+      ],
+      "code": 0,
+      "milliseconds": 45410
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1086
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2045
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1047
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2033
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1038
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2036
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1041
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2036
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1041
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2036
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1041
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2035
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1039
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2034
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1038
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2051
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1049
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2035
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1040
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2032
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1037
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1282
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2041
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1047
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2042
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1049
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2039
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1044
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2064
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1071
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2038
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1045
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2039
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1045
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2040
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1046
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2040
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1047
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2039
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1045
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1069
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2038
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1043
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2039
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1044
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2037
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1044
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2039
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1044
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2039
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1046
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2040
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1046
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2042
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1057
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2042
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1049
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2039
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1045
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2038
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2082
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1090
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2043
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1050
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2041
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1049
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2041
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1047
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2043
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1049
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2041
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1048
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2042
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1048
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2042
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1048
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2041
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1047
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2039
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1046
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2039
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "run",
+        "--rm",
+        "--network",
+        "host",
+        "--name",
+        "sprint02-k6",
+        "--user",
+        "1001:1001",
+        "--ulimit",
+        "nofile=8192:8192",
+        "-v",
+        "/home/runner/work/Trazabilidad-Agricola-Arquitectura/Trazabilidad-Agricola-Arquitectura:/work",
+        "-w",
+        "/work",
+        "-e",
+        "SPRINT02_INDEPENDENT_HOST=true",
+        "-e",
+        "SPRINT02_BASE_URL=http://127.0.0.1:3302",
+        "-e",
+        "SPRINT02_SOURCE_SHA=5fd294c76f360d09ab1ade5c2d870b30d3754234",
+        "-e",
+        "SPRINT02_PUBLIC_ID=5f4b040c-382d-4c05-abbd-5e0cb1299211",
+        "-e",
+        "SPRINT02_STAGE=10",
+        "-e",
+        "SPRINT02_TRAFFIC_PROFILE=abuse",
+        "-e",
+        "SPRINT02_PUBLIC_IDS=[\"5f4b040c-382d-4c05-abbd-5e0cb1299211\",\"71e76ff8-7cc0-4fb8-8d41-fefbcb6fac04\",\"a54be446-831e-4f1f-a601-07e379fdb631\",\"d3920017-f687-4491-ac36-462a4147a4ea\",\"e4f74660-aacf-4847-993f-7fe7891ff97e\",\"2f7a6108-e0d9-4191-a5cf-2d42e55887cc\",\"adbbd9fa-c472-4ffb-8ce3-94a93cdeb411\",\"94df256e-aa6f-4462-bbaf-e17fde4cecce\",\"164e7934-7738-4a03-a7a4-f1bed02133c6\",\"68fb5fe2-77c6-4712-be3d-ffc4cef22e77\",\"cdb1820d-58cc-44a7-9bfe-9135d947dbfd\",\"c1329a0d-3891-42be-b2ba-b55f67749873\",\"e93aa479-ed49-4f71-b815-bf9adb1dd0ba\",\"090ef886-5dbd-4689-ae95-36739de14e9b\",\"f7a02f5a-0cdc-4403-aacf-0b2a779c5e74\",\"c6cd91d1-27d8-4cfa-a3cf-4b8e17d0617f\",\"05f35457-2449-4b3c-930d-6ab34c601768\",\"828ce28a-7b33-41f6-bdaa-7887c3f238aa\",\"39bb9d9f-425e-4050-92a7-c8f204000b1b\",\"271b3067-1052-4110-a944-69c649ae891a\",\"c9f13bc8-c242-4185-8e6d-3d0603dd8be0\",\"3f4f791e-49e0-4766-860e-99088438244b\",\"dae54e33-7b4a-4110-b269-4a7f018a0654\",\"71e4d986-71d4-45db-8784-d2f45a2b21ff\",\"e729682e-669e-419c-bc7e-a3d07552a75b\",\"c392a86e-b59a-4a7d-9932-fa19002c0542\",\"131f4319-bbe2-48b2-8da9-e02d74c9090d\",\"d31e2f48-1ebf-4d5d-8604-7216ebd98b2b\",\"b8a1f9e3-b516-493d-90d0-bb255ea250de\",\"09cfef92-ce40-49ef-a15b-6d024cd30b20\",\"910d43c4-51dc-4429-87b1-1c7739140417\",\"194a5647-ff58-42ae-b8e6-6e7ff77dacf5\",\"a0b15cf9-b279-4789-ac40-bbdb0c1b7c6f\",\"4f4efd0b-a8ef-4a88-a142-78bc991d08f9\",\"c01af658-6b14-46ce-8dce-bd9479f109f8\",\"f7b3f64b-5b98-4fdc-a970-c893ca916a5e\",\"dccba452-4fda-4f21-8714-63fecf200fab\",\"dadbc71e-c069-41a5-8412-96fc80147046\",\"d8baffeb-fccb-4dd9-9439-5ca0937c3604\",\"1099f06d-2734-4a47-bb4d-fa5f108b9034\",\"6248cb4f-119b-4ead-a2f4-e8f5de29de71\",\"49812f73-9285-4d2e-8a73-40a2555b315f\",\"9bb4f88c-efd5-4aec-b98a-1177934ef14f\",\"d8b7a49b-6eea-4275-94b1-68f3dd13f9a9\",\"6563d23d-d0b9-41d6-b92b-5390c6f0a2b8\",\"66bc7578-d7e0-423e-819f-4930d2438e3f\",\"c04e0a91-c477-44e9-9654-7a014dd4b5eb\",\"7311fc5f-6336-43be-ba70-5f50afacec11\",\"93c6e788-1cee-4eca-ae63-98a5d0132eb8\",\"53ca9112-d680-47a2-9498-ce9fbcda643e\",\"57a0285c-8414-4fb6-a54b-1d7b4d14a60b\",\"de827a80-6ea8-4229-8c8a-48c7c48766b6\",\"5af286c1-deb9-4b14-b993-6be8425add5b\",\"365a17fb-4977-443b-b932-a3f206621d97\",\"e5b44703-b5f4-431e-8320-c1a7dd913689\",\"9383bec1-3ad5-4e43-9d20-5156981b99ad\",\"c05cc95b-005b-48b4-b501-59c590895ec7\",\"b48cbe38-e50e-49e8-9dda-23b040989a37\",\"5370e9b1-d550-4262-b074-997ab85daf42\",\"225757dc-ceb9-4402-ab6a-31dc7f429a3b\",\"1de227b3-85aa-4912-b38a-30f622eb5301\",\"ffb9fe1c-af83-42d9-b669-e1529b091302\",\"d7fcfbcb-934f-43f6-99f3-9865958c71c8\",\"b47b1c79-7917-45bd-a624-e7fa323b5f47\",\"08f6c00b-49e3-4931-9bd0-890d3817c482\",\"3310216c-d01c-4470-bd26-6ab8ea9913f5\",\"f960ee27-fab5-4db1-8cd6-3eb7da32613e\",\"25a23f6e-e8a9-4e0f-b8cf-1e0d80e74a90\",\"c00df408-c084-4041-8b16-11d1ca6d468c\",\"d3a0870f-ae22-4f38-88bb-f2962d5b360a\",\"9a61e9ca-8278-4917-b838-48dfb5ed2f04\",\"0ea95300-edc7-4975-a5a3-9399ca5c4d56\",\"b992dfe2-9216-4fad-abef-aca8ab36fb8e\",\"1ac44e92-dd28-42b9-85d5-707623279d59\",\"6ed92057-9f03-4046-8670-1b3d0b6581f9\",\"29723a51-280d-4eaf-84a6-2570e9a943cd\",\"3d285da6-e944-4e9e-9151-773130bcd942\",\"b9c256b3-fb8e-4499-83da-69629e0bab94\",\"f02ce081-4cb1-4043-960b-844d2963ef34\",\"bf2eeabf-6788-4b00-a0a0-4a9c34f00183\",\"de6d9b29-0124-4cc4-8958-014d9d4058f4\",\"391fd50b-0595-487d-a629-28427b7806c3\",\"f1e59dff-0d45-4e11-83f3-5eb255ad8c5e\",\"306b4065-fca5-4c05-be6f-337968b0ef62\",\"acf2e38a-7e1a-4793-8893-1dc3eb70f347\",\"8456efe8-bea6-4d0b-b204-e3595fc4d526\",\"17dcc9cd-7ed7-488a-a1c6-ac3387be3e1b\",\"4ea5fc44-f218-4b4b-9d5c-abc292918695\",\"d8807467-112c-41ab-8d48-1e3bdfd70207\",\"a799e9e4-4a62-4c92-9437-6bc496433459\",\"07f201b0-9e21-4c82-91b6-e1e53887ac17\",\"7165d905-c1c8-47df-9b7e-d30f88b43816\",\"4643f3b6-460c-40e9-ace7-60d6ec8d011a\",\"5c80e834-f493-4363-8941-ab61ee839375\",\"c3d165d4-b618-4941-a47c-a703e0ba29b8\",\"0d9fcef1-bfe7-44af-9386-06ced6c48154\",\"17b9ebb9-a1ce-49b3-a37d-4cd2ce6b2d91\",\"a905969b-20a8-4aee-b751-c8c818e8328a\",\"4efde257-fb07-4501-a0d0-63895eb51348\",\"3ed4295f-0096-4f7c-81e2-6f8f1ee785da\"]",
+        "grafana/k6:latest",
+        "run",
+        "scripts/sprint02/qr-load.js"
+      ],
+      "code": 99,
+      "milliseconds": 180570
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2049
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1056
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2039
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1048
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2039
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1048
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2040
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1048
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2045
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2067
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "run",
+        "--rm",
+        "--network",
+        "host",
+        "--name",
+        "sprint02-k6",
+        "--user",
+        "1001:1001",
+        "--ulimit",
+        "nofile=8192:8192",
+        "-v",
+        "/home/runner/work/Trazabilidad-Agricola-Arquitectura/Trazabilidad-Agricola-Arquitectura:/work",
+        "-w",
+        "/work",
+        "-e",
+        "SPRINT02_INDEPENDENT_HOST=true",
+        "-e",
+        "SPRINT02_BASE_URL=http://127.0.0.1:3302",
+        "-e",
+        "SPRINT02_SOURCE_SHA=5fd294c76f360d09ab1ade5c2d870b30d3754234",
+        "-e",
+        "SPRINT02_PUBLIC_ID=5f4b040c-382d-4c05-abbd-5e0cb1299211",
+        "-e",
+        "SPRINT02_STAGE=smoke",
+        "-e",
+        "SPRINT02_TRAFFIC_PROFILE=capacity",
+        "-e",
+        "SPRINT02_PUBLIC_IDS=[\"5f4b040c-382d-4c05-abbd-5e0cb1299211\",\"71e76ff8-7cc0-4fb8-8d41-fefbcb6fac04\",\"a54be446-831e-4f1f-a601-07e379fdb631\",\"d3920017-f687-4491-ac36-462a4147a4ea\",\"e4f74660-aacf-4847-993f-7fe7891ff97e\",\"2f7a6108-e0d9-4191-a5cf-2d42e55887cc\",\"adbbd9fa-c472-4ffb-8ce3-94a93cdeb411\",\"94df256e-aa6f-4462-bbaf-e17fde4cecce\",\"164e7934-7738-4a03-a7a4-f1bed02133c6\",\"68fb5fe2-77c6-4712-be3d-ffc4cef22e77\",\"cdb1820d-58cc-44a7-9bfe-9135d947dbfd\",\"c1329a0d-3891-42be-b2ba-b55f67749873\",\"e93aa479-ed49-4f71-b815-bf9adb1dd0ba\",\"090ef886-5dbd-4689-ae95-36739de14e9b\",\"f7a02f5a-0cdc-4403-aacf-0b2a779c5e74\",\"c6cd91d1-27d8-4cfa-a3cf-4b8e17d0617f\",\"05f35457-2449-4b3c-930d-6ab34c601768\",\"828ce28a-7b33-41f6-bdaa-7887c3f238aa\",\"39bb9d9f-425e-4050-92a7-c8f204000b1b\",\"271b3067-1052-4110-a944-69c649ae891a\",\"c9f13bc8-c242-4185-8e6d-3d0603dd8be0\",\"3f4f791e-49e0-4766-860e-99088438244b\",\"dae54e33-7b4a-4110-b269-4a7f018a0654\",\"71e4d986-71d4-45db-8784-d2f45a2b21ff\",\"e729682e-669e-419c-bc7e-a3d07552a75b\",\"c392a86e-b59a-4a7d-9932-fa19002c0542\",\"131f4319-bbe2-48b2-8da9-e02d74c9090d\",\"d31e2f48-1ebf-4d5d-8604-7216ebd98b2b\",\"b8a1f9e3-b516-493d-90d0-bb255ea250de\",\"09cfef92-ce40-49ef-a15b-6d024cd30b20\",\"910d43c4-51dc-4429-87b1-1c7739140417\",\"194a5647-ff58-42ae-b8e6-6e7ff77dacf5\",\"a0b15cf9-b279-4789-ac40-bbdb0c1b7c6f\",\"4f4efd0b-a8ef-4a88-a142-78bc991d08f9\",\"c01af658-6b14-46ce-8dce-bd9479f109f8\",\"f7b3f64b-5b98-4fdc-a970-c893ca916a5e\",\"dccba452-4fda-4f21-8714-63fecf200fab\",\"dadbc71e-c069-41a5-8412-96fc80147046\",\"d8baffeb-fccb-4dd9-9439-5ca0937c3604\",\"1099f06d-2734-4a47-bb4d-fa5f108b9034\",\"6248cb4f-119b-4ead-a2f4-e8f5de29de71\",\"49812f73-9285-4d2e-8a73-40a2555b315f\",\"9bb4f88c-efd5-4aec-b98a-1177934ef14f\",\"d8b7a49b-6eea-4275-94b1-68f3dd13f9a9\",\"6563d23d-d0b9-41d6-b92b-5390c6f0a2b8\",\"66bc7578-d7e0-423e-819f-4930d2438e3f\",\"c04e0a91-c477-44e9-9654-7a014dd4b5eb\",\"7311fc5f-6336-43be-ba70-5f50afacec11\",\"93c6e788-1cee-4eca-ae63-98a5d0132eb8\",\"53ca9112-d680-47a2-9498-ce9fbcda643e\",\"57a0285c-8414-4fb6-a54b-1d7b4d14a60b\",\"de827a80-6ea8-4229-8c8a-48c7c48766b6\",\"5af286c1-deb9-4b14-b993-6be8425add5b\",\"365a17fb-4977-443b-b932-a3f206621d97\",\"e5b44703-b5f4-431e-8320-c1a7dd913689\",\"9383bec1-3ad5-4e43-9d20-5156981b99ad\",\"c05cc95b-005b-48b4-b501-59c590895ec7\",\"b48cbe38-e50e-49e8-9dda-23b040989a37\",\"5370e9b1-d550-4262-b074-997ab85daf42\",\"225757dc-ceb9-4402-ab6a-31dc7f429a3b\",\"1de227b3-85aa-4912-b38a-30f622eb5301\",\"ffb9fe1c-af83-42d9-b669-e1529b091302\",\"d7fcfbcb-934f-43f6-99f3-9865958c71c8\",\"b47b1c79-7917-45bd-a624-e7fa323b5f47\",\"08f6c00b-49e3-4931-9bd0-890d3817c482\",\"3310216c-d01c-4470-bd26-6ab8ea9913f5\",\"f960ee27-fab5-4db1-8cd6-3eb7da32613e\",\"25a23f6e-e8a9-4e0f-b8cf-1e0d80e74a90\",\"c00df408-c084-4041-8b16-11d1ca6d468c\",\"d3a0870f-ae22-4f38-88bb-f2962d5b360a\",\"9a61e9ca-8278-4917-b838-48dfb5ed2f04\",\"0ea95300-edc7-4975-a5a3-9399ca5c4d56\",\"b992dfe2-9216-4fad-abef-aca8ab36fb8e\",\"1ac44e92-dd28-42b9-85d5-707623279d59\",\"6ed92057-9f03-4046-8670-1b3d0b6581f9\",\"29723a51-280d-4eaf-84a6-2570e9a943cd\",\"3d285da6-e944-4e9e-9151-773130bcd942\",\"b9c256b3-fb8e-4499-83da-69629e0bab94\",\"f02ce081-4cb1-4043-960b-844d2963ef34\",\"bf2eeabf-6788-4b00-a0a0-4a9c34f00183\",\"de6d9b29-0124-4cc4-8958-014d9d4058f4\",\"391fd50b-0595-487d-a629-28427b7806c3\",\"f1e59dff-0d45-4e11-83f3-5eb255ad8c5e\",\"306b4065-fca5-4c05-be6f-337968b0ef62\",\"acf2e38a-7e1a-4793-8893-1dc3eb70f347\",\"8456efe8-bea6-4d0b-b204-e3595fc4d526\",\"17dcc9cd-7ed7-488a-a1c6-ac3387be3e1b\",\"4ea5fc44-f218-4b4b-9d5c-abc292918695\",\"d8807467-112c-41ab-8d48-1e3bdfd70207\",\"a799e9e4-4a62-4c92-9437-6bc496433459\",\"07f201b0-9e21-4c82-91b6-e1e53887ac17\",\"7165d905-c1c8-47df-9b7e-d30f88b43816\",\"4643f3b6-460c-40e9-ace7-60d6ec8d011a\",\"5c80e834-f493-4363-8941-ab61ee839375\",\"c3d165d4-b618-4941-a47c-a703e0ba29b8\",\"0d9fcef1-bfe7-44af-9386-06ced6c48154\",\"17b9ebb9-a1ce-49b3-a37d-4cd2ce6b2d91\",\"a905969b-20a8-4aee-b751-c8c818e8328a\",\"4efde257-fb07-4501-a0d0-63895eb51348\",\"3ed4295f-0096-4f7c-81e2-6f8f1ee785da\"]",
+        "grafana/k6:latest",
+        "run",
+        "--local-ips",
+        "127.16.0.1",
+        "scripts/sprint02/qr-load.js"
+      ],
+      "code": 0,
+      "milliseconds": 30245
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2080
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1086
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2042
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1048
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2038
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1045
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2038
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1046
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2037
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1045
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2040
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1047
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2036
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1044
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2039
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1045
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2039
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1046
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2037
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1045
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2043
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1050
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2044
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1052
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2038
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1044
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2036
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1043
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2038
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1044
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2044
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1051
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2045
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1052
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2042
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1049
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "run",
+        "--rm",
+        "--network",
+        "host",
+        "--name",
+        "sprint02-k6",
+        "--user",
+        "1001:1001",
+        "--ulimit",
+        "nofile=8192:8192",
+        "-v",
+        "/home/runner/work/Trazabilidad-Agricola-Arquitectura/Trazabilidad-Agricola-Arquitectura:/work",
+        "-w",
+        "/work",
+        "-e",
+        "SPRINT02_INDEPENDENT_HOST=true",
+        "-e",
+        "SPRINT02_BASE_URL=http://127.0.0.1:3302",
+        "-e",
+        "SPRINT02_SOURCE_SHA=5fd294c76f360d09ab1ade5c2d870b30d3754234",
+        "-e",
+        "SPRINT02_PUBLIC_ID=5f4b040c-382d-4c05-abbd-5e0cb1299211",
+        "-e",
+        "SPRINT02_STAGE=10",
+        "-e",
+        "SPRINT02_TRAFFIC_PROFILE=capacity",
+        "-e",
+        "SPRINT02_PUBLIC_IDS=[\"5f4b040c-382d-4c05-abbd-5e0cb1299211\",\"71e76ff8-7cc0-4fb8-8d41-fefbcb6fac04\",\"a54be446-831e-4f1f-a601-07e379fdb631\",\"d3920017-f687-4491-ac36-462a4147a4ea\",\"e4f74660-aacf-4847-993f-7fe7891ff97e\",\"2f7a6108-e0d9-4191-a5cf-2d42e55887cc\",\"adbbd9fa-c472-4ffb-8ce3-94a93cdeb411\",\"94df256e-aa6f-4462-bbaf-e17fde4cecce\",\"164e7934-7738-4a03-a7a4-f1bed02133c6\",\"68fb5fe2-77c6-4712-be3d-ffc4cef22e77\",\"cdb1820d-58cc-44a7-9bfe-9135d947dbfd\",\"c1329a0d-3891-42be-b2ba-b55f67749873\",\"e93aa479-ed49-4f71-b815-bf9adb1dd0ba\",\"090ef886-5dbd-4689-ae95-36739de14e9b\",\"f7a02f5a-0cdc-4403-aacf-0b2a779c5e74\",\"c6cd91d1-27d8-4cfa-a3cf-4b8e17d0617f\",\"05f35457-2449-4b3c-930d-6ab34c601768\",\"828ce28a-7b33-41f6-bdaa-7887c3f238aa\",\"39bb9d9f-425e-4050-92a7-c8f204000b1b\",\"271b3067-1052-4110-a944-69c649ae891a\",\"c9f13bc8-c242-4185-8e6d-3d0603dd8be0\",\"3f4f791e-49e0-4766-860e-99088438244b\",\"dae54e33-7b4a-4110-b269-4a7f018a0654\",\"71e4d986-71d4-45db-8784-d2f45a2b21ff\",\"e729682e-669e-419c-bc7e-a3d07552a75b\",\"c392a86e-b59a-4a7d-9932-fa19002c0542\",\"131f4319-bbe2-48b2-8da9-e02d74c9090d\",\"d31e2f48-1ebf-4d5d-8604-7216ebd98b2b\",\"b8a1f9e3-b516-493d-90d0-bb255ea250de\",\"09cfef92-ce40-49ef-a15b-6d024cd30b20\",\"910d43c4-51dc-4429-87b1-1c7739140417\",\"194a5647-ff58-42ae-b8e6-6e7ff77dacf5\",\"a0b15cf9-b279-4789-ac40-bbdb0c1b7c6f\",\"4f4efd0b-a8ef-4a88-a142-78bc991d08f9\",\"c01af658-6b14-46ce-8dce-bd9479f109f8\",\"f7b3f64b-5b98-4fdc-a970-c893ca916a5e\",\"dccba452-4fda-4f21-8714-63fecf200fab\",\"dadbc71e-c069-41a5-8412-96fc80147046\",\"d8baffeb-fccb-4dd9-9439-5ca0937c3604\",\"1099f06d-2734-4a47-bb4d-fa5f108b9034\",\"6248cb4f-119b-4ead-a2f4-e8f5de29de71\",\"49812f73-9285-4d2e-8a73-40a2555b315f\",\"9bb4f88c-efd5-4aec-b98a-1177934ef14f\",\"d8b7a49b-6eea-4275-94b1-68f3dd13f9a9\",\"6563d23d-d0b9-41d6-b92b-5390c6f0a2b8\",\"66bc7578-d7e0-423e-819f-4930d2438e3f\",\"c04e0a91-c477-44e9-9654-7a014dd4b5eb\",\"7311fc5f-6336-43be-ba70-5f50afacec11\",\"93c6e788-1cee-4eca-ae63-98a5d0132eb8\",\"53ca9112-d680-47a2-9498-ce9fbcda643e\",\"57a0285c-8414-4fb6-a54b-1d7b4d14a60b\",\"de827a80-6ea8-4229-8c8a-48c7c48766b6\",\"5af286c1-deb9-4b14-b993-6be8425add5b\",\"365a17fb-4977-443b-b932-a3f206621d97\",\"e5b44703-b5f4-431e-8320-c1a7dd913689\",\"9383bec1-3ad5-4e43-9d20-5156981b99ad\",\"c05cc95b-005b-48b4-b501-59c590895ec7\",\"b48cbe38-e50e-49e8-9dda-23b040989a37\",\"5370e9b1-d550-4262-b074-997ab85daf42\",\"225757dc-ceb9-4402-ab6a-31dc7f429a3b\",\"1de227b3-85aa-4912-b38a-30f622eb5301\",\"ffb9fe1c-af83-42d9-b669-e1529b091302\",\"d7fcfbcb-934f-43f6-99f3-9865958c71c8\",\"b47b1c79-7917-45bd-a624-e7fa323b5f47\",\"08f6c00b-49e3-4931-9bd0-890d3817c482\",\"3310216c-d01c-4470-bd26-6ab8ea9913f5\",\"f960ee27-fab5-4db1-8cd6-3eb7da32613e\",\"25a23f6e-e8a9-4e0f-b8cf-1e0d80e74a90\",\"c00df408-c084-4041-8b16-11d1ca6d468c\",\"d3a0870f-ae22-4f38-88bb-f2962d5b360a\",\"9a61e9ca-8278-4917-b838-48dfb5ed2f04\",\"0ea95300-edc7-4975-a5a3-9399ca5c4d56\",\"b992dfe2-9216-4fad-abef-aca8ab36fb8e\",\"1ac44e92-dd28-42b9-85d5-707623279d59\",\"6ed92057-9f03-4046-8670-1b3d0b6581f9\",\"29723a51-280d-4eaf-84a6-2570e9a943cd\",\"3d285da6-e944-4e9e-9151-773130bcd942\",\"b9c256b3-fb8e-4499-83da-69629e0bab94\",\"f02ce081-4cb1-4043-960b-844d2963ef34\",\"bf2eeabf-6788-4b00-a0a0-4a9c34f00183\",\"de6d9b29-0124-4cc4-8958-014d9d4058f4\",\"391fd50b-0595-487d-a629-28427b7806c3\",\"f1e59dff-0d45-4e11-83f3-5eb255ad8c5e\",\"306b4065-fca5-4c05-be6f-337968b0ef62\",\"acf2e38a-7e1a-4793-8893-1dc3eb70f347\",\"8456efe8-bea6-4d0b-b204-e3595fc4d526\",\"17dcc9cd-7ed7-488a-a1c6-ac3387be3e1b\",\"4ea5fc44-f218-4b4b-9d5c-abc292918695\",\"d8807467-112c-41ab-8d48-1e3bdfd70207\",\"a799e9e4-4a62-4c92-9437-6bc496433459\",\"07f201b0-9e21-4c82-91b6-e1e53887ac17\",\"7165d905-c1c8-47df-9b7e-d30f88b43816\",\"4643f3b6-460c-40e9-ace7-60d6ec8d011a\",\"5c80e834-f493-4363-8941-ab61ee839375\",\"c3d165d4-b618-4941-a47c-a703e0ba29b8\",\"0d9fcef1-bfe7-44af-9386-06ced6c48154\",\"17b9ebb9-a1ce-49b3-a37d-4cd2ce6b2d91\",\"a905969b-20a8-4aee-b751-c8c818e8328a\",\"4efde257-fb07-4501-a0d0-63895eb51348\",\"3ed4295f-0096-4f7c-81e2-6f8f1ee785da\"]",
+        "grafana/k6:latest",
+        "run",
+        "--local-ips",
+        "127.16.0.1-127.16.0.10",
+        "scripts/sprint02/qr-load.js"
+      ],
+      "code": 0,
+      "milliseconds": 108319
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 3045
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2046
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1053
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2044
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1049
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2043
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1051
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2044
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1052
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2044
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1050
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2045
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1052
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2045
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1052
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2044
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1051
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2047
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1055
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2043
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1052
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2046
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1054
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2045
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1053
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2042
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1049
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2047
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1056
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2045
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1052
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2046
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1054
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2044
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1050
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "run",
+        "--rm",
+        "--network",
+        "host",
+        "--name",
+        "sprint02-k6",
+        "--user",
+        "1001:1001",
+        "--ulimit",
+        "nofile=8192:8192",
+        "-v",
+        "/home/runner/work/Trazabilidad-Agricola-Arquitectura/Trazabilidad-Agricola-Arquitectura:/work",
+        "-w",
+        "/work",
+        "-e",
+        "SPRINT02_INDEPENDENT_HOST=true",
+        "-e",
+        "SPRINT02_BASE_URL=http://127.0.0.1:3302",
+        "-e",
+        "SPRINT02_SOURCE_SHA=5fd294c76f360d09ab1ade5c2d870b30d3754234",
+        "-e",
+        "SPRINT02_PUBLIC_ID=5f4b040c-382d-4c05-abbd-5e0cb1299211",
+        "-e",
+        "SPRINT02_STAGE=50",
+        "-e",
+        "SPRINT02_TRAFFIC_PROFILE=capacity",
+        "-e",
+        "SPRINT02_PUBLIC_IDS=[\"5f4b040c-382d-4c05-abbd-5e0cb1299211\",\"71e76ff8-7cc0-4fb8-8d41-fefbcb6fac04\",\"a54be446-831e-4f1f-a601-07e379fdb631\",\"d3920017-f687-4491-ac36-462a4147a4ea\",\"e4f74660-aacf-4847-993f-7fe7891ff97e\",\"2f7a6108-e0d9-4191-a5cf-2d42e55887cc\",\"adbbd9fa-c472-4ffb-8ce3-94a93cdeb411\",\"94df256e-aa6f-4462-bbaf-e17fde4cecce\",\"164e7934-7738-4a03-a7a4-f1bed02133c6\",\"68fb5fe2-77c6-4712-be3d-ffc4cef22e77\",\"cdb1820d-58cc-44a7-9bfe-9135d947dbfd\",\"c1329a0d-3891-42be-b2ba-b55f67749873\",\"e93aa479-ed49-4f71-b815-bf9adb1dd0ba\",\"090ef886-5dbd-4689-ae95-36739de14e9b\",\"f7a02f5a-0cdc-4403-aacf-0b2a779c5e74\",\"c6cd91d1-27d8-4cfa-a3cf-4b8e17d0617f\",\"05f35457-2449-4b3c-930d-6ab34c601768\",\"828ce28a-7b33-41f6-bdaa-7887c3f238aa\",\"39bb9d9f-425e-4050-92a7-c8f204000b1b\",\"271b3067-1052-4110-a944-69c649ae891a\",\"c9f13bc8-c242-4185-8e6d-3d0603dd8be0\",\"3f4f791e-49e0-4766-860e-99088438244b\",\"dae54e33-7b4a-4110-b269-4a7f018a0654\",\"71e4d986-71d4-45db-8784-d2f45a2b21ff\",\"e729682e-669e-419c-bc7e-a3d07552a75b\",\"c392a86e-b59a-4a7d-9932-fa19002c0542\",\"131f4319-bbe2-48b2-8da9-e02d74c9090d\",\"d31e2f48-1ebf-4d5d-8604-7216ebd98b2b\",\"b8a1f9e3-b516-493d-90d0-bb255ea250de\",\"09cfef92-ce40-49ef-a15b-6d024cd30b20\",\"910d43c4-51dc-4429-87b1-1c7739140417\",\"194a5647-ff58-42ae-b8e6-6e7ff77dacf5\",\"a0b15cf9-b279-4789-ac40-bbdb0c1b7c6f\",\"4f4efd0b-a8ef-4a88-a142-78bc991d08f9\",\"c01af658-6b14-46ce-8dce-bd9479f109f8\",\"f7b3f64b-5b98-4fdc-a970-c893ca916a5e\",\"dccba452-4fda-4f21-8714-63fecf200fab\",\"dadbc71e-c069-41a5-8412-96fc80147046\",\"d8baffeb-fccb-4dd9-9439-5ca0937c3604\",\"1099f06d-2734-4a47-bb4d-fa5f108b9034\",\"6248cb4f-119b-4ead-a2f4-e8f5de29de71\",\"49812f73-9285-4d2e-8a73-40a2555b315f\",\"9bb4f88c-efd5-4aec-b98a-1177934ef14f\",\"d8b7a49b-6eea-4275-94b1-68f3dd13f9a9\",\"6563d23d-d0b9-41d6-b92b-5390c6f0a2b8\",\"66bc7578-d7e0-423e-819f-4930d2438e3f\",\"c04e0a91-c477-44e9-9654-7a014dd4b5eb\",\"7311fc5f-6336-43be-ba70-5f50afacec11\",\"93c6e788-1cee-4eca-ae63-98a5d0132eb8\",\"53ca9112-d680-47a2-9498-ce9fbcda643e\",\"57a0285c-8414-4fb6-a54b-1d7b4d14a60b\",\"de827a80-6ea8-4229-8c8a-48c7c48766b6\",\"5af286c1-deb9-4b14-b993-6be8425add5b\",\"365a17fb-4977-443b-b932-a3f206621d97\",\"e5b44703-b5f4-431e-8320-c1a7dd913689\",\"9383bec1-3ad5-4e43-9d20-5156981b99ad\",\"c05cc95b-005b-48b4-b501-59c590895ec7\",\"b48cbe38-e50e-49e8-9dda-23b040989a37\",\"5370e9b1-d550-4262-b074-997ab85daf42\",\"225757dc-ceb9-4402-ab6a-31dc7f429a3b\",\"1de227b3-85aa-4912-b38a-30f622eb5301\",\"ffb9fe1c-af83-42d9-b669-e1529b091302\",\"d7fcfbcb-934f-43f6-99f3-9865958c71c8\",\"b47b1c79-7917-45bd-a624-e7fa323b5f47\",\"08f6c00b-49e3-4931-9bd0-890d3817c482\",\"3310216c-d01c-4470-bd26-6ab8ea9913f5\",\"f960ee27-fab5-4db1-8cd6-3eb7da32613e\",\"25a23f6e-e8a9-4e0f-b8cf-1e0d80e74a90\",\"c00df408-c084-4041-8b16-11d1ca6d468c\",\"d3a0870f-ae22-4f38-88bb-f2962d5b360a\",\"9a61e9ca-8278-4917-b838-48dfb5ed2f04\",\"0ea95300-edc7-4975-a5a3-9399ca5c4d56\",\"b992dfe2-9216-4fad-abef-aca8ab36fb8e\",\"1ac44e92-dd28-42b9-85d5-707623279d59\",\"6ed92057-9f03-4046-8670-1b3d0b6581f9\",\"29723a51-280d-4eaf-84a6-2570e9a943cd\",\"3d285da6-e944-4e9e-9151-773130bcd942\",\"b9c256b3-fb8e-4499-83da-69629e0bab94\",\"f02ce081-4cb1-4043-960b-844d2963ef34\",\"bf2eeabf-6788-4b00-a0a0-4a9c34f00183\",\"de6d9b29-0124-4cc4-8958-014d9d4058f4\",\"391fd50b-0595-487d-a629-28427b7806c3\",\"f1e59dff-0d45-4e11-83f3-5eb255ad8c5e\",\"306b4065-fca5-4c05-be6f-337968b0ef62\",\"acf2e38a-7e1a-4793-8893-1dc3eb70f347\",\"8456efe8-bea6-4d0b-b204-e3595fc4d526\",\"17dcc9cd-7ed7-488a-a1c6-ac3387be3e1b\",\"4ea5fc44-f218-4b4b-9d5c-abc292918695\",\"d8807467-112c-41ab-8d48-1e3bdfd70207\",\"a799e9e4-4a62-4c92-9437-6bc496433459\",\"07f201b0-9e21-4c82-91b6-e1e53887ac17\",\"7165d905-c1c8-47df-9b7e-d30f88b43816\",\"4643f3b6-460c-40e9-ace7-60d6ec8d011a\",\"5c80e834-f493-4363-8941-ab61ee839375\",\"c3d165d4-b618-4941-a47c-a703e0ba29b8\",\"0d9fcef1-bfe7-44af-9386-06ced6c48154\",\"17b9ebb9-a1ce-49b3-a37d-4cd2ce6b2d91\",\"a905969b-20a8-4aee-b751-c8c818e8328a\",\"4efde257-fb07-4501-a0d0-63895eb51348\",\"3ed4295f-0096-4f7c-81e2-6f8f1ee785da\"]",
+        "grafana/k6:latest",
+        "run",
+        "--local-ips",
+        "127.16.0.1-127.16.0.50",
+        "scripts/sprint02/qr-load.js"
+      ],
+      "code": 0,
+      "milliseconds": 108311
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 3068
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2040
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1045
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2040
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1046
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2037
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1044
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2038
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1046
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2046
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1053
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2039
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1045
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2043
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1051
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2050
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1060
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2047
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1057
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2039
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1047
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2041
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1047
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2040
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1045
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2044
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1050
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2041
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2062
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1073
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2041
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1046
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2037
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1042
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2040
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1048
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "run",
+        "--rm",
+        "--network",
+        "host",
+        "--name",
+        "sprint02-k6",
+        "--user",
+        "1001:1001",
+        "--ulimit",
+        "nofile=8192:8192",
+        "-v",
+        "/home/runner/work/Trazabilidad-Agricola-Arquitectura/Trazabilidad-Agricola-Arquitectura:/work",
+        "-w",
+        "/work",
+        "-e",
+        "SPRINT02_INDEPENDENT_HOST=true",
+        "-e",
+        "SPRINT02_BASE_URL=http://127.0.0.1:3302",
+        "-e",
+        "SPRINT02_SOURCE_SHA=5fd294c76f360d09ab1ade5c2d870b30d3754234",
+        "-e",
+        "SPRINT02_PUBLIC_ID=5f4b040c-382d-4c05-abbd-5e0cb1299211",
+        "-e",
+        "SPRINT02_STAGE=100",
+        "-e",
+        "SPRINT02_TRAFFIC_PROFILE=capacity",
+        "-e",
+        "SPRINT02_PUBLIC_IDS=[\"5f4b040c-382d-4c05-abbd-5e0cb1299211\",\"71e76ff8-7cc0-4fb8-8d41-fefbcb6fac04\",\"a54be446-831e-4f1f-a601-07e379fdb631\",\"d3920017-f687-4491-ac36-462a4147a4ea\",\"e4f74660-aacf-4847-993f-7fe7891ff97e\",\"2f7a6108-e0d9-4191-a5cf-2d42e55887cc\",\"adbbd9fa-c472-4ffb-8ce3-94a93cdeb411\",\"94df256e-aa6f-4462-bbaf-e17fde4cecce\",\"164e7934-7738-4a03-a7a4-f1bed02133c6\",\"68fb5fe2-77c6-4712-be3d-ffc4cef22e77\",\"cdb1820d-58cc-44a7-9bfe-9135d947dbfd\",\"c1329a0d-3891-42be-b2ba-b55f67749873\",\"e93aa479-ed49-4f71-b815-bf9adb1dd0ba\",\"090ef886-5dbd-4689-ae95-36739de14e9b\",\"f7a02f5a-0cdc-4403-aacf-0b2a779c5e74\",\"c6cd91d1-27d8-4cfa-a3cf-4b8e17d0617f\",\"05f35457-2449-4b3c-930d-6ab34c601768\",\"828ce28a-7b33-41f6-bdaa-7887c3f238aa\",\"39bb9d9f-425e-4050-92a7-c8f204000b1b\",\"271b3067-1052-4110-a944-69c649ae891a\",\"c9f13bc8-c242-4185-8e6d-3d0603dd8be0\",\"3f4f791e-49e0-4766-860e-99088438244b\",\"dae54e33-7b4a-4110-b269-4a7f018a0654\",\"71e4d986-71d4-45db-8784-d2f45a2b21ff\",\"e729682e-669e-419c-bc7e-a3d07552a75b\",\"c392a86e-b59a-4a7d-9932-fa19002c0542\",\"131f4319-bbe2-48b2-8da9-e02d74c9090d\",\"d31e2f48-1ebf-4d5d-8604-7216ebd98b2b\",\"b8a1f9e3-b516-493d-90d0-bb255ea250de\",\"09cfef92-ce40-49ef-a15b-6d024cd30b20\",\"910d43c4-51dc-4429-87b1-1c7739140417\",\"194a5647-ff58-42ae-b8e6-6e7ff77dacf5\",\"a0b15cf9-b279-4789-ac40-bbdb0c1b7c6f\",\"4f4efd0b-a8ef-4a88-a142-78bc991d08f9\",\"c01af658-6b14-46ce-8dce-bd9479f109f8\",\"f7b3f64b-5b98-4fdc-a970-c893ca916a5e\",\"dccba452-4fda-4f21-8714-63fecf200fab\",\"dadbc71e-c069-41a5-8412-96fc80147046\",\"d8baffeb-fccb-4dd9-9439-5ca0937c3604\",\"1099f06d-2734-4a47-bb4d-fa5f108b9034\",\"6248cb4f-119b-4ead-a2f4-e8f5de29de71\",\"49812f73-9285-4d2e-8a73-40a2555b315f\",\"9bb4f88c-efd5-4aec-b98a-1177934ef14f\",\"d8b7a49b-6eea-4275-94b1-68f3dd13f9a9\",\"6563d23d-d0b9-41d6-b92b-5390c6f0a2b8\",\"66bc7578-d7e0-423e-819f-4930d2438e3f\",\"c04e0a91-c477-44e9-9654-7a014dd4b5eb\",\"7311fc5f-6336-43be-ba70-5f50afacec11\",\"93c6e788-1cee-4eca-ae63-98a5d0132eb8\",\"53ca9112-d680-47a2-9498-ce9fbcda643e\",\"57a0285c-8414-4fb6-a54b-1d7b4d14a60b\",\"de827a80-6ea8-4229-8c8a-48c7c48766b6\",\"5af286c1-deb9-4b14-b993-6be8425add5b\",\"365a17fb-4977-443b-b932-a3f206621d97\",\"e5b44703-b5f4-431e-8320-c1a7dd913689\",\"9383bec1-3ad5-4e43-9d20-5156981b99ad\",\"c05cc95b-005b-48b4-b501-59c590895ec7\",\"b48cbe38-e50e-49e8-9dda-23b040989a37\",\"5370e9b1-d550-4262-b074-997ab85daf42\",\"225757dc-ceb9-4402-ab6a-31dc7f429a3b\",\"1de227b3-85aa-4912-b38a-30f622eb5301\",\"ffb9fe1c-af83-42d9-b669-e1529b091302\",\"d7fcfbcb-934f-43f6-99f3-9865958c71c8\",\"b47b1c79-7917-45bd-a624-e7fa323b5f47\",\"08f6c00b-49e3-4931-9bd0-890d3817c482\",\"3310216c-d01c-4470-bd26-6ab8ea9913f5\",\"f960ee27-fab5-4db1-8cd6-3eb7da32613e\",\"25a23f6e-e8a9-4e0f-b8cf-1e0d80e74a90\",\"c00df408-c084-4041-8b16-11d1ca6d468c\",\"d3a0870f-ae22-4f38-88bb-f2962d5b360a\",\"9a61e9ca-8278-4917-b838-48dfb5ed2f04\",\"0ea95300-edc7-4975-a5a3-9399ca5c4d56\",\"b992dfe2-9216-4fad-abef-aca8ab36fb8e\",\"1ac44e92-dd28-42b9-85d5-707623279d59\",\"6ed92057-9f03-4046-8670-1b3d0b6581f9\",\"29723a51-280d-4eaf-84a6-2570e9a943cd\",\"3d285da6-e944-4e9e-9151-773130bcd942\",\"b9c256b3-fb8e-4499-83da-69629e0bab94\",\"f02ce081-4cb1-4043-960b-844d2963ef34\",\"bf2eeabf-6788-4b00-a0a0-4a9c34f00183\",\"de6d9b29-0124-4cc4-8958-014d9d4058f4\",\"391fd50b-0595-487d-a629-28427b7806c3\",\"f1e59dff-0d45-4e11-83f3-5eb255ad8c5e\",\"306b4065-fca5-4c05-be6f-337968b0ef62\",\"acf2e38a-7e1a-4793-8893-1dc3eb70f347\",\"8456efe8-bea6-4d0b-b204-e3595fc4d526\",\"17dcc9cd-7ed7-488a-a1c6-ac3387be3e1b\",\"4ea5fc44-f218-4b4b-9d5c-abc292918695\",\"d8807467-112c-41ab-8d48-1e3bdfd70207\",\"a799e9e4-4a62-4c92-9437-6bc496433459\",\"07f201b0-9e21-4c82-91b6-e1e53887ac17\",\"7165d905-c1c8-47df-9b7e-d30f88b43816\",\"4643f3b6-460c-40e9-ace7-60d6ec8d011a\",\"5c80e834-f493-4363-8941-ab61ee839375\",\"c3d165d4-b618-4941-a47c-a703e0ba29b8\",\"0d9fcef1-bfe7-44af-9386-06ced6c48154\",\"17b9ebb9-a1ce-49b3-a37d-4cd2ce6b2d91\",\"a905969b-20a8-4aee-b751-c8c818e8328a\",\"4efde257-fb07-4501-a0d0-63895eb51348\",\"3ed4295f-0096-4f7c-81e2-6f8f1ee785da\"]",
+        "grafana/k6:latest",
+        "run",
+        "--local-ips",
+        "127.16.0.1-127.16.0.100",
+        "scripts/sprint02/qr-load.js"
+      ],
+      "code": 0,
+      "milliseconds": 108619
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1084
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2038
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1046
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2040
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1046
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2039
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1045
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2041
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1048
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2040
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1050
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2039
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1046
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2039
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1046
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2042
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1048
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2038
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1045
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2039
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1045
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2044
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1050
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2041
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1047
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2039
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1046
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2040
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1062
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2130
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1139
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2038
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1059
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2040
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1047
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2037
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "run",
+        "--rm",
+        "--network",
+        "host",
+        "--name",
+        "sprint02-k6",
+        "--user",
+        "1001:1001",
+        "--ulimit",
+        "nofile=8192:8192",
+        "-v",
+        "/home/runner/work/Trazabilidad-Agricola-Arquitectura/Trazabilidad-Agricola-Arquitectura:/work",
+        "-w",
+        "/work",
+        "-e",
+        "SPRINT02_INDEPENDENT_HOST=true",
+        "-e",
+        "SPRINT02_BASE_URL=http://127.0.0.1:3302",
+        "-e",
+        "SPRINT02_SOURCE_SHA=5fd294c76f360d09ab1ade5c2d870b30d3754234",
+        "-e",
+        "SPRINT02_PUBLIC_ID=5f4b040c-382d-4c05-abbd-5e0cb1299211",
+        "-e",
+        "SPRINT02_STAGE=250",
+        "-e",
+        "SPRINT02_TRAFFIC_PROFILE=capacity",
+        "-e",
+        "SPRINT02_PUBLIC_IDS=[\"5f4b040c-382d-4c05-abbd-5e0cb1299211\",\"71e76ff8-7cc0-4fb8-8d41-fefbcb6fac04\",\"a54be446-831e-4f1f-a601-07e379fdb631\",\"d3920017-f687-4491-ac36-462a4147a4ea\",\"e4f74660-aacf-4847-993f-7fe7891ff97e\",\"2f7a6108-e0d9-4191-a5cf-2d42e55887cc\",\"adbbd9fa-c472-4ffb-8ce3-94a93cdeb411\",\"94df256e-aa6f-4462-bbaf-e17fde4cecce\",\"164e7934-7738-4a03-a7a4-f1bed02133c6\",\"68fb5fe2-77c6-4712-be3d-ffc4cef22e77\",\"cdb1820d-58cc-44a7-9bfe-9135d947dbfd\",\"c1329a0d-3891-42be-b2ba-b55f67749873\",\"e93aa479-ed49-4f71-b815-bf9adb1dd0ba\",\"090ef886-5dbd-4689-ae95-36739de14e9b\",\"f7a02f5a-0cdc-4403-aacf-0b2a779c5e74\",\"c6cd91d1-27d8-4cfa-a3cf-4b8e17d0617f\",\"05f35457-2449-4b3c-930d-6ab34c601768\",\"828ce28a-7b33-41f6-bdaa-7887c3f238aa\",\"39bb9d9f-425e-4050-92a7-c8f204000b1b\",\"271b3067-1052-4110-a944-69c649ae891a\",\"c9f13bc8-c242-4185-8e6d-3d0603dd8be0\",\"3f4f791e-49e0-4766-860e-99088438244b\",\"dae54e33-7b4a-4110-b269-4a7f018a0654\",\"71e4d986-71d4-45db-8784-d2f45a2b21ff\",\"e729682e-669e-419c-bc7e-a3d07552a75b\",\"c392a86e-b59a-4a7d-9932-fa19002c0542\",\"131f4319-bbe2-48b2-8da9-e02d74c9090d\",\"d31e2f48-1ebf-4d5d-8604-7216ebd98b2b\",\"b8a1f9e3-b516-493d-90d0-bb255ea250de\",\"09cfef92-ce40-49ef-a15b-6d024cd30b20\",\"910d43c4-51dc-4429-87b1-1c7739140417\",\"194a5647-ff58-42ae-b8e6-6e7ff77dacf5\",\"a0b15cf9-b279-4789-ac40-bbdb0c1b7c6f\",\"4f4efd0b-a8ef-4a88-a142-78bc991d08f9\",\"c01af658-6b14-46ce-8dce-bd9479f109f8\",\"f7b3f64b-5b98-4fdc-a970-c893ca916a5e\",\"dccba452-4fda-4f21-8714-63fecf200fab\",\"dadbc71e-c069-41a5-8412-96fc80147046\",\"d8baffeb-fccb-4dd9-9439-5ca0937c3604\",\"1099f06d-2734-4a47-bb4d-fa5f108b9034\",\"6248cb4f-119b-4ead-a2f4-e8f5de29de71\",\"49812f73-9285-4d2e-8a73-40a2555b315f\",\"9bb4f88c-efd5-4aec-b98a-1177934ef14f\",\"d8b7a49b-6eea-4275-94b1-68f3dd13f9a9\",\"6563d23d-d0b9-41d6-b92b-5390c6f0a2b8\",\"66bc7578-d7e0-423e-819f-4930d2438e3f\",\"c04e0a91-c477-44e9-9654-7a014dd4b5eb\",\"7311fc5f-6336-43be-ba70-5f50afacec11\",\"93c6e788-1cee-4eca-ae63-98a5d0132eb8\",\"53ca9112-d680-47a2-9498-ce9fbcda643e\",\"57a0285c-8414-4fb6-a54b-1d7b4d14a60b\",\"de827a80-6ea8-4229-8c8a-48c7c48766b6\",\"5af286c1-deb9-4b14-b993-6be8425add5b\",\"365a17fb-4977-443b-b932-a3f206621d97\",\"e5b44703-b5f4-431e-8320-c1a7dd913689\",\"9383bec1-3ad5-4e43-9d20-5156981b99ad\",\"c05cc95b-005b-48b4-b501-59c590895ec7\",\"b48cbe38-e50e-49e8-9dda-23b040989a37\",\"5370e9b1-d550-4262-b074-997ab85daf42\",\"225757dc-ceb9-4402-ab6a-31dc7f429a3b\",\"1de227b3-85aa-4912-b38a-30f622eb5301\",\"ffb9fe1c-af83-42d9-b669-e1529b091302\",\"d7fcfbcb-934f-43f6-99f3-9865958c71c8\",\"b47b1c79-7917-45bd-a624-e7fa323b5f47\",\"08f6c00b-49e3-4931-9bd0-890d3817c482\",\"3310216c-d01c-4470-bd26-6ab8ea9913f5\",\"f960ee27-fab5-4db1-8cd6-3eb7da32613e\",\"25a23f6e-e8a9-4e0f-b8cf-1e0d80e74a90\",\"c00df408-c084-4041-8b16-11d1ca6d468c\",\"d3a0870f-ae22-4f38-88bb-f2962d5b360a\",\"9a61e9ca-8278-4917-b838-48dfb5ed2f04\",\"0ea95300-edc7-4975-a5a3-9399ca5c4d56\",\"b992dfe2-9216-4fad-abef-aca8ab36fb8e\",\"1ac44e92-dd28-42b9-85d5-707623279d59\",\"6ed92057-9f03-4046-8670-1b3d0b6581f9\",\"29723a51-280d-4eaf-84a6-2570e9a943cd\",\"3d285da6-e944-4e9e-9151-773130bcd942\",\"b9c256b3-fb8e-4499-83da-69629e0bab94\",\"f02ce081-4cb1-4043-960b-844d2963ef34\",\"bf2eeabf-6788-4b00-a0a0-4a9c34f00183\",\"de6d9b29-0124-4cc4-8958-014d9d4058f4\",\"391fd50b-0595-487d-a629-28427b7806c3\",\"f1e59dff-0d45-4e11-83f3-5eb255ad8c5e\",\"306b4065-fca5-4c05-be6f-337968b0ef62\",\"acf2e38a-7e1a-4793-8893-1dc3eb70f347\",\"8456efe8-bea6-4d0b-b204-e3595fc4d526\",\"17dcc9cd-7ed7-488a-a1c6-ac3387be3e1b\",\"4ea5fc44-f218-4b4b-9d5c-abc292918695\",\"d8807467-112c-41ab-8d48-1e3bdfd70207\",\"a799e9e4-4a62-4c92-9437-6bc496433459\",\"07f201b0-9e21-4c82-91b6-e1e53887ac17\",\"7165d905-c1c8-47df-9b7e-d30f88b43816\",\"4643f3b6-460c-40e9-ace7-60d6ec8d011a\",\"5c80e834-f493-4363-8941-ab61ee839375\",\"c3d165d4-b618-4941-a47c-a703e0ba29b8\",\"0d9fcef1-bfe7-44af-9386-06ced6c48154\",\"17b9ebb9-a1ce-49b3-a37d-4cd2ce6b2d91\",\"a905969b-20a8-4aee-b751-c8c818e8328a\",\"4efde257-fb07-4501-a0d0-63895eb51348\",\"3ed4295f-0096-4f7c-81e2-6f8f1ee785da\"]",
+        "grafana/k6:latest",
+        "run",
+        "--local-ips",
+        "127.16.0.1-127.16.0.250",
+        "scripts/sprint02/qr-load.js"
+      ],
+      "code": 0,
+      "milliseconds": 108581
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2046
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1051
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2051
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1056
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2041
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1049
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2047
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1055
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2043
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1050
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2043
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2065
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1073
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2042
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1050
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2045
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1053
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2040
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1045
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2040
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1047
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2039
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1046
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2037
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1043
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2047
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1050
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2039
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1047
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2043
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1051
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2041
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1049
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2041
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1047
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2038
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1045
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "run",
+        "--rm",
+        "--network",
+        "host",
+        "--name",
+        "sprint02-k6",
+        "--user",
+        "1001:1001",
+        "--ulimit",
+        "nofile=8192:8192",
+        "-v",
+        "/home/runner/work/Trazabilidad-Agricola-Arquitectura/Trazabilidad-Agricola-Arquitectura:/work",
+        "-w",
+        "/work",
+        "-e",
+        "SPRINT02_INDEPENDENT_HOST=true",
+        "-e",
+        "SPRINT02_BASE_URL=http://127.0.0.1:3302",
+        "-e",
+        "SPRINT02_SOURCE_SHA=5fd294c76f360d09ab1ade5c2d870b30d3754234",
+        "-e",
+        "SPRINT02_PUBLIC_ID=5f4b040c-382d-4c05-abbd-5e0cb1299211",
+        "-e",
+        "SPRINT02_STAGE=500",
+        "-e",
+        "SPRINT02_TRAFFIC_PROFILE=capacity",
+        "-e",
+        "SPRINT02_PUBLIC_IDS=[\"5f4b040c-382d-4c05-abbd-5e0cb1299211\",\"71e76ff8-7cc0-4fb8-8d41-fefbcb6fac04\",\"a54be446-831e-4f1f-a601-07e379fdb631\",\"d3920017-f687-4491-ac36-462a4147a4ea\",\"e4f74660-aacf-4847-993f-7fe7891ff97e\",\"2f7a6108-e0d9-4191-a5cf-2d42e55887cc\",\"adbbd9fa-c472-4ffb-8ce3-94a93cdeb411\",\"94df256e-aa6f-4462-bbaf-e17fde4cecce\",\"164e7934-7738-4a03-a7a4-f1bed02133c6\",\"68fb5fe2-77c6-4712-be3d-ffc4cef22e77\",\"cdb1820d-58cc-44a7-9bfe-9135d947dbfd\",\"c1329a0d-3891-42be-b2ba-b55f67749873\",\"e93aa479-ed49-4f71-b815-bf9adb1dd0ba\",\"090ef886-5dbd-4689-ae95-36739de14e9b\",\"f7a02f5a-0cdc-4403-aacf-0b2a779c5e74\",\"c6cd91d1-27d8-4cfa-a3cf-4b8e17d0617f\",\"05f35457-2449-4b3c-930d-6ab34c601768\",\"828ce28a-7b33-41f6-bdaa-7887c3f238aa\",\"39bb9d9f-425e-4050-92a7-c8f204000b1b\",\"271b3067-1052-4110-a944-69c649ae891a\",\"c9f13bc8-c242-4185-8e6d-3d0603dd8be0\",\"3f4f791e-49e0-4766-860e-99088438244b\",\"dae54e33-7b4a-4110-b269-4a7f018a0654\",\"71e4d986-71d4-45db-8784-d2f45a2b21ff\",\"e729682e-669e-419c-bc7e-a3d07552a75b\",\"c392a86e-b59a-4a7d-9932-fa19002c0542\",\"131f4319-bbe2-48b2-8da9-e02d74c9090d\",\"d31e2f48-1ebf-4d5d-8604-7216ebd98b2b\",\"b8a1f9e3-b516-493d-90d0-bb255ea250de\",\"09cfef92-ce40-49ef-a15b-6d024cd30b20\",\"910d43c4-51dc-4429-87b1-1c7739140417\",\"194a5647-ff58-42ae-b8e6-6e7ff77dacf5\",\"a0b15cf9-b279-4789-ac40-bbdb0c1b7c6f\",\"4f4efd0b-a8ef-4a88-a142-78bc991d08f9\",\"c01af658-6b14-46ce-8dce-bd9479f109f8\",\"f7b3f64b-5b98-4fdc-a970-c893ca916a5e\",\"dccba452-4fda-4f21-8714-63fecf200fab\",\"dadbc71e-c069-41a5-8412-96fc80147046\",\"d8baffeb-fccb-4dd9-9439-5ca0937c3604\",\"1099f06d-2734-4a47-bb4d-fa5f108b9034\",\"6248cb4f-119b-4ead-a2f4-e8f5de29de71\",\"49812f73-9285-4d2e-8a73-40a2555b315f\",\"9bb4f88c-efd5-4aec-b98a-1177934ef14f\",\"d8b7a49b-6eea-4275-94b1-68f3dd13f9a9\",\"6563d23d-d0b9-41d6-b92b-5390c6f0a2b8\",\"66bc7578-d7e0-423e-819f-4930d2438e3f\",\"c04e0a91-c477-44e9-9654-7a014dd4b5eb\",\"7311fc5f-6336-43be-ba70-5f50afacec11\",\"93c6e788-1cee-4eca-ae63-98a5d0132eb8\",\"53ca9112-d680-47a2-9498-ce9fbcda643e\",\"57a0285c-8414-4fb6-a54b-1d7b4d14a60b\",\"de827a80-6ea8-4229-8c8a-48c7c48766b6\",\"5af286c1-deb9-4b14-b993-6be8425add5b\",\"365a17fb-4977-443b-b932-a3f206621d97\",\"e5b44703-b5f4-431e-8320-c1a7dd913689\",\"9383bec1-3ad5-4e43-9d20-5156981b99ad\",\"c05cc95b-005b-48b4-b501-59c590895ec7\",\"b48cbe38-e50e-49e8-9dda-23b040989a37\",\"5370e9b1-d550-4262-b074-997ab85daf42\",\"225757dc-ceb9-4402-ab6a-31dc7f429a3b\",\"1de227b3-85aa-4912-b38a-30f622eb5301\",\"ffb9fe1c-af83-42d9-b669-e1529b091302\",\"d7fcfbcb-934f-43f6-99f3-9865958c71c8\",\"b47b1c79-7917-45bd-a624-e7fa323b5f47\",\"08f6c00b-49e3-4931-9bd0-890d3817c482\",\"3310216c-d01c-4470-bd26-6ab8ea9913f5\",\"f960ee27-fab5-4db1-8cd6-3eb7da32613e\",\"25a23f6e-e8a9-4e0f-b8cf-1e0d80e74a90\",\"c00df408-c084-4041-8b16-11d1ca6d468c\",\"d3a0870f-ae22-4f38-88bb-f2962d5b360a\",\"9a61e9ca-8278-4917-b838-48dfb5ed2f04\",\"0ea95300-edc7-4975-a5a3-9399ca5c4d56\",\"b992dfe2-9216-4fad-abef-aca8ab36fb8e\",\"1ac44e92-dd28-42b9-85d5-707623279d59\",\"6ed92057-9f03-4046-8670-1b3d0b6581f9\",\"29723a51-280d-4eaf-84a6-2570e9a943cd\",\"3d285da6-e944-4e9e-9151-773130bcd942\",\"b9c256b3-fb8e-4499-83da-69629e0bab94\",\"f02ce081-4cb1-4043-960b-844d2963ef34\",\"bf2eeabf-6788-4b00-a0a0-4a9c34f00183\",\"de6d9b29-0124-4cc4-8958-014d9d4058f4\",\"391fd50b-0595-487d-a629-28427b7806c3\",\"f1e59dff-0d45-4e11-83f3-5eb255ad8c5e\",\"306b4065-fca5-4c05-be6f-337968b0ef62\",\"acf2e38a-7e1a-4793-8893-1dc3eb70f347\",\"8456efe8-bea6-4d0b-b204-e3595fc4d526\",\"17dcc9cd-7ed7-488a-a1c6-ac3387be3e1b\",\"4ea5fc44-f218-4b4b-9d5c-abc292918695\",\"d8807467-112c-41ab-8d48-1e3bdfd70207\",\"a799e9e4-4a62-4c92-9437-6bc496433459\",\"07f201b0-9e21-4c82-91b6-e1e53887ac17\",\"7165d905-c1c8-47df-9b7e-d30f88b43816\",\"4643f3b6-460c-40e9-ace7-60d6ec8d011a\",\"5c80e834-f493-4363-8941-ab61ee839375\",\"c3d165d4-b618-4941-a47c-a703e0ba29b8\",\"0d9fcef1-bfe7-44af-9386-06ced6c48154\",\"17b9ebb9-a1ce-49b3-a37d-4cd2ce6b2d91\",\"a905969b-20a8-4aee-b751-c8c818e8328a\",\"4efde257-fb07-4501-a0d0-63895eb51348\",\"3ed4295f-0096-4f7c-81e2-6f8f1ee785da\"]",
+        "grafana/k6:latest",
+        "run",
+        "--local-ips",
+        "127.16.0.1-127.16.1.244",
+        "scripts/sprint02/qr-load.js"
+      ],
+      "code": 0,
+      "milliseconds": 108682
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1791
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2037
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1044
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2039
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1045
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2040
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1046
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2043
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1049
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2044
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1051
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2043
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1048
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2066
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1074
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2040
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2052
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1059
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2043
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1049
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2041
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1047
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2043
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1051
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2041
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1047
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2039
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1047
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2040
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1047
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2039
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1047
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2044
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1050
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2038
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1046
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "run",
+        "--rm",
+        "--network",
+        "host",
+        "--name",
+        "sprint02-k6",
+        "--user",
+        "1001:1001",
+        "--ulimit",
+        "nofile=8192:8192",
+        "-v",
+        "/home/runner/work/Trazabilidad-Agricola-Arquitectura/Trazabilidad-Agricola-Arquitectura:/work",
+        "-w",
+        "/work",
+        "-e",
+        "SPRINT02_INDEPENDENT_HOST=true",
+        "-e",
+        "SPRINT02_BASE_URL=http://127.0.0.1:3302",
+        "-e",
+        "SPRINT02_SOURCE_SHA=5fd294c76f360d09ab1ade5c2d870b30d3754234",
+        "-e",
+        "SPRINT02_PUBLIC_ID=5f4b040c-382d-4c05-abbd-5e0cb1299211",
+        "-e",
+        "SPRINT02_STAGE=1000",
+        "-e",
+        "SPRINT02_TRAFFIC_PROFILE=capacity",
+        "-e",
+        "SPRINT02_PUBLIC_IDS=[\"5f4b040c-382d-4c05-abbd-5e0cb1299211\",\"71e76ff8-7cc0-4fb8-8d41-fefbcb6fac04\",\"a54be446-831e-4f1f-a601-07e379fdb631\",\"d3920017-f687-4491-ac36-462a4147a4ea\",\"e4f74660-aacf-4847-993f-7fe7891ff97e\",\"2f7a6108-e0d9-4191-a5cf-2d42e55887cc\",\"adbbd9fa-c472-4ffb-8ce3-94a93cdeb411\",\"94df256e-aa6f-4462-bbaf-e17fde4cecce\",\"164e7934-7738-4a03-a7a4-f1bed02133c6\",\"68fb5fe2-77c6-4712-be3d-ffc4cef22e77\",\"cdb1820d-58cc-44a7-9bfe-9135d947dbfd\",\"c1329a0d-3891-42be-b2ba-b55f67749873\",\"e93aa479-ed49-4f71-b815-bf9adb1dd0ba\",\"090ef886-5dbd-4689-ae95-36739de14e9b\",\"f7a02f5a-0cdc-4403-aacf-0b2a779c5e74\",\"c6cd91d1-27d8-4cfa-a3cf-4b8e17d0617f\",\"05f35457-2449-4b3c-930d-6ab34c601768\",\"828ce28a-7b33-41f6-bdaa-7887c3f238aa\",\"39bb9d9f-425e-4050-92a7-c8f204000b1b\",\"271b3067-1052-4110-a944-69c649ae891a\",\"c9f13bc8-c242-4185-8e6d-3d0603dd8be0\",\"3f4f791e-49e0-4766-860e-99088438244b\",\"dae54e33-7b4a-4110-b269-4a7f018a0654\",\"71e4d986-71d4-45db-8784-d2f45a2b21ff\",\"e729682e-669e-419c-bc7e-a3d07552a75b\",\"c392a86e-b59a-4a7d-9932-fa19002c0542\",\"131f4319-bbe2-48b2-8da9-e02d74c9090d\",\"d31e2f48-1ebf-4d5d-8604-7216ebd98b2b\",\"b8a1f9e3-b516-493d-90d0-bb255ea250de\",\"09cfef92-ce40-49ef-a15b-6d024cd30b20\",\"910d43c4-51dc-4429-87b1-1c7739140417\",\"194a5647-ff58-42ae-b8e6-6e7ff77dacf5\",\"a0b15cf9-b279-4789-ac40-bbdb0c1b7c6f\",\"4f4efd0b-a8ef-4a88-a142-78bc991d08f9\",\"c01af658-6b14-46ce-8dce-bd9479f109f8\",\"f7b3f64b-5b98-4fdc-a970-c893ca916a5e\",\"dccba452-4fda-4f21-8714-63fecf200fab\",\"dadbc71e-c069-41a5-8412-96fc80147046\",\"d8baffeb-fccb-4dd9-9439-5ca0937c3604\",\"1099f06d-2734-4a47-bb4d-fa5f108b9034\",\"6248cb4f-119b-4ead-a2f4-e8f5de29de71\",\"49812f73-9285-4d2e-8a73-40a2555b315f\",\"9bb4f88c-efd5-4aec-b98a-1177934ef14f\",\"d8b7a49b-6eea-4275-94b1-68f3dd13f9a9\",\"6563d23d-d0b9-41d6-b92b-5390c6f0a2b8\",\"66bc7578-d7e0-423e-819f-4930d2438e3f\",\"c04e0a91-c477-44e9-9654-7a014dd4b5eb\",\"7311fc5f-6336-43be-ba70-5f50afacec11\",\"93c6e788-1cee-4eca-ae63-98a5d0132eb8\",\"53ca9112-d680-47a2-9498-ce9fbcda643e\",\"57a0285c-8414-4fb6-a54b-1d7b4d14a60b\",\"de827a80-6ea8-4229-8c8a-48c7c48766b6\",\"5af286c1-deb9-4b14-b993-6be8425add5b\",\"365a17fb-4977-443b-b932-a3f206621d97\",\"e5b44703-b5f4-431e-8320-c1a7dd913689\",\"9383bec1-3ad5-4e43-9d20-5156981b99ad\",\"c05cc95b-005b-48b4-b501-59c590895ec7\",\"b48cbe38-e50e-49e8-9dda-23b040989a37\",\"5370e9b1-d550-4262-b074-997ab85daf42\",\"225757dc-ceb9-4402-ab6a-31dc7f429a3b\",\"1de227b3-85aa-4912-b38a-30f622eb5301\",\"ffb9fe1c-af83-42d9-b669-e1529b091302\",\"d7fcfbcb-934f-43f6-99f3-9865958c71c8\",\"b47b1c79-7917-45bd-a624-e7fa323b5f47\",\"08f6c00b-49e3-4931-9bd0-890d3817c482\",\"3310216c-d01c-4470-bd26-6ab8ea9913f5\",\"f960ee27-fab5-4db1-8cd6-3eb7da32613e\",\"25a23f6e-e8a9-4e0f-b8cf-1e0d80e74a90\",\"c00df408-c084-4041-8b16-11d1ca6d468c\",\"d3a0870f-ae22-4f38-88bb-f2962d5b360a\",\"9a61e9ca-8278-4917-b838-48dfb5ed2f04\",\"0ea95300-edc7-4975-a5a3-9399ca5c4d56\",\"b992dfe2-9216-4fad-abef-aca8ab36fb8e\",\"1ac44e92-dd28-42b9-85d5-707623279d59\",\"6ed92057-9f03-4046-8670-1b3d0b6581f9\",\"29723a51-280d-4eaf-84a6-2570e9a943cd\",\"3d285da6-e944-4e9e-9151-773130bcd942\",\"b9c256b3-fb8e-4499-83da-69629e0bab94\",\"f02ce081-4cb1-4043-960b-844d2963ef34\",\"bf2eeabf-6788-4b00-a0a0-4a9c34f00183\",\"de6d9b29-0124-4cc4-8958-014d9d4058f4\",\"391fd50b-0595-487d-a629-28427b7806c3\",\"f1e59dff-0d45-4e11-83f3-5eb255ad8c5e\",\"306b4065-fca5-4c05-be6f-337968b0ef62\",\"acf2e38a-7e1a-4793-8893-1dc3eb70f347\",\"8456efe8-bea6-4d0b-b204-e3595fc4d526\",\"17dcc9cd-7ed7-488a-a1c6-ac3387be3e1b\",\"4ea5fc44-f218-4b4b-9d5c-abc292918695\",\"d8807467-112c-41ab-8d48-1e3bdfd70207\",\"a799e9e4-4a62-4c92-9437-6bc496433459\",\"07f201b0-9e21-4c82-91b6-e1e53887ac17\",\"7165d905-c1c8-47df-9b7e-d30f88b43816\",\"4643f3b6-460c-40e9-ace7-60d6ec8d011a\",\"5c80e834-f493-4363-8941-ab61ee839375\",\"c3d165d4-b618-4941-a47c-a703e0ba29b8\",\"0d9fcef1-bfe7-44af-9386-06ced6c48154\",\"17b9ebb9-a1ce-49b3-a37d-4cd2ce6b2d91\",\"a905969b-20a8-4aee-b751-c8c818e8328a\",\"4efde257-fb07-4501-a0d0-63895eb51348\",\"3ed4295f-0096-4f7c-81e2-6f8f1ee785da\"]",
+        "grafana/k6:latest",
+        "run",
+        "--local-ips",
+        "127.16.0.1-127.16.3.232",
+        "scripts/sprint02/qr-load.js"
+      ],
+      "code": 0,
+      "milliseconds": 108800
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2039
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1047
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2037
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1043
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2041
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1048
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2040
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1047
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2043
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1049
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2044
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1052
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2044
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1051
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2041
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1050
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2043
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1050
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2042
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1051
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2044
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1052
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2042
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1052
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2042
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1052
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2045
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1053
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2045
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1054
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2046
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1054
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2039
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1047
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2039
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 1047
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "run",
+        "--rm",
+        "--network",
+        "host",
+        "--name",
+        "sprint02-k6",
+        "--user",
+        "1001:1001",
+        "--ulimit",
+        "nofile=8192:8192",
+        "-v",
+        "/home/runner/work/Trazabilidad-Agricola-Arquitectura/Trazabilidad-Agricola-Arquitectura:/work",
+        "-w",
+        "/work",
+        "-e",
+        "SPRINT02_INDEPENDENT_HOST=true",
+        "-e",
+        "SPRINT02_BASE_URL=http://127.0.0.1:3302",
+        "-e",
+        "SPRINT02_SOURCE_SHA=5fd294c76f360d09ab1ade5c2d870b30d3754234",
+        "-e",
+        "SPRINT02_PUBLIC_ID=5f4b040c-382d-4c05-abbd-5e0cb1299211",
+        "-e",
+        "SPRINT02_STAGE=2000",
+        "-e",
+        "SPRINT02_TRAFFIC_PROFILE=capacity",
+        "-e",
+        "SPRINT02_PUBLIC_IDS=[\"5f4b040c-382d-4c05-abbd-5e0cb1299211\",\"71e76ff8-7cc0-4fb8-8d41-fefbcb6fac04\",\"a54be446-831e-4f1f-a601-07e379fdb631\",\"d3920017-f687-4491-ac36-462a4147a4ea\",\"e4f74660-aacf-4847-993f-7fe7891ff97e\",\"2f7a6108-e0d9-4191-a5cf-2d42e55887cc\",\"adbbd9fa-c472-4ffb-8ce3-94a93cdeb411\",\"94df256e-aa6f-4462-bbaf-e17fde4cecce\",\"164e7934-7738-4a03-a7a4-f1bed02133c6\",\"68fb5fe2-77c6-4712-be3d-ffc4cef22e77\",\"cdb1820d-58cc-44a7-9bfe-9135d947dbfd\",\"c1329a0d-3891-42be-b2ba-b55f67749873\",\"e93aa479-ed49-4f71-b815-bf9adb1dd0ba\",\"090ef886-5dbd-4689-ae95-36739de14e9b\",\"f7a02f5a-0cdc-4403-aacf-0b2a779c5e74\",\"c6cd91d1-27d8-4cfa-a3cf-4b8e17d0617f\",\"05f35457-2449-4b3c-930d-6ab34c601768\",\"828ce28a-7b33-41f6-bdaa-7887c3f238aa\",\"39bb9d9f-425e-4050-92a7-c8f204000b1b\",\"271b3067-1052-4110-a944-69c649ae891a\",\"c9f13bc8-c242-4185-8e6d-3d0603dd8be0\",\"3f4f791e-49e0-4766-860e-99088438244b\",\"dae54e33-7b4a-4110-b269-4a7f018a0654\",\"71e4d986-71d4-45db-8784-d2f45a2b21ff\",\"e729682e-669e-419c-bc7e-a3d07552a75b\",\"c392a86e-b59a-4a7d-9932-fa19002c0542\",\"131f4319-bbe2-48b2-8da9-e02d74c9090d\",\"d31e2f48-1ebf-4d5d-8604-7216ebd98b2b\",\"b8a1f9e3-b516-493d-90d0-bb255ea250de\",\"09cfef92-ce40-49ef-a15b-6d024cd30b20\",\"910d43c4-51dc-4429-87b1-1c7739140417\",\"194a5647-ff58-42ae-b8e6-6e7ff77dacf5\",\"a0b15cf9-b279-4789-ac40-bbdb0c1b7c6f\",\"4f4efd0b-a8ef-4a88-a142-78bc991d08f9\",\"c01af658-6b14-46ce-8dce-bd9479f109f8\",\"f7b3f64b-5b98-4fdc-a970-c893ca916a5e\",\"dccba452-4fda-4f21-8714-63fecf200fab\",\"dadbc71e-c069-41a5-8412-96fc80147046\",\"d8baffeb-fccb-4dd9-9439-5ca0937c3604\",\"1099f06d-2734-4a47-bb4d-fa5f108b9034\",\"6248cb4f-119b-4ead-a2f4-e8f5de29de71\",\"49812f73-9285-4d2e-8a73-40a2555b315f\",\"9bb4f88c-efd5-4aec-b98a-1177934ef14f\",\"d8b7a49b-6eea-4275-94b1-68f3dd13f9a9\",\"6563d23d-d0b9-41d6-b92b-5390c6f0a2b8\",\"66bc7578-d7e0-423e-819f-4930d2438e3f\",\"c04e0a91-c477-44e9-9654-7a014dd4b5eb\",\"7311fc5f-6336-43be-ba70-5f50afacec11\",\"93c6e788-1cee-4eca-ae63-98a5d0132eb8\",\"53ca9112-d680-47a2-9498-ce9fbcda643e\",\"57a0285c-8414-4fb6-a54b-1d7b4d14a60b\",\"de827a80-6ea8-4229-8c8a-48c7c48766b6\",\"5af286c1-deb9-4b14-b993-6be8425add5b\",\"365a17fb-4977-443b-b932-a3f206621d97\",\"e5b44703-b5f4-431e-8320-c1a7dd913689\",\"9383bec1-3ad5-4e43-9d20-5156981b99ad\",\"c05cc95b-005b-48b4-b501-59c590895ec7\",\"b48cbe38-e50e-49e8-9dda-23b040989a37\",\"5370e9b1-d550-4262-b074-997ab85daf42\",\"225757dc-ceb9-4402-ab6a-31dc7f429a3b\",\"1de227b3-85aa-4912-b38a-30f622eb5301\",\"ffb9fe1c-af83-42d9-b669-e1529b091302\",\"d7fcfbcb-934f-43f6-99f3-9865958c71c8\",\"b47b1c79-7917-45bd-a624-e7fa323b5f47\",\"08f6c00b-49e3-4931-9bd0-890d3817c482\",\"3310216c-d01c-4470-bd26-6ab8ea9913f5\",\"f960ee27-fab5-4db1-8cd6-3eb7da32613e\",\"25a23f6e-e8a9-4e0f-b8cf-1e0d80e74a90\",\"c00df408-c084-4041-8b16-11d1ca6d468c\",\"d3a0870f-ae22-4f38-88bb-f2962d5b360a\",\"9a61e9ca-8278-4917-b838-48dfb5ed2f04\",\"0ea95300-edc7-4975-a5a3-9399ca5c4d56\",\"b992dfe2-9216-4fad-abef-aca8ab36fb8e\",\"1ac44e92-dd28-42b9-85d5-707623279d59\",\"6ed92057-9f03-4046-8670-1b3d0b6581f9\",\"29723a51-280d-4eaf-84a6-2570e9a943cd\",\"3d285da6-e944-4e9e-9151-773130bcd942\",\"b9c256b3-fb8e-4499-83da-69629e0bab94\",\"f02ce081-4cb1-4043-960b-844d2963ef34\",\"bf2eeabf-6788-4b00-a0a0-4a9c34f00183\",\"de6d9b29-0124-4cc4-8958-014d9d4058f4\",\"391fd50b-0595-487d-a629-28427b7806c3\",\"f1e59dff-0d45-4e11-83f3-5eb255ad8c5e\",\"306b4065-fca5-4c05-be6f-337968b0ef62\",\"acf2e38a-7e1a-4793-8893-1dc3eb70f347\",\"8456efe8-bea6-4d0b-b204-e3595fc4d526\",\"17dcc9cd-7ed7-488a-a1c6-ac3387be3e1b\",\"4ea5fc44-f218-4b4b-9d5c-abc292918695\",\"d8807467-112c-41ab-8d48-1e3bdfd70207\",\"a799e9e4-4a62-4c92-9437-6bc496433459\",\"07f201b0-9e21-4c82-91b6-e1e53887ac17\",\"7165d905-c1c8-47df-9b7e-d30f88b43816\",\"4643f3b6-460c-40e9-ace7-60d6ec8d011a\",\"5c80e834-f493-4363-8941-ab61ee839375\",\"c3d165d4-b618-4941-a47c-a703e0ba29b8\",\"0d9fcef1-bfe7-44af-9386-06ced6c48154\",\"17b9ebb9-a1ce-49b3-a37d-4cd2ce6b2d91\",\"a905969b-20a8-4aee-b751-c8c818e8328a\",\"4efde257-fb07-4501-a0d0-63895eb51348\",\"3ed4295f-0096-4f7c-81e2-6f8f1ee785da\"]",
+        "grafana/k6:latest",
+        "run",
+        "--local-ips",
+        "127.16.0.1-127.16.7.208",
+        "scripts/sprint02/qr-load.js"
+      ],
+      "code": 0,
+      "milliseconds": 108998
+    },
+    {
+      "executable": "/usr/bin/docker",
+      "args": [
+        "stats",
+        "--no-stream",
+        "--format",
+        "{{json .}}"
+      ],
+      "code": 0,
+      "milliseconds": 2038
+    }
+  ],
+  "phases": [
+    {
+      "file": "scripts/sprint02/analyze-postgres.js",
+      "mode": null,
+      "elapsedMilliseconds": 90,
+      "hostCpuBusyPercent": 27.77777777777778,
+      "freeMemoryBytesAfter": 15485231104,
+      "totalMemoryBytes": 16759431168,
+      "scope": "Promedio del host durante todo el subproceso, incluye arranque; no pico ni CPU individual del servidor/generador."
+    },
+    {
+      "file": "scripts/sprint02/compare-cache.js",
+      "mode": "none",
+      "elapsedMilliseconds": 308,
+      "hostCpuBusyPercent": 32.231404958677686,
+      "freeMemoryBytesAfter": 15507021824,
+      "totalMemoryBytes": 16759431168,
+      "scope": "Promedio del host durante todo el subproceso, incluye arranque; no pico ni CPU individual del servidor/generador."
+    },
+    {
+      "file": "scripts/sprint02/compare-cache.js",
+      "mode": "cold",
+      "elapsedMilliseconds": 354,
+      "hostCpuBusyPercent": 34.50704225352113,
+      "freeMemoryBytesAfter": 15516684288,
+      "totalMemoryBytes": 16759431168,
+      "scope": "Promedio del host durante todo el subproceso, incluye arranque; no pico ni CPU individual del servidor/generador."
+    },
+    {
+      "file": "scripts/sprint02/compare-cache.js",
+      "mode": "warm",
+      "elapsedMilliseconds": 338,
+      "hostCpuBusyPercent": 31.538461538461537,
+      "freeMemoryBytesAfter": 15522091008,
+      "totalMemoryBytes": 16759431168,
+      "scope": "Promedio del host durante todo el subproceso, incluye arranque; no pico ni CPU individual del servidor/generador."
+    },
+    {
+      "file": "scripts/sprint02/compare-cache.js",
+      "mode": "degraded",
+      "elapsedMilliseconds": 362,
+      "hostCpuBusyPercent": 30.49645390070922,
+      "freeMemoryBytesAfter": 15514390528,
+      "totalMemoryBytes": 16759431168,
+      "scope": "Promedio del host durante todo el subproceso, incluye arranque; no pico ni CPU individual del servidor/generador."
+    },
+    {
+      "file": "scripts/sprint02/sync50.js",
+      "mode": null,
+      "elapsedMilliseconds": 499,
+      "hostCpuBusyPercent": 39.28571428571429,
+      "freeMemoryBytesAfter": 15349985280,
+      "totalMemoryBytes": 16759431168,
+      "scope": "Promedio del host durante todo el subproceso, incluye arranque; no pico ni CPU individual del servidor/generador."
+    }
+  ],
+  "stages": [
+    {
+      "profile": "abuse",
+      "stage": "smoke",
+      "sourceIps": "default-route-single-IP",
+      "exitCode": 0,
+      "assessment": {
+        "requests": 40,
+        "throughput": 0.8854015926976337,
+        "p95CorrectMs": 9.542368699999997,
+        "p99CorrectMs": 11.275630589999999,
+        "limited429": 0,
+        "server5xx": 0,
+        "correctRate": 1,
+        "canAdvance": true,
+        "stopReason": null
+      },
+      "resourceFrames": 14
+    },
+    {
+      "profile": "abuse",
+      "stage": "10",
+      "sourceIps": "default-route-single-IP",
+      "exitCode": 99,
+      "assessment": {
+        "requests": 1500,
+        "throughput": 8.317760157023073,
+        "p95CorrectMs": 10.632294849999997,
+        "p99CorrectMs": 16.56115347,
+        "limited429": 1320,
+        "server5xx": 0,
+        "correctRate": 0.12,
+        "canAdvance": false,
+        "stopReason": "rate_limit_429"
+      },
+      "resourceFrames": 59
+    },
+    {
+      "profile": "capacity",
+      "stage": "smoke",
+      "sourceIps": "127.16.0.1",
+      "exitCode": 0,
+      "assessment": {
+        "requests": 5,
+        "throughput": 0.16652277712143718,
+        "p95CorrectMs": 6.6208414,
+        "p99CorrectMs": 7.220828279999999,
+        "limited429": 0,
+        "server5xx": 0,
+        "correctRate": 1,
+        "canAdvance": true,
+        "stopReason": null
+      },
+      "resourceFrames": 10
+    },
+    {
+      "profile": "capacity",
+      "stage": "10",
+      "sourceIps": "127.16.0.1-127.16.0.10",
+      "exitCode": 0,
+      "assessment": {
+        "requests": 168,
+        "throughput": 1.5546248662082727,
+        "p95CorrectMs": 3.5530046000000004,
+        "p99CorrectMs": 4.688398050000022,
+        "limited429": 0,
+        "server5xx": 0,
+        "correctRate": 1,
+        "canAdvance": true,
+        "stopReason": null
+      },
+      "resourceFrames": 36
+    },
+    {
+      "profile": "capacity",
+      "stage": "50",
+      "sourceIps": "127.16.0.1-127.16.0.50",
+      "exitCode": 0,
+      "assessment": {
+        "requests": 848,
+        "throughput": 7.8469834113637225,
+        "p95CorrectMs": 3.31980285,
+        "p99CorrectMs": 4.581508269999979,
+        "limited429": 0,
+        "server5xx": 0,
+        "correctRate": 1,
+        "canAdvance": true,
+        "stopReason": null
+      },
+      "resourceFrames": 35
+    },
+    {
+      "profile": "capacity",
+      "stage": "100",
+      "sourceIps": "127.16.0.1-127.16.0.100",
+      "exitCode": 0,
+      "assessment": {
+        "requests": 1698,
+        "throughput": 15.668666760437837,
+        "p95CorrectMs": 2.9839053999999994,
+        "p99CorrectMs": 5.689246549999987,
+        "limited429": 0,
+        "server5xx": 0,
+        "correctRate": 1,
+        "canAdvance": true,
+        "stopReason": null
+      },
+      "resourceFrames": 36
+    },
+    {
+      "profile": "capacity",
+      "stage": "250",
+      "sourceIps": "127.16.0.1-127.16.0.250",
+      "exitCode": 0,
+      "assessment": {
+        "requests": 4246,
+        "throughput": 39.208284236199546,
+        "p95CorrectMs": 2.91026675,
+        "p99CorrectMs": 7.850154050000002,
+        "limited429": 0,
+        "server5xx": 0,
+        "correctRate": 1,
+        "canAdvance": true,
+        "stopReason": null
+      },
+      "resourceFrames": 35
+    },
+    {
+      "profile": "capacity",
+      "stage": "500",
+      "sourceIps": "127.16.0.1-127.16.1.244",
+      "exitCode": 0,
+      "assessment": {
+        "requests": 8495,
+        "throughput": 78.39884155280268,
+        "p95CorrectMs": 3.0054839999999983,
+        "p99CorrectMs": 7.4363530399999975,
+        "limited429": 0,
+        "server5xx": 0,
+        "correctRate": 1,
+        "canAdvance": true,
+        "stopReason": null
+      },
+      "resourceFrames": 37
+    },
+    {
+      "profile": "capacity",
+      "stage": "1000",
+      "sourceIps": "127.16.0.1-127.16.3.232",
+      "exitCode": 0,
+      "assessment": {
+        "requests": 16992,
+        "throughput": 156.83501249836135,
+        "p95CorrectMs": 2.025551149999999,
+        "p99CorrectMs": 5.207189670000001,
+        "limited429": 0,
+        "server5xx": 0,
+        "correctRate": 1,
+        "canAdvance": true,
+        "stopReason": null
+      },
+      "resourceFrames": 35
+    },
+    {
+      "profile": "capacity",
+      "stage": "2000",
+      "sourceIps": "127.16.0.1-127.16.7.208",
+      "exitCode": 0,
+      "assessment": {
+        "requests": 33987,
+        "throughput": 313.6794739691831,
+        "p95CorrectMs": 2.2655079999999996,
+        "p99CorrectMs": 5.252860199999988,
+        "limited429": 0,
+        "server5xx": 0,
+        "correctRate": 1,
+        "canAdvance": true,
+        "stopReason": null
+      },
+      "resourceFrames": 36
+    }
+  ],
+  "status": "completed_with_observed_limit",
+  "images": [
+    {
+      "id": "sha256:eb63372c1e05c755f55fa30cbd07aecc443676fc6c0fa90b9002d01537841e1a",
+      "repoDigests": [
+        "postgres@sha256:eb63372c1e05c755f55fa30cbd07aecc443676fc6c0fa90b9002d01537841e1a"
+      ]
+    },
+    {
+      "id": "sha256:7958cfbb9d152f87dadfbc89f1b0b15938f0b81ff8982feb327476f4911935c3",
+      "repoDigests": [
+        "redis@sha256:7958cfbb9d152f87dadfbc89f1b0b15938f0b81ff8982feb327476f4911935c3"
+      ]
+    },
+    {
+      "id": "sha256:3d8e5c7f1d53ec59408c2ffbd9943602a0985ffcbd4a2430ec00f3ffca89796e",
+      "repoDigests": [
+        "grafana/k6@sha256:3d8e5c7f1d53ec59408c2ffbd9943602a0985ffcbd4a2430ec00f3ffca89796e"
+      ]
+    }
+  ],
+  "node": "v24.22.3",
+  "k6": "k6 v2.4.0 (commit/dd9395906d, go1.27.3, linux/amd64)",
+  "capacityStatus": "completed_short_screening_2000",
+  "endedAt": "2026-11-20T21:14:47.009Z"
+}

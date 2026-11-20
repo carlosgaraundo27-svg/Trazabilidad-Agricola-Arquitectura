@@ -1,3 +1,16 @@
+import { syncInput } from "../../server/modules/harvest/sync-domain.js";
+
+export function captureAckMatches(record, body) {
+  const parsed = syncInput.safeParse(body.payload);
+  return (
+    body.clientCaptureId === record.id &&
+    parsed.success &&
+    Object.keys(record.payload).every(
+      (field) => parsed.data[field] === record.payload[field],
+    )
+  );
+}
+
 export function evaluateLoad(report, frames, cpuCount) {
   const metrics = report.summary.metrics;
   const requests = metrics.http_reqs?.values.count ?? 0;

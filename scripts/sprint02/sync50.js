@@ -7,6 +7,7 @@ import { ids } from "../seed.js";
 import { labConfig, requireLab } from "./lab-config.js";
 import { sourceSha } from "./git.js";
 import { syncInput } from "../../server/modules/harvest/sync-domain.js";
+import { captureAckMatches } from "./measurement-policy.js";
 
 const config = labConfig(process.env);
 const db = await connectDatabase(config);
@@ -80,9 +81,7 @@ try {
       status: response.status,
       milliseconds: performance.now() - start,
       preLotId: body.preLotId ?? null,
-      validAck:
-        body.clientCaptureId === record.id &&
-        JSON.stringify(body.payload) === JSON.stringify(record.payload),
+      validAck: captureAckMatches(record, body),
       code: body.error?.code ?? null,
     };
   };

@@ -1,6 +1,9 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { evaluateLoad } from "../../scripts/sprint02/measurement-policy.js";
+import {
+  evaluateLoad,
+  captureAckMatches,
+} from "../../scripts/sprint02/measurement-policy.js";
 const summary = (limited = 0, errors = 0) => ({
   summary: {
     metrics: {
@@ -20,6 +23,35 @@ const frames = [
     containers: [{ name: "sprint02-k6", cpuPercent: 30, memoryPercent: 1 }],
   },
 ];
+test("ACK compara contenido normalizado, tolera orden JSONB pero rechaza otro contenido", () => {
+  const payload = {
+    schemaVersion: 1,
+    parcelId: "11111111-1111-4111-8111-111111111111",
+    harvestedAt: "2026-01-02T12:00:00.000Z",
+    quantity: "1.125",
+    unit: "kg",
+  };
+  const record = { id: "fiction", payload };
+  const reversed = Object.fromEntries(Object.entries(payload).reverse());
+  assert.equal(
+    captureAckMatches(record, {
+      clientCaptureId: "fiction",
+      payload: reversed,
+    }),
+    true,
+  );
+  assert.equal(
+    captureAckMatches(record, {
+      clientCaptureId: "fiction",
+      payload: { ...reversed, quantity: "1.126" },
+    }),
+    false,
+  );
+  assert.equal(
+    captureAckMatches(record, { clientCaptureId: "other", payload }),
+    false,
+  );
+});
 test("no aumenta carga si hay429, sin convertirlos en5xx", () => {
   assert.deepEqual(evaluateLoad(summary(50), frames, 2), {
     requests: 100,

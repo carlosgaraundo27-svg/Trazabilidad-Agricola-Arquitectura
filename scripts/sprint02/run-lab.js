@@ -27,6 +27,7 @@ const report = {
     totalMemoryBytes: os.totalmem(),
   },
   steps: [],
+  phases: [],
   stages: [],
   status: "running",
 };
@@ -73,6 +74,38 @@ async function requireCommand(executable, args, env) {
   return result.stdout.trim();
 }
 const node = (file, env) => requireCommand(process.execPath, [file], env);
+async function cpuTotals() {
+  const values = (await readFile("/proc/stat", "utf8"))
+    .split("\n")[0]
+    .trim()
+    .split(/\s+/)
+    .slice(1, 9)
+    .map(Number);
+  return {
+    total: values.reduce((sum, value) => sum + value, 0),
+    idle: values[3] + values[4],
+  };
+}
+async function measuredNode(file, env) {
+  const before = await cpuTotals(),
+    started = Date.now();
+  try {
+    return await node(file, env);
+  } finally {
+    const after = await cpuTotals();
+    report.phases.push({
+      file,
+      mode: env?.SPRINT02_CACHE_MODE ?? null,
+      elapsedMilliseconds: Date.now() - started,
+      hostCpuBusyPercent:
+        100 * (1 - (after.idle - before.idle) / (after.total - before.total)),
+      freeMemoryBytesAfter: os.freemem(),
+      totalMemoryBytes: os.totalmem(),
+      scope:
+        "Promedio del host durante todo el subproceso, incluye arranque; no pico ni CPU individual del servidor/generador.",
+    });
+  }
+}
 async function sample() {
   if (sampling) return;
   sampling = true;
@@ -173,14 +206,14 @@ try {
     "-c",
     "ANALYZE;",
   ]);
-  await node("scripts/sprint02/analyze-postgres.js");
+  await measuredNode("scripts/sprint02/analyze-postgres.js");
   for (const mode of ["none", "cold", "warm"])
-    await node("scripts/sprint02/compare-cache.js", {
+    await measuredNode("scripts/sprint02/compare-cache.js", {
       SPRINT02_CACHE_MODE: mode,
     });
   await requireCommand("/usr/bin/docker", [...compose, "stop", "redis"]);
   try {
-    await node("scripts/sprint02/compare-cache.js", {
+    await measuredNode("scripts/sprint02/compare-cache.js", {
       SPRINT02_CACHE_MODE: "degraded",
     });
   } finally {
@@ -223,7 +256,7 @@ try {
       report.monitorFailure = error.message;
     });
   }, 3000);
-  await node("scripts/sprint02/sync50.js");
+  await measuredNode("scripts/sprint02/sync50.js");
   const fixture = JSON.parse(
     await readFile(root + "/lab-fixture.json", "utf8"),
   );

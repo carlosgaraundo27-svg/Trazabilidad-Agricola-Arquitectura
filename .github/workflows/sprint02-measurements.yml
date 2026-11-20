@@ -1,0 +1,48 @@
+name: sprint02-measurements
+on:
+  push:
+    branches: [chore/preparacion-sprint02]
+    paths:
+      - server/**
+      - migrations/**
+      - scripts/sprint02/**
+      - scripts/*fixture.js
+      - package-lock.json
+      - .github/workflows/sprint02-measurements.yml
+permissions:
+  contents: read
+jobs:
+  laboratory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      SPRINT02_INDEPENDENT_HOST: "true"
+      SPRINT02_DATABASE_URL: postgres://sprint02:fiction_lab_only@127.0.0.1:55442/sprint02_lab
+      SPRINT02_REDIS_URL: redis://127.0.0.1:56382
+      SPRINT02_DEMO_PASSWORD: Fiction-lab-only-2026!
+      SPRINT02_LOTS: "100"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm run build
+      - name: Isolated measurements and progressive load with stop conditions
+        run: node scripts/sprint02/run-lab.js
+      - name: Preserve measurements including failures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sprint02-measurements-${{ github.sha }}
+          path: |
+            .local/sprint02/*.json
+            .local/sprint02/k6-*.log
+          if-no-files-found: error
+          retention-days: 30
+      - name: Stop only this runner laboratory
+        if: always()
+        run: docker compose -f scripts/sprint02/compose.yaml down

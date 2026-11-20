@@ -58,7 +58,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: sonar-task-${{ github.event.pull_request.head.sha || github.sha }}
-          path: coverage/jest/sonar-task.txt
+          path: .scannerwork/report-task.txt
           if-no-files-found: error
           retention-days: 14
   verify:

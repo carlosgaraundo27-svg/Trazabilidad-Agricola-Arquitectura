@@ -1,0 +1,17 @@
+{
+  "sourceSha": "addab5f9101a5d6288fb325d1adda395553d967c",
+  "measuredAt": "2026-11-20T15:18:44.812681+00:00",
+  "method": "Node registerHooks: solo sustitucion de modulo en memoria de proceso de test; disco productivo intacto",
+  "target": "server/modules/logistics/domain.js",
+  "before": "const onHand = admitted - shipped,",
+  "mutation": "const onHand = admitted - shipped - delivered,",
+  "command": "node --import ./.local/sprint02/mutation-loader.mjs --test tests/unit/logistics.test.js",
+  "mutantExitCode": 1,
+  "mutantPassed": 2,
+  "mutantFailed": 1,
+  "caughtBy": "logistica conserva cantidades exactas sin descontar entrega dos veces",
+  "originalExitCode": 0,
+  "originalPassed": 3,
+  "productionFileSha256Unchanged": "55e8ab975bf510c21ef4a27a2f7ddf9a0046c0d574daa72f6a5a053cd6f612aa",
+  "limitation": "Ensayo focal node:test, no score de mutacion global ni mutacion de Jest"
+}

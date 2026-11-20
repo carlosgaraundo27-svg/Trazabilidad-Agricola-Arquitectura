@@ -4,6 +4,7 @@ Repositorio del proyecto de Arquitectura de Software: **Trazabilidad y Gestión 
 
 ## Documento principal
 
+- [Preparación y matriz de Sprint 2](06-sprint02/README.md) — ocho actividades, cinco entregables, pruebas Jest/cobertura, EQ y faltantes por SHA; PR separado sin fusionar.
 - [README del Sprint 01](05-sprint01/README.md) — resumen, línea base de arquitectura, índice de entregables y decisiones pendientes.
 - [Propuesta técnica resumida y mapa de documentos](../README.md)
 - [Registro de alineamiento arquitectónico](02-arquitectura/00-registro-alineamiento.md)

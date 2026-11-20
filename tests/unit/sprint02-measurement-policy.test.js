@@ -57,6 +57,7 @@ test("no aumenta carga si hay429, sin convertirlos en5xx", () => {
     requests: 100,
     throughput: 10,
     p95CorrectMs: 12,
+    p99CorrectMs: null,
     limited429: 50,
     server5xx: 0,
     correctRate: 0.5,
@@ -75,4 +76,18 @@ test("no aumenta carga sin medición o con recursos agotados", () => {
 test("permite siguiente etapa solo con respuestas correctas y recursos disponibles", () => {
   assert.equal(evaluateLoad(summary(), frames, 2).canAdvance, true);
   assert.equal(evaluateLoad(summary(0, 1), frames, 2).stopReason, "server_5xx");
+});
+
+test("registra p99 y detiene si el proceso servidor llega al presupuesto de un núcleo", () => {
+  const data = summary();
+  data.summary.metrics.qr_success_ms.values["p(99)"] = 20;
+  const result = evaluateLoad(data, [{ ...frames[0], appCpuPercent: 90 }], 4);
+  assert.equal(result.p99CorrectMs, 20);
+  assert.equal(result.stopReason, "resource_limit");
+});
+
+test("un p95 fuera del presupuesto impide avanzar aunque las respuestas sean200", () => {
+  const data = summary();
+  data.summary.metrics.qr_success_ms.values["p(95)"] = 2100;
+  assert.equal(evaluateLoad(data, frames, 4).stopReason, "latency_budget");
 });

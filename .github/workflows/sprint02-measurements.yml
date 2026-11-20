@@ -6,7 +6,7 @@ permissions:
 jobs:
   laboratory:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 40
     env:
       SPRINT02_INDEPENDENT_HOST: "true"
       SPRINT02_DATABASE_URL: postgres://sprint02@127.0.0.1:55442/sprint02_lab

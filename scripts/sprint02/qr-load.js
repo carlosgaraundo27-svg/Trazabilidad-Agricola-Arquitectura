@@ -4,6 +4,9 @@ import { Rate, Trend } from "k6/metrics";
 
 // En otra máquina/runner exclusivamente. Una etapa por ejecución y revisión humana.
 const stage = __ENV.SPRINT02_STAGE || "smoke";
+const profile = __ENV.SPRINT02_TRAFFIC_PROFILE || "abuse";
+if (!["abuse", "capacity"].includes(profile))
+  throw new Error("Perfil inválido");
 const levels = {
   smoke: 1,
   10: 10,
@@ -33,8 +36,18 @@ const limited = new Rate("qr_429");
 const businessErrors = new Rate("qr_business_errors");
 const correct = new Rate("qr_correct");
 const successDuration = new Trend("qr_success_ms", true);
-const holdDuration = { smoke: "10s", 100: "10m" }[stage] ?? "2m";
+const holdDuration =
+  profile === "capacity"
+    ? stage === "smoke"
+      ? "10s"
+      : "60s"
+    : ({ smoke: "10s", 100: "10m" }[stage] ?? "2m");
+const ids =
+  profile === "capacity" ? JSON.parse(__ENV.SPRINT02_PUBLIC_IDS || "[]") : [id];
+if (ids.some((value) => !/^[a-f0-9-]{36}$/.test(value)))
+  throw new Error("IDs inválidos");
 export const options = {
+  summaryTrendStats: ["avg", "min", "med", "max", "p(95)", "p(99)"],
   scenarios: {
     qr: {
       executor: "ramping-vus",
@@ -45,8 +58,8 @@ export const options = {
           duration: holdDuration,
           target,
         },
-        { duration: "30s", target: 0 },
-        { duration: "30s", target: 0 },
+        { duration: profile === "capacity" ? "15s" : "30s", target: 0 },
+        { duration: profile === "capacity" ? "5s" : "30s", target: 0 },
       ],
       gracefulRampDown: "5s",
     },
@@ -60,9 +73,11 @@ export const options = {
   },
 };
 export default function qrRequest() {
-  const response = http.get(`${base}/api/public/v1/lots/${id}`, {
+  const selectedId = ids.length ? ids[(__VU - 1 + __ITER) % ids.length] : id;
+  const response = http.get(`${base}/api/public/v1/lots/${selectedId}`, {
     timeout: "5s",
     redirects: 0,
+    headers: { "X-Sprint02-VU": String(__VU) },
   });
   serverErrors.add(response.status >= 500 && response.status <= 599);
   limited.add(response.status === 429);
@@ -91,21 +106,24 @@ export default function qrRequest() {
   correct.add(valid);
   check(response, { "200 con DTO ficticio permitido": () => valid });
   if (valid) successDuration.add(response.timings.duration);
-  sleep(1);
+  sleep(profile === "capacity" ? 5 : 1);
 }
 export function handleSummary(data) {
   return {
-    [`./.local/sprint02/k6-${stage}.json`]: JSON.stringify(
-      {
-        sourceSha: __ENV.SPRINT02_SOURCE_SHA,
-        measuredAt: new Date().toISOString(),
-        stage,
-        target,
-        note: "Umbrales EQ propuestos, no requisitos de nota. 429 no cuenta como respuesta correcta.",
-        summary: data,
-      },
-      null,
-      2,
-    ),
+    [`./.local/sprint02/k6-${profile === "capacity" ? "capacity-" : ""}${stage}.json`]:
+      JSON.stringify(
+        {
+          sourceSha: __ENV.SPRINT02_SOURCE_SHA,
+          measuredAt: new Date().toISOString(),
+          stage,
+          target,
+          profile,
+          thinkTimeSeconds: profile === "capacity" ? 5 : 1,
+          note: "Umbrales EQ propuestos, no requisitos de nota. 429 no cuenta como respuesta correcta.",
+          summary: data,
+        },
+        null,
+        2,
+      ),
   };
 }

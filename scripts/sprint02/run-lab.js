@@ -1,10 +1,11 @@
 import { spawn } from "node:child_process";
-import { readFile, writeFile, mkdir, readdir } from "node:fs/promises";
+import { readFile, writeFile, mkdir, readdir, statfs } from "node:fs/promises";
 import os from "node:os";
 import { randomBytes } from "node:crypto";
 import { sourceSha } from "./git.js";
 import { labConfig } from "./lab-config.js";
 import { evaluateLoad } from "./measurement-policy.js";
+import { redisCycle } from "./redis-cycle.js";
 
 if (
   process.env.GITHUB_ACTIONS !== "true" ||
@@ -42,10 +43,16 @@ const frames = [];
 let app,
   monitor,
   sampling = false,
-  previousCpu;
+  previousCpu,
+  previousAppCpu;
+let ticksPerSecond;
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 async function command(executable, args, extraEnv = {}) {
-  if (![process.execPath, "/usr/bin/docker"].includes(executable))
+  if (
+    ![process.execPath, "/usr/bin/docker", "/usr/bin/getconf"].includes(
+      executable,
+    )
+  )
     throw new Error("Ejecutable ajeno al laboratorio");
   const start = Date.now();
   const child = spawn(executable, args, {
@@ -150,19 +157,37 @@ async function sample() {
         memoryPercent: Number.parseFloat(row.MemPerc),
         memoryUsage: row.MemUsage,
       }));
-    let appRssKb = null;
+    let appRssKb = null,
+      appCpuPercent = null;
     if (app?.pid) {
       const status = await readFile(`/proc/${app.pid}/status`, "utf8").catch(
         () => "",
       );
       appRssKb = Number(status.match(/^VmRSS:\s+(\d+)/m)?.[1] ?? 0);
+      const raw = await readFile(`/proc/${app.pid}/stat`, "utf8");
+      const fields = raw
+        .slice(raw.lastIndexOf(")") + 2)
+        .trim()
+        .split(/\s+/);
+      const ticks = Number(fields[11]) + Number(fields[12]),
+        now = Date.now();
+      if (previousAppCpu)
+        appCpuPercent =
+          (100 * (ticks - previousAppCpu.ticks)) /
+          ticksPerSecond /
+          ((now - previousAppCpu.at) / 1000);
+      previousAppCpu = { ticks, at: now };
     }
+    const disk = await statfs(root);
     frames.push({
       at: new Date().toISOString(),
       hostCpuPercent,
       availableMemoryBytes,
       totalMemoryBytes: os.totalmem(),
       appRssKb,
+      appCpuPercent,
+      freeDiskBytes: disk.bavail * disk.bsize,
+      totalDiskBytes: disk.blocks * disk.bsize,
       containers,
     });
   } finally {
@@ -170,6 +195,11 @@ async function sample() {
   }
 }
 try {
+  ticksPerSecond = Number(
+    await requireCommand("/usr/bin/getconf", ["CLK_TCK"]),
+  );
+  report.platform.clockTicksPerSecond = ticksPerSecond;
+  report.platform.processLimits = await readFile("/proc/self/limits", "utf8");
   await requireCommand("/usr/bin/docker", [
     ...compose,
     "up",
@@ -227,7 +257,7 @@ try {
     await requireCommand("/usr/bin/docker", [...compose, "up", "-d", "redis"]);
   }
   let appLog = "";
-  app = spawn(process.execPath, ["server/main.js"], {
+  app = spawn(process.execPath, ["scripts/sprint02/observe-server.js"], {
     env: {
       ...process.env,
       DATABASE_URL: config.DATABASE_URL,
@@ -238,7 +268,7 @@ try {
       PUBLIC_BASE_URL: "http://127.0.0.1:3302",
       NODE_ENV: "test",
     },
-    stdio: ["ignore", "pipe", "pipe"],
+    stdio: ["ignore", "pipe", "pipe", "ipc"],
   });
   app.stdout.on("data", (chunk) => {
     appLog += chunk;
@@ -257,6 +287,23 @@ try {
   }
   if (!healthy)
     throw new Error("App laboratorio no disponible: " + appLog.slice(-1000));
+  const snapshot = () =>
+    new Promise((resolve, reject) => {
+      const id = crypto.randomUUID();
+      const timer = setTimeout(() => {
+        app.off("message", listener);
+        reject(new Error("Sin observación de IPs"));
+      }, 5000);
+      const listener = (message) => {
+        if (message.id === id) {
+          clearTimeout(timer);
+          app.off("message", listener);
+          resolve(message.observation);
+        }
+      };
+      app.on("message", listener);
+      app.send({ id });
+    });
   await sample();
   monitor = setInterval(() => {
     sample().catch((error) => {
@@ -267,61 +314,163 @@ try {
   const fixture = JSON.parse(
     await readFile(root + "/lab-fixture.json", "utf8"),
   );
-  for (const stage of [
-    "smoke",
-    "10",
-    "50",
-    "100",
-    "250",
-    "500",
-    "1000",
-    "2000",
-  ]) {
-    if (stage !== "smoke") await wait(61000); // Ventana real del limitador, sin cambiar su configuración.
-    const before = frames.length;
-    const result = await command("/usr/bin/docker", [
-      "run",
-      "--rm",
-      "--network",
-      "host",
-      "--name",
-      "sprint02-k6",
-      "--user",
-      `${process.getuid()}:${process.getgid()}`,
-      "-v",
-      `${process.cwd()}:/work`,
-      "-w",
-      "/work",
-      "-e",
-      "SPRINT02_INDEPENDENT_HOST=true",
-      "-e",
-      "SPRINT02_BASE_URL=http://127.0.0.1:3302",
-      "-e",
-      `SPRINT02_SOURCE_SHA=${report.sourceSha}`,
-      "-e",
-      `SPRINT02_PUBLIC_ID=${fixture.publications[0].publicId}`,
-      "-e",
-      `SPRINT02_STAGE=${stage}`,
-      "grafana/k6:latest",
-      "run",
-      "scripts/sprint02/qr-load.js",
-    ]);
-    await writeFile(`${root}/k6-${stage}.log`, result.stdout + result.stderr);
-    const data = JSON.parse(await readFile(`${root}/k6-${stage}.json`, "utf8"));
-    const assessment = evaluateLoad(
-      data,
-      frames.slice(before),
-      os.cpus().length,
-    );
-    report.stages.push({
-      stage,
-      exitCode: result.code,
-      assessment,
-      resourceFrames: frames.length - before,
+  let cycle;
+  try {
+    cycle = await redisCycle({
+      redisUrl: config.redisUrl,
+      ...fixture.publications[0],
+      stop: () =>
+        requireCommand("/usr/bin/docker", [...compose, "stop", "redis"]),
+      start: () =>
+        requireCommand("/usr/bin/docker", [...compose, "up", "-d", "redis"]),
+      appLog: () => appLog,
     });
-    if (!assessment.canAdvance || result.code !== 0) {
-      report.status = "completed_with_observed_limit";
+  } catch (error) {
+    await writeFile(
+      `${root}/cache-recovery.json`,
+      JSON.stringify(
+        {
+          sourceSha: report.sourceSha,
+          ...(error.measurement ?? { passed: false, failure: error.message }),
+        },
+        null,
+        2,
+      ) + "\n",
+    );
+    throw error;
+  }
+  await writeFile(
+    `${root}/cache-recovery.json`,
+    JSON.stringify({ sourceSha: report.sourceSha, ...cycle }, null, 2) + "\n",
+  );
+  report.capacityStatus = "not_started";
+  for (const profile of ["abuse", "capacity"]) {
+    if (
+      profile === "capacity" &&
+      report.stages.at(-1)?.assessment.stopReason !== "rate_limit_429"
+    ) {
+      report.capacityStatus = "not_run_baseline_failure";
       break;
+    }
+    for (const stage of [
+      "smoke",
+      "10",
+      "50",
+      "100",
+      "250",
+      "500",
+      "1000",
+      "2000",
+    ]) {
+      if (stage !== "smoke" && profile === "abuse") await wait(61000); // Ventana real; capacidad tiene <=12/min por origen.
+      await snapshot(); // Delimita observación de la etapa sin reiniciar app ni limitador.
+      if (report.monitorFailure) throw new Error(report.monitorFailure);
+      await sample();
+      const preflight = frames.at(-1);
+      if (
+        preflight.availableMemoryBytes < preflight.totalMemoryBytes * 0.2 ||
+        preflight.freeDiskBytes < preflight.totalDiskBytes * 0.2
+      )
+        throw new Error(
+          "Presupuesto de memoria/disco insuficiente antes de carga",
+        );
+      const before = frames.length;
+      const targets = {
+        smoke: 1,
+        10: 10,
+        50: 50,
+        100: 100,
+        250: 250,
+        500: 500,
+        1000: 1000,
+        2000: 2000,
+      };
+      const n = targets[stage];
+      const sourceIps =
+        n === 1
+          ? "127.16.0.1"
+          : `127.16.0.1-127.16.${Math.floor(n / 256)}.${n % 256}`;
+      const result = await command("/usr/bin/docker", [
+        "run",
+        "--rm",
+        "--network",
+        "host",
+        "--name",
+        "sprint02-k6",
+        "--user",
+        `${process.getuid()}:${process.getgid()}`,
+        "--ulimit",
+        "nofile=8192:8192",
+        "-v",
+        `${process.cwd()}:/work`,
+        "-w",
+        "/work",
+        "-e",
+        "SPRINT02_INDEPENDENT_HOST=true",
+        "-e",
+        "SPRINT02_BASE_URL=http://127.0.0.1:3302",
+        "-e",
+        `SPRINT02_SOURCE_SHA=${report.sourceSha}`,
+        "-e",
+        `SPRINT02_PUBLIC_ID=${fixture.publications[0].publicId}`,
+        "-e",
+        `SPRINT02_STAGE=${stage}`,
+        "-e",
+        `SPRINT02_TRAFFIC_PROFILE=${profile}`,
+        "-e",
+        `SPRINT02_PUBLIC_IDS=${JSON.stringify(fixture.publications.map((p) => p.publicId))}`,
+        "grafana/k6:latest",
+        "run",
+        ...(profile === "capacity" ? ["--local-ips", sourceIps] : []),
+        "scripts/sprint02/qr-load.js",
+      ]);
+      const name = profile === "capacity" ? `capacity-${stage}` : stage;
+      await writeFile(`${root}/k6-${name}.log`, result.stdout + result.stderr);
+      const data = JSON.parse(
+        await readFile(`${root}/k6-${name}.json`, "utf8"),
+      );
+      const observation = await snapshot();
+      const assessment = evaluateLoad(
+        data,
+        frames.slice(before),
+        os.cpus().length,
+      );
+      if (result.code !== 0 && assessment.stopReason === null) {
+        assessment.canAdvance = false;
+        assessment.stopReason = "k6_threshold_or_runtime_failure";
+      }
+      if (
+        profile === "capacity" &&
+        (!observation.oneKeyPerVU ||
+          observation.distinctKeys !== n ||
+          !observation.socketMatchesIp ||
+          !observation.trustProxyFalse)
+      ) {
+        assessment.canAdvance = false;
+        assessment.stopReason = "traffic_distribution_not_verified";
+      }
+      await writeFile(
+        `${root}/traffic-${profile}-${stage}.json`,
+        JSON.stringify({ sourceSha: report.sourceSha, observation }, null, 2) +
+          "\n",
+      );
+      report.stages.push({
+        profile,
+        stage,
+        sourceIps:
+          profile === "capacity" ? sourceIps : "default-route-single-IP",
+        exitCode: result.code,
+        assessment,
+        resourceFrames: frames.length - before,
+      });
+      if (!assessment.canAdvance || result.code !== 0) {
+        report.status = "completed_with_observed_limit";
+        if (profile === "capacity")
+          report.capacityStatus = "stopped_with_observed_limit";
+        break;
+      }
+      if (profile === "capacity" && stage === "2000")
+        report.capacityStatus = "completed_short_screening_2000";
     }
   }
   if (report.status === "running") report.status = "completed_all_stages";

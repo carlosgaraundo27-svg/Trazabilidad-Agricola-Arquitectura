@@ -57,6 +57,26 @@ for (let attempt = 0; attempt < 30 && !ready; attempt++) {
   }
 }
 if (!ready) throw new Error("PostgreSQL Jest no quedó disponible");
+execFileSync(
+  "/usr/bin/docker",
+  [
+    "exec",
+    "sprint02-jest-pg",
+    "psql",
+    "-U",
+    "test",
+    "-d",
+    "jest_business",
+    "-c",
+    "CREATE DATABASE jest_http;",
+  ],
+  { stdio: "ignore", env: { ...process.env, PATH: "/usr/bin:/bin" } },
+);
 const url = new URL("postgres://test@127.0.0.1:55442/jest_business");
 url.password = password;
 await appendFile(process.env.GITHUB_ENV, `JEST_DATABASE_URL=${url.href}\n`);
+url.pathname = "/jest_http";
+await appendFile(
+  process.env.GITHUB_ENV,
+  `JEST_HTTP_DATABASE_URL=${url.href}\n`,
+);

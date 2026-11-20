@@ -36,6 +36,8 @@ function load(overrides = {}, response = { status: 429 }) {
     http: { get: () => response },
     check: () => {},
     sleep: () => {},
+    __VU: 1,
+    __ITER: 0,
   };
   const result = runInNewContext(source + "\n({options,qrRequest});", context, {
     timeout: 1000,
@@ -48,6 +50,16 @@ test("k6 solo admite etapas definidas y host/puerto independientes, sin abrir re
     assert.throws(() => load({ SPRINT02_STAGE }));
   assert.throws(() => load({ SPRINT02_INDEPENDENT_HOST: "false" }));
   assert.throws(() => load({ SPRINT02_BASE_URL: "https://127.0.0.1:3043" }));
+});
+
+test("capacidad es otro perfil: cinco segundos por origen y p99 visible, sin cambiar abuso", () => {
+  const { options } = load({
+    SPRINT02_TRAFFIC_PROFILE: "capacity",
+    SPRINT02_STAGE: "100",
+  });
+  assert.equal(options.scenarios.qr.stages[1].duration, "60s");
+  assert.ok(options.summaryTrendStats.includes("p(99)"));
+  assert.throws(() => load({ SPRINT02_TRAFFIC_PROFILE: "bypass" }));
 });
 
 test("k6 define progresión a 2000 y meseta de 100 VU durante 10 minutos", () => {

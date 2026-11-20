@@ -21,6 +21,7 @@ export function evaluateLoad(report, frames, cpuCount) {
     requests,
     throughput: metrics.http_reqs?.values.rate ?? null,
     p95CorrectMs: metrics.qr_success_ms?.values["p(95)"] ?? null,
+    p99CorrectMs: metrics.qr_success_ms?.values["p(99)"] ?? null,
     limited429: countRate("qr_429"),
     server5xx: countRate("qr_5xx"),
     correctRate: metrics.qr_correct?.values.rate ?? 0,
@@ -35,10 +36,13 @@ export function evaluateLoad(report, frames, cpuCount) {
   else if (result.limited429) stopReason = "rate_limit_429";
   else if (result.correctRate !== 1)
     stopReason = "incorrect_or_transport_response";
+  else if (result.p95CorrectMs > 2000) stopReason = "latency_budget";
   else if (
     frames.some(
       (f) =>
         f.hostCpuPercent > 70 ||
+        f.appCpuPercent > 80 ||
+        f.freeDiskBytes < f.totalDiskBytes * 0.2 ||
         f.availableMemoryBytes < f.totalMemoryBytes * 0.2,
     ) ||
     generator.some((g) => g.cpuPercent / cpuCount > 70 || g.memoryPercent > 80)

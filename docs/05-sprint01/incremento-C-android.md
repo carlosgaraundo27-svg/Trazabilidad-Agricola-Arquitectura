@@ -42,6 +42,8 @@ En la retoma no existían proceso/puerto C ni sesión de ejecución anterior con
 
 Resultado de la corrección: dos regresiones Node nuevas aprobadas y las configuraciones B/C reales conservadas byte a byte; c_sync_test.dart aprobado otra vez en HONOR físico sobre la base existente (20s de recorrido). No se repiten las fases de modo avión, reloj, migración o instalación de herramientas ajenas al cambio. Las23 Dart/Widget y9 fases C/6 regresiones B de la tabla corresponden al núcleo Android previamente probado y conservado; este cambio solo afecta a los fixtures Node. El resultado CI final por SHA se enlaza en [PR14](https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/pull/14); un gate verde no cierra los cuatro S9382 justificados.
 
+Reanálisis8def2f8: duplicación nueva0,0% y Quality Gate aprobado, cuatro S7723 confirmados CLOSED/FIXED, cuatro S9382 abiertos en líneas24/25/65/74. Se elimina además el import writeFile que quedó sin uso al compartir el cargador (S1128), sin cambiar ejecución. Compose de8def2f8 aprobó y Verify completó pruebas unitarias/integración PostgreSQL antes de su E2E. La cabeza documental/corrección posterior requiere sus checks propios. APK debug normal reinstalado tras integration_test, sin borrar datos; app abierta/sesión online y screenshot privado comprobados. El núcleo Android es idéntico al de5fb8e09; no se repitió compilación o instalación de herramientas.
+
 ## Prueba breve del propietario
 
 1. Comprobar que el fixture C existente responde en `https://127.0.0.1:3043`, con reverse3043; no iniciar otro si el puerto está ocupado. Usuario **campo-c@example.test**, contraseña únicamente en `.local/android-c-fixture/credenciales.txt`. No compartirla por chat.

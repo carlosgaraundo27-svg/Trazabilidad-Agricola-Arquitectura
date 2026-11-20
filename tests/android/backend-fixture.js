@@ -1,4 +1,4 @@
-import { readFile, writeFile, lstat, realpath } from "node:fs/promises";
+import { readFile, lstat, realpath } from "node:fs/promises";
 import { X509Certificate } from "node:crypto";
 import { createServer } from "node:https";
 import { createServer as createProbe } from "node:net";

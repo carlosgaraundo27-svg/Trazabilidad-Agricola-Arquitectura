@@ -16,6 +16,7 @@ import {
 import { qualityRouter } from "./quality-http.js";
 import { logisticsRouter } from "./logistics-http.js";
 import { harvestSyncRouter } from "./harvest-sync-http.js";
+import { reportsRouter } from "./reports-http.js";
 const loginInput = z
   .object({
     email: z
@@ -186,6 +187,7 @@ export function createApp({
   api.use(publicationRouter(services));
   api.use(qualityRouter(services));
   api.use(logisticsRouter(services));
+  api.use(reportsRouter(services));
   app.use("/api/v1", api);
   app.use("/api", (req, res, next) =>
     next(new AppError(404, "NOT_FOUND", "Ruta no disponible.")),

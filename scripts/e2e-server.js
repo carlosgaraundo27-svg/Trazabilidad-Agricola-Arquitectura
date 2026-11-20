@@ -8,6 +8,10 @@ const db = await connectDatabase();
 try {
   await migrate(db);
   await seed(db, process.env.DEMO_PASSWORD);
+  if (process.env.E2E_REPORT_FIXTURE === "true") {
+    const { reportsFixture } = await import("./reports-fixture.js");
+    await reportsFixture(db, process.env.DEMO_PASSWORD);
+  }
 } finally {
   await db.close();
 }

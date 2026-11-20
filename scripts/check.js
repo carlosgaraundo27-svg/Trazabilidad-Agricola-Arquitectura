@@ -12,6 +12,7 @@ for (const module of [
   "traceability",
   "publication",
   "logistics",
+  "reports",
 ]) {
   for (const file of await readdir("server/modules/" + module)) {
     const filename = "server/modules/" + module + "/" + file;
@@ -31,7 +32,8 @@ for (const module of [
         match[1].includes("../intake/") ||
         match[1].includes("../traceability/") ||
         match[1].includes("../publication/") ||
-        match[1].includes("../logistics/")
+        match[1].includes("../logistics/") ||
+        match[1].includes("../reports/")
       )
         throw Error("Import cruzado entre módulos: " + filename);
     }
@@ -44,6 +46,7 @@ await SwaggerParser.validate(api);
 parseYaml(await readFile(".github/workflows/ci.yml", "utf8"));
 parseYaml(await readFile("compose.yaml", "utf8"));
 const expectedPaths = [
+  "/api/v1/reports/shipments",
   "/api/v1/sync/pre-lots/{clientCaptureId}",
   "/api/v1/inventory",
   "/api/v1/inventory/lots",
@@ -77,7 +80,7 @@ const expectedPaths = [
   "/q/{id}",
 ];
 if (
-  Object.keys(api.paths).length !== 38 ||
+  Object.keys(api.paths).length !== 39 ||
   expectedPaths.some((route) => !api.paths[route])
 )
   throw Error("Contrato API incompleto");

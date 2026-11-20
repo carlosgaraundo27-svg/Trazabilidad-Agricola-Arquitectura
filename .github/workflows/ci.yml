@@ -10,19 +10,8 @@ jobs:
   jest:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    services:
-      postgres:
-        image: postgres:18
-        env:
-          POSTGRES_USER: test
-          POSTGRES_PASSWORD: fiction_jest_only
-          POSTGRES_DB: jest_business
-        ports: ["55442:5432"]
-        options: >-
-          --health-cmd "pg_isready -U test -d jest_business"
-          --health-interval 5s --health-timeout 3s --health-retries 10
     env:
-      JEST_DATABASE_URL: postgres://test:fiction_jest_only@127.0.0.1:55442/jest_business
+      NODE_V8_COVERAGE: ${{ github.workspace }}/.local/sprint02/jest-v8
     steps:
       - uses: actions/checkout@v4
         with:
@@ -33,8 +22,11 @@ jobs:
           node-version: "24"
           cache: npm
       - run: npm ci --ignore-scripts
+      - run: node scripts/sprint02/prepare-jest-database.js
       - run: npm run test:coverage -- --json --outputFile=coverage/jest/results.json
       - run: git rev-parse HEAD > coverage/jest/source-sha.txt
+      - name: Coverage of executed Node tooling, with unexecuted files included
+        run: node node_modules/c8/bin/c8.js report --all --temp-directory=.local/sprint02/jest-v8 --reports-dir=coverage/jest-tools --reporter=lcovonly --reporter=json-summary --include='server/**' --include='scripts/**' --include='*.js'
       - name: Coverage HTML and LCOV by tested SHA
         if: always()
         uses: actions/upload-artifact@v4
@@ -43,12 +35,42 @@ jobs:
           path: coverage/jest/
           if-no-files-found: error
           retention-days: 14
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: jest-tools-coverage-${{ github.event.pull_request.head.sha || github.sha }}
+          path: coverage/jest-tools/
+          if-no-files-found: error
+          retention-days: 14
+  laboratory:
+    uses: ./.github/workflows/sprint02-measurements.yml
+  sonar:
+    needs: [jest, laboratory]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          name: jest-coverage-${{ github.event.pull_request.head.sha || github.sha }}
+          path: coverage/jest
+      - uses: actions/download-artifact@v4
+        with:
+          name: jest-tools-coverage-${{ github.event.pull_request.head.sha || github.sha }}
+          path: coverage/jest-tools
+      - uses: actions/download-artifact@v4
+        with:
+          name: lab-coverage-${{ github.event.pull_request.head.sha || github.sha }}
+          path: coverage/lab
       - name: Require Sonar CI credential
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: test -n "$SONAR_TOKEN"
       - name: Import LCOV and evaluate existing Sonar gate
-        uses: SonarSource/sonarqube-scan-action@v7
+        uses: SonarSource/sonarqube-scan-action@c7ee0f9df90b7aa20e8dcf9695dcfe2e7da5b4f2 # v7
         with:
           args: -Dsonar.qualitygate.wait=true
         env:

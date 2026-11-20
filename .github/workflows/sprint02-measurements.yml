@@ -1,14 +1,6 @@
 name: sprint02-measurements
 on:
-  push:
-    branches: [chore/preparacion-sprint02]
-    paths:
-      - server/**
-      - migrations/**
-      - scripts/sprint02/**
-      - scripts/*fixture.js
-      - package-lock.json
-      - .github/workflows/sprint02-measurements.yml
+  workflow_call:
 permissions:
   contents: read
 jobs:
@@ -17,13 +9,14 @@ jobs:
     timeout-minutes: 15
     env:
       SPRINT02_INDEPENDENT_HOST: "true"
-      SPRINT02_DATABASE_URL: postgres://sprint02:fiction_lab_only@127.0.0.1:55442/sprint02_lab
+      SPRINT02_DATABASE_URL: postgres://sprint02@127.0.0.1:55442/sprint02_lab
       SPRINT02_REDIS_URL: redis://127.0.0.1:56382
-      SPRINT02_DEMO_PASSWORD: Fiction-lab-only-2026!
       SPRINT02_LOTS: "100"
+      NODE_V8_COVERAGE: ${{ github.workspace }}/.local/sprint02/lab-v8
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           persist-credentials: false
       - uses: actions/setup-node@v4
         with:
@@ -33,11 +26,21 @@ jobs:
       - run: npm run build
       - name: Isolated measurements and progressive load with stop conditions
         run: node scripts/sprint02/run-lab.js
+      - name: Coverage from real laboratory execution, all production scripts included
+        if: always()
+        run: node node_modules/c8/bin/c8.js report --all --temp-directory=.local/sprint02/lab-v8 --reports-dir=coverage/lab --reporter=lcovonly --reporter=json-summary --include='server/**' --include='scripts/**' --include='*.js'
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lab-coverage-${{ github.event.pull_request.head.sha || github.sha }}
+          path: coverage/lab/
+          if-no-files-found: error
+          retention-days: 30
       - name: Preserve measurements including failures
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: sprint02-measurements-${{ github.sha }}
+          name: sprint02-measurements-${{ github.event.pull_request.head.sha || github.sha }}
           path: |
             .local/sprint02/*.json
             .local/sprint02/k6-*.log
@@ -45,4 +48,4 @@ jobs:
           retention-days: 30
       - name: Stop only this runner laboratory
         if: always()
-        run: docker compose -f scripts/sprint02/compose.yaml down
+        run: docker stop sprint02-lab-db-1 sprint02-lab-redis-1

@@ -1,6 +1,7 @@
 import { spawn } from "node:child_process";
 import { readFile, writeFile, mkdir, readdir } from "node:fs/promises";
 import os from "node:os";
+import { randomBytes } from "node:crypto";
 import { sourceSha } from "./git.js";
 import { labConfig } from "./lab-config.js";
 import { evaluateLoad } from "./measurement-policy.js";
@@ -12,6 +13,12 @@ if (
   throw new Error(
     "Este orquestador solo ejecuta en runner GitHub alojado, nunca en el host Android.",
   );
+const database = new URL(process.env.SPRINT02_DATABASE_URL);
+const ephemeralPassword = randomBytes(32).toString("hex");
+database.password = ephemeralPassword;
+process.env.SPRINT02_PG_PASSWORD = ephemeralPassword;
+process.env.SPRINT02_DATABASE_URL = database.href;
+process.env.SPRINT02_DEMO_PASSWORD = randomBytes(32).toString("hex");
 const config = labConfig(process.env);
 const root = ".local/sprint02";
 await mkdir(root, { recursive: true });
@@ -322,10 +329,9 @@ try {
   report.status = "failed";
   report.failure = {
     name: error.name,
-    message: error.message.replaceAll(
-      process.env.SPRINT02_DEMO_PASSWORD,
-      "[lab-password]",
-    ),
+    message: error.message
+      .replaceAll(process.env.SPRINT02_DEMO_PASSWORD, "[lab-password]")
+      .replaceAll(ephemeralPassword, "[postgres-password]"),
   };
   process.exitCode = 1;
 } finally {

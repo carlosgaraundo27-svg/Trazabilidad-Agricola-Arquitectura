@@ -4,7 +4,7 @@ services:
     image: postgres:18
     environment:
       POSTGRES_USER: sprint02
-      POSTGRES_PASSWORD: fiction_lab_only
+      POSTGRES_PASSWORD: ${SPRINT02_PG_PASSWORD:?Configure contraseña efímera de laboratorio}
       POSTGRES_DB: sprint02_lab
     ports: ["127.0.0.1:55442:5432"]
     volumes: ["sprint02_pg:/var/lib/postgresql"]

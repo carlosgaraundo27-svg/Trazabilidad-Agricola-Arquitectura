@@ -1,5 +1,7 @@
 # Matriz de cumplimiento del trabajo final — 16 criterios transcritos
 
+**Reconciliación documental PR9:** main0ed299f conserva #11/#12/#13 por merge; B implementado/probado en PR13, sin código cliente añadido por este borrador. Se preservan los [contratos originales de B](../03-diseno-de-software/11-contratos-incremento-B.md) y el [corte de integración A](integracion-inventario-offline-A.md). Originales íntegros en6e1642b; no repetir recuperación, exportación CSV o instalaciones. O5/O8 de C ya aprobados expresamente por el propietario; C se desarrolla aparte. Este PR permanece en borrador.
+
 ## Corte vigente — main consolidado y B preparado para integrar
 
 2026-11-19, Lima. PR12 integrado en320e8bc y PR11 en e305239, conservando commits. Los tres checks de main320e8bc y de ROP5e1df50 aprobaron antes del segundo merge; verificar los posteriores de main e305239. B/#13 partía de f4eaa1a (referencia esperada confirmada) y se actualiza con ambos merges sin cambiar su núcleo Dart/Kotlin. Conflictos solo documentales resueltos conservando decisiones/históricos. Publicar cabeza actualizada, comprobar checks y luego integrar #13 por merge si no hay bloqueos. PR9 sigue borrador documental a reconciliar; no inferir implementación móvil desde su diff.

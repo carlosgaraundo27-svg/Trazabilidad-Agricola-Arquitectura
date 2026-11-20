@@ -1,5 +1,7 @@
 # Preparación B — sesión nativa Android y SQLite
 
+**Reconciliación documental PR9:** main0ed299f conserva #11/#12/#13 por merge; B implementado/probado en PR13, sin código cliente añadido por este borrador. Se preservan los [contratos originales de B](../03-diseno-de-software/11-contratos-incremento-B.md) y el [corte de integración A](integracion-inventario-offline-A.md). Originales íntegros en6e1642b; no repetir recuperación, exportación CSV o instalaciones. O5/O8 de C ya aprobados expresamente por el propietario; C se desarrolla aparte. Este PR permanece en borrador.
+
 ## Corte vigente — herramientas disponibles y primera implementación nativa
 
 [Resultados B](incremento-B-android.md): cliente en clients/android_b, nueve casos nativos de aceptación y uno preparatorio aprobados en HONOR Android16/API36, diez unitarias/análisis/APK aprobados. Herramientas oficiales independientes preparadas, verificadas y analizadas antes de ejecutar; [procedencia y límites](sdk-android-independiente.md). Android toolchain/licencias/teléfono aprobados por doctor. Puertos SQLite confirmación/ACK de B implementados y probados; no está implementado C ni se declara cubierta toda NA/SB: worker y pruebas de restauración/pérdida física de clave siguen fuera de lo acreditado. PR9 se conserva en borrador documental; código en rama B propia desde main18d57e9.

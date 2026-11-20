@@ -118,8 +118,9 @@ const report = {
   measuredAt: new Date().toISOString(),
   node: process.version,
   platform: process.platform,
-  isolation:
-    "Procesos secuenciales; sin .env ni URLs de servicios; dobles de puertos y PGlite en memoria en node:test existente. Sin acceso a Android.",
+  isolation: process.env.JEST_DATABASE_URL
+    ? "Procesos secuenciales sin .env; Jest con PostgreSQL dedicado validado por la suite; node:test con dobles/PGlite en memoria. Sin acceso a Android."
+    : "Procesos secuenciales; sin .env ni URLs de servicios; dobles de puertos y PGlite en memoria. Sin acceso a Android.",
   checks,
   jest: {
     suites: jest.numTotalTestSuites,
@@ -154,6 +155,19 @@ await mkdir(destination, { recursive: true });
 await writeFile(
   `${destination}/verification.json`,
   JSON.stringify(report, null, 2) + "\n",
+);
+await writeFile(
+  "coverage/jest/verification.json",
+  JSON.stringify(report, null, 2) + "\n",
+);
+console.log(
+  JSON.stringify({
+    sourceSha: sha,
+    jest: report.jest,
+    nodeTest: report.nodeTest,
+    lines: report.coverage.totals.lines,
+    checks: checks.map(({ name, exitCode }) => ({ name, exitCode })),
+  }),
 );
 console.log(`Evidencia sanitizada: ${destination}/verification.json`);
 if (checks.some((c) => c.exitCode !== 0)) process.exitCode = 1;

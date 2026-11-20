@@ -23,7 +23,8 @@ jobs:
           cache: npm
       - run: npm ci --ignore-scripts
       - run: node scripts/sprint02/prepare-jest-database.js
-      - run: npm run test:coverage -- --json --outputFile=coverage/jest/results.json
+      - name: Run suites and record evidence for the checked-out SHA
+        run: node scripts/sprint02/record-tests.js
       - run: git rev-parse HEAD > coverage/jest/source-sha.txt
       - name: Coverage of executed Node tooling, with unexecuted files included
         run: node node_modules/c8/bin/c8.js report --all --temp-directory=.local/sprint02/jest-v8 --reports-dir=coverage/jest-tools --reporter=lcovonly --reporter=json-summary --include='server/**' --include='scripts/**' --include='*.js'

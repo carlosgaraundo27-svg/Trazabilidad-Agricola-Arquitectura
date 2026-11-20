@@ -1,5 +1,7 @@
 # Integración de Inventario y A — 2026-11-19
 
+**Corte histórico preservado de PR9/6e1642b.** B ya está implementado/probado e integrado por PR13 en main0ed299f. Los estados pendientes de SDK/B y cifras Sonar de abajo corresponden a la fecha original; consultar [B](incremento-B-android.md) y continuidad vigente. No volver a exportar CSV o recuperar el repositorio por este histórico.
+
 Se comprobaron cabezas exactas dd18ced y5cef72e, diffs, tres checks aprobados por cabeza y ausencia de revisiones bloqueantes/hilos pendientes. Autorización del propietario condicionada a esos resultados. No se usó bypass, squash, rebase, force push ni se borraron ramas.
 
 | Integración | Merge en main | Padres |

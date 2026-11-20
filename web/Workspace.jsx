@@ -4,6 +4,7 @@ import { Intake } from "./intake/Intake.jsx";
 import { Quality } from "./quality/Quality.jsx";
 import { PublicationAdmin } from "./publication/PublicationAdmin.jsx";
 import { Logistics } from "./logistics/Logistics.jsx";
+import { ShipmentReport } from "./reports/ShipmentReport.jsx";
 export function Workspace({ user, origin }) {
   const [centers, setCenters] = useState(null),
     [error, setError] = useState(""),
@@ -41,6 +42,13 @@ export function Workspace({ user, origin }) {
     });
   if (origin)
     views.push({ id: "origin", label: "Origen y cosecha", content: origin });
+  const reporting = scoped("shipment:read");
+  if (reporting.length)
+    views.push({
+      id: "reports",
+      label: "Reportes operativos",
+      content: <ShipmentReport key={user.id} centers={reporting} />,
+    });
   if (intake.length)
     views.push({
       id: "intake",

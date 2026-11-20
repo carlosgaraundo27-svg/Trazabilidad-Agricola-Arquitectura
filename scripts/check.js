@@ -3,6 +3,7 @@ import { execFileSync } from "node:child_process";
 import path from "node:path";
 import SwaggerParser from "@apidevtools/swagger-parser";
 import { parse as parseYaml } from "yaml";
+import { markdownLinks } from "./markdown-links.js";
 for (const module of [
   "access",
   "producers",
@@ -11,6 +12,7 @@ for (const module of [
   "traceability",
   "publication",
   "logistics",
+  "reports",
 ]) {
   for (const file of await readdir("server/modules/" + module)) {
     const filename = "server/modules/" + module + "/" + file;
@@ -30,7 +32,8 @@ for (const module of [
         match[1].includes("../intake/") ||
         match[1].includes("../traceability/") ||
         match[1].includes("../publication/") ||
-        match[1].includes("../logistics/")
+        match[1].includes("../logistics/") ||
+        match[1].includes("../reports/")
       )
         throw Error("Import cruzado entre módulos: " + filename);
     }
@@ -43,6 +46,7 @@ await SwaggerParser.validate(api);
 parseYaml(await readFile(".github/workflows/ci.yml", "utf8"));
 parseYaml(await readFile("compose.yaml", "utf8"));
 const expectedPaths = [
+  "/api/v1/reports/shipments",
   "/api/v1/sync/pre-lots/{clientCaptureId}",
   "/api/v1/inventory",
   "/api/v1/inventory/lots",
@@ -76,7 +80,7 @@ const expectedPaths = [
   "/q/{id}",
 ];
 if (
-  Object.keys(api.paths).length !== 38 ||
+  Object.keys(api.paths).length !== 39 ||
   expectedPaths.some((route) => !api.paths[route])
 )
   throw Error("Contrato API incompleto");
@@ -89,8 +93,8 @@ async function walk(dir) {
     }
     if (!filename.endsWith(".md")) continue;
     const text = await readFile(filename, "utf8");
-    for (const match of text.matchAll(/\[[^\]]*\]\(([^)]+)\)/g)) {
-      const link = match[1].split("#")[0];
+    for (const target of markdownLinks(text)) {
+      const link = target.split("#")[0];
       if (!link || new RegExp("^(https?:|mailto:|app:|plugin:|/)").test(link))
         continue;
       await access(

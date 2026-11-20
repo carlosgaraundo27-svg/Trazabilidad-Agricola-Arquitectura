@@ -1,10 +1,12 @@
 import { spawn } from "node:child_process";
 import { mkdirSync, readdirSync, writeFileSync } from "node:fs";
+import { trustedDockerExecutable } from "./docker-executable.js";
 if (process.env.ALLOW_DEMO_SEED !== "true")
   throw new Error("Solo usar en una demo ficticia preparada.");
 const env = {
   ...process.env,
   E2E_EXTERNAL_SERVER: "true",
+  TEST_ALLOW_DB_WRITE: "true",
   E2E_BASE_URL: "http://localhost:" + (process.env.APP_PORT || "3000"),
   DATABASE_URL:
     "postgres://demo:" +
@@ -81,7 +83,7 @@ try {
   // Isolate the new suite's login budget without changing production limits or deleting facts.
   if (
     !(await run(
-      "docker",
+      trustedDockerExecutable(),
       [
         "compose",
         "-f",

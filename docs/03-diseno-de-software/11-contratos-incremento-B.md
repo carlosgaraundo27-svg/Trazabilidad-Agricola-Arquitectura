@@ -1,5 +1,9 @@
 # Contratos de B — sesión Android y persistencia SQLite
 
+**Reconciliado con B integrado, 2026-11-19/20:** PR13 conserva la implementación y evidencia Android descritas en [resultado B](../05-sprint01/incremento-B-android.md); main0ed299f conserva #11/#12/#13. Este archivo mantiene íntegros los contratos/criterios originales inferiores; el corte que los declaraba pendientes es histórico, no el estado actual del cliente. No atribuir a este PR documental código o ejecuciones Android. Restauración/transferencia y pérdida física de clave siguen fuera de lo acreditado por B. C desarrolla catálogo/captura/outbox/worker en su propia rama; ventana24h y política de reintentos aprobadas expresamente ahora.
+
+## Contrato original conservado
+
 2026-11-19. Requisitos de ingeniería autorizados por el usuario para B; **implementación y aceptación nativa pendientes** por incidente SDK sin resolución verificable. Base de servidor: main6f0294d, que conserva Inventario y A. No añade endpoints ni cambia autenticación servidor. La selección de plugins/versiones Flutter se hará después de verificar las herramientas, no por ejecutar el SDK señalado. [Preparación/NA/SB](../05-sprint01/preparacion-offline-B.md), [API existente](openapi.json).
 
 ## Puertos y resultados

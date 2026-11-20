@@ -1,0 +1,32 @@
+name: sprint02-lab
+services:
+  db:
+    image: postgres:18
+    environment:
+      POSTGRES_USER: sprint02
+      POSTGRES_PASSWORD: fiction_lab_only
+      POSTGRES_DB: sprint02_lab
+    ports: ["127.0.0.1:55442:5432"]
+    volumes: ["sprint02_pg:/var/lib/postgresql"]
+    healthcheck:
+      test: [CMD, pg_isready, -U, sprint02, -d, sprint02_lab]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+  redis:
+    image: redis:8-alpine
+    ports: ["127.0.0.1:56382:6379"]
+    command:
+      [
+        redis-server,
+        --save,
+        "",
+        --appendonly,
+        "no",
+        --maxmemory,
+        64mb,
+        --maxmemory-policy,
+        allkeys-lru,
+      ]
+volumes:
+  sprint02_pg:

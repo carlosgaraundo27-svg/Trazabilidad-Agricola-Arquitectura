@@ -1,0 +1,48 @@
+# Incremento D — aceptación de fallos Android
+
+2026-11-20. Base revisada PR14/2f7064b576650251a09e9892543193e3bd886737, abierto/sin fusionar. Verify/Compose/Sonar aprobados, sin revisiones bloqueantes. D prueba C existente; no agrega captura de otro tipo, sincronización background o reglas de negocio. Backend C3043/base ficticia conservados; demo001–007 intacta.
+
+| Caso | Procedimiento | Resultado esperado | Evidencia existente / nueva | Estado |
+| --- | --- | --- | --- | --- |
+| D01 Atomicidad e inmutabilidad | INSERT outbox falla dentro de confirmación; editar ID/body confirmado o recibo | Rollback de ambas filas; restricciones impiden mutación | C: c_migration_test/c_storage_test, puertos B nativos; triggers y lease revisados | Aprobado, reutilizado |
+| D02 Cierre normal con pendiente | Terminar fase de prueba sin limpiar datos y abrir otro proceso offline | Mismo ID/body, pendiente intacto | C: cuatro fases c_airplane_test y UI real en modo avión | Aprobado, reutilizado |
+| D03 Terminación forzada con pendiente | Dos IDs, app debug normal sin reverse, PID vivo→am force-stop→sin PID; abrir otro proceso offline | Mismos IDs/body, cero envíos/intentos, consulta preservada | HONOR: snapshot SQLite/WAL privado readonly pending/0/sin ACK, reapertura nativa aprobada; conteos25/25/25/25 sin cambio | Aprobado, terminación forzada real |
+| D04 Terminación forzada durante envío | Fixture retiene respuesta después del commit; app normal esperando ACK, PID vivo→am force-stop; reabrir/replay | Recupera in_flight sin nuevo ID, solo1 cosecha/pre-lote/recibo/audit | HONOR: SQLite/WAL in_flight/1/sin ACK, servidor ya confirmó; proceso nuevo accepted/2/mismo hash. Dos capturas nuevas llevan conteos25→27 en cada tabla, sin incremento extra al replay | Aprobado, fallo inyectado+terminación real |
+| D05 Respuesta perdida postcommit | Destruir socket después del commit; replay en proceso Android distinto | Mismo ID/body/recibo, un hecho/audit, segundo intento | C: c_lost_restart_test en dos procesos y c_sync_test, conteos reales | Aprobado, reutilizado |
+| D06 Expiración y revocación |401/403/404 antes de replay; reautenticar/restaurar concesión y reintentar original | Conserva pendientes, acción visible, no obtiene recibo revocado | C reutilizado; D/actions HONOR10s aprobado: UI401 indica login mismo usuario,403 restablecer permiso; originales aceptados tras restaurar. Nueva regresión Dart de acciones aprobada | Aprobado, Android real |
+| D07 Logout y otro usuario | Cambiar organización y usuario dentro de la misma organización | No lee/envía filas ajenas; dueño original recupera online | C: c_sync_test y6 regresiones B, lease/generación revisados | Aprobado, reutilizado |
+| D08 Agotamiento real | Fixture devuelve503 seis veces para un ID; esperar backoff real sin cambiar reloj | Seis intentos totales, plazos durables, pausa sin borrar | HONOR/worker real:6 intentos en63737,859ms entre primero/sexto; mismo hash, pausa RETRY_EXHAUSTED, contadores27 sin altas. Jitter inyectado0 para comprobar mínimos; no reloj simulado | Aprobado, tiempo real |
+| D09 Reintento manual tras agotamiento | Abrir proceso distinto; sincronización manual después de D08 | Intento7 con mismo ID/body,1 aceptación/audit, historial retenido | HONOR/proceso nuevo: pausa6 conservada, manual→accepted/7, siete hashes iguales; conteos27→28 en cada tabla | Aprobado, Android real |
+| D10 Reinicio físico HONOR offline | Pendiente/ID/evidencia preparados, propietario reinicia manualmente sin red, desbloquea y confirma | Conserva pendiente, boot diferente bloquea nuevas confirmaciones; online mismo dueño→aceptación única | Pendiente dfa528bd-ebd4-4b25-adf5-4441afada06b/37.125kg/0 intentos; boot15, hash/evidencia previos privados y app normal offline comprobada | Pendiente, esperando confirmación manual |
+| D11 Vencimiento real24h | Registrar ancla servidor/boot/elapsed y límite24h; permanecer sin validar online hasta finalizar | Leer/editar conservados, confirmar bloqueado en límite; online mismo dueño reactiva | Ancla preliminar2026-11-20T13:58:52.556Z/boot15, límite2026-11-21T13:58:52.556Z. D10 la invalida; reanclar después de login online y conservar el nuevo T0 | Pendiente, preparado, no transcurso aprobado |
+| D12 Corte de energía | No ejecutar apagado brusco ni poner en riesgo datos | Sin resultado atribuido; procedimiento seguro aún no disponible | FULL/WAL/rollback son implementación, no corte físico | Pendiente, no ejecutado |
+
+## Revisión C y avisos
+
+Captura/outbox y ACK se guardan con transacción SQLite y lease original; triggers de ID/body confirmado/recibo impiden cambios. Claim persiste intento/plazo antes de red; arranque convierte in_flight en incierto. PUT mantiene ID/body congelados, valida ACK y revalida sesión/rol/asignación antes de replay. Organizaciones/usuarios tienen archivos distintos y generaciones invalidan respuestas tardías. No se encontró justificación para reescribir migraciones o rebajar gates.
+
+Los cuatro S9382 de tests/android/c-backend-fixture.js:24/25/65/74 siguen abiertos: validaciones de ancestro a hijo antes de escritura y semillas en una conexión transaccional con FK. Secuencia preservada, sin supresiones. La revisión no los declara resueltos por el gate0% duplicación. Evidencia de cada ejecución nueva irá a .local/incremento-D, excluida de Git; sin cookies, contraseñas o CSV públicos.
+
+## Reglas de evidencia y RF-03/DA01
+
+Separar cierre normal, terminación forzada (am force-stop), reinicio físico del SO y corte de energía. El exit0 de una fase no prueba una terminación forzada: registrar PID anterior, comando y ausencia posterior, además de verificación en proceso nuevo. No desinstalar ni borrar datos para simular reinicio. El harness de integración no debe ser confundido con el APK debug normal.
+
+RF-03/DA01: implementación A/B/C y evidencia Android parcial aprobadas; no declarar aceptación completa mientras D10/D11/D12 permanezcan pendientes. Reutilizar las23 Dart/Widget y pruebas C/B válidas sin convertir reloj inyectado en24h transcurridas ni prueba de navegador en Android. La prueba24h se reancla si hay reinicio o validación online; registrar inicio válido y término previsto, no aprobarla por preparación.
+
+## Ejecuciones nuevas y límites de instrumentación
+
+Los dos force-stop usaron el APK debug normal, no una finalización del harness. Se registraron PID anterior/no PID posterior y copias privadas de SQLite/WAL después de terminar el proceso, consultadas con SQLite readonly para confirmar ID/body/estado/intentos/ACK. No se leyó el almacén de cookies ni se publicó una base. El fixture dispone de barrera de respuesta one-shot y seis503 solo para IDs explícitamente armados bajo clave privada/loopback; no cambió API de producción ni OpenAPI.
+
+Los conteos independientes por organización consultan cosechas, pre-lotes, recibos y auditoría de alta por separado. El join de un recibo no bastaría para descartar huérfanos: por eso se comparó también la referencia25 de cada tabla con27 después de ambas aceptaciones y su replay. No hubo nuevo alta al reabrir. Se conservó cada evidencia original en .local/incremento-D; no se reutilizan IDs para rearmar un fallo ni se borran filas.
+
+D08 usó el worker, SQLite, HTTP y temporizadores reales del HONOR: seis503 one-shot,2/4/8/16/30s mínimos y jitter inyectado0;63737,859ms observados por reloj monotónico servidor entre primera/sexta petición. No sustituye al ensayo24h. D09 se ejecutó en otro proceso; el intento7 conservó todos los hashes e incrementó cada contador global una sola vez. D06 repitió solo los estados afectados por la corrección de mensajes, no toda la suite C/B. La política y los permisos no se debilitaron.
+
+## D10 — punto manual preparado
+
+Se guardaron ID/body/hash, boot15, perfil temporal y conteos30/30/30/30 antes del reboot. Se conserva un borrador de control válido42.001kg para comprobar que una confirmación nueva falla específicamente por necesidad de revalidar, sin alterar el pendiente. Modo avión enabled y reverse3043 ausente, con captura privada de la app normal: pendiente visible/0 intentos. No se emitió adb reboot ni se apagó el dispositivo desde el agente. Esperar confirmación del propietario antes de ejecutar verify-reboot-offline; exigir bootCount mayor, pendiente/body idénticos y bloqueo de confirmación. Después restaurar conectividad anterior, autenticar al mismo dueño y verificar conteo30→31 sin duplicados.
+
+## D11 — ensayo de24h reales preparado, sin espera bloqueante
+
+La primera ancla real registrada es **2026-11-20 13:58:52.556 UTC (08:58:52.556 Lima)**; su límite sería **2026-11-21 13:58:52.556 UTC (08:58:52.556 Lima)**, boot15. Es preliminar porque la prueba D10 va a reiniciar el teléfono: ese reboot invalida el ensayo de transcurso y obliga a un nuevo T0 después de autenticar online. No presentar ese bloqueo por reboot como vencimiento24h.
+
+Tras D10, verify-reboot-online guarda d-24h.json con T0 servidor, expiresAtUtc=T0+24h, boot/elapsed, dueño y borrador de control. Retirar reverse3043 antes de abrir la app normal para impedir validación accidental; puede conservarse la conexión de Internet general del teléfono. No hacer logout, cambiar de usuario, reiniciar ni validar catálogo online durante el ensayo. No cambiar el reloj. Al llegar al límite real, ejecutar verify-24h-offline: exigir mismo boot/ancla y elapsed>=86400000, consulta conservada y confirmación rechazada específicamente por needsLogin. Si cambió boot o ancla, clasificar ensayo interrumpido/reprogramar, no aprobado. Recuperar online al final y comprobar reactivación. Ninguna tarea queda esperando24h dentro de un proceso del agente.

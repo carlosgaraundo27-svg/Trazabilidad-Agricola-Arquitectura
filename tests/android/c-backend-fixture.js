@@ -11,6 +11,7 @@ import { hashPassword } from "../../server/modules/access/password.js";
 import { compose } from "../../server/composition.js";
 import { createApp } from "../../server/http.js";
 import { loadFixtureConfig } from "./fixture-config.js";
+import { captureFaults } from "./capture-faults.js";
 
 if (process.env.NODE_ENV === "production")
   throw new Error("Solo desarrollo aislado");
@@ -103,6 +104,12 @@ const services = compose(db),
 let dropId = null;
 const attempts = new Map(),
   drops = new Set();
+const faults = captureFaults();
+outer.put(
+  "/api/v1/sync/pre-lots/:id",
+  express.json({ limit: "4kb" }),
+  faults.middleware,
+);
 outer.put("/api/v1/sync/pre-lots/:id", (req, res, next) => {
   const requestId = req.params.id;
   attempts.set(requestId, (attempts.get(requestId) ?? 0) + 1);
@@ -125,6 +132,17 @@ outer.use("/__fixture", express.json({ limit: "4kb" }), (req, res, next) =>
 );
 outer.post("/__fixture/:action", async (req, res) => {
   switch (req.params.action) {
+    case "fail-six":
+    case "hold-response":
+      try {
+        faults.arm(req.body.id, req.params.action);
+      } catch {
+        return res.sendStatus(400);
+      }
+      break;
+    case "release-response":
+      faults.release(req.body.id);
+      break;
     case "drop":
       if (!/^[a-f0-9-]{36}$/.test(req.body.id)) return res.sendStatus(400);
       dropId = req.body.id;
@@ -159,6 +177,13 @@ outer.post("/__fixture/:action", async (req, res) => {
   }
   res.sendStatus(204);
 });
+outer.get("/__fixture/totals", async (req, res) => {
+  const rows = await db.query(
+    "SELECT (SELECT count(*)::int FROM harvest.harvests WHERE organization_id=$1) AS harvests,(SELECT count(*)::int FROM harvest.pre_lots WHERE organization_id=$1) AS prelots,(SELECT count(*)::int FROM harvest.sync_receipts WHERE organization_id=$1) AS receipts,(SELECT count(*)::int FROM access.audit WHERE organization_id=$1 AND action='prelot:create') AS audits",
+    [ids.org],
+  );
+  res.json(rows.rows[0]);
+});
 outer.get("/__fixture/counts/:id", async (req, res) => {
   const rows = (
     await db.query(
@@ -168,6 +193,7 @@ outer.get("/__fixture/counts/:id", async (req, res) => {
   ).rows;
   res.json({
     rows,
+    fault: faults.snapshot(req.params.id),
     requests: attempts.get(req.params.id) ?? 0,
     dropped: drops.has(req.params.id),
   });

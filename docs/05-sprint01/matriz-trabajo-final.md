@@ -1,5 +1,9 @@
 # Matriz — corte vigente C
 
+## Aceptación D — en ejecución, sin fusionar PR14
+
+[Matriz D por caso/procedimiento/esperado/evidencia/estado](incremento-D-matriz-android.md). RF-03 (captura durable) y DA01 (operación desconectada) tienen implementación A/B/C y evidencia real de captura offline/reapertura/sincronización; D añade force-stop real con pendientes y durante envío, verificados en otro proceso HONOR sin duplicados. Reloj24h/boot simulado se mantiene separado. Reinicio físico manual,24h transcurridas y corte de energía no se marcan aprobados por esas pruebas. No se altera la transcripción de16 criterios ni se declara todo RF-03/DA01 cumplido con casos físicos pendientes. Demo001–007 intacta; sin nuevas reglas de negocio.
+
 Retoma2026-11-20: PR14 abierto/sin fusionar. Gate inicial de C falló por duplicación5,5% (límite3%), no por seguridad/fiabilidad. Cargador privado B/C unificado conservando comportamiento/secretos, dos regresiones Node y recorrido C de sincronización en HONOR aprobados; cuatro S9382 secuenciales justificados quedan documentados. No cambia la cobertura académica ni el estado de los criterios. [Resultado por SHA y pasos](incremento-C-android.md).
 
 Main0ed299f: #12→#11→#13 integrados por merge con historial, tres checks aprobados tras cada integración. Sonar134 CODE_SMELL abiertos,0 BUG/VULNERABILITY; S4036 cerrado y deuda restante conservada. PR9 d478986 reconciliado en borrador.

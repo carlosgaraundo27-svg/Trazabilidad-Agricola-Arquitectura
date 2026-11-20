@@ -16,13 +16,18 @@ Future<Map<String, dynamic>> control(
   String action, {
   String? id,
   bool counts = false,
+  bool totals = false,
 }) async {
   final client = HttpClient(context: fixtureTrust());
   try {
     final r = await client.openUrl(
-      counts ? 'GET' : 'POST',
+      counts || totals ? 'GET' : 'POST',
       fixtureOrigin.resolve(
-        counts ? '/__fixture/counts/$id' : '/__fixture/$action',
+        totals
+            ? '/__fixture/totals'
+            : counts
+            ? '/__fixture/counts/$id'
+            : '/__fixture/$action',
       ),
     );
     r.headers.set('X-Fixture-Key', const String.fromEnvironment('FIXTURE_KEY'));
@@ -31,7 +36,7 @@ Future<Map<String, dynamic>> control(
       r.write(jsonEncode({'id': id}));
     }
     final res = await r.close();
-    expect(res.statusCode, counts ? 200 : 204);
+    expect(res.statusCode, counts || totals ? 200 : 204);
     final text = await utf8.decoder.bind(res).join();
     return text.isEmpty ? {} : jsonDecode(text) as Map<String, dynamic>;
   } finally {

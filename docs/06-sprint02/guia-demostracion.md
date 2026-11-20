@@ -2,7 +2,7 @@
 
 ## Qué puede ejecutarse en esta preparación
 
-Todo parte de la raíz del repositorio. Código medido: `addab5f9101a5d6288fb325d1adda395553d967c`; comparar antes de reutilizar resultados en otra cabeza. El [manifiesto](evidence/addab5f9101a5d6288fb325d1adda395553d967c/verification.json) permite verificar hashes.
+Todo parte de la raíz del repositorio. Código medido: `2758271ad96aa8735f35644efe42b2a02a9ff539`; comparar antes de reutilizar resultados en otra cabeza. El [manifiesto](evidence/2758271ad96aa8735f35644efe42b2a02a9ff539/verification.json) permite verificar hashes.
 
 En Windows usar `npm.cmd` porque la política de PowerShell bloquea `npm.ps1`; no cambiar esa política. Las pruebas aisladas ya ejecutadas se reproducen con:
 

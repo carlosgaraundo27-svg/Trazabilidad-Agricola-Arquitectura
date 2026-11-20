@@ -1,6 +1,6 @@
 # Arquitectura implementada, SOLID y patrones
 
-Referencia común: código `addab5f9101a5d6288fb325d1adda395553d967c`. Los enlaces locales corresponden a archivos conservados de ese candidato; la [matriz](matriz-cumplimiento.md) fija enlaces GitHub por SHA. No se modificó producción para demostrar un principio.
+Referencia común: código `2758271ad96aa8735f35644efe42b2a02a9ff539`. Los enlaces locales corresponden a archivos conservados de ese candidato; la [matriz](matriz-cumplimiento.md) fija enlaces GitHub por SHA. No se modificó producción para demostrar un principio.
 
 ## Estilo y dependencias reales
 

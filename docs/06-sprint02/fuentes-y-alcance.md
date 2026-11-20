@@ -18,9 +18,11 @@ El PDF pide implementar el estilo y enfoque arquitectónicos; especificaciones S
 | main remoto consultado | `0ed299ffa31cd4666e556db38762df7bd313c4bb` | No contiene C/D por el solo hecho de existir esta preparación. |
 | PR 14 / punto de partida local | `2f7a28772bed67ebcce48fec2fc9c0da54a14d99` | Código funcional y evidencia histórica conservados. |
 | Incremento Jest/CI | `e0f0a8ed3115b5f533860574a5d5d01525aa3bb7` | Pruebas añadidas, configuración y lockfile. Sin cambios de reglas de producción. |
-| Candidato de código verificado | `addab5f9101a5d6288fb325d1adda395553d967c` | Incluye laboratorio preparado; es el SHA común de matriz, tests y cobertura. |
+| Candidato de código verificado | `2758271ad96aa8735f35644efe42b2a02a9ff539` | Incluye laboratorio preparado; es el SHA común de matriz, tests y cobertura. |
 
-Los commits documentales posteriores incorporan el reporte de ese candidato. El [manifiesto](evidence/addab5f9101a5d6288fb325d1adda395553d967c/verification.json) contiene SHA256 de los archivos ensayados. Si cambia código, pruebas, dependencias o CI, generar nueva evidencia, sin sobrescribir la anterior. No atribuir resultados antiguos al nuevo SHA por semejanza de ramas. Para una cabeza posterior que solo cambia documentos, comparar los archivos de código con el candidato antes de reutilizar esta evidencia; CI deberá comprobar la cabeza publicada.
+Los commits documentales posteriores incorporan el reporte de ese candidato. El [manifiesto](evidence/2758271ad96aa8735f35644efe42b2a02a9ff539/verification.json) contiene SHA256 de los archivos ensayados. Si cambia código, pruebas, dependencias o CI, generar nueva evidencia, sin sobrescribir la anterior. No atribuir resultados antiguos al nuevo SHA por semejanza de ramas. Para una cabeza posterior que solo cambia documentos, comparar los archivos de código con el candidato antes de reutilizar esta evidencia; CI deberá comprobar la cabeza publicada.
+
+Se conservan manifiestos anteriores de `addab5f9` y `b9809543`; el primero cubría 41 node:test y el segundo 45. El último candidato mantiene45 y usa Git con ruta absoluta y PATH fijo del subproceso, sin modificar el entorno de los servicios activos.
 
 `origin` local apunta a un bundle de recuperación, no a GitHub; se conserva. No se crearon clones, worktrees ni copias del repositorio. La publicación remota se limita a la rama de preparación y su PR dependiente; no fusiona ni modifica la cabeza del PR 14.
 

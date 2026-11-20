@@ -12,10 +12,19 @@ Preparación de entrega de Trazabilidad y Gestión Comercial de Palta Hass. Cort
 6. [Validación EQ-01 a EQ-07](validacion-atributos.md): medidas, PostgreSQL, Redis, carga y criterios de interrupción.
 7. [Guía reproducible y demostración](guia-demostracion.md): comandos seguros, laboratorio externo y API.
 8. [Evidencia sanitizada por SHA](evidence/README.md).
+9. [Continuidad de esta preparación](continuidad.md).
 
-Código ensayado: [`addab5f9101a5d6288fb325d1adda395553d967c`](https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/commit/addab5f9101a5d6288fb325d1adda395553d967c). Jest: 38/38; node:test: 41/41; OpenAPI/límites de imports: aprobados. Cobertura Jest del backend: **339/3997 líneas, 8,48 %**. El PDF no fija mínimo porcentual. Las pruebas anteriores se conservan.
+| Entregable oficial | Enlace directo |
+| --- | --- |
+| Código organizado | [Arquitectura y código concreto](arquitectura-implementada.md) |
+| Versión funcional | [Guía de arranque y demostración](guia-demostracion.md) |
+| API OpenAPI/Swagger | [Contrato canónico](../03-diseno-de-software/openapi.json) |
+| Jest y cobertura | [Reporte](reporte-verificacion.md) y [evidencia CI por SHA](evidence/2758271ad96aa8735f35644efe42b2a02a9ff539/ci-remoto.json) |
+| Validación de atributos | [EQ, análisis y pendientes](validacion-atributos.md) |
 
-La rama `chore/preparacion-sprint02` parte de PR 14, cabeza `2f7a28772bed67ebcce48fec2fc9c0da54a14d99`. El PR de preparación debe tener como base `feat/offline-captura-outbox-sync` para aislar su diff. Ambos quedan abiertos, sin fusión. Esto no convierte el incremento offline en parte de main (`0ed299ffa31cd4666e556db38762df7bd313c4bb`, consultado en GitHub).
+Código ensayado: [`2758271ad96aa8735f35644efe42b2a02a9ff539`](https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/commit/2758271ad96aa8735f35644efe42b2a02a9ff539). Jest: 38/38; node:test: 45/45; OpenAPI/límites de imports: aprobados. Cobertura Jest del backend: **339/3997 líneas, 8,48 %**. El PDF no fija mínimo porcentual. Las pruebas anteriores se conservan.
+
+La rama `chore/preparacion-sprint02` parte de PR 14, cabeza `2f7a28772bed67ebcce48fec2fc9c0da54a14d99`. El [PR 15 de preparación](https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/pull/15) está publicado en borrador con base `feat/offline-captura-outbox-sync` para aislar su diff. Ambos quedan abiertos, sin fusión. Esto no convierte el incremento offline en parte de main (`0ed299ffa31cd4666e556db38762df7bd313c4bb`, consultado en GitHub).
 
 **Pendientes materiales:** mediciones PostgreSQL/Redis reales y k6 en otra máquina; matriz HTTP negativa completa; 50 pendientes en 60 s; comprobación del ensayo Android de 24 h; corte de energía; monitoreo mensual; ETL/Datamart y decisiones agrícolas pendientes. No ejecutar los procedimientos históricos de Android desde esta preparación.
 

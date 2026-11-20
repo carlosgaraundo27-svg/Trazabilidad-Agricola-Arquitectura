@@ -2,12 +2,12 @@
 
 ## Resultado ejecutado
 
-Candidato `addab5f9101a5d6288fb325d1adda395553d967c`, Node `v24.16.0`, Windows, procesos secuenciales. [Manifiesto íntegro sanitizado](evidence/addab5f9101a5d6288fb325d1adda395553d967c/verification.json). El registrador elimina URLs de servicios y opciones DB heredadas de los subprocesos, no carga `.env` y no accede al teléfono. `node:test` existente usa también PGlite en memoria para catálogo; no representa PostgreSQL servidor.
+Candidato `2758271ad96aa8735f35644efe42b2a02a9ff539`, Node `v24.16.0`, Windows, procesos secuenciales. [Manifiesto íntegro sanitizado](evidence/2758271ad96aa8735f35644efe42b2a02a9ff539/verification.json). El registrador elimina URLs de servicios y opciones DB heredadas de los subprocesos, no carga `.env` y no accede al teléfono. `node:test` existente usa también PGlite en memoria para catálogo; no representa PostgreSQL servidor.
 
 | Comprobación | Resultado | Alcance |
 | --- | --- | --- |
 | Jest ESM/V8, `--runInBand --coverage` | 4 suites, **38 aprobadas**, 0 fallidas/pendientes | Código real de reglas y casos de uso; puertos ficticios en memoria; sin red. |
-| node:test, `--test-concurrency=1` | **41 aprobadas**, 0 fallidas | 38 previas más 3 guardas de laboratorio. No se eliminaron pruebas anteriores. |
+| node:test, `--test-concurrency=1` | **45 aprobadas**, 0 fallidas | 38 previas más 3 guardas de laboratorio y 4 verificaciones del plan k6. No se eliminaron pruebas anteriores. |
 | `node scripts/check.js` | Aprobado | Sintaxis modular, límites actuales de imports, OpenAPI y enlaces. No es una auditoría completa de arquitectura ni del contrato en ejecución. |
 | `npm run format:check` | **Falló localmente: 25 archivos CRLF** | Archivos heredados de la copia Windows; Git conserva blobs LF. No se reformateó código activo ni se cambió la regla. |
 | Diagnóstico Prettier `--end-of-line auto` | Aprobado | Aísla finales de línea como causa; es diagnóstico, no reemplazo del gate obligatorio. CI Linux debe verificar el comando original. |
@@ -62,6 +62,18 @@ La auditoría identifica 18 nodos moderados arrastrados por dos avisos: [glob: c
 
 Se conserva deuda previa de [diagnóstico Sonar de main](../05-sprint01/diagnostico-sonar-main-20261119.md) y cuatro S9382 del fixture Android documentados en [D](../05-sprint01/incremento-D-matriz-android.md). No se declaran resueltos. El resumen/versionado de OpenAPI todavía describe un alcance anterior pese a contener rutas nuevas; sus 40 paths validados no sustituyen una revisión editorial/semántica completa. Los README históricos contienen estados de sus cortes, por eso este índice registra el estado actual sin reescribirlos.
 
+## Publicación y revisión de CI
+
+[PR15](https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/pull/15), borrador sobre PR14, sin fusión. El [primer CI de `46c27927`](https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/44762832966) aprobó verify, Compose y Jest. Se comprobó el artifact `jest-coverage-46c27927ee75511d65d71e38b28374b20daf9642`, ID14642416660, no expirado al consultar. Esto acredita subida de cobertura en Actions, no ingestión Sonar ni mediciones EQ de carga.
+
+Sonar **falló** en esa primera cabeza: Security B y Reliability D, requeridas A. Se conservaron gate y severidades. La revisión corrigió búsqueda de Git por PATH usando rutas protegidas explícitas; quitó URLs HTTP ficticias usadas como reserva de validación; eliminó ordenación innecesaria de claves, simplificó selección de duración y regex y ajustó construcción/nombres de funciones. También añadió cuatro regresiones aisladas del plan k6: una prueba falló por aceptar etapas heredadas `toString`/`constructor`; se corrigió con comprobación de propiedad propia. Las pruebas del script usan dobles en VM de Node, sin HTTP ni k6 real; no simulan usuarios ejecutados ni cobertura de producción adicional.
+
+El candidato `2758271ad96aa8735f35644efe42b2a02a9ff539` incorpora esas correcciones y nueva evidencia local completa (38 Jest/45 node:test). El análisis intermedio `b9809543` ya cumplió fiabilidad, pero seguía fallando seguridad por S4036 en la ruta Windows de Git; se añadió PATH fijo para el subproceso, quitando variantes heredadas sin cambiar el entorno global. No se presenta ninguno de esos gates fallidos como aprobado. Persisten avisos S9382 por awaits deliberadamente secuenciales en planes SQL de una misma transacción, creación de fixtures con dependencias y muestras frías/calientes/reconexión: paralelizarlos alteraría el experimento o su carga. Revisarlos como deuda de scripts, sin supresiones ni convertir muestras secuenciales en concurrentes para eliminar avisos. La lectura independiente de hashes del registrador sí se paralelizó.
+
+**Comprobación remota del candidato, distinta de las pruebas locales:** [CI 44764600317](https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/44764600317) y Sonar aprobaron Jest, verify y Compose para `2758271`. El [registro sanitizado](evidence/2758271ad96aa8735f35644efe42b2a02a9ff539/ci-remoto.json) fija SHA, URLs y artifact. El log remoto de Jest confirma38/38 y cobertura de líneas **8,48 %**, no88,48 %. Se verificó el artifact `jest-coverage-2758271ad96aa8735f35644efe42b2a02a9ff539`, ID14641284260,199117 bytes, no expirado al consultar. Verify incluye las suites Redis/integración PostgreSQL/Playwright del workflow; son pruebas funcionales remotas, no las mediciones SQL/caché/k6 pendientes.
+
+El aviso Windows `AaH5lhSIFpA4IEPfanba` / S4036 se comprobó por API Sonar en estado **CLOSED/FIXED**. El nuevo análisis mantiene8 CODE_SMELL abiertos:6 S9382 secuenciales con las razones anteriores y2 S7780 de estilo de literales Windows. Sin BUG/VULNERABILITY nuevos abiertos en ese corte; no significa cero deuda global. Sonar informa **0,0 % de cobertura de código nuevo**, aunque el gate apruebe: LCOV de Actions no tiene importación Sonar verificada. No confundir esa métrica con el8,48 % Jest del backend completo. La cabeza documental posterior debe comprobar sus propios checks, sin trasladar automáticamente este aprobado a otro SHA.
+
 ## Cierre pendiente
 
-Confirmar CI/artifacts en la cabeza publicada, ejecutar el laboratorio externo y adjuntar resultados fallidos o exitosos con SHA/entorno/dataset; resolver o aceptar explícitamente brechas docentes. Mantener PR de preparación y PR14 sin fusionar. Hasta entonces la entrega es revisable y reproducible, con validación cuantitativa incompleta.
+Comprobar los checks de la cabeza documental final, ejecutar el laboratorio externo y adjuntar resultados fallidos o exitosos con SHA/entorno/dataset; resolver o aceptar explícitamente brechas docentes. Mantener PR de preparación y PR14 sin fusionar. La preparación queda revisable y reproducible, con validación cuantitativa incompleta.

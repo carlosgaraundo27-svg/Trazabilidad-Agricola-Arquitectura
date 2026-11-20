@@ -1,6 +1,6 @@
 # Validación EQ y análisis preparado
 
-Fuente: [siete escenarios Sprint 1](../01-analisis-de-sistema/08-escenarios-atributos-calidad.md). Los valores numéricos mantienen su carácter de **propuestas por validar**. Código del paquete: `addab5f9101a5d6288fb325d1adda395553d967c`. [Resultados ejecutados](reporte-verificacion.md) y [comandos](guia-demostracion.md) separados del plan.
+Fuente: [siete escenarios Sprint 1](../01-analisis-de-sistema/08-escenarios-atributos-calidad.md). Los valores numéricos mantienen su carácter de **propuestas por validar**. Código del paquete: `2758271ad96aa8735f35644efe42b2a02a9ff539`. [Resultados ejecutados](reporte-verificacion.md) y [comandos](guia-demostracion.md) separados del plan.
 
 ## Escenarios
 

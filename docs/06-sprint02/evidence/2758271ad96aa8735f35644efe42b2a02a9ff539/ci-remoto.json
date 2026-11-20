@@ -1,0 +1,82 @@
+{
+  "sourceSha": "2758271ad96aa8735f35644efe42b2a02a9ff539",
+  "checkedAt": "2026-11-20T19:27:55.652Z",
+  "pr": {
+    "number": 15,
+    "url": "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/pull/15",
+    "base": "feat/offline-captura-outbox-sync",
+    "draft": true,
+    "merged": false
+  },
+  "workflow": {
+    "id": 44764600317,
+    "url": "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/44764600317",
+    "conclusion": "success"
+  },
+  "checks": [
+    {
+      "name": "SonarCloud Code Analysis",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/runs/136386254462"
+    },
+    {
+      "name": "verify",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/44764600317/job/136385744689"
+    },
+    {
+      "name": "jest",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/44764600317/job/136385744641"
+    },
+    {
+      "name": "compose",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/44764600317/job/136385744015"
+    }
+  ],
+  "jest": {
+    "testsPassed": 38,
+    "suitesPassed": 4,
+    "backendLinesCovered": 339,
+    "backendLinesTotal": 3997,
+    "backendLineCoveragePercent": 8.48,
+    "confirmedInRemoteJobLog": true
+  },
+  "artifact": {
+    "id": 14641284260,
+    "name": "jest-coverage-2758271ad96aa8735f35644efe42b2a02a9ff539",
+    "sizeBytes": 199117,
+    "expiredAtCheck": false,
+    "retentionDays": 14
+  },
+  "sonar": {
+    "securityIssue": {
+      "key": "AaH5lhSIFpA4IEPfanba",
+      "rule": "javascript:S4036",
+      "path": "scripts/sprint02/git.js",
+      "status": "CLOSED",
+      "resolution": "FIXED"
+    },
+    "openNewIssues": {
+      "total": 8,
+      "codeSmells": 8,
+      "bugs": 0,
+      "vulnerabilities": 0,
+      "sequentialAwaitS9382": 6,
+      "windowsLiteralStyleS7780": 2
+    },
+    "newCodeCoveragePercent": 0,
+    "lcovImportVerified": false
+  },
+  "limitations": [
+    "Resultados de CI funcional, no benchmarks ni ensayo k6.",
+    "Artifacts con retención limitada; la evidencia conserva su identidad, no una disponibilidad permanente.",
+    "Android 24h y servicios locales no intervenidos.",
+    "Los commits documentales posteriores requieren comprobar sus checks por SHA; este resultado corresponde solo al SHA indicado."
+  ]
+}

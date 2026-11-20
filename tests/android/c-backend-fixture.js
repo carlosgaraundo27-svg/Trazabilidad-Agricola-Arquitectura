@@ -1,7 +1,7 @@
 // Loopback-only fake environment for native C acceptance; never a production route.
 import { readFile, writeFile, mkdir, lstat, realpath } from "node:fs/promises";
 import path from "node:path";
-import { randomBytes, X509Certificate } from "node:crypto";
+import { X509Certificate } from "node:crypto";
 import { createServer } from "node:https";
 import { createServer as probeServer } from "node:net";
 import express from "express";
@@ -10,18 +10,21 @@ import { migrate } from "../../scripts/migrate.js";
 import { hashPassword } from "../../server/modules/access/password.js";
 import { compose } from "../../server/composition.js";
 import { createApp } from "../../server/http.js";
+import { loadFixtureConfig } from "./fixture-config.js";
 
 if (process.env.NODE_ENV === "production")
-  throw Error("Solo desarrollo aislado");
+  throw new Error("Solo desarrollo aislado");
 const root = path.resolve(".local/android-c-fixture"),
   dbPath = path.join(root, "android_c_dev_20261120");
+// Fail on the first unsafe ancestor before checking a child. Preserve order;
+// these guards all finish before mkdir, credentials or database access.
 for (const location of [path.resolve(".local"), root, dbPath]) {
   try {
     if (
       (await lstat(location)).isSymbolicLink() ||
       (await realpath(location)).toLowerCase() !== location.toLowerCase()
     )
-      throw Error("No enlaces");
+      throw new Error("No enlaces");
   } catch (e) {
     if (e.code !== "ENOENT") throw e;
   }
@@ -37,32 +40,8 @@ const cert = await readFile(path.join(certRoot, "localhost.pem"));
 if (
   new X509Certificate(cert).publicKey.asymmetricKeyDetails.modulusLength < 2048
 )
-  throw Error("Certificado insuficiente");
-let config;
-try {
-  config = JSON.parse(await readFile(path.join(root, "config.json"), "utf8"));
-} catch (e) {
-  if (e.code !== "ENOENT") throw e;
-  config = {
-    API_ORIGIN: "https://127.0.0.1:3043",
-    DEBUG_CA_BASE64: cert.toString("base64"),
-    TEST_PASSWORD: randomBytes(24).toString("base64url"),
-    FIXTURE_KEY: randomBytes(32).toString("hex"),
-  };
-  await writeFile(
-    path.join(root, "config.json"),
-    JSON.stringify(config, null, 2),
-    { flag: "wx" },
-  );
-}
-if (
-  config.API_ORIGIN !== "https://127.0.0.1:3043" ||
-  config.DEBUG_CA_BASE64 !== cert.toString("base64") ||
-  typeof config.TEST_PASSWORD !== "string" ||
-  config.TEST_PASSWORD.length < 12 ||
-  !/^[a-f0-9]{64}$/.test(config.FIXTURE_KEY)
-)
-  throw Error("Config privada no válida");
+  throw new Error("Certificado insuficiente");
+const config = await loadFixtureConfig(root, "https://127.0.0.1:3043", cert);
 const db = await connectDatabase({
   DB_MODE: "pglite",
   PGLITE_DATA_DIR: dbPath,
@@ -80,6 +59,8 @@ const ids = {
 };
 const hash = await hashPassword(config.TEST_PASSWORD);
 await db.transaction(async (tx) => {
+  // One transactional connection; organizations precede users and their FKs.
+  // Preserve deterministic fixture setup/rollback rather than Promise.all SQL.
   for (const org of [ids.org, ids.otherOrg])
     await tx.query(
       "INSERT INTO access.organizations VALUES($1,$2) ON CONFLICT DO NOTHING",

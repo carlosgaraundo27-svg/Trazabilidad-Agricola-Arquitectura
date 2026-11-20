@@ -1,5 +1,5 @@
 import { readFile, writeFile, lstat, realpath } from "node:fs/promises";
-import { randomBytes, X509Certificate } from "node:crypto";
+import { X509Certificate } from "node:crypto";
 import { createServer } from "node:https";
 import { createServer as createProbe } from "node:net";
 import express from "express";
@@ -9,6 +9,7 @@ import { migrate } from "../../scripts/migrate.js";
 import { seed } from "../../scripts/seed.js";
 import { compose } from "../../server/composition.js";
 import { createApp } from "../../server/http.js";
+import { loadFixtureConfig } from "./fixture-config.js";
 const root = path.resolve(".local/android-b-fixture");
 const dbPath = path.join(root, "android_b_dev_20261119");
 if (process.env.NODE_ENV === "production")
@@ -43,31 +44,7 @@ const cert = await readFile(path.join(root, "localhost.pem"));
 const x509 = new X509Certificate(cert);
 if (x509.publicKey.asymmetricKeyDetails.modulusLength < 2048)
   throw new Error("Certificado de fixture insuficiente; conservar y corregir");
-let config;
-try {
-  config = JSON.parse(await readFile(path.join(root, "config.json"), "utf8"));
-} catch (error) {
-  if (error.code !== "ENOENT") throw error;
-  config = {
-    API_ORIGIN: "https://127.0.0.1:3042",
-    DEBUG_CA_BASE64: cert.toString("base64"),
-    TEST_PASSWORD: randomBytes(24).toString("base64url"),
-    FIXTURE_KEY: randomBytes(32).toString("hex"),
-  };
-  await writeFile(
-    path.join(root, "config.json"),
-    JSON.stringify(config, null, 2),
-    { flag: "wx" },
-  );
-}
-if (
-  config.API_ORIGIN !== "https://127.0.0.1:3042" ||
-  config.DEBUG_CA_BASE64 !== cert.toString("base64") ||
-  typeof config.TEST_PASSWORD !== "string" ||
-  config.TEST_PASSWORD.length < 12 ||
-  !/^[a-f0-9]{64}$/.test(config.FIXTURE_KEY)
-)
-  throw new Error("Configuracion privada del fixture no valida");
+const config = await loadFixtureConfig(root, "https://127.0.0.1:3042", cert);
 const db = await connectDatabase({
   DB_MODE: "pglite",
   PGLITE_DATA_DIR: dbPath,

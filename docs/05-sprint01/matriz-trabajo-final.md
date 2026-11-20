@@ -1,5 +1,7 @@
 # Matriz — corte vigente C
 
+Retoma2026-11-20: PR14 abierto/sin fusionar. Gate inicial de C falló por duplicación5,5% (límite3%), no por seguridad/fiabilidad. Cargador privado B/C unificado conservando comportamiento/secretos, dos regresiones Node y recorrido C de sincronización en HONOR aprobados; cuatro S9382 secuenciales justificados quedan documentados. No cambia la cobertura académica ni el estado de los criterios. [Resultado por SHA y pasos](incremento-C-android.md).
+
 Main0ed299f: #12→#11→#13 integrados por merge con historial, tres checks aprobados tras cada integración. Sonar134 CODE_SMELL abiertos,0 BUG/VULNERABILITY; S4036 cerrado y deuda restante conservada. PR9 d478986 reconciliado en borrador.
 
 RF-03/DA01: C añade captura offline, identidad estable, outbox atómica, envío foreground/manual único, reintentos durables y replay con revalidación. SQLite2 local es aditivo y no cambia migraciones servidor publicadas. Android físico y base C ficticia aislada3043; [contrato y aceptación](../03-diseno-de-software/13-incremento-C-captura-offline.md). Las filas y criterios académicos originales se conservan; C no acredita ETL, datamart, validación agrícola, SLA, restauración entre dispositivos, pérdida física de clave o despliegue productivo. Estado real de pruebas/publicación en [continuidad](continuidad-inventario.md). Demo001–007 intacta, sin nueva copia de repo o herramientas reinstaladas.

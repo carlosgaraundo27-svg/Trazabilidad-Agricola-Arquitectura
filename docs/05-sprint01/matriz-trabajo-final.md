@@ -1,5 +1,27 @@
 # Matriz de cumplimiento del trabajo final — 16 criterios transcritos
 
+## Corte vigente — main consolidado y B preparado para integrar
+
+2026-11-19, Lima. PR12 integrado en320e8bc y PR11 en e305239, conservando commits. Los tres checks de main320e8bc y de ROP5e1df50 aprobaron antes del segundo merge; verificar los posteriores de main e305239. B/#13 partía de f4eaa1a (referencia esperada confirmada) y se actualiza con ambos merges sin cambiar su núcleo Dart/Kotlin. Conflictos solo documentales resueltos conservando decisiones/históricos. Publicar cabeza actualizada, comprobar checks y luego integrar #13 por merge si no hay bloqueos. PR9 sigue borrador documental a reconciliar; no inferir implementación móvil desde su diff.
+
+B implementado/probado en HONOR Android16/API36: nueve casos nativos de aceptación+uno preparatorio, diez unitarias, análisis/APK debug y compilación release ofuscada;17 avisos de su cabeza inicial CLOSED/FIXED. SDK independiente verificado, sin reinstalar ni ejecutar el señalado. Sin atribuir cobertura a toda NA/SB; límites de restauración/clave física/DWARF/firma release conservados.
+
+C aprobado para rama propia: O1/O2/O3/O4/O6/O7/O9/O10 por el alcance y A/B. O5/O8 aprobados expresamente por el propietario:24h desde identidad+catálogo completos, distinto de cookie8h, bloquear confirmaciones tras reboot sin revalidar; inicial+cinco reintentos2/4/8/16/30s+jitter0–20%/Retry-After mayor íntegro, contador/plazos durables y pausa sin borrar. Mantener ID/cuerpo tras incertidumbre y aislar dueño. Solo primer plano; no aprobación docente/agrícola, PWA/iOS, nuevas reglas, sustitutos o corrección de hechos aceptados.
+
+Avisos pendientes conservados: nueve ROP CODE_SMELL, tres S7780 de rutas Docker, nueve críticos DDL/deuda heredada. Consultar Sonar main para el cierre real S4036, sin confundir gate con cero avisos. Demo001–007 intacta, sin SQL/reinicio/aplicar008; C usará datos ficticios aislados. CSV ya exportado/analizado, soporte pendiente de presentación/dictamen; no tocar antivirus/cuarentena ni SDK señalado. Los cortes inferiores son históricos.
+
+
+
+### Cortes históricos reconciliados
+
+## Corte vigente — B Android, ROP revisado y seguridad separada
+
+2026-11-19: main18d57e9 con #7/#8/#10 integrados/checks aprobados;123 avisos Sonar, una vulnerabilidad. ROP/#11 en5f738c8 abierto y aprobado, nueve CODE_SMELL conservados. S4036 Docker/PATH corregida separadamente en PR12/eeaa763 con checks aprobados, sin fusionar ni cerrar todavía el hallazgo de main; tres S7780 menores del PR12 pendientes. No se bajaron gates ni reescribieron DDL.
+
+[B](incremento-B-android.md): sesión nativa/SQLite privados implementados en rama propia, nueve casos nativos de aceptación+uno preparatorio aprobados en HONOR Android16/API36, diez unitarias/análisis/APK aprobados. [SDK independiente verificado/analizado](sdk-android-independiente.md), anterior no ejecutado. No se atribuye código a PR9 documental/en borrador. Puertos locales confirmación/ACK de B implementados y probados. C/interfaz de captura, worker y pruebas de restauración/pérdida física de clave no se declaran implementados/validados. No completa todo RF offline por ese resultado.
+
+CSV Kaspersky ya exportado/analizado; borrador privado actualizado, pendiente presentar al soporte y conservar caso/dictamen. Análisis negativo nuevo no resuelve incidente anterior. Demo001–007 intacta; B usa nueva base aislada001–008 y datos ficticios. Los cortes inferiores son históricos y no reabren respaldos, integraciones o exportaciones ya terminados.
+
 ## Corte vigente — ROP-01, 2026-11-19
 
 #7/#8 ya integrados; #10 integrado por merge18d57e9 conservando commits hasta907cd26. Verify/Compose/Sonar de main aprobados; Sonar123 abiertos, cinco CLOSED/FIXED nuevos, deuda restante conservada [aquí](diagnostico-sonar-main-20261119.md). El fallo audit22c6e4f y la publicación pendiente de las secciones históricas no son estado actual. No se repiten recuperación, respaldos o integración.

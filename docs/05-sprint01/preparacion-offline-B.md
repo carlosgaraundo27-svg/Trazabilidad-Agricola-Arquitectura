@@ -1,5 +1,13 @@
 # Preparación B — sesión nativa Android y SQLite
 
+## Corte vigente — herramientas disponibles y primera implementación nativa
+
+[Resultados B](incremento-B-android.md): cliente en clients/android_b, nueve casos nativos de aceptación y uno preparatorio aprobados en HONOR Android16/API36, diez unitarias/análisis/APK aprobados. Herramientas oficiales independientes preparadas, verificadas y analizadas antes de ejecutar; [procedencia y límites](sdk-android-independiente.md). Android toolchain/licencias/teléfono aprobados por doctor. Puertos SQLite confirmación/ACK de B implementados y probados; no está implementado C ni se declara cubierta toda NA/SB: worker y pruebas de restauración/pérdida física de clave siguen fuera de lo acreditado. PR9 se conserva en borrador documental; código en rama B propia desde main18d57e9.
+
+El CSV ya está exportado/analizado; soporte pendiente de presentación/dictamen, no de otra exportación. Borrador privado actualizado sin envío. SDK señalado intacto/sin ejecutar. Demo001–007 intacta; backend B aislado HTTPS3042/001–008/datos ficticios. Las tablas/notas siguientes conservan el diseño y la evidencia histórica, no el estado actual de instalación.
+
+## Diseño e inspección históricos
+
 2026-11-19. Diseño y contratos para implementar después de resolver el incidente SDK. **No es un cliente implementado ni una prueba Android ejecutada.** A se revisa en [PR #8](https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/pull/8), dependiente de [#7](https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/pull/7); ambos quedan abiertos. B partirá de A en una rama propia, sin mezclar su código con Inventario. [Plan A–D](../03-diseno-de-software/10-plan-incrementos-offline.md), [O5/O6/O9 y NA-01–08](../03-diseno-de-software/08-especificacion-offline-cosecha.md). Sus políticas pendientes no se aprueban por silencio.
 
 ## Herramientas observadas, sin ejecutar SDK

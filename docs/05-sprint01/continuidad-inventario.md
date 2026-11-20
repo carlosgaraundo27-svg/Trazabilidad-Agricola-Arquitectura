@@ -1,5 +1,32 @@
 # Continuidad — Inventario, Reserva, Despacho y Entrega
 
+## Corte vigente — main consolidado y B preparado para integrar
+
+2026-11-19, Lima. PR12 integrado en320e8bc y PR11 en e305239, conservando commits. Los tres checks de main320e8bc y de ROP5e1df50 aprobaron antes del segundo merge; verificar los posteriores de main e305239. B/#13 partía de f4eaa1a (referencia esperada confirmada) y se actualiza con ambos merges sin cambiar su núcleo Dart/Kotlin. Conflictos solo documentales resueltos conservando decisiones/históricos. Publicar cabeza actualizada, comprobar checks y luego integrar #13 por merge si no hay bloqueos. PR9 sigue borrador documental a reconciliar; no inferir implementación móvil desde su diff.
+
+B implementado/probado en HONOR Android16/API36: nueve casos nativos de aceptación+uno preparatorio, diez unitarias, análisis/APK debug y compilación release ofuscada;17 avisos de su cabeza inicial CLOSED/FIXED. SDK independiente verificado, sin reinstalar ni ejecutar el señalado. Sin atribuir cobertura a toda NA/SB; límites de restauración/clave física/DWARF/firma release conservados.
+
+C aprobado para rama propia: O1/O2/O3/O4/O6/O7/O9/O10 por el alcance y A/B. O5/O8 aprobados expresamente por el propietario:24h desde identidad+catálogo completos, distinto de cookie8h, bloquear confirmaciones tras reboot sin revalidar; inicial+cinco reintentos2/4/8/16/30s+jitter0–20%/Retry-After mayor íntegro, contador/plazos durables y pausa sin borrar. Mantener ID/cuerpo tras incertidumbre y aislar dueño. Solo primer plano; no aprobación docente/agrícola, PWA/iOS, nuevas reglas, sustitutos o corrección de hechos aceptados.
+
+Avisos pendientes conservados: nueve ROP CODE_SMELL, tres S7780 de rutas Docker, nueve críticos DDL/deuda heredada. Consultar Sonar main para el cierre real S4036, sin confundir gate con cero avisos. Demo001–007 intacta, sin SQL/reinicio/aplicar008; C usará datos ficticios aislados. CSV ya exportado/analizado, soporte pendiente de presentación/dictamen; no tocar antivirus/cuarentena ni SDK señalado. Los cortes inferiores son históricos.
+
+
+
+### Cortes históricos reconciliados
+
+## Estado vigente — B probado en Android físico, 2026-11-19
+
+Rama activa **feat/android-sesion-sqlite**, base main **18d57e9**. [B: implementación, pruebas y límites](incremento-B-android.md), [SDK independiente](sdk-android-independiente.md). Sesión nativa y SQLite privados implementados; nueve casos de aceptación Android y uno de preparación aprobados, diez unitarias/análisis/APK aprobados. Puertos locales confirmación/ACK de B implementados y probados; no se afirma C/interfaz de captura/replay ni toda la matriz NA/SB. PR9 sigue borrador documental. [PR13 de B](https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/pull/13) abierto sin fusionar. Base de codigo db913b6; Sonar inicial rechazo17 hallazgos, corregidos sin suprimir ni bajar el gate (R8/firma release y generacion PFX, ademas de plantilla/auxiliares). Release ofuscada compila sin firma debug; aviso DWARF y limites documentados. Comprobar checks de la cabeza posterior; no usar como resultado actual el fallo de db913b6.
+
+**ROP/#11** abierto/listo para revisar, sin fusionar, **5f738c8**.28962fe revisado sin defecto funcional nuevo; siete pruebas enfocadas aprobadas y nueve CODE_SMELL conservados/documentados. Verify/Compose/Sonar aprobados de5f738c8. El cuerpo del PR ya señala que el CSV está exportado y que el servicio local3041 no se afirma activo.
+
+**Vulnerabilidad main**: S4036, scripts/verify-compose.js:27, Docker seleccionado por PATH; exposición local/CI, no endpoint ROP. Corrección separada [PR12](https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/pull/12), **eeaa763**, verify/Compose/Sonar aprobados,31 unitarias y mutación detectada. Ruta canónica fija + propietario/permisos Linux o firma/ACL Windows; sin PATH/fallback. Main sigue **18d57e9**,123 avisos/una vulnerabilidad hasta integración autorizada y reanálisis. Tres S7780 menores nuevos en literales de ruta del PR12 siguen pendientes; no se silencian. Nueve críticos DDL y deuda restante continúan; no reescribir migraciones.
+
+**Incidente anterior** pendiente de soporte: CSV ya exportado/analizado, borrador privado actualizado con nueva instalación/análisis y anterior conservado. No se envió nada, ejecutó el SDK señalado o cambió antivirus. Nuevo SDK oficial independiente analizado antes de ejecutarse; análisis negativos/checksums no son dictamen del incidente anterior. Siguiente paso manual: presentar el caso privado al soporte y conservar identificador/respuesta, no exportar otra vez.
+
+Demo001–007 intacta. Solo backend B HTTPS3042/PGlite nueva001–008, datos ficticios; ni demo.env ni Docker/respaldos/recuperación se repitieron. Sin traslado D: o copia nueva del repositorio. Revisar procesos existentes antes de arrancar otro backend.
+
+## Histórico — los cortes siguientes no sustituyen el estado vigente
 ## Estado vigente — consolidación autorizada y decisiones C
 
 2026-11-19, Lima. #12 integrado por merge conservando eeaa763 en main320e8bc; verify/Sonar aprobados y Compose en comprobación. Rama de trabajo feat/reporte-operativo-rop01 actualizada con ese main, conservando ambos historiales; único conflicto documental reconciliado sin descartar decisiones. No hay cambios del comportamiento ROP: se conserva su revisión de permisos/precisión/fechas/cursor/duplicados. Comprobar los checks de su cabeza actualizada antes de integrar #11.

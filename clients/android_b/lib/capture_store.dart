@@ -30,6 +30,21 @@ class QueueItem {
     'needs_login' => 'Requiere autenticación',
     _ => 'Conflicto/error',
   };
+  String? get action {
+    if (state == 'needs_login') {
+      return 'Cierra sesión e inicia online con el mismo usuario; se conservan los pendientes.';
+    }
+    if (state != 'intervention') return null;
+    return switch (code) {
+      '403' => 'Solicita restablecer el permiso y después pulsa Sincronizar.',
+      '404' => 'Solicita restablecer la asignación de la parcela y después pulsa Sincronizar.',
+      '409' =>
+        'Requiere revisión del conflicto. No cambies el ID ni el contenido.',
+      'RETRY_EXHAUSTED' =>
+        'Pulsa Sincronizar para otro ciclo con el mismo ID y contenido.',
+      _ => 'Requiere revisión del error; se conserva el original.',
+    };
+  }
 }
 
 class CaptureStore {

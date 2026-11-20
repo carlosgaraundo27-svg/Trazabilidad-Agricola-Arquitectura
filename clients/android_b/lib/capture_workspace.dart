@@ -69,7 +69,7 @@ class CaptureWorkspace extends StatelessWidget {
                 '${row.fields['quantity'] ?? ''} ${row.fields['unit'] ?? ''} · ${row.label}',
               ),
               subtitle: Text(
-                '${row.id}\n${row.fields['harvestedAt'] ?? ''}\nIntentos: ${row.attempts}${row.code == null ? '' : ' · ${row.code}'}',
+                '${row.id}\n${row.fields['harvestedAt'] ?? ''}\nIntentos: ${row.attempts}${row.code == null ? '' : ' · ${row.code}'}${row.action == null ? '' : '\n${row.action}'}',
               ),
               isThreeLine: true,
               onTap: () => Navigator.of(context).push(

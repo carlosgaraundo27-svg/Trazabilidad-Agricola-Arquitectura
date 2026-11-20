@@ -1,5 +1,14 @@
 # Matriz de cumplimiento del trabajo final — 16 criterios transcritos
 
+## Corte vigente — B Android, ROP revisado y seguridad separada
+
+2026-11-19: main18d57e9 con #7/#8/#10 integrados/checks aprobados;123 avisos Sonar, una vulnerabilidad. ROP/#11 en5f738c8 abierto y aprobado, nueve CODE_SMELL conservados. S4036 Docker/PATH corregida separadamente en PR12/eeaa763 con checks aprobados, sin fusionar ni cerrar todavía el hallazgo de main; tres S7780 menores del PR12 pendientes. No se bajaron gates ni reescribieron DDL.
+
+[B](incremento-B-android.md): sesión nativa/SQLite privados implementados en rama propia, nueve casos nativos de aceptación+uno preparatorio aprobados en HONOR Android16/API36, diez unitarias/análisis/APK aprobados. [SDK independiente verificado/analizado](sdk-android-independiente.md), anterior no ejecutado. No se atribuye código a PR9 documental/en borrador. Puertos locales confirmación/ACK de B implementados y probados. C/interfaz de captura, worker y pruebas de restauración/pérdida física de clave no se declaran implementados/validados. No completa todo RF offline por ese resultado.
+
+CSV Kaspersky ya exportado/analizado; borrador privado actualizado, pendiente presentar al soporte y conservar caso/dictamen. Análisis negativo nuevo no resuelve incidente anterior. Demo001–007 intacta; B usa nueva base aislada001–008 y datos ficticios. Los cortes inferiores son históricos y no reabren respaldos, integraciones o exportaciones ya terminados.
+
+
 Actualización: 2026-11-18. Fuente: **“transcripción proporcionada por el estudiante; pendiente de cotejar con el PDF original”**. Se conserva el orden y la redacción de los 16 criterios recibidos. **No se ha leído el PDF original** en esta sesión. No se atribuye aprobación docente ni se inventan ponderaciones, notas o requisitos adicionales. Esta matriz sustituye las áreas provisionales P01–P16 del seguimiento anterior.
 
 Los estados son una **autoevaluación técnica del alcance indicado**: cumplido = evidencia suficiente para ese alcance; parcial = parte existe, con brecha concreta; pendiente = capacidad/evidencia ausente o interpretación por confirmar. “Cumplido” no significa que todos los RF estén implementados ni que la docente haya aceptado la entrega. Las siguientes tareas son propuestas técnicas para cerrar brechas, no condiciones adicionales atribuidas a la rúbrica.

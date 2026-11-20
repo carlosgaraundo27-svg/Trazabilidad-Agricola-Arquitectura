@@ -2,6 +2,10 @@
 
 **B sigue como preparación documental.** #9 se mantiene en borrador, sin implementación/validación Android. No se ejecutó el SDK señalado, restauró cuarentena, añadió exclusión o desactivó protección. No se envió reporte o muestra en nombre del propietario.
 
+**Estado actualizado:** El CSV ya fue exportado y analizado; original y copia privada verificados y conservados fuera de Git. El pendiente es presentar el caso al soporte Kaspersky con el borrador privado, conservar número de caso y dictamen. No repetir la exportación, enviar el informe automáticamente, restaurar cuarentena o cambiar protecciones.
+
+**Corte histórico de procedencia y evaluación anterior:**
+
 Se preparó el borrador privado .local/sonar-reportes-20261119/BORRADOR-SOPORTE-KASPERSKY.md. Incluye procedencia/versiones/hashes y distingue hechos de campos ausentes. No contiene credenciales, cookies, tokens o dumps del proyecto. La búsqueda acotada de logs SDK no aportó el evento exacto del antivirus; ausencia de dart.exe no demuestra por sí sola cuarentena o falso positivo.
 
 | Dato disponible | Resultado |
@@ -31,6 +35,8 @@ La ruta histórica con /flutter/releases/releases_windows.json devolvió404. Se 
 
 Antes de cualquier ejecución futura: resolver el incidente con evidencia, verificar el archivo descargado contra el catálogo y su procedencia, analizar el artefacto alternativo con protecciones activas y revisar compatibilidad. Ningún checksum, HEAD200 o cambio de versión sustituye el análisis antivirus. No se usa otro entorno para eludir Kaspersky.
 
-## Único paso manual actual
+## Pendiente actual: presentar el caso al soporte
 
-**Exportar desde Informes de Kaspersky el evento exacto referente a dart.exe**, guardándolo de forma privada bajo .local/sonar-reportes-20261119/evento-kaspersky.txt o el formato que ofrezca el producto. Debe conservar fecha/zona, detección, acción, ruta/hash y producto/firmas. Esa exportación completa los campos ausentes del borrador; no enviar el reporte automáticamente ni restaurar el archivo. [Datos que solicita soporte](https://support.kaspersky.com/common/error/other/15332).
+El CSV ya fue exportado y analizado; original y copia privada verificados y conservados fuera de Git. El pendiente es presentar el caso al soporte Kaspersky con el borrador privado, conservar número de caso y dictamen. No repetir la exportación, enviar el informe automáticamente, restaurar cuarentena o cambiar protecciones.
+
+El borrador .local/sonar-reportes-20261119/BORRADOR-SOPORTE-KASPERSKY.md incorpora la evidencia recibida y sus límites. No se publica el CSV, sus eventos o datos del equipo. Los datos de herramientas anteriores son históricos; la nueva autorización permite preparar un SDK oficial independiente y analizarlo antes de ejecutarlo, sin considerar checksum/análisis negativo como dictamen del incidente anterior.

@@ -1,5 +1,13 @@
 # Preparación B — sesión nativa Android y SQLite
 
+## Corte vigente — herramientas disponibles y primera implementación nativa
+
+[Resultados B](incremento-B-android.md): cliente en clients/android_b, nueve casos nativos de aceptación y uno preparatorio aprobados en HONOR Android16/API36, diez unitarias/análisis/APK aprobados. Herramientas oficiales independientes preparadas, verificadas y analizadas antes de ejecutar; [procedencia y límites](sdk-android-independiente.md). Android toolchain/licencias/teléfono aprobados por doctor. Puertos SQLite confirmación/ACK de B implementados y probados; no está implementado C ni se declara cubierta toda NA/SB: worker y pruebas de restauración/pérdida física de clave siguen fuera de lo acreditado. PR9 se conserva en borrador documental; código en rama B propia desde main18d57e9.
+
+El CSV ya está exportado/analizado; soporte pendiente de presentación/dictamen, no de otra exportación. Borrador privado actualizado sin envío. SDK señalado intacto/sin ejecutar. Demo001–007 intacta; backend B aislado HTTPS3042/001–008/datos ficticios. Las tablas/notas siguientes conservan el diseño y la evidencia histórica, no el estado actual de instalación.
+
+## Diseño e inspección históricos
+
 2026-11-19. Diseño y contratos para implementar después de resolver el incidente SDK. **No es un cliente implementado ni una prueba Android ejecutada.** A se revisa en [PR #8](https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/pull/8), dependiente de [#7](https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/pull/7); ambos quedan abiertos. B partirá de A en una rama propia, sin mezclar su código con Inventario. [Plan A–D](../03-diseno-de-software/10-plan-incrementos-offline.md), [O5/O6/O9 y NA-01–08](../03-diseno-de-software/08-especificacion-offline-cosecha.md). Sus políticas pendientes no se aprueban por silencio.
 
 ## Herramientas observadas, sin ejecutar SDK
@@ -15,7 +23,7 @@
 
 El ZIP/hash registrado de Dart es evidencia de transferencia, no de seguridad. No se ejecutó/restauró el SDK señalado ni se cambiaron exclusiones, cuarentena o antivirus. No existe informe del proveedor que cierre el incidente en la evidencia revisada.
 
-**Siguiente acción ejecutable por el propietario:** abrir los informes/detalles del evento de Kaspersky y exportar el evento del archivo Dart: nombre exacto de detección, fecha, ruta, acción, hash si está disponible, versión del producto y fecha de firmas. Conservarlo privado. Actualizar firmas desde el producto y tramitar el evento y la procedencia oficial con soporte del proveedor; si se utiliza OpenTip, revisar sus condiciones y consultar primero el hash. No subir automáticamente archivos, restaurar cuarentena ni añadir exclusiones. Registrar identificador de caso y dictamen; una descarga oficial o hash coincidente no cierra el incidente. El procedimiento del proveedor solicita el evento, versión y origen del archivo: [Kaspersky, bloqueo de aplicación](https://support.kaspersky.com/common/error/other/15332). No se envió ninguna consulta/muestra en esta tarea.
+**Siguiente acción del propietario:** presentar el caso al soporte Kaspersky por canal privado, utilizando el borrador actualizado. El CSV ya fue exportado y analizado; original y copia privada verificados y conservados fuera de Git. El pendiente es presentar el caso al soporte Kaspersky con el borrador privado, conservar número de caso y dictamen. No repetir la exportación, enviar el informe automáticamente, restaurar cuarentena o cambiar protecciones. El SDK oficial nuevo requiere procedencia/checksum, inspección de scripts y análisis Kaspersky actualizado del ZIP y de la instalación antes de ejecutarse; el SDK señalado permanece intacto y no se ejecuta. No publicar informes/muestras ni aceptar un checksum como resolución de la alerta.
 
 Después de resolverlo: adquirir una distribución oficial verificada y sin detección activa; registrar URL, versión, SHA y resultado del análisis. Usar una ubicación de herramientas separada del SDK señalado, en C:, sin duplicar este repositorio. Preparar Android SDK/platform-tools y JDK compatible según la versión seleccionada; revisar licencias personalmente. Solo entonces ejecutar doctor y devices y registrar dispositivo/Android y herramientas. [Instalación Flutter](https://docs.flutter.dev/install/manual), [entorno Android](https://docs.flutter.dev/platform-integration/android/setup). No se ejecuta hoy ese flujo.
 

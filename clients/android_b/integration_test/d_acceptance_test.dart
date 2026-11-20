@@ -11,6 +11,7 @@ import 'package:trazabilidad_android_b/session.dart';
 
 import 'c_sync_test.dart' show makeC, capture, closeC, control;
 import 'support.dart';
+import 'd_physical_cases.dart';
 
 Future<File> marker(String name) async =>
     File('${await getDatabasesPath()}/d-$name.json');
@@ -261,103 +262,12 @@ void main() {
         'window': c.profile!.window.toJson(),
         'preparedAtUtc': DateTime.now().toUtc().toIso8601String(),
       });
-    } else if (phase == 'verify-reboot-offline') {
-      final old = await readMarker('reboot');
-      await c.boot();
-      await c.pause();
-      final stamp = await c.clock.now();
-      expect(stamp.boot, greaterThan(old['clock']['boot'] as int));
-      expect(c.session.state, SessionState.offline);
-      final row = c.rows.singleWhere((r) => r.id == old['id']);
-      expect(row.state, 'pending');
-      expect(row.attempts, 0);
-      expect(row.payload, old['payload']);
-      expect(await c.canConfirm(), false);
-      await expectLater(
-        c.confirm(old['probeId'] as String),
-        throwsA(
-          isA<SessionFailure>().having(
-            (e) => e.kind,
-            'kind',
-            Failure.needsLogin,
-          ),
-        ),
-      );
-      expect(c.rows.singleWhere((r) => r.id == old['probeId']).state, 'draft');
-      await writeMarker('reboot-offline-verified', {
-        'id': row.id,
-        'bootBefore': old['clock']['boot'],
-        'bootAfter': stamp.boot,
-        'pendingPreserved': true,
-        'confirmationBlocked': true,
-        'clock': stamp.toJson(),
-      });
-    } else if (phase == 'verify-reboot-online') {
-      final old = await readMarker('reboot');
-      await c.login('campo-c@example.test', fixturePassword);
-      await c.pause();
-      final row = c.rows.singleWhere((r) => r.id == old['id']);
-      expect(row.state, 'accepted');
-      expect(row.attempts, 1);
-      expect(row.payload, old['payload']);
-      final remote = await control('', id: row.id, counts: true);
-      expect((remote['rows'] as List).length, 1);
-      expect(remote['rows'][0]['audits'], 1);
-      final window = c.profile!.window;
-      expectTotals(
-        old['totals'] as Map<String, dynamic>,
-        await control('', totals: true),
-        1,
-      );
-      await writeMarker('24h', {
-        'probeId': old['probeId'],
-        'owner': c.session.owner!.key,
-        'window': window.toJson(),
-        'expiresAtUtc': window.serverTime
-            .add(const Duration(hours: 24))
-            .toIso8601String(),
-        'clock': (await c.clock.now()).toJson(),
-        'state': 'pending-real-time',
-      });
-    } else if (phase == 'verify-24h-offline') {
-      final old = await readMarker('24h');
-      await c.boot();
-      await c.pause();
-      final now = await c.clock.now(),
-          window = OfflineWindow.fromJson(
-            old['window'] as Map<String, dynamic>,
-          );
-      expect(
-        window.stamp.sameBoot(now),
-        true,
-        reason: 'Reinicio invalida el ensayo de transcurso24h',
-      );
-      expect(
-        now.elapsedMs - window.stamp.elapsedMs,
-        greaterThanOrEqualTo(OfflineWindow.duration.inMilliseconds),
-      );
-      expect(
-        c.profile!.window.toJson(),
-        old['window'],
-        reason: 'No validar online durante el ensayo',
-      );
-      expect(await c.canConfirm(), false);
-      await expectLater(
-        c.confirm(old['probeId'] as String),
-        throwsA(
-          isA<SessionFailure>().having(
-            (e) => e.kind,
-            'kind',
-            Failure.needsLogin,
-          ),
-        ),
-      );
-      expect(c.rows.singleWhere((r) => r.id == old['probeId']).state, 'draft');
-      await writeMarker('24h-verified', {
-        'clock': now.toJson(),
-        'confirmationBlocked': true,
-        'sameAnchor': true,
-      });
+    } else if ([
+      'verify-reboot-offline',
+      'verify-reboot-online',
+      'verify-24h-offline',
+    ].contains(phase)) {
+      await runPhysicalCase(c, phase);
     } else {
       fail('D_PHASE inválido');
     }

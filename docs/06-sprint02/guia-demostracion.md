@@ -2,7 +2,7 @@
 
 ## Qué puede ejecutarse en esta preparación
 
-Todo parte de la raíz del repositorio. Código medido: `2758271ad96aa8735f35644efe42b2a02a9ff539`; comparar antes de reutilizar resultados en otra cabeza. El [manifiesto](evidence/2758271ad96aa8735f35644efe42b2a02a9ff539/verification.json) permite verificar hashes.
+Todo parte de la raíz del repositorio. [Evidencia por SHA](evidence/README.md) y [mediciones ejecutadas](mediciones-ejecutadas.md) fijan código/entorno. Comparar antes de reutilizar resultados en otra cabeza. El manifiesto local02ca registra hashes; CI usa PostgreSQL dedicado validado, nunca servicios heredados.
 
 En Windows usar `npm.cmd` porque la política de PowerShell bloquea `npm.ps1`; no cambiar esa política. Las pruebas aisladas ya ejecutadas se reproducen con:
 
@@ -20,6 +20,10 @@ No ejecutar en esta máquina `npm ci`, build, integración, E2E, Docker, Redis/k
 
 ## Laboratorio: exclusivamente otra máquina/runner
 
+Ruta automática ya ejecutada: el job laboratory de `.github/workflows/ci.yml` llama al workflow reutilizable `sprint02-measurements.yml` en runner GitHub-hosted. `node scripts/sprint02/run-lab.js` rechaza ejecución fuera de ese entorno; crea credenciales efímeras, aplica guardas de base/puertos, mide y detiene escalada ante límites. Artifacts `sprint02-measurements-<head-SHA>` y `lab-coverage-<head-SHA>`30d; Jest HTML/LCOV14d. Descargar los del mismo SHA y preservar fallos/exit99; no repetir etapas superiores tras429.
+
+La receta manual siguiente requiere un host independiente y credenciales nuevas; no ejecutarla aquí. No falsificar variables GITHUB_ACTIONS/RUNNER_ENVIRONMENT para eludir el guard del orquestador.
+
 Las instrucciones siguientes son para Linux/Bash con Node24, npm, Docker Compose y k6 instalados. No se han ejecutado contra esta máquina. Usar el checkout del candidato en el runner, sin mover documentos históricos. Registrar SO, CPU/RAM/disco, versiones, SHA, digests de imágenes y fecha. Revisar que el runner no use teléfono, volúmenes, servicios ni backend del ensayo. Si no se puede garantizar, **posponer**.
 
 ```bash
@@ -30,18 +34,19 @@ docker compose version
 k6 version
 npm ci --ignore-scripts
 npm run build
-docker compose -f scripts/sprint02/compose.yaml up -d --wait db redis
+export SPRINT02_PG_PASSWORD=$(node --input-type=module -e "import {randomBytes} from 'node:crypto'; process.stdout.write(randomBytes(32).toString('hex'))")
+export SPRINT02_DATABASE_URL="postgres://sprint02:${SPRINT02_PG_PASSWORD}@127.0.0.1:55442/sprint02_lab"
 export SPRINT02_INDEPENDENT_HOST=true
-export SPRINT02_DATABASE_URL='postgres://sprint02:fiction_lab_only@127.0.0.1:55442/sprint02_lab'
+docker compose -f scripts/sprint02/compose.yaml up -d --wait db redis
 export SPRINT02_REDIS_URL='redis://127.0.0.1:56382'
 read -rs -p 'Contraseña ficticia nueva para las cuentas de este laboratorio: ' SPRINT02_DEMO_PASSWORD
 export SPRINT02_DEMO_PASSWORD
-export SPRINT02_LOTS=10
+export SPRINT02_LOTS=100
 node scripts/sprint02/prepare-lab.js
 node scripts/sprint02/analyze-postgres.js
 ```
 
-La contraseña de PostgreSQL del Compose es ficción pública local, nunca reutilizarla. Elegir contraseña demo ficticia de al menos12 caracteres, conservarla solo en entorno privado y no en archivos entregables. El preparador exige base vacía: aplica migraciones actuales y semillas ficticias mediante servicios, crea10 publicaciones y4 despachos ROP y marcador sintético. No borra ni repara otra base; si falla, preservar log y revisar antes de reintentar. Aumentar escala requiere otra base/volumen de laboratorio autorizado y actualizar configuración/guardas en una revisión separada; no reutilizar datos de la demo o del ensayo. Los scripts actuales limitan el nombre/puerto para prevenir destinos accidentales.
+La contraseña PostgreSQL es aleatoria/efímera, exigida por Compose y mantenida en entorno privado; no imprimirla ni guardarla con resultados. Elegir contraseña demo ficticia de al menos12 caracteres, conservarla solo en entorno privado y no en archivos entregables. El preparador exige base vacía: aplica migraciones actuales y semillas ficticias mediante servicios, crea100 publicaciones y4 despachos ROP y marcador sintético. No borra ni repara otra base; si falla, preservar log y revisar antes de reintentar. Aumentar escala requiere otra base/volumen de laboratorio autorizado y actualizar configuración/guardas en una revisión separada; no reutilizar datos de la demo o del ensayo. Los scripts actuales limitan el nombre/puerto para prevenir destinos accidentales.
 
 Resultados no secretos en `.local/sprint02`: `lab-fixture.json` con IDs ficticios, `postgres-plans.json`, luego `cache-<modo>.json`, `k6-<etapa>.json`. Conservar logs de cada comando y su exit code, también si falla. Esos archivos no se suben automáticamente: revisar datos y copiar **solo resultados sintéticos sanitizados** a un directorio nuevo de evidencia por SHA/entorno. Nunca adjuntar bases, `.env`, cookie jars, tokens, certificados o archivos del teléfono.
 
@@ -126,7 +131,7 @@ console.log({ created: first.status, replay: replay.status, preLotId: item.id, v
 JS
 ```
 
-No es un resultado ya ejecutado ni modifica la sesión del teléfono. Si no coincide, preservar status/código público y clasificar fallo; no cambiar regla o expectativa para aprobar. La matriz completa negativa incluye sesión expirada, org/centro y CSRF: [EQ-04](validacion-atributos.md).
+Este ejemplo manual específico no se ejecutó y no modifica la sesión del teléfono; los resultados HTTP reales de sync50 se enlazan aparte. Si no coincide, preservar status/código público y clasificar fallo; no cambiar regla o expectativa para aprobar. La matriz completa negativa incluye sesión expirada, org/centro y CSRF: [EQ-04](validacion-atributos.md).
 
 ## k6 en etapas con revisión
 
@@ -151,6 +156,6 @@ Inspeccionar resultado y recursos, esperar≥60s y solo después elegir la sigui
 | QR | Publicado→consulta anónima→retirada | DTO limitado; retirada pese a caché; no mejora temporal sin medición. |
 | ROP-01 | Centro/período y tránsito/entrega | UTC/cursor/permisos; consulta operativa, no Datamart. |
 | Android | Documentos/resultados previos C/D | Captura durable y ACK único previos; **no manipular ensayo24h para grabar demo**. |
-| Calidad de software | Matriz, HTML/LCOV y faltantes | Cobertura8,48 % backend; no presentar todos los EQ como aprobados. |
+| Calidad de software | Matriz, HTML/LCOV y faltantes | Cobertura71,47 % local/71,52 % PG remoto, mismo alcance; no presentar todos los EQ como aprobados. |
 
 Guías históricas complementarias: [arranque](../../tecnologia/arranque-windows.md), [Acopio](../../tecnologia/acopio.md), [Calidad](../../tecnologia/calidad.md), [QR](../../tecnologia/publicacion-qr.md), [Inventario](../05-sprint01/inventario-implementacion.md), [Android B/C](../../clients/android_b/README.md). Son referencias de sus cortes; no ejecutar sus comandos contra el ensayo activo. El PDF Sprint2 no fija duración de exposición.

@@ -1,0 +1,532 @@
+{
+  "sourceSha": "d8227d047a6e6f35028fe4494c53924b0c151758",
+  "measuredAt": "2026-11-20T20:03:48.601Z",
+  "scope": "Servidor HTTP/PostgreSQL real en loopback de runner independiente. Cola solo en memoria: no Android, SQLite, durabilidad ni conectividad de campo.",
+  "requests": [
+    {
+      "id": "3a0802a4-e70a-47bb-985e-9e3f2e557aeb",
+      "hash": "a375185ff4e00568bfaf860b45b3c7512370696ace665d17f59e398a4879c7cb",
+      "status": 201,
+      "milliseconds": 24.189028000000008,
+      "preLotId": "f2e5a825-15e6-44b0-98d8-399ee43bfc82",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "3699b3bb-e886-40ac-b128-8a7c2fdd1d7e",
+      "hash": "c01b0a05a193fe63b62644cf4182ff46a44b0ef8d72856bf3e52bc0c111cb691",
+      "status": 201,
+      "milliseconds": 13.817156999999952,
+      "preLotId": "3b9b20f1-54cd-4efd-bdc6-33ceff44e594",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "c582dd0f-dd4d-4eb0-9f29-20b7121e5ca8",
+      "hash": "1cd8403e843e0c5b762b5f1b0ecbf63648df6c893be0d9bd01eff86fa3ed12b3",
+      "status": 201,
+      "milliseconds": 12.144509999999968,
+      "preLotId": "899d9372-4176-4a13-983b-acc23cce33fd",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "495fdbb0-fcfc-42d3-903b-04003e06b6b0",
+      "hash": "1e7b8d1b0f3e029d3a20ca34d226fc89310b7857c786313fc2a0118cb7acb53b",
+      "status": 201,
+      "milliseconds": 11.709316999999999,
+      "preLotId": "9aefdcf4-9b3e-4e56-a793-bb0238a7857c",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "68fb1641-b26e-4d04-8604-fa9081e91c03",
+      "hash": "588316b83347abf9b507313bf02886c3f63b2a2e5d702ea7fec3ac3f8501598d",
+      "status": 201,
+      "milliseconds": 11.26507799999996,
+      "preLotId": "830f5a94-0fbc-4589-a459-f34d1d21c41c",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "2c58f602-9877-4988-9fa7-c458aa34eea8",
+      "hash": "4108387e707e7ffaac90892a54344260e63a325fc7601046cd8a9455403096ea",
+      "status": 201,
+      "milliseconds": 10.331732999999986,
+      "preLotId": "1ecd5796-58b4-48c7-b234-c8583ff69410",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "a88b95d1-1a39-4e68-921f-758134803211",
+      "hash": "d737c27886c4e6cdd8fd8f152c74cfef9579a954738bb77b01822201172b8bd1",
+      "status": 201,
+      "milliseconds": 10.817462999999975,
+      "preLotId": "5c669c7c-0934-414f-acb0-0506dc048fd1",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "00a17971-87e3-4515-b09f-25743913b186",
+      "hash": "2c8b608371cd92b8b74c5f772cd28f5e4f91fc08ff89d9552dcaa2f9d575a78d",
+      "status": 201,
+      "milliseconds": 10.61745000000002,
+      "preLotId": "98bc9867-2681-4ae5-83bb-7b9ca8e15902",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "426a2b97-4fb7-498d-a24c-1ea6b6af1bb5",
+      "hash": "5958691ee1fa4843a916733eb7c9035d383aa3845c4f6156a6f512342b529f8d",
+      "status": 201,
+      "milliseconds": 10.515183999999977,
+      "preLotId": "50130f10-d0e1-459a-a0a0-5c69857ed5a4",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "89d00629-f424-4bd7-911c-478c811f531c",
+      "hash": "e8fd4d7f17704daf9da095a295e9e6523257d6071db801d499062b563eb80233",
+      "status": 201,
+      "milliseconds": 8.38372899999996,
+      "preLotId": "5bfe3ee0-6e0b-41b9-8b7b-047bf68f30b7",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "aa199a52-6771-48a6-8c4b-727700af1e7c",
+      "hash": "079236c7472dca5b1c7e8fbc9ff63706417e1a0d5395a506bf758682f4af3695",
+      "status": 201,
+      "milliseconds": 7.828258000000005,
+      "preLotId": "fbec2152-91a3-4906-923d-681534005e00",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "786f048d-a6cd-4db3-8d42-42db7426c08a",
+      "hash": "25d87d650d43c9661118675158dd9e7c1a1790642c9541a77a2c69e3f6407edf",
+      "status": 201,
+      "milliseconds": 7.395379999999989,
+      "preLotId": "555e51c1-016c-4631-b4c4-b0d4b469760e",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "f5547479-b1a6-43dd-a383-aa4981ff61ee",
+      "hash": "a5557e44a6b59b9db1a22a7b790c66807df5d8e641f14ea9c5cbc8b4894f6aec",
+      "status": 201,
+      "milliseconds": 7.741552000000013,
+      "preLotId": "8a22af63-7918-4cfc-9efb-1747ae5240c4",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "8dee71ca-2b97-42ef-bd10-6bbbbb90a957",
+      "hash": "3979ebc3e0f99cd6c6241739dd3baa3e347189a65c99b3906c1748cb23fef44b",
+      "status": 201,
+      "milliseconds": 7.592355999999995,
+      "preLotId": "319946d2-93eb-4c96-8051-731d6278ec06",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "f63a1e55-4eae-49d0-8249-f0d582e0407c",
+      "hash": "375baf8df78e4ff9b3e25d3ac64e549c31a681585d34433182e39a4e58440c7f",
+      "status": 201,
+      "milliseconds": 7.588698000000022,
+      "preLotId": "7fd86026-489b-4803-a189-820e9f1d381b",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "731511b5-9875-4587-b66f-6643ed9e2ba5",
+      "hash": "710b181b0f22ffec3ff294c8f811533f241480a08ed08d9e37157e546a4d638c",
+      "status": 201,
+      "milliseconds": 6.287250000000029,
+      "preLotId": "b989b8d2-1e15-4a9e-81f2-12b00804e304",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "32ab4276-db63-411e-a453-45e5eb7e52bc",
+      "hash": "126399e3222502abcd44c70166e91c47063ff12f6fffc8469fd554ea23ddb354",
+      "status": 201,
+      "milliseconds": 6.366433000000029,
+      "preLotId": "5e5f7875-24b1-43ec-9e08-b77ee902f4ec",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "3fd5a2c0-ec8a-425d-8493-2467852cd214",
+      "hash": "ed11da093c8f566057634ca549656549e68443125dd4c0211d1ba872827f08d6",
+      "status": 201,
+      "milliseconds": 8.017460000000028,
+      "preLotId": "ab6ed3d9-0b78-43a6-b3b3-311cde966f26",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "7e4f5056-6d93-47b6-add0-bf1892621d9b",
+      "hash": "61eb6ded67efb9a08a421b4c652f9c557adb0f6ee42f7eae2ab9ef576f67a212",
+      "status": 201,
+      "milliseconds": 6.314633000000015,
+      "preLotId": "60fce519-dee0-4920-97e3-d12d9d72e3df",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "8ac1bbc5-dcae-4ec0-b84c-f67a1443922f",
+      "hash": "1c01e5bbe7d722d1891579fc8ee6b7616ccc0f078992e11d4d2c877d005dd3ff",
+      "status": 201,
+      "milliseconds": 6.564241000000038,
+      "preLotId": "396a4c61-b1d0-4d98-9da2-d88667330909",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "a5394c07-8277-40c6-b49a-28dffd14825a",
+      "hash": "b1113981c235d5a2ce8cf1902c05af575f6bb0ecac671b21e71d732ae52e3af7",
+      "status": 201,
+      "milliseconds": 6.585431000000028,
+      "preLotId": "a4e79d17-4a17-45d8-9e2c-5d1680758934",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "dd4290ee-83de-4072-81e1-92eebbafeb3e",
+      "hash": "e6ae3ee19b3227f86e48300f8d0ba96228c7d44cf9e0d81faa73b01175c67116",
+      "status": 201,
+      "milliseconds": 7.058043999999995,
+      "preLotId": "e5f44e96-9b40-4b14-a88f-d542b573c975",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "51de3b4d-d1c1-4d7e-8fb6-e3fe08d5ade5",
+      "hash": "e03c7c39b864e160e541f44cf6443289961debedfa2de59fb8d38c791dfc8494",
+      "status": 201,
+      "milliseconds": 6.606070000000045,
+      "preLotId": "00468d94-6531-4287-b85e-370eed0f74ec",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "f689a3fd-6025-4f6c-a2ba-cc009989090b",
+      "hash": "2e0694b455c43bc21ae305a3e54d64558a7d631baf223b901d892321c5522a4f",
+      "status": 201,
+      "milliseconds": 6.636909000000003,
+      "preLotId": "0639d74d-d4c9-466a-8d8a-4e5f8ef18a56",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "61bde7df-d4e2-4edf-a9b1-bbc492b50190",
+      "hash": "743a8c890f8115d8e99b00cacda6d5127d005f27d2f55995be97aaf8e39640d8",
+      "status": 201,
+      "milliseconds": 6.252844000000039,
+      "preLotId": "14f5ac50-5d1d-40e0-8928-933f17240700",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "68e5826e-ecf2-482e-9272-721be1e5a8cb",
+      "hash": "621e3beb2f566b6294d751cbae83ea1ea21b0d0abe29112ac851242cc70bd54f",
+      "status": 201,
+      "milliseconds": 6.056960000000004,
+      "preLotId": "960a8577-0d2e-4282-848d-cc01f411b8cb",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "e66a09da-f884-445b-8bea-059c87c7770f",
+      "hash": "5e0f4062f22f78a58c2a4044eafe61b9dc3d9d3e7196c39735a554329e46df19",
+      "status": 201,
+      "milliseconds": 6.449170000000038,
+      "preLotId": "1e3e7ec6-00dc-4d2d-a088-543cdf5a38c0",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "d295baa8-82c9-4d4e-83e5-240a9fed1f03",
+      "hash": "44027d47886cfc25c9be01891c44bcf6a25890b001d4ce828a1eb457035178bb",
+      "status": 201,
+      "milliseconds": 6.794640000000015,
+      "preLotId": "64090b2e-9054-4d35-ac88-1f7b7ce109d4",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "24ebf35b-77ed-40f5-ba57-1294cd1ed576",
+      "hash": "ae8b8f7e45ebcc8119264d2f54db940a6280cf0a5ad04321e5814f7003db571a",
+      "status": 201,
+      "milliseconds": 6.844727000000034,
+      "preLotId": "8ec266fa-6178-4391-81f8-c7455cb4ab28",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "18ac5d1c-564f-445f-b4c3-326937145482",
+      "hash": "e14c34b3dcef7dceea737bed62918113468be263c270f40710f103867de0a786",
+      "status": 201,
+      "milliseconds": 6.515647000000001,
+      "preLotId": "dc37cf80-ca8c-4358-9fd4-7a2447fa3705",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "25a69b1e-0297-44a2-bc6d-2d78b7fd30c9",
+      "hash": "1c5d2c0e8ccca962586dda04982d713af1cc3d5e7a269a82d33ea7204e0df4ad",
+      "status": 201,
+      "milliseconds": 6.4871930000000475,
+      "preLotId": "10ff5860-8c9e-47d1-a60d-fea9f7092c3c",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "76d4f515-da0c-49d6-a238-329fb773d400",
+      "hash": "7399666fc709b73aa4431e455769ed27b7d9757297bb38d64651b25ca3b075b3",
+      "status": 201,
+      "milliseconds": 6.430345000000102,
+      "preLotId": "52edefd5-968c-4c13-8b78-691b35275c88",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "9d7bd6ff-3bee-4132-8b0a-e1a76ab04e56",
+      "hash": "37f6689644ee366fdcf69d94ea9de207e7ea41d2ea228a82e98af86a0ee5d36c",
+      "status": 201,
+      "milliseconds": 6.492503000000056,
+      "preLotId": "bdc8a60c-fd96-4878-8c36-4d4d11cf22c4",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "03e1cf29-0701-4639-9477-1e4776cf325f",
+      "hash": "7c6bb440dedf1422fba583fafa11ac39994e497e807d5cd4155380fe08703463",
+      "status": 201,
+      "milliseconds": 7.451908000000003,
+      "preLotId": "f2e10bc2-8310-435f-85b9-1398cb2e2dba",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "1e2af933-f51f-4ec9-92d9-3b854b9d84e2",
+      "hash": "367266eabe4a385b21e37c366b4f055a49a2a05e57a39106dff5fda4658d2bfb",
+      "status": 201,
+      "milliseconds": 5.75214799999992,
+      "preLotId": "c8f04a6a-7e46-4cbf-9544-246190376c93",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "9041c84a-6626-4167-be72-7a70fb772013",
+      "hash": "22a85cb468db95db597df4e9fc4029dc5647130e66561b9bf124ad38059d2bf6",
+      "status": 201,
+      "milliseconds": 5.819796999999994,
+      "preLotId": "41aa7bb7-581f-4899-b9bb-cc93c0430d42",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "318fa669-40f9-4b2d-b2a2-84dcedf822c0",
+      "hash": "7cd4c4747d57a461c91f7b0ce05ee058a18bfc5f656e93fa4f83654d90276278",
+      "status": 201,
+      "milliseconds": 8.029361999999992,
+      "preLotId": "08583da8-e9c1-4cba-b1a7-a93be55cbea9",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "bd722c5f-a226-4759-968a-afdf9b7de5c2",
+      "hash": "ae17ca7de6eaf894012c5e05c00e9aa61bddefe46c6b71e55681f9cdac402316",
+      "status": 201,
+      "milliseconds": 6.158203999999955,
+      "preLotId": "e4c8672e-b083-47d2-9d19-0b0674d5e7e2",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "9e268907-c69b-49be-b6a2-c8c4f9339b05",
+      "hash": "6869ec59b8aafdc66240233be8962c93c7af94405ee4150943ca3697f55e2a08",
+      "status": 201,
+      "milliseconds": 6.585470999999984,
+      "preLotId": "60347c50-1781-453e-9267-09c9f6ac9d76",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "1d33dd45-d856-4c80-9d0a-4fbb863d6c7b",
+      "hash": "aab8cb4f5e3d12e2570397d6b88b697173c7186fd8dc90aceeccf3056fdc07a2",
+      "status": 201,
+      "milliseconds": 6.21296899999993,
+      "preLotId": "08fe6085-efda-4f93-b851-f43be78d9065",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "514673bd-2434-40eb-b58c-c3ea2f774437",
+      "hash": "1ab36adda8e8dc1063cddbad94b4aa3689108d96ed5c59cec101dc61c7828be2",
+      "status": 201,
+      "milliseconds": 6.318690999999944,
+      "preLotId": "cbb7d6aa-88ea-40aa-9123-f776dcfc408c",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "7509d627-437c-41c3-a6f0-6c3274a98ccc",
+      "hash": "475ad56922ac031c06b38ee22e5b7131f0d6ad047513711df3615d5cbfc0940c",
+      "status": 201,
+      "milliseconds": 6.321215999999936,
+      "preLotId": "f84c7f4c-12da-411b-abb6-793ba9293dbe",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "591a3b52-ba20-4d97-ba8c-4dfdb033cad1",
+      "hash": "8b6de5fb6a0c4ae963b3d737c680faae823d8cb1a192074ae9389976a40f699b",
+      "status": 201,
+      "milliseconds": 6.349749999999972,
+      "preLotId": "0eb49a15-59a5-4013-be53-7b58297fac59",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "05710e52-6982-41e5-bb8a-c20d35cdc1c2",
+      "hash": "3ce1d3ed15e948681b73ffdc854ea60277ec8e99eb303714ffa7095c5bc18bf0",
+      "status": 201,
+      "milliseconds": 6.482324000000062,
+      "preLotId": "683d3076-718f-49ef-bf64-a357837a98ef",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "abb1a9ed-4bea-4436-a83f-48920cbe3465",
+      "hash": "a2d98e8982634566104bf2654f7359b8d9b6fb9d098f5d7d2b6f63b5ecc30845",
+      "status": 201,
+      "milliseconds": 6.785572999999999,
+      "preLotId": "fd756ade-457b-4b75-b673-cf33a47eaf6d",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "f33b85d4-c298-429b-ae32-8ec80fc59d02",
+      "hash": "94cdc80300bdf0b3a8ebfb6dbee4474e935eea83895f95b5319e613ac5141fe9",
+      "status": 201,
+      "milliseconds": 6.319241999999917,
+      "preLotId": "b47445a0-ddbf-435f-b28f-a8217f1f31e9",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "2bb6e84e-9e65-46df-a59b-c90960a91c2f",
+      "hash": "08fb0ff5755a261e737cbcd06c6e195b94a4460eb027cb7f37abeb95bf2978ce",
+      "status": 201,
+      "milliseconds": 7.008089000000041,
+      "preLotId": "79cb6cea-bf02-4600-9de4-9db59d7e5621",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "7ca06239-b28a-45d6-99d0-710f392cca28",
+      "hash": "4ee372539277a72eddc655808c0cbed6a0b4f29f7133c30790d752dae91d9b3a",
+      "status": 201,
+      "milliseconds": 6.2123379999999315,
+      "preLotId": "7fb5515e-97e5-4052-a25f-7baf6eabd4b5",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "c4f558d9-9c23-420c-8501-c11f96278e2b",
+      "hash": "2f478dd6087c561fca6abf5126461b2388d4b519a9dfcffefb98f5053b6e4548",
+      "status": 201,
+      "milliseconds": 6.168002999999999,
+      "preLotId": "9a39f158-d779-459a-9293-713c55b93160",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "b5ad32e4-7e4f-4ee7-8076-1d3bae09c380",
+      "hash": "5d8648e8eec0afc8b7d2a4481f2182b830566f8f289d9ce5cd3030d33d35f185",
+      "status": 201,
+      "milliseconds": 6.074805000000083,
+      "preLotId": "cb8e88a9-eb79-4953-a699-2b9d19ab15e1",
+      "validAck": true,
+      "code": null
+    }
+  ],
+  "replays": [
+    {
+      "id": "3a0802a4-e70a-47bb-985e-9e3f2e557aeb",
+      "hash": "a375185ff4e00568bfaf860b45b3c7512370696ace665d17f59e398a4879c7cb",
+      "status": 200,
+      "milliseconds": 4.448064000000045,
+      "preLotId": "f2e5a825-15e6-44b0-98d8-399ee43bfc82",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "3699b3bb-e886-40ac-b128-8a7c2fdd1d7e",
+      "hash": "c01b0a05a193fe63b62644cf4182ff46a44b0ef8d72856bf3e52bc0c111cb691",
+      "status": 200,
+      "milliseconds": 4.612879000000021,
+      "preLotId": "3b9b20f1-54cd-4efd-bdc6-33ceff44e594",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "c582dd0f-dd4d-4eb0-9f29-20b7121e5ca8",
+      "hash": "1cd8403e843e0c5b762b5f1b0ecbf63648df6c893be0d9bd01eff86fa3ed12b3",
+      "status": 200,
+      "milliseconds": 4.225549000000001,
+      "preLotId": "899d9372-4176-4a13-983b-acc23cce33fd",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "495fdbb0-fcfc-42d3-903b-04003e06b6b0",
+      "hash": "1e7b8d1b0f3e029d3a20ca34d226fc89310b7857c786313fc2a0118cb7acb53b",
+      "status": 200,
+      "milliseconds": 4.477931000000012,
+      "preLotId": "9aefdcf4-9b3e-4e56-a793-bb0238a7857c",
+      "validAck": true,
+      "code": null
+    },
+    {
+      "id": "68fb1641-b26e-4d04-8604-fa9081e91c03",
+      "hash": "588316b83347abf9b507313bf02886c3f63b2a2e5d702ea7fec3ac3f8501598d",
+      "status": 200,
+      "milliseconds": 4.530061000000046,
+      "preLotId": "830f5a94-0fbc-4589-a459-f34d1d21c41c",
+      "validAck": true,
+      "code": null
+    }
+  ],
+  "objectiveSeconds": 60,
+  "before": {
+    "harvests": 104,
+    "prelots": 104,
+    "receipts": 0,
+    "audits": 104
+  },
+  "elapsedSeconds": 0.39392856699999995,
+  "after": {
+    "harvests": 154,
+    "prelots": 154,
+    "receipts": 50,
+    "audits": 154
+  },
+  "afterFiveReplays": {
+    "harvests": 154,
+    "prelots": 154,
+    "receipts": 50,
+    "audits": 154
+  },
+  "allAccepted": true,
+  "withinProposed60s": true,
+  "deltas": {
+    "harvests": 50,
+    "prelots": 50,
+    "receipts": 50,
+    "audits": 50
+  }
+}

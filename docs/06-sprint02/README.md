@@ -13,19 +13,20 @@ Preparación de entrega de Trazabilidad y Gestión Comercial de Palta Hass. Cort
 7. [Guía reproducible y demostración](guia-demostracion.md): comandos seguros, laboratorio externo y API.
 8. [Evidencia sanitizada por SHA](evidence/README.md).
 9. [Continuidad de esta preparación](continuidad.md).
+10. [Mediciones ejecutadas de PostgreSQL, Redis, k6 y sync50](mediciones-ejecutadas.md).
 
 | Entregable oficial | Enlace directo |
 | --- | --- |
 | Código organizado | [Arquitectura y código concreto](arquitectura-implementada.md) |
 | Versión funcional | [Guía de arranque y demostración](guia-demostracion.md) |
 | API OpenAPI/Swagger | [Contrato canónico](../03-diseno-de-software/openapi.json) |
-| Jest y cobertura | [Reporte](reporte-verificacion.md) y [evidencia CI por SHA](evidence/2758271ad96aa8735f35644efe42b2a02a9ff539/ci-remoto.json) |
+| Jest y cobertura | [Reporte](reporte-verificacion.md) y [evidencias por SHA](evidence/README.md) |
 | Validación de atributos | [EQ, análisis y pendientes](validacion-atributos.md) |
 
-Código ensayado: [`2758271ad96aa8735f35644efe42b2a02a9ff539`](https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/commit/2758271ad96aa8735f35644efe42b2a02a9ff539). Jest: 38/38; node:test: 45/45; OpenAPI/límites de imports: aprobados. Cobertura Jest del backend: **339/3997 líneas, 8,48 %**. El PDF no fija mínimo porcentual. Las pruebas anteriores se conservan.
+Código medido: **02ca31bd03dc1626bc9f0c610405b8a673c0fe07**. Jest: **83/83**; node:test: **49/49**. Mismos45 archivos/3997 líneas: **71,47 % local (2857) /71,52 % PostgreSQL remoto (2859)**, desde8,48 % (339). HTML/LCOV publicados y su importación Sonar confirmada. El gate02ca falló75,5 % nuevo<80; después [CI20be52d](evidence/20be52d72d7ebbe488a660307230d9857f44d4b5/ci-remoto.json) aprobó todos sus checks y Sonar87,1 % nuevo al ejecutar el registrador real, sin exclusiones. La cabeza documental posterior debe tener checks propios. El PDF no fija mínimo; no se debilita el gate del proyecto. Suites y alcance conservados.
 
 La rama `chore/preparacion-sprint02` parte de PR 14, cabeza `2f7a28772bed67ebcce48fec2fc9c0da54a14d99`. El [PR 15 de preparación](https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/pull/15) está publicado en borrador con base `feat/offline-captura-outbox-sync` para aislar su diff. Ambos quedan abiertos, sin fusión. Esto no convierte el incremento offline en parte de main (`0ed299ffa31cd4666e556db38762df7bd313c4bb`, consultado en GitHub).
 
-**Pendientes materiales:** mediciones PostgreSQL/Redis reales y k6 en otra máquina; matriz HTTP negativa completa; 50 pendientes en 60 s; comprobación del ensayo Android de 24 h; corte de energía; monitoreo mensual; ETL/Datamart y decisiones agrícolas pendientes. No ejecutar los procedimientos históricos de Android desde esta preparación.
+**Medido en runner aislado:** SQL/Redis reales,50 capturas servidor en0,255371 s y k6 con parada a 10 VU por 1320/1500 respuestas429 (exit99,0 5xx). No se alcanzó 2000 VU. [Resultados y límites](mediciones-ejecutadas.md). **Pendientes:** negativos HTTP completos, escala/repeticiones/recuperación Redis, carga distribuida admitida, Android50/SQLite/24h/energía, monitoreo mensual y ETL/Datamart. El teléfono y sus servicios no se intervinieron.
 
 Los documentos históricos siguen en [Sprint 1](../05-sprint01/README.md), [diseño](../03-diseno-de-software/01-diseno-interno.md) y [C4](../04-modelo-c4/modelo-c4.md). No se trasladaron ni copiaron.

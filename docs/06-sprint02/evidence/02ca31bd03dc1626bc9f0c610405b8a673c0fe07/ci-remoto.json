@@ -1,0 +1,104 @@
+{
+  "sourceSha": "02ca31bd03dc1626bc9f0c610405b8a673c0fe07",
+  "workflowRun": 44809169009,
+  "checks": [
+    {
+      "name": "compose",
+      "conclusion": "success",
+      "jobId": 136540970559
+    },
+    {
+      "name": "jest",
+      "conclusion": "success",
+      "jobId": 136540971159
+    },
+    {
+      "name": "laboratory / laboratory",
+      "conclusion": "success",
+      "jobId": 136540971509
+    },
+    {
+      "name": "verify",
+      "conclusion": "success",
+      "jobId": 136540972081
+    },
+    {
+      "name": "sonar",
+      "jobId": 136544106834,
+      "conclusion": "failure",
+      "reason": "new_coverage75.5 below existing80 gate; other conditions OK"
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 14666585799,
+      "name": "sonar-task-02ca31bd03dc1626bc9f0c610405b8a673c0fe07",
+      "size": 325,
+      "expired": false,
+      "digest": "sha256:6abdc2e2063df23c4e2b1eca50952fb0eadcb268a5467c22cf5cdb85f68f1a6d"
+    },
+    {
+      "id": 14666270567,
+      "name": "lab-coverage-02ca31bd03dc1626bc9f0c610405b8a673c0fe07",
+      "size": 20002,
+      "expired": false,
+      "digest": "sha256:6ef13d4a4cc04cb01a4a1df8c9d259272a4eaa8d97b9fe3d9c70761c2f1d4e8b"
+    },
+    {
+      "id": 14666130604,
+      "name": "sprint02-measurements-02ca31bd03dc1626bc9f0c610405b8a673c0fe07",
+      "size": 30243,
+      "expired": false,
+      "digest": "sha256:9d4f20791713edfa437d34c5d99d150f8c2b2ef955afdfb3c7f70577efffd89b"
+    },
+    {
+      "id": 14664334049,
+      "name": "playwright-results",
+      "size": 2363895,
+      "expired": false,
+      "digest": "sha256:a90281d412ef5cf55fe504100b4bbad2fee036ec46130bced90d9c5bee9498a3"
+    },
+    {
+      "id": 14663879818,
+      "name": "jest-tools-coverage-02ca31bd03dc1626bc9f0c610405b8a673c0fe07",
+      "size": 4494,
+      "expired": false,
+      "digest": "sha256:338300cf4318747241cc9eef5766f53d2a0c1186c88a1330369272126806bb8a"
+    },
+    {
+      "id": 14663538322,
+      "name": "jest-coverage-02ca31bd03dc1626bc9f0c610405b8a673c0fe07",
+      "size": 289018,
+      "expired": false,
+      "digest": "sha256:ae2841c5d96c4ba784d9ef6a168af67169a3948ddf022a422566ba905ee836dc"
+    }
+  ],
+  "jest": {
+    "passed": 83,
+    "linesCovered": 2859,
+    "linesTotal": 3997,
+    "percentage": 71.52
+  },
+  "sonar": {
+    "lcovImported": [
+      "coverage/jest/lcov.info",
+      "coverage/jest-tools/lcov.info",
+      "coverage/lab/lcov.info"
+    ],
+    "newCoverage": 75.5,
+    "gateRequiredNewCoverage": 80,
+    "security": "A",
+    "reliability": "A",
+    "maintainability": "A",
+    "newDuplication": 0,
+    "hotspotsReviewed": 100
+  },
+  "lab": {
+    "status": "completed_with_observed_limit",
+    "k6Stage10ExitCode": 99,
+    "limited429": 1320,
+    "server5xx": 0,
+    "requests": 1500
+  },
+  "reviewedAt": "2026-11-20T20:27:42.894Z"
+}

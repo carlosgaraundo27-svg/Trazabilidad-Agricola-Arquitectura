@@ -1,0 +1,2466 @@
+{
+  "sourceSha": "d8227d047a6e6f35028fe4494c53924b0c151758",
+  "sampleIntervalSeconds": 3,
+  "frames": [
+    {
+      "at": "2026-11-20T20:03:48.478Z",
+      "hostCpuPercent": 0,
+      "availableMemoryBytes": 15480496128,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 126608,
+      "containers": [
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.03,
+          "memoryPercent": 0.25,
+          "memoryUsage": "39.97MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.16,
+          "memoryPercent": 0.04,
+          "memoryUsage": "5.879MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:03:53.545Z",
+      "hostCpuPercent": 9.311540366518079,
+      "availableMemoryBytes": 15417974784,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 138568,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.33,
+          "memoryPercent": 0.07,
+          "memoryUsage": "10.43MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.03,
+          "memoryPercent": 0.26,
+          "memoryUsage": "40.95MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.14,
+          "memoryPercent": 0.03,
+          "memoryUsage": "5.578MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:03:55.555Z",
+      "hostCpuPercent": 2.0938023450586263,
+      "availableMemoryBytes": 15441620992,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 138964,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.45,
+          "memoryPercent": 0.06,
+          "memoryUsage": "9.875MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.1,
+          "memoryPercent": 0.26,
+          "memoryUsage": "41.66MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.14,
+          "memoryPercent": 0.04,
+          "memoryUsage": "5.824MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:03:59.542Z",
+      "hostCpuPercent": 1.4225941422594146,
+      "availableMemoryBytes": 15479279616,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 139360,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.84,
+          "memoryPercent": 0.06,
+          "memoryUsage": "10.05MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 5.91,
+          "memoryPercent": 0.26,
+          "memoryUsage": "41.69MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.17,
+          "memoryPercent": 0.04,
+          "memoryUsage": "5.816MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:04:01.551Z",
+      "hostCpuPercent": 2.1793797150041927,
+      "availableMemoryBytes": 15493750784,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 139604,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.46,
+          "memoryPercent": 0.06,
+          "memoryUsage": "10.21MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.08,
+          "memoryPercent": 0.26,
+          "memoryUsage": "41.57MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.15,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.051MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:04:05.545Z",
+      "hostCpuPercent": 1.5062761506276168,
+      "availableMemoryBytes": 15502544896,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 139980,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.38,
+          "memoryPercent": 0.07,
+          "memoryUsage": "10.77MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.07,
+          "memoryPercent": 0.26,
+          "memoryUsage": "41.4MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.16,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.039MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:04:07.552Z",
+      "hostCpuPercent": 2.430846605196979,
+      "availableMemoryBytes": 15501676544,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 140160,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.35,
+          "memoryPercent": 0.07,
+          "memoryUsage": "11.02MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.07,
+          "memoryPercent": 0.26,
+          "memoryUsage": "41.4MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.15,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.055MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:04:11.546Z",
+      "hostCpuPercent": 2.5083612040133763,
+      "availableMemoryBytes": 15534284800,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 140488,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.37,
+          "memoryPercent": 0.07,
+          "memoryUsage": "10.63MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.08,
+          "memoryPercent": 0.26,
+          "memoryUsage": "41.4MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.14,
+          "memoryPercent": 0.04,
+          "memoryUsage": "5.816MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:04:13.555Z",
+      "hostCpuPercent": 1.421404682274252,
+      "availableMemoryBytes": 15534645248,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 140656,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.36,
+          "memoryPercent": 0.07,
+          "memoryUsage": "10.87MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.08,
+          "memoryPercent": 0.26,
+          "memoryUsage": "41.4MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.16,
+          "memoryPercent": 0.04,
+          "memoryUsage": "5.809MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:04:17.545Z",
+      "hostCpuPercent": 2.5083612040133763,
+      "availableMemoryBytes": 15529861120,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 141008,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.73,
+          "memoryPercent": 0.07,
+          "memoryUsage": "10.89MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.08,
+          "memoryPercent": 0.27,
+          "memoryUsage": "43.87MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.15,
+          "memoryPercent": 0.04,
+          "memoryUsage": "5.832MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:04:19.555Z",
+      "hostCpuPercent": 1.4225941422594146,
+      "availableMemoryBytes": 15528718336,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 141172,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.32,
+          "memoryPercent": 0.07,
+          "memoryUsage": "10.64MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 5.8,
+          "memoryPercent": 0.28,
+          "memoryUsage": "44.33MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.15,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.07MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:04:23.545Z",
+      "hostCpuPercent": 2.591973244147161,
+      "availableMemoryBytes": 15534510080,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 146636,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.36,
+          "memoryPercent": 0.07,
+          "memoryUsage": "10.64MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.06,
+          "memoryPercent": 0.28,
+          "memoryUsage": "44.03MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.14,
+          "memoryPercent": 0.04,
+          "memoryUsage": "5.82MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:04:25.554Z",
+      "hostCpuPercent": 2.5104602510460206,
+      "availableMemoryBytes": 15531540480,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 146640,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.33,
+          "memoryPercent": 0.07,
+          "memoryUsage": "10.89MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.1,
+          "memoryPercent": 0.28,
+          "memoryUsage": "44.18MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.15,
+          "memoryPercent": 0.04,
+          "memoryUsage": "5.809MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:04:29.548Z",
+      "hostCpuPercent": 1.340033500837523,
+      "availableMemoryBytes": 15536189440,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 146652,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.35,
+          "memoryPercent": 0.07,
+          "memoryUsage": "10.65MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 5.75,
+          "memoryPercent": 0.28,
+          "memoryUsage": "44.25MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.16,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.043MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:04:31.558Z",
+      "hostCpuPercent": 2.175732217573223,
+      "availableMemoryBytes": 15526211584,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 146652,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.35,
+          "memoryPercent": 0.07,
+          "memoryUsage": "10.46MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.08,
+          "memoryPercent": 0.27,
+          "memoryUsage": "43.93MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.16,
+          "memoryPercent": 0.04,
+          "memoryUsage": "5.812MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:04:35.563Z",
+      "hostCpuPercent": 9.068010075566747,
+      "availableMemoryBytes": 15525724160,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 146652,
+      "containers": [
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.81,
+          "memoryPercent": 0.28,
+          "memoryUsage": "45.12MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.15,
+          "memoryPercent": 0.03,
+          "memoryUsage": "5.586MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:04:37.570Z",
+      "hostCpuPercent": 2.6823134953897765,
+      "availableMemoryBytes": 15544233984,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 146652,
+      "containers": [
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.01,
+          "memoryPercent": 0.28,
+          "memoryUsage": "45.01MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.15,
+          "memoryPercent": 0.04,
+          "memoryUsage": "5.836MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:04:41.546Z",
+      "hostCpuPercent": 1.087866108786606,
+      "availableMemoryBytes": 15552528384,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 146652,
+      "containers": [
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.03,
+          "memoryPercent": 0.28,
+          "memoryUsage": "45.54MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.15,
+          "memoryPercent": 0.04,
+          "memoryUsage": "5.836MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:04:43.552Z",
+      "hostCpuPercent": 1.6694490818030094,
+      "availableMemoryBytes": 15561936896,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 146652,
+      "containers": [
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.29,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.61MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.15,
+          "memoryPercent": 0.04,
+          "memoryUsage": "5.832MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:04:47.546Z",
+      "hostCpuPercent": 1.5075376884422065,
+      "availableMemoryBytes": 15565185024,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 146652,
+      "containers": [
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.03,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.61MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.14,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.082MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:04:49.553Z",
+      "hostCpuPercent": 0.8382229673092989,
+      "availableMemoryBytes": 15558479872,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 146652,
+      "containers": [
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.03,
+          "memoryPercent": 0.26,
+          "memoryUsage": "42.3MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.18,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.086MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:04:53.546Z",
+      "hostCpuPercent": 1.8394648829431426,
+      "availableMemoryBytes": 15551279104,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 146652,
+      "containers": [
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.02,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.53MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.13,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.082MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:04:55.552Z",
+      "hostCpuPercent": 0.9189640768588192,
+      "availableMemoryBytes": 15564828672,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 146652,
+      "containers": [
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 6.13,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.54MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.14,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.082MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:04:59.550Z",
+      "hostCpuPercent": 1.7543859649122862,
+      "availableMemoryBytes": 15575240704,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 146652,
+      "containers": [
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.02,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.43MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.13,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.078MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:05:01.557Z",
+      "hostCpuPercent": 1.5088013411567514,
+      "availableMemoryBytes": 15572914176,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 146652,
+      "containers": [
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.02,
+          "memoryPercent": 0.26,
+          "memoryUsage": "42.17MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.15,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.078MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:05:05.554Z",
+      "hostCpuPercent": 1.0860484544695126,
+      "availableMemoryBytes": 15567495168,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 146652,
+      "containers": [
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 5.93,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.7MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.16,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.078MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:05:07.562Z",
+      "hostCpuPercent": 1.9262981574539317,
+      "availableMemoryBytes": 15568334848,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 146652,
+      "containers": [
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.01,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.7MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.17,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.078MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:05:11.554Z",
+      "hostCpuPercent": 1.0041841004184149,
+      "availableMemoryBytes": 15566843904,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 146652,
+      "containers": [
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.02,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.5MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.16,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.078MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:05:13.561Z",
+      "hostCpuPercent": 1.5886287625418105,
+      "availableMemoryBytes": 15562227712,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 146652,
+      "containers": [
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.02,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.49MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.17,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.078MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:05:17.559Z",
+      "hostCpuPercent": 1.675041876046901,
+      "availableMemoryBytes": 15559143424,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 146652,
+      "containers": [
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.03,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.5MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.17,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.078MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:05:19.566Z",
+      "hostCpuPercent": 1.085141903171949,
+      "availableMemoryBytes": 15555272704,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 146652,
+      "containers": [
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.03,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.5MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.14,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.078MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:05:23.562Z",
+      "hostCpuPercent": 1.5912897822445538,
+      "availableMemoryBytes": 15556055040,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 146652,
+      "containers": [
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.03,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.53MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.15,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.078MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:05:25.569Z",
+      "hostCpuPercent": 0.9189640768588192,
+      "availableMemoryBytes": 15559892992,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 146652,
+      "containers": [
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 5.77,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.6MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.15,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.078MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:05:29.566Z",
+      "hostCpuPercent": 1.589958158995819,
+      "availableMemoryBytes": 15552421888,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 146652,
+      "containers": [
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.44MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.16,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.078MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:05:31.572Z",
+      "hostCpuPercent": 1.7543859649122862,
+      "availableMemoryBytes": 15557406720,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 146652,
+      "containers": [
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.47MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.15,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.078MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:05:35.571Z",
+      "hostCpuPercent": 8.793969849246231,
+      "availableMemoryBytes": 15566659584,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 146652,
+      "containers": [
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 6.07,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.58MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.15,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.082MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:05:38.582Z",
+      "hostCpuPercent": 3.6943744752308993,
+      "availableMemoryBytes": 15552684032,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 146652,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.87,
+          "memoryPercent": 0.07,
+          "memoryUsage": "11.58MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0,
+          "memoryPercent": 0.26,
+          "memoryUsage": "42MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.14,
+          "memoryPercent": 0.04,
+          "memoryUsage": "5.836MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:05:40.592Z",
+      "hostCpuPercent": 1.5062761506276168,
+      "availableMemoryBytes": 15542628352,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 146668,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.39,
+          "memoryPercent": 0.08,
+          "memoryUsage": "12.06MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 5.73,
+          "memoryPercent": 0.28,
+          "memoryUsage": "44.32MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.16,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.078MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:05:44.583Z",
+      "hostCpuPercent": 1.9279128248113953,
+      "availableMemoryBytes": 15543713792,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 146668,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.95,
+          "memoryPercent": 0.08,
+          "memoryUsage": "12.29MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.08,
+          "memoryPercent": 0.28,
+          "memoryUsage": "44.06MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.16,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.066MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:05:46.593Z",
+      "hostCpuPercent": 2.0938023450586263,
+      "availableMemoryBytes": 15536762880,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 146676,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.56,
+          "memoryPercent": 0.08,
+          "memoryUsage": "12.22MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.15,
+          "memoryPercent": 0.28,
+          "memoryUsage": "44.27MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.18,
+          "memoryPercent": 0.03,
+          "memoryUsage": "5.586MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:05:50.587Z",
+      "hostCpuPercent": 1.5075376884422065,
+      "availableMemoryBytes": 15532646400,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 146680,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.65,
+          "memoryPercent": 0.08,
+          "memoryUsage": "12.47MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 5.77,
+          "memoryPercent": 0.28,
+          "memoryUsage": "44.3MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.16,
+          "memoryPercent": 0.04,
+          "memoryUsage": "5.824MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:05:52.596Z",
+      "hostCpuPercent": 2.015113350125941,
+      "availableMemoryBytes": 15533322240,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 146716,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.71,
+          "memoryPercent": 0.08,
+          "memoryUsage": "12.73MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.19,
+          "memoryPercent": 0.28,
+          "memoryUsage": "44.19MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.18,
+          "memoryPercent": 0.04,
+          "memoryUsage": "5.84MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:05:56.590Z",
+      "hostCpuPercent": 1.5912897822445538,
+      "availableMemoryBytes": 15537569792,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 146764,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.75,
+          "memoryPercent": 0.08,
+          "memoryUsage": "12.73MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.11,
+          "memoryPercent": 0.28,
+          "memoryUsage": "44.13MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.17,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.062MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:05:58.599Z",
+      "hostCpuPercent": 2.1775544388609736,
+      "availableMemoryBytes": 15535620096,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 146788,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 1.21,
+          "memoryPercent": 0.08,
+          "memoryUsage": "12.7MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0,
+          "memoryPercent": 0.27,
+          "memoryUsage": "43.85MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.15,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.062MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:06:02.598Z",
+      "hostCpuPercent": 1.5075376884422065,
+      "availableMemoryBytes": 15547854848,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 146800,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.73,
+          "memoryPercent": 0.08,
+          "memoryUsage": "12.52MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0,
+          "memoryPercent": 0.28,
+          "memoryUsage": "44.18MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.15,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.062MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:06:04.610Z",
+      "hostCpuPercent": 2.596314907872699,
+      "availableMemoryBytes": 15593226240,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 91908,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 1.11,
+          "memoryPercent": 0.08,
+          "memoryUsage": "12.92MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0,
+          "memoryPercent": 0.28,
+          "memoryUsage": "43.98MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.17,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.062MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:06:08.593Z",
+      "hostCpuPercent": 2.5941422594142227,
+      "availableMemoryBytes": 15592964096,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 92748,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.72,
+          "memoryPercent": 0.08,
+          "memoryUsage": "13.45MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.01,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.72MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.14,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.078MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:06:10.602Z",
+      "hostCpuPercent": 1.673640167364021,
+      "availableMemoryBytes": 15593717760,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 92748,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.8,
+          "memoryPercent": 0.08,
+          "memoryUsage": "13.36MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.01,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.72MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.14,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.078MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:06:14.595Z",
+      "hostCpuPercent": 2.0134228187919434,
+      "availableMemoryBytes": 15585509376,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 92776,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.71,
+          "memoryPercent": 0.08,
+          "memoryUsage": "13.36MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.64,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.59MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.15,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.332MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:06:16.604Z",
+      "hostCpuPercent": 1.676445934618609,
+      "availableMemoryBytes": 15586189312,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 92780,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.71,
+          "memoryPercent": 0.08,
+          "memoryUsage": "13.53MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 5.76,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.64MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.14,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.332MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:06:20.596Z",
+      "hostCpuPercent": 2.0134228187919434,
+      "availableMemoryBytes": 15589826560,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 92800,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.67,
+          "memoryPercent": 0.08,
+          "memoryUsage": "13.53MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.61MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.14,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.332MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:06:22.605Z",
+      "hostCpuPercent": 2.095557418273264,
+      "availableMemoryBytes": 15592898560,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 92808,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.7,
+          "memoryPercent": 0.09,
+          "memoryUsage": "13.64MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0,
+          "memoryPercent": 0.26,
+          "memoryUsage": "42.15MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.14,
+          "memoryPercent": 0.04,
+          "memoryUsage": "5.832MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:06:26.603Z",
+      "hostCpuPercent": 1.4225941422594146,
+      "availableMemoryBytes": 15597666304,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 92896,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.61,
+          "memoryPercent": 0.09,
+          "memoryUsage": "13.75MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 5.8,
+          "memoryPercent": 0.26,
+          "memoryUsage": "42.31MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.14,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.082MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:06:28.612Z",
+      "hostCpuPercent": 2.1793797150041927,
+      "availableMemoryBytes": 15588667392,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 92912,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.69,
+          "memoryPercent": 0.09,
+          "memoryUsage": "13.68MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0,
+          "memoryPercent": 0.26,
+          "memoryUsage": "42.28MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.14,
+          "memoryPercent": 0.03,
+          "memoryUsage": "5.594MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:06:32.601Z",
+      "hostCpuPercent": 1.5886287625418105,
+      "availableMemoryBytes": 15590256640,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 92928,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.69,
+          "memoryPercent": 0.09,
+          "memoryUsage": "14.02MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0,
+          "memoryPercent": 0.26,
+          "memoryUsage": "42.12MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.15,
+          "memoryPercent": 0.04,
+          "memoryUsage": "5.844MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:06:34.611Z",
+      "hostCpuPercent": 9.999999999999998,
+      "availableMemoryBytes": 15595331584,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 93196,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.78,
+          "memoryPercent": 0.09,
+          "memoryUsage": "14.23MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.42,
+          "memoryPercent": 0.26,
+          "memoryUsage": "42.2MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.14,
+          "memoryPercent": 0.04,
+          "memoryUsage": "5.844MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:06:38.606Z",
+      "hostCpuPercent": 2.011735121542335,
+      "availableMemoryBytes": 15597191168,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 93232,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 1.23,
+          "memoryPercent": 0.09,
+          "memoryUsage": "14.47MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.43MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.13,
+          "memoryPercent": 0.04,
+          "memoryUsage": "5.844MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:06:40.615Z",
+      "hostCpuPercent": 2.095557418273264,
+      "availableMemoryBytes": 15591514112,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 93328,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.79,
+          "memoryPercent": 0.09,
+          "memoryUsage": "14.34MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.34,
+          "memoryPercent": 0.33,
+          "memoryUsage": "53.23MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.18,
+          "memoryPercent": 0.04,
+          "memoryUsage": "5.828MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:06:44.607Z",
+      "hostCpuPercent": 2.514668901927908,
+      "availableMemoryBytes": 15575289856,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 93560,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.77,
+          "memoryPercent": 0.09,
+          "memoryUsage": "14.59MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.37,
+          "memoryPercent": 0.34,
+          "memoryUsage": "54.61MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.19,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.312MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:06:46.617Z",
+      "hostCpuPercent": 1.7602682313495377,
+      "availableMemoryBytes": 15567290368,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 93608,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.69,
+          "memoryPercent": 0.09,
+          "memoryUsage": "14.59MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 5.6,
+          "memoryPercent": 0.34,
+          "memoryUsage": "54.94MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.14,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.301MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:06:50.611Z",
+      "hostCpuPercent": 2.175732217573223,
+      "availableMemoryBytes": 15572197376,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 94400,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.63,
+          "memoryPercent": 0.09,
+          "memoryUsage": "14.59MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.01,
+          "memoryPercent": 0.34,
+          "memoryUsage": "54.79MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.14,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.055MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:06:52.620Z",
+      "hostCpuPercent": 2.5125628140703515,
+      "availableMemoryBytes": 15567572992,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 94424,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.66,
+          "memoryPercent": 0.09,
+          "memoryUsage": "14.59MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.87,
+          "memoryPercent": 0.31,
+          "memoryUsage": "49.86MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.14,
+          "memoryPercent": 0.04,
+          "memoryUsage": "5.832MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:06:56.613Z",
+      "hostCpuPercent": 1.5912897822445538,
+      "availableMemoryBytes": 15572881408,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 96084,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.7,
+          "memoryPercent": 0.09,
+          "memoryUsage": "14.59MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 5.63,
+          "memoryPercent": 0.26,
+          "memoryUsage": "42.33MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.14,
+          "memoryPercent": 0.04,
+          "memoryUsage": "5.832MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:06:58.622Z",
+      "hostCpuPercent": 2.011735121542335,
+      "availableMemoryBytes": 15578513408,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 96108,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.65,
+          "memoryPercent": 0.09,
+          "memoryUsage": "14.78MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0,
+          "memoryPercent": 0.26,
+          "memoryUsage": "42.33MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.14,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.082MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:07:02.614Z",
+      "hostCpuPercent": 1.4237855946398703,
+      "availableMemoryBytes": 15578513408,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 96132,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.65,
+          "memoryPercent": 0.09,
+          "memoryUsage": "14.78MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.58MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.12,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.082MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:07:04.624Z",
+      "hostCpuPercent": 2.011735121542335,
+      "availableMemoryBytes": 15567949824,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 96160,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 1.2,
+          "memoryPercent": 0.09,
+          "memoryUsage": "14.82MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.38MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.15,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.074MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:07:08.615Z",
+      "hostCpuPercent": 2.3470243084660503,
+      "availableMemoryBytes": 15578435584,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 96176,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.62,
+          "memoryPercent": 0.09,
+          "memoryUsage": "14.82MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.61MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.15,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.074MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:07:10.624Z",
+      "hostCpuPercent": 1.4237855946398703,
+      "availableMemoryBytes": 15584301056,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 96176,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.63,
+          "memoryPercent": 0.09,
+          "memoryUsage": "14.62MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.61MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.15,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.082MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:07:14.619Z",
+      "hostCpuPercent": 1.9262981574539317,
+      "availableMemoryBytes": 15588548608,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 96176,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.63,
+          "memoryPercent": 0.09,
+          "memoryUsage": "14.87MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.41,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.57MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.15,
+          "memoryPercent": 0.04,
+          "memoryUsage": "5.832MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:07:16.627Z",
+      "hostCpuPercent": 1.4237855946398703,
+      "availableMemoryBytes": 15594377216,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 96176,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.64,
+          "memoryPercent": 0.09,
+          "memoryUsage": "14.87MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 5.63,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.38MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.16,
+          "memoryPercent": 0.04,
+          "memoryUsage": "5.832MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:07:20.622Z",
+      "hostCpuPercent": 2.095557418273264,
+      "availableMemoryBytes": 15594688512,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 96184,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.67,
+          "memoryPercent": 0.09,
+          "memoryUsage": "14.87MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.38MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.14,
+          "memoryPercent": 0.04,
+          "memoryUsage": "5.832MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:07:22.632Z",
+      "hostCpuPercent": 1.340033500837523,
+      "availableMemoryBytes": 15597043712,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 96248,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.67,
+          "memoryPercent": 0.09,
+          "memoryUsage": "14.66MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 2.71,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.68MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.13,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.082MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:07:26.620Z",
+      "hostCpuPercent": 2.3372287145242088,
+      "availableMemoryBytes": 15591788544,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 96496,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 1.25,
+          "memoryPercent": 0.09,
+          "memoryUsage": "14.96MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.41MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.15,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.082MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:07:28.630Z",
+      "hostCpuPercent": 2.0134228187919434,
+      "availableMemoryBytes": 15585599488,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 96512,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.68,
+          "memoryPercent": 0.09,
+          "memoryUsage": "14.82MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.68MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.14,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.082MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:07:32.625Z",
+      "hostCpuPercent": 1.589958158995819,
+      "availableMemoryBytes": 15578374144,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 96824,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 1.24,
+          "memoryPercent": 0.09,
+          "memoryUsage": "15.05MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 5.8,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.58MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.15,
+          "memoryPercent": 0.04,
+          "memoryUsage": "5.844MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:07:34.633Z",
+      "hostCpuPercent": 9.823677581863976,
+      "availableMemoryBytes": 15589793792,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 96836,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.65,
+          "memoryPercent": 0.09,
+          "memoryUsage": "14.91MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.42,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.4MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.16,
+          "memoryPercent": 0.03,
+          "memoryUsage": "5.594MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:07:38.623Z",
+      "hostCpuPercent": 1.7573221757322122,
+      "availableMemoryBytes": 15599845376,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 96848,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.64,
+          "memoryPercent": 0.09,
+          "memoryUsage": "14.96MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.8MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.14,
+          "memoryPercent": 0.04,
+          "memoryUsage": "5.844MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:07:40.633Z",
+      "hostCpuPercent": 2.6823134953897765,
+      "availableMemoryBytes": 15572799488,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 97140,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.74,
+          "memoryPercent": 0.09,
+          "memoryUsage": "14.96MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.43,
+          "memoryPercent": 0.38,
+          "memoryUsage": "60.08MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.16,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.086MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:07:44.629Z",
+      "hostCpuPercent": 2.2632020117351215,
+      "availableMemoryBytes": 15561457664,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 97352,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.73,
+          "memoryPercent": 0.09,
+          "memoryUsage": "14.75MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.38,
+          "memoryPercent": 0.38,
+          "memoryUsage": "59.96MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.2,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.066MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:07:46.639Z",
+      "hostCpuPercent": 1.7602682313495377,
+      "availableMemoryBytes": 15561457664,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 97356,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.67,
+          "memoryPercent": 0.1,
+          "memoryUsage": "15.23MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0,
+          "memoryPercent": 0.38,
+          "memoryUsage": "59.96MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.15,
+          "memoryPercent": 0.04,
+          "memoryUsage": "5.844MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:07:50.628Z",
+      "hostCpuPercent": 2.0938023450586263,
+      "availableMemoryBytes": 15557464064,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 95208,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.66,
+          "memoryPercent": 0.1,
+          "memoryUsage": "15.3MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.01,
+          "memoryPercent": 0.37,
+          "memoryUsage": "59.91MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.14,
+          "memoryPercent": 0.04,
+          "memoryUsage": "5.844MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:07:52.637Z",
+      "hostCpuPercent": 2.514668901927908,
+      "availableMemoryBytes": 15553216512,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 95652,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 1.28,
+          "memoryPercent": 0.09,
+          "memoryUsage": "14.92MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 5.67,
+          "memoryPercent": 0.34,
+          "memoryUsage": "54.84MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.16,
+          "memoryPercent": 0.03,
+          "memoryUsage": "5.594MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:07:56.630Z",
+      "hostCpuPercent": 2.4267782426778295,
+      "availableMemoryBytes": 15566315520,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 97044,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.68,
+          "memoryPercent": 0.09,
+          "memoryUsage": "15.16MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.01,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.58MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.15,
+          "memoryPercent": 0.03,
+          "memoryUsage": "5.594MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:07:58.642Z",
+      "hostCpuPercent": 1.9295302013422777,
+      "availableMemoryBytes": 15574904832,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 97044,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.64,
+          "memoryPercent": 0.09,
+          "memoryUsage": "14.71MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.01,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.6MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.15,
+          "memoryPercent": 0.04,
+          "memoryUsage": "5.844MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:08:02.632Z",
+      "hostCpuPercent": 1.673640167364021,
+      "availableMemoryBytes": 15572324352,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 97060,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.62,
+          "memoryPercent": 0.09,
+          "memoryUsage": "14.45MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 5.79,
+          "memoryPercent": 0.26,
+          "memoryUsage": "42.03MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.15,
+          "memoryPercent": 0.04,
+          "memoryUsage": "5.844MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:08:04.641Z",
+      "hostCpuPercent": 2.8523489932885893,
+      "availableMemoryBytes": 15567216640,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 97060,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.62,
+          "memoryPercent": 0.09,
+          "memoryUsage": "14.95MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0,
+          "memoryPercent": 0.26,
+          "memoryUsage": "42.03MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.15,
+          "memoryPercent": 0.03,
+          "memoryUsage": "5.594MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:08:08.633Z",
+      "hostCpuPercent": 2.926421404682278,
+      "availableMemoryBytes": 15558475776,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 97060,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.65,
+          "memoryPercent": 0.09,
+          "memoryUsage": "14.94MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.01,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.52MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.14,
+          "memoryPercent": 0.03,
+          "memoryUsage": "5.594MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:08:10.642Z",
+      "hostCpuPercent": 3.5953177257525115,
+      "availableMemoryBytes": 15550435328,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 97128,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.59,
+          "memoryPercent": 0.09,
+          "memoryUsage": "14.93MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.52MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.15,
+          "memoryPercent": 0.03,
+          "memoryUsage": "5.594MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:08:14.635Z",
+      "hostCpuPercent": 2.518891687657432,
+      "availableMemoryBytes": 15544946688,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 97144,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.69,
+          "memoryPercent": 0.09,
+          "memoryUsage": "14.7MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.42,
+          "memoryPercent": 0.26,
+          "memoryUsage": "42.16MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.15,
+          "memoryPercent": 0.03,
+          "memoryUsage": "5.594MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:08:16.645Z",
+      "hostCpuPercent": 1.755852842809369,
+      "availableMemoryBytes": 15573725184,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 97152,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.54,
+          "memoryPercent": 0.1,
+          "memoryUsage": "15.2MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0,
+          "memoryPercent": 0.26,
+          "memoryUsage": "42.16MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.15,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.09MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:08:20.635Z",
+      "hostCpuPercent": 1.9295302013422777,
+      "availableMemoryBytes": 15577923584,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 97152,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.64,
+          "memoryPercent": 0.1,
+          "memoryUsage": "15.19MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.41MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.13,
+          "memoryPercent": 0.04,
+          "memoryUsage": "6.09MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:08:22.644Z",
+      "hostCpuPercent": 1.2562814070351758,
+      "availableMemoryBytes": 15574052864,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 97152,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.52,
+          "memoryPercent": 0.1,
+          "memoryUsage": "15.43MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 5.69,
+          "memoryPercent": 0.26,
+          "memoryUsage": "42.29MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.13,
+          "memoryPercent": 0.03,
+          "memoryUsage": "5.594MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:08:26.640Z",
+      "hostCpuPercent": 1.9262981574539317,
+      "availableMemoryBytes": 15572688896,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 97156,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.52,
+          "memoryPercent": 0.1,
+          "memoryUsage": "15.21MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.06,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.45MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.15,
+          "memoryPercent": 0.04,
+          "memoryUsage": "5.84MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:08:28.649Z",
+      "hostCpuPercent": 2.010050251256279,
+      "availableMemoryBytes": 15565500416,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 97156,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.49,
+          "memoryPercent": 0.1,
+          "memoryUsage": "15.23MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.07,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.46MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.15,
+          "memoryPercent": 0.03,
+          "memoryUsage": "5.59MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:08:32.639Z",
+      "hostCpuPercent": 1.4237855946398703,
+      "availableMemoryBytes": 15571374080,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 97156,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.37,
+          "memoryPercent": 0.1,
+          "memoryUsage": "15.23MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 5.7,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.75MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.14,
+          "memoryPercent": 0.04,
+          "memoryUsage": "5.84MiB / 15.61GiB"
+        }
+      ]
+    },
+    {
+      "at": "2026-11-20T20:08:34.648Z",
+      "hostCpuPercent": 9.899328859060407,
+      "availableMemoryBytes": 15568838656,
+      "totalMemoryBytes": 16759431168,
+      "appRssKb": 97156,
+      "containers": [
+        {
+          "name": "sprint02-k6",
+          "cpuPercent": 0.37,
+          "memoryPercent": 0.09,
+          "memoryUsage": "15.04MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-db-1",
+          "cpuPercent": 0.5,
+          "memoryPercent": 0.27,
+          "memoryUsage": "42.7MiB / 15.61GiB"
+        },
+        {
+          "name": "sprint02-lab-redis-1",
+          "cpuPercent": 0.15,
+          "memoryPercent": 0.04,
+          "memoryUsage": "5.84MiB / 15.61GiB"
+        }
+      ]
+    }
+  ]
+}

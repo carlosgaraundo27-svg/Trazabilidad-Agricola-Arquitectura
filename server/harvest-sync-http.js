@@ -5,6 +5,9 @@ import { captureId, syncInput } from "./modules/harvest/sync-domain.js";
 
 export function harvestSyncRouter(services) {
   const router = Router();
+  router.get("/sync/catalog", async (req, res) =>
+    res.json(await services.harvestSync.catalog(req.actor)),
+  );
   router.put(
     "/sync/pre-lots/:clientCaptureId",
     rateLimit({

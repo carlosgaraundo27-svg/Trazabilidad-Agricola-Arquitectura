@@ -1,3 +1,19 @@
+# Continuidad — C implementado y en revisión
+
+2026-11-19, Lima. Rama feat/offline-captura-outbox-sync, base main0ed299ffa31cd4666e556db38762df7bd313c4bb. #12→#11→#13 integrados por merge320e8bc→e305239→0ed299f conservando commits; verify/Compose/Sonar aprobados después de cada merge. [Main final verify/Compose](https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/actions/runs/44665664490), [Sonar](https://github.com/carlosgaraundo27-svg/Trazabilidad-Agricola-Arquitectura/runs/136054574277). Sonar main134 CODE_SMELL,0 BUG/VULNERABILITY; S4036 cerrado; nueve ROP/tres literales Docker/nueve críticos DDL y deuda heredada continúan, gate no los resuelve.
+
+PR9 d478986 reconciliado y en borrador, decisiones útiles preservadas, sus tres checks aprobados. B implementado/pruebas HONOR en PR13, sin atribuirlas al PR9 documental.
+
+C implementa O1–O10 aprobados: catálogo mínimo asignado, drafts/UUID, confirmación/outbox SQLite atómicas, body/ID/recibo inmutables, worker manual/foreground único, retry durable/replay y aislamiento. O5 explícito24h y bloqueo tras reboot sin validar; O8 inicial+5 con2/4/8/16/30s+jitter0–20%,Retry-After íntegro, pausa sin borrar y manual mismo ID/cuerpo/historial. [Contrato](../03-diseno-de-software/13-incremento-C-captura-offline.md), [evidencia y guía](incremento-C-android.md), OpenAPI/C4/matriz actualizados. Cambios de código principales201072a y29fd71e; corrección lifecycle6a0fb89. No fusionar C. Los checks finales corresponden al SHA publicado del PR, no a los de main/B.
+
+Pruebas:23 Dart/Widget,34 Node unitarias,9 fases/casos C nativos y6 regresiones B afectados aprobados en HONOR físico. Incluye modo avión verificado y reverse3043 retirado, UI create/edit/confirm, procesos distintos aún offline y aceptación única al reconectar; corte real postcommit y otro proceso con replay sin duplicación;409,401,403/404, usuarios de distinta/misma organización; SQLitev1→v2, rollback por trigger y Retry-After25h durable. flutter analyze sin avisos al cierre; APK debug normal para prueba local, no distribución release. Resultados/fallos previos/límites detallados en evidencia: no reinicio físico del SO/24h reales/pérdida de clave/energía/SLA. La barrera multiconexión A no se acredita con PGlite:8 subcasos locales y detención por límite del adaptador, suite completa en CI PostgreSQL18 sin debilitarla.
+
+Backend C existente HTTPS3043/PGlite privada .local/android-c-fixture/android_c_dev_20261120, ficticios001–008; usuario campo-c@example.test, contraseña solo credenciales.txt privado. Backend B3042 conservado. Verificar proceso/puerto antes de iniciar otro. Demo001–007 intacta, sin respaldo/recuperación/instalación repetidos ni nuevas copias/D:. SQLite2 es local/aditivo, servidor001–008 publicado intacto. SDK independiente verificado, señalado/AV/cuarentena intactos. CSV Kaspersky ya analizado; único paso manual del incidente: presentar borrador privado al soporte y guardar caso/dictamen.
+
+Siguiente paso: revisar el PR C y probar la captura con la guía enlazada, sin fusionarlo. Los checks por SHA y URL final se registran en el PR y LEER_PRIMERO.md para evitar atribuir resultados históricos a una cabeza posterior.
+
+## Cortes históricos conservados (no sustituyen este estado)
+
 # Continuidad — Inventario, Reserva, Despacho y Entrega
 
 ## Corte vigente — main consolidado y B preparado para integrar

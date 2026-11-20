@@ -1,3 +1,9 @@
+# C4 objetivo — diferencia con el corte C
+
+M1 Android/L1 SQLite ya tienen implementación C en rama propia, con autenticación B y servidor A integrados. [Vista actual](modelo-c4.md) y [contrato C](../03-diseno-de-software/13-incremento-C-captura-offline.md). La evidencia de dispositivo/CI se registra por SHA; no equivale a completar toda la arquitectura objetivo. Siguen objetivo: iOS/PWA, batch/segundo plano, pallets/parciales y ETL/datamart. No hay analítica o ETL implementados por C.
+
+## Histórico preservado
+
 # Modelo C4 — Trazabilidad y Gestión Comercial de Palta Hass
 
 Archivo de arquitectura objetivo conservado como referencia histórica del alcance completo. Acopio y consolidación ya tienen un corte académico implementado en Q/T1 (2026-11-14); calidad, despacho y QR siguen proyectados. Los diagramas siguientes no acreditan implementación completa de Q/T1. La [vista canónica del primer recorrido implementado](modelo-c4.md) usa Express y representa únicamente el código existente. Los modelos siguientes de QR, offline, Redis y ETL siguen proyectados.

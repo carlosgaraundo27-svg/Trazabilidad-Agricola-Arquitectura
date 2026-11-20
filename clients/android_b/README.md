@@ -1,3 +1,25 @@
+# Android B/C — sesión, captura offline y outbox
+
+Cliente Flutter Android dentro del repositorio existente. B conserva login/Keystore/cookie/CSRF/SQLite privado; C añade catálogo asignado, drafts con UUID estable, confirmación/outbox atómica, sincronizador manual/foreground único, reintentos durables y reconciliación idempotente. [Contrato O1–O10](../../docs/03-diseno-de-software/13-incremento-C-captura-offline.md), [evidencia, límites y prueba breve](../../docs/05-sprint01/incremento-C-android.md).
+
+**Entorno C existente:** HTTPS127.0.0.1:3043, `node tests/android/c-backend-fixture.js` desde raíz únicamente si no existe proceso/puerto activo. Base privada `.local/android-c-fixture/android_c_dev_20261120`, ficticia001–008; no lee demo.env ni DATABASE_URL. Reutiliza certificado B ya verificado, no genera otro ni cambia confianza global. Usuario campo-c@example.test; contraseña/config solo en `.local/android-c-fixture/credenciales.txt` y config.json ignorados. No publicar certificados, config, APK o informes privados.
+
+SDK oficial independiente ya analizado, Android autorizado y rutas explícitas existentes; no reinstalar ni usar SDK señalado. ADB reverse tcp:3043 tcp:3043. Desde clients/android_b:
+
+```text
+flutter analyze --no-pub
+flutter test --no-pub
+flutter test integration_test/c_storage_test.dart --no-pub --no-uninstall -d <Android-autorizado>
+flutter test integration_test/c_migration_test.dart --no-pub --no-uninstall -d <Android-autorizado>
+flutter test integration_test/c_sync_test.dart --no-pub --no-uninstall -d <Android-autorizado> --dart-define-from-file=../../.local/android-c-fixture/config.json
+```
+
+c_airplane_test.dart se ejecuta en cuatro procesos con `--dart-define=AIRPLANE_PHASE=prepare|capture|reopen|sync` (un valor/fase). Entre prepare/capture activar modo avión y quitar solo reverse3043; mantenerlo en reopen; antes de sync restaurar el estado anterior y reverse. No basta modo avión si ADB reverse mantiene loopback. c_lost_restart_test.dart usa dos procesos con `--dart-define=LOST_PHASE=drop|replay`; no desinstalar/limpiar datos. Los controles __fixture solo se incluyen en este servidor ficticio loopback, nunca en app/API de producción.
+
+Compilar app debug normal con `flutter build apk --debug --no-pub --dart-define-from-file=../../.local/android-c-fixture/config.json`; APK privado, no distribuir release. No se ha cambiado validación TLS, hostname o certificados; CA debug solo loopback, release la rechaza. La demo001–007 y su base no participan.
+
+## Referencia B conservada (histórica respecto del alcance C)
+
 # Android B: sesión nativa y SQLite privado
 
 Implementa login/me/logout sobre la API existente, HTTPS/origen fijo sin redirecciones, cookies cifradas con Android Keystore y archivos SQLite por organización/actor validado online. No incluye captura, worker, replay o sincronización C. No hay contraseña/cookie/CSRF en las tablas de negocio. La cookie se conserva en no_backup mediante AES-GCM y AtomicFile con fsync; logout escribe una marca durable y conserva SQLite.

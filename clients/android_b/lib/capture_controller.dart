@@ -64,8 +64,9 @@ class CaptureController extends ChangeNotifier {
         nextProfile = await vault.readProfile();
     if (_disposed ||
         session.generation != gen ||
-        session.owner?.key != owner.key)
+        session.owner?.key != owner.key) {
       return;
+    }
     rows = nextRows;
     parcels = nextParcels;
     profile = nextProfile?.owner.key == owner.key ? nextProfile : null;

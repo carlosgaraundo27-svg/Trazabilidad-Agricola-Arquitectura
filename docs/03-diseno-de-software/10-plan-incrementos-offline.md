@@ -1,3 +1,9 @@
+# Plan offline — avance actual
+
+A/#8 y B/#13 integrados conservando commits; main0ed299f y sus tres checks aprobados. PR9 reconciliado documentalmente, abierto/en borrador. C autorizado/aprobado O1–O10, implementado en rama feat/offline-captura-outbox-sync, sin autorizar fusión de C. [Contrato C](13-incremento-C-captura-offline.md) registra ventana/reintentos explícitos. La preparación documental de B de cortes anteriores no sustituye su implementación y pruebas Android de PR13. D/segundo plano/corrección de hechos aceptados quedan fuera. Resultados C se registran en continuidad sin anticipar aprobaciones CI.
+
+## Histórico preservado
+
 # Plan del prototipo offline — 2026-11-19
 
 **Estado posterior a publicación manual:** [#7 y #8, checks aprobados por SHA y respaldo pendiente de aceptación](../05-sprint01/publicacion-inventario-offline-A.md). A publicado en ce9c3f6, base dd18ced; ambos PR abiertos, sin fusionar. [Preparación concreta de B](../05-sprint01/preparacion-offline-B.md): contratos nativos/SQLite y pruebas diseñadas, sin ejecución del SDK señalado ni cliente Android implementado. Las notas inferiores de bloqueo de publicación son históricas.

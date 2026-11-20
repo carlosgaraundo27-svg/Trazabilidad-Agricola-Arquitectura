@@ -1,11 +1,10 @@
-import { spawnSync, execFileSync } from "node:child_process";
+import { spawnSync } from "node:child_process";
+import { gitRead, sourceSha } from "./git.js";
 import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile, access } from "node:fs/promises";
 import path from "node:path";
 
-const sha = execFileSync("git", ["rev-parse", "HEAD"], {
-  encoding: "utf8",
-}).trim();
+const sha = sourceSha();
 const directory = `.local/sprint02/${sha}`;
 await mkdir(directory, { recursive: true });
 const env = { ...process.env, NODE_ENV: "test" };
@@ -87,33 +86,33 @@ const files = Object.entries(coverage)
 await access("coverage/jest/index.html");
 const lcov = await readFile("coverage/jest/lcov.info", "utf8");
 if (!/^DA:\d+,[1-9]\d*/m.test(lcov))
-  throw Error("LCOV no acredita líneas ejecutadas");
-const tracked = execFileSync(
-  "git",
-  [
-    "ls-files",
-    "server",
-    "tests/jest",
-    "tests/unit",
-    "scripts/sprint02",
-    "jest.config.js",
-    "package.json",
-    "package-lock.json",
-    ".github/workflows/ci.yml",
-  ],
-  { encoding: "utf8" },
-)
+  throw new Error("LCOV no acredita líneas ejecutadas");
+const tracked = gitRead([
+  "ls-files",
+  "server",
+  "tests/jest",
+  "tests/unit",
+  "scripts/sprint02",
+  "jest.config.js",
+  "package.json",
+  "package-lock.json",
+  ".github/workflows/ci.yml",
+])
   .trim()
   .split(/\r?\n/);
-const changed = execFileSync("git", ["diff", "HEAD", "--", ...tracked], {
-  encoding: "utf8",
-});
-if (changed) throw Error("Cambios sin commit invalidan el SHA de las pruebas");
-const hashes = {};
-for (const file of tracked)
-  hashes[file] = createHash("sha256")
-    .update(await readFile(file))
-    .digest("hex");
+const changed = gitRead(["diff", "HEAD", "--", ...tracked]);
+if (changed)
+  throw new Error("Cambios sin commit invalidan el SHA de las pruebas");
+const hashes = Object.fromEntries(
+  await Promise.all(
+    tracked.map(async (file) => [
+      file,
+      createHash("sha256")
+        .update(await readFile(file))
+        .digest("hex"),
+    ]),
+  ),
+);
 const report = {
   sourceSha: sha,
   measuredAt: new Date().toISOString(),
@@ -129,8 +128,8 @@ const report = {
     pending: jest.numPendingTests,
   },
   nodeTest: {
-    passed: Number(unit.match(/(?:#|ℹ) pass (\d+)/)?.[1] ?? 0),
-    failed: Number(unit.match(/(?:#|ℹ) fail (\d+)/)?.[1] ?? 0),
+    passed: Number(unit.match(/[#ℹ] pass (\d+)/)?.[1] ?? 0),
+    failed: Number(unit.match(/[#ℹ] fail (\d+)/)?.[1] ?? 0),
   },
   coverage: {
     scope:

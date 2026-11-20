@@ -20,11 +20,11 @@ const id = __ENV.SPRINT02_PUBLIC_ID || "";
 if (
   __ENV.SPRINT02_INDEPENDENT_HOST !== "true" ||
   base !== "http://127.0.0.1:3302" ||
-  !target ||
+  !Object.hasOwn(levels, stage) ||
   !/^[a-f0-9]{40}$/.test(__ENV.SPRINT02_SOURCE_SHA || "") ||
   !/^[a-f0-9-]{36}$/.test(id)
 )
-  throw Error(
+  throw new Error(
     "Solo laboratorio independiente en 127.0.0.1:3302 con SHA e ID ficticio explícitos.",
   );
 
@@ -33,6 +33,7 @@ const limited = new Rate("qr_429");
 const businessErrors = new Rate("qr_business_errors");
 const correct = new Rate("qr_correct");
 const successDuration = new Trend("qr_success_ms", true);
+const holdDuration = { smoke: "10s", 100: "10m" }[stage] ?? "2m";
 export const options = {
   scenarios: {
     qr: {
@@ -41,7 +42,7 @@ export const options = {
       stages: [
         { duration: stage === "smoke" ? "5s" : "30s", target },
         {
-          duration: stage === "smoke" ? "10s" : stage === "100" ? "10m" : "2m",
+          duration: holdDuration,
           target,
         },
         { duration: "30s", target: 0 },
@@ -58,7 +59,7 @@ export const options = {
     qr_success_ms: ["p(95)<=2000"],
   },
 };
-export default function () {
+export default function qrRequest() {
   const response = http.get(`${base}/api/public/v1/lots/${id}`, {
     timeout: "5s",
     redirects: 0,
@@ -73,11 +74,15 @@ export default function () {
     try {
       const dto = response.json();
       valid =
-        Object.keys(dto).sort().join(",") === "lotCode,stages" &&
+        Object.keys(dto).length === 2 &&
         dto.lotCode === "VV-DEMO-001" &&
         dto.stages.length === 2 &&
         dto.stages.every(
-          (s) => Object.keys(s).sort().join(",") === "date,description,stage",
+          (s) =>
+            Object.keys(s).length === 3 &&
+            ["date", "description", "stage"].every((key) =>
+              Object.hasOwn(s, key),
+            ),
         ) &&
         dto.stages[0].stage === "harvest" &&
         dto.stages[1].stage === "consolidation";

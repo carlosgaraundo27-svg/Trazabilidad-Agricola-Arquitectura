@@ -1,5 +1,5 @@
 import { mkdir, writeFile } from "node:fs/promises";
-import { execFileSync } from "node:child_process";
+import { sourceSha } from "./git.js";
 import { connectDatabase } from "../../server/db.js";
 import { compose } from "../../server/composition.js";
 import { migrate } from "../migrate.js";
@@ -12,14 +12,16 @@ const config = labConfig(process.env);
 const password = process.env.SPRINT02_DEMO_PASSWORD;
 const count = Number(process.env.SPRINT02_LOTS || "10");
 if (!password || !Number.isInteger(count) || count < 1 || count > 1000)
-  throw Error("Configure contraseña ficticia y SPRINT02_LOTS entero 1..1000.");
+  throw new Error(
+    "Configure contraseña ficticia y SPRINT02_LOTS entero 1..1000.",
+  );
 const db = await connectDatabase(config);
 try {
   const tables = await db.query(
     "SELECT count(*)::int AS n FROM pg_tables WHERE schemaname NOT IN ('pg_catalog','information_schema')",
   );
   if (tables.rows[0].n !== 0)
-    throw Error(
+    throw new Error(
       "La preparación exige una base nueva vacía; no borra ni resembra.",
     );
   await migrate(db);
@@ -56,9 +58,7 @@ try {
     ".local/sprint02/lab-fixture.json",
     JSON.stringify(
       {
-        sourceSha: execFileSync("git", ["rev-parse", "HEAD"], {
-          encoding: "utf8",
-        }).trim(),
+        sourceSha: sourceSha(),
         createdAt: new Date().toISOString(),
         publications,
         reportFixtureShipments: 4,

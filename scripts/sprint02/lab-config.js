@@ -1,10 +1,10 @@
 export function labConfig(env) {
   if (env.SPRINT02_INDEPENDENT_HOST !== "true")
-    throw Error(
+    throw new Error(
       "Requiere otra máquina/runner; no ejecutar en el host Android.",
     );
-  const database = new URL(env.SPRINT02_DATABASE_URL || "http://invalid");
-  const redis = new URL(env.SPRINT02_REDIS_URL || "http://invalid");
+  const database = new URL(env.SPRINT02_DATABASE_URL || "");
+  const redis = new URL(env.SPRINT02_REDIS_URL || "");
   if (
     database.protocol !== "postgres:" ||
     database.hostname !== "127.0.0.1" ||
@@ -22,7 +22,9 @@ export function labConfig(env) {
     redis.search ||
     redis.hash
   )
-    throw Error("Solo PostgreSQL sprint02_lab:55442 y Redis:56382 dedicados.");
+    throw new Error(
+      "Solo PostgreSQL sprint02_lab:55442 y Redis:56382 dedicados.",
+    );
   return {
     DATABASE_URL: database.href,
     redisUrl: redis.href,
@@ -39,5 +41,5 @@ export async function requireLab(db) {
     result.rows[0].name !== "sprint02_lab" ||
     result.rows[0].label !== "synthetic-sprint02-only"
   )
-    throw Error("Marcador de laboratorio ausente o ajeno.");
+    throw new Error("Marcador de laboratorio ausente o ajeno.");
 }

@@ -1,5 +1,5 @@
 import { readFile, writeFile } from "node:fs/promises";
-import { execFileSync } from "node:child_process";
+import { sourceSha } from "./git.js";
 import { connectDatabase } from "../../server/db.js";
 import { publicationRepository } from "../../server/modules/publication/repository.js";
 import { reportsRepository } from "../../server/modules/reports/repository.js";
@@ -70,9 +70,7 @@ try {
     return output;
   });
   const result = {
-    sourceSha: execFileSync("git", ["rev-parse", "HEAD"], {
-      encoding: "utf8",
-    }).trim(),
+    sourceSha: sourceSha(),
     fixtureSha: fixture.sourceSha,
     measuredAt: new Date().toISOString(),
     metadata,

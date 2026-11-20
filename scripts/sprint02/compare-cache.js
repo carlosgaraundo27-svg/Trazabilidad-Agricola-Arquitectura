@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { readFile, writeFile } from "node:fs/promises";
-import { execFileSync } from "node:child_process";
+import { sourceSha } from "./git.js";
 import { performance } from "node:perf_hooks";
 import { createClient } from "redis";
 import { connectDatabase } from "../../server/db.js";
@@ -14,7 +14,7 @@ import { labConfig, requireLab } from "./lab-config.js";
 const config = labConfig(process.env);
 const mode = process.env.SPRINT02_CACHE_MODE || "cold";
 if (!["none", "cold", "warm", "degraded"].includes(mode))
-  throw Error("Modo de caché inválido.");
+  throw new Error("Modo de caché inválido.");
 const fixture = JSON.parse(
   await readFile(".local/sprint02/lab-fixture.json", "utf8"),
 );
@@ -40,7 +40,7 @@ try {
       reachable = (await witness.ping()) === "PONG";
     } catch {}
     if ((mode === "degraded") === reachable)
-      throw Error(
+      throw new Error(
         "Degradado exige Redis detenido en el laboratorio; fría/caliente exigen Redis disponible.",
       );
     if (reachable) {
@@ -51,7 +51,7 @@ try {
           break;
         } catch {
           if (Date.now() >= deadline)
-            throw Error("Adaptador Redis no disponible.");
+            throw new Error("Adaptador Redis no disponible.");
         }
         await new Promise((resolve) => setTimeout(resolve, 20));
       }
@@ -114,9 +114,7 @@ try {
   if (mode === "warm") assert.equal(counts.hits, 50);
   if (mode === "degraded") assert.equal(counts.errors, 50);
   const result = {
-    sourceSha: execFileSync("git", ["rev-parse", "HEAD"], {
-      encoding: "utf8",
-    }).trim(),
+    sourceSha: sourceSha(),
     fixtureSha: fixture.sourceSha,
     measuredAt: new Date().toISOString(),
     mode,

@@ -1,5 +1,6 @@
 import { spawnSync } from "node:child_process";
 import { mkdirSync, writeFileSync } from "node:fs";
+import { trustedDockerExecutable } from "./docker-executable.js";
 
 // Does not print Compose's resolved environment or remove volumes.
 const secrets = [
@@ -20,11 +21,13 @@ const result = {
   commands: [],
 };
 mkdirSync(".local", { recursive: true });
+let dockerExecutable;
 function docker(args) {
   if (test && args[0] === "compose")
     args.splice(1, 0, "-f", "compose.yaml", "-f", "compose.test.yaml");
   console.log("docker " + args.join(" "));
-  const child = spawnSync("docker", args, {
+  dockerExecutable ??= trustedDockerExecutable();
+  const child = spawnSync(dockerExecutable, args, {
     encoding: "utf8",
     windowsHide: true,
   });

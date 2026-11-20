@@ -1,5 +1,6 @@
 import { spawn } from "node:child_process";
 import { mkdirSync, readdirSync, writeFileSync } from "node:fs";
+import { trustedDockerExecutable } from "./docker-executable.js";
 if (process.env.ALLOW_DEMO_SEED !== "true")
   throw new Error("Solo usar en una demo ficticia preparada.");
 const env = {
@@ -81,7 +82,7 @@ try {
   // Isolate the new suite's login budget without changing production limits or deleting facts.
   if (
     !(await run(
-      "docker",
+      trustedDockerExecutable(),
       [
         "compose",
         "-f",

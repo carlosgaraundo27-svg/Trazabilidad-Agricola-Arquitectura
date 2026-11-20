@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 
-enum SessionState { locked, unverified, online }
+enum SessionState { locked, unverified, online, offline }
 
 enum Failure {
   invalidCredentials,
@@ -18,7 +18,15 @@ enum Failure {
 
 class SessionFailure implements Exception {
   final Failure kind;
-  const SessionFailure(this.kind);
+  final bool localExpiry;
+  final int? status;
+  final Duration? retryAfter;
+  const SessionFailure(
+    this.kind, {
+    this.localExpiry = false,
+    this.status,
+    this.retryAfter,
+  });
   @override
   String toString() => 'SessionFailure: ${kind.name}';
 }
@@ -119,6 +127,12 @@ abstract interface class Vault {
   Future<void> clear();
 }
 
+/// Offline identity is local read authority only. It never authorizes a request.
+abstract interface class OfflineIdentityVault implements Vault {
+  Future<Owner?> activeOwner();
+  Future<void> invalidateCredential({required bool remote});
+}
+
 abstract interface class SessionApi {
   Future<Credential> login(String email, String password);
   Future<Identity> me(Credential credential);
@@ -182,7 +196,8 @@ class SessionController extends ChangeNotifier {
         final stored = await vault.read();
         _current(lease);
         if (stored == null || stored.expired) {
-          await vault.clear();
+          await _forgetCredential(remote: false);
+          await _restoreOffline(lease);
           return;
         }
         _credential = stored;
@@ -222,7 +237,7 @@ class SessionController extends ChangeNotifier {
       });
       _current(lease);
       if (credential == null || credential.expired) {
-        throw const SessionFailure(Failure.needsLogin);
+        throw const SessionFailure(Failure.needsLogin, localExpiry: true);
       }
       await _activate(lease, credential, persist: false);
     });
@@ -233,7 +248,9 @@ class SessionController extends ChangeNotifier {
     Credential credential, {
     required bool persist,
   }) async {
-    if (credential.expired) throw const SessionFailure(Failure.needsLogin);
+    if (credential.expired) {
+      throw const SessionFailure(Failure.needsLogin, localExpiry: true);
+    }
     final identity = await api.me(credential);
     _current(lease);
     await _exclusive(() async {
@@ -270,8 +287,13 @@ class SessionController extends ChangeNotifier {
           await workspace.lock();
           if (failure == Failure.needsLogin ||
               failure == Failure.invalidCredentials) {
-            await vault.clear();
+            await _forgetCredential(
+              remote: !(error is SessionFailure && error.localExpiry),
+            );
             _credential = null;
+          }
+          if (failure == Failure.network || failure == Failure.needsLogin) {
+            await _restoreOffline(lease);
           }
         });
       } catch (_) {
@@ -315,6 +337,54 @@ class SessionController extends ChangeNotifier {
       remoteRevocation = confirmed;
       notifyListeners();
     }
+  }
+
+  Future<void> _forgetCredential({required bool remote}) async {
+    final storage = vault;
+    if (storage is OfflineIdentityVault) {
+      await storage.invalidateCredential(remote: remote);
+    } else {
+      await storage.clear();
+    }
+  }
+
+  Future<void> _restoreOffline(int lease) async {
+    final storage = vault;
+    if (storage is! OfflineIdentityVault) return;
+    final active = await storage.activeOwner();
+    _current(lease);
+    if (active == null) return;
+    await workspace.open(active, () => lease == generation);
+    _current(lease);
+    owner = active;
+    state = SessionState.offline;
+  }
+
+  Future<T> authorized<T>(
+    Future<T> Function(Credential credential, String csrf) request,
+  ) async {
+    final lease = generation, credential = _credential, csrf = _csrf;
+    if (state != SessionState.online ||
+        credential == null ||
+        csrf == null ||
+        credential.expired) {
+      throw SessionFailure(
+        Failure.needsLogin,
+        localExpiry: credential?.expired ?? true,
+      );
+    }
+    final result = await request(credential, csrf);
+    _current(lease);
+    return result;
+  }
+
+  Future<void> rejectRemoteSession() async {
+    final lease = _invalidate();
+    _credential = null;
+    _csrf = null;
+    await _run(lease, () async {
+      throw const SessionFailure(Failure.needsLogin, status: 401);
+    });
   }
 
   @override

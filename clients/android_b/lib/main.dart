@@ -7,6 +7,8 @@ import 'package:material_ui/material_ui.dart';
 import 'session.dart';
 import 'storage.dart';
 import 'transport.dart';
+import 'capture_controller.dart';
+import 'capture_workspace.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -48,6 +50,7 @@ class SessionApp extends StatefulWidget {
 
 class _SessionAppState extends State<SessionApp> with WidgetsBindingObserver {
   SessionController? session;
+  CaptureController? captures;
   final email = TextEditingController();
   final password = TextEditingController();
   bool busy = false;
@@ -57,7 +60,19 @@ class _SessionAppState extends State<SessionApp> with WidgetsBindingObserver {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     try {
-      session = widget.session ?? configuredSession().session;
+      if (widget.session != null) {
+        session = widget.session;
+      } else {
+        final configured = configuredSession();
+        session = configured.session;
+        captures = CaptureController(
+          session!,
+          configured.workspace,
+          session!.vault as KeystoreVault,
+          session!.api as HttpsSessionApi,
+        );
+        captures!.addListener(changed);
+      }
       session!.addListener(changed);
       boot();
     } catch (_) {
@@ -71,6 +86,10 @@ class _SessionAppState extends State<SessionApp> with WidgetsBindingObserver {
   }
 
   Future<void> boot() async {
+    if (captures != null) {
+      await captures!.boot();
+      return;
+    }
     await session!.boot();
     if (session!.state == SessionState.unverified) await session!.validate();
   }
@@ -87,6 +106,16 @@ class _SessionAppState extends State<SessionApp> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (captures != null) {
+      if (state == AppLifecycleState.resumed && !busy) {
+        action(captures!.resume);
+      }
+      if (state == AppLifecycleState.paused) {
+        password.clear();
+        captures!.pause();
+      }
+      return;
+    }
     if (state == AppLifecycleState.resumed &&
         !busy &&
         session?.state == SessionState.online) {
@@ -102,6 +131,8 @@ class _SessionAppState extends State<SessionApp> with WidgetsBindingObserver {
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     session?.removeListener(changed);
+    captures?.removeListener(changed);
+    captures?.dispose();
     if (widget.session == null) session?.dispose();
     email.dispose();
     password.dispose();
@@ -133,6 +164,9 @@ class _SessionAppState extends State<SessionApp> with WidgetsBindingObserver {
   Widget content() {
     if (configurationError != null) return Text(configurationError!);
     final s = session!;
+    if (captures != null && s.owner != null) {
+      return CaptureWorkspace(controller: captures!);
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -203,7 +237,11 @@ class _SessionAppState extends State<SessionApp> with WidgetsBindingObserver {
           FilledButton(
             onPressed: busy
                 ? null
-                : () => action(() => s.login(email.text.trim(), password.text)),
+                : () => action(
+                    () => captures != null
+                        ? captures!.login(email.text.trim(), password.text)
+                        : s.login(email.text.trim(), password.text),
+                  ),
             child: const Text('Iniciar sesion'),
           ),
           if (s.state == SessionState.unverified ||

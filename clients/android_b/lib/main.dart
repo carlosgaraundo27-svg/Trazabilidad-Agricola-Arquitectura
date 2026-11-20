@@ -99,8 +99,10 @@ class _SessionAppState extends State<SessionApp> with WidgetsBindingObserver {
     try {
       await work();
     } finally {
-      password.clear();
-      if (mounted) setState(() => busy = false);
+      if (mounted) {
+        password.clear();
+        setState(() => busy = false);
+      }
     }
   }
 

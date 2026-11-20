@@ -35,15 +35,23 @@ class CaptureController extends ChangeNotifier {
   Future<void>? _running;
   Timer? _timer;
   int _epoch = 0;
+  bool _disposed = false;
+  void _emit() {
+    if (!_disposed) notifyListeners();
+  }
+
   CaptureStore get store => CaptureStore(workspace, workspace.lease);
   bool _current(int epoch, int generation) =>
-      foreground && epoch == _epoch && session.generation == generation;
+      !_disposed &&
+      foreground &&
+      epoch == _epoch &&
+      session.generation == generation;
   void _sessionChanged() {
     if (session.owner == null) {
       rows = [];
       parcels = [];
       profile = null;
-      notifyListeners();
+      _emit();
     }
   }
 
@@ -54,11 +62,14 @@ class CaptureController extends ChangeNotifier {
     final nextRows = await s.rows(),
         nextParcels = await s.parcels(),
         nextProfile = await vault.readProfile();
-    if (session.generation != gen || session.owner?.key != owner.key) return;
+    if (_disposed ||
+        session.generation != gen ||
+        session.owner?.key != owner.key)
+      return;
     rows = nextRows;
     parcels = nextParcels;
     profile = nextProfile?.owner.key == owner.key ? nextProfile : null;
-    notifyListeners();
+    _emit();
   }
 
   Future<void> boot() async {
@@ -82,7 +93,7 @@ class CaptureController extends ChangeNotifier {
     final epoch = _epoch;
     busy = true;
     notice = null;
-    notifyListeners();
+    _emit();
     try {
       await session.validate();
       final gen = session.generation;
@@ -190,7 +201,7 @@ class CaptureController extends ChangeNotifier {
             'No se pudo leer el almacenamiento; los registros se conservan.';
       }
       busy = false;
-      notifyListeners();
+      _emit();
     }
   }
 
@@ -250,6 +261,7 @@ class CaptureController extends ChangeNotifier {
 
   @override
   void dispose() {
+    _disposed = true;
     _timer?.cancel();
     _epoch++;
     foreground = false;

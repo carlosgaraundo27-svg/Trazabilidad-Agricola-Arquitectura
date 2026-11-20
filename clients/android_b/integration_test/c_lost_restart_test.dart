@@ -66,6 +66,7 @@ void main() {
       );
       expect(find.text('Sincronizar'), findsOneWidget);
       await tester.pumpWidget(const SizedBox.shrink());
+      await tester.pumpAndSettle();
     }
   });
 }

@@ -12,23 +12,28 @@ import { createApp } from "../../server/http.js";
 const root = path.resolve(".local/android-b-fixture");
 const dbPath = path.join(root, "android_b_dev_20261119");
 if (process.env.NODE_ENV === "production")
-  throw Error("Fixture solo para desarrollo aislado");
-for (const location of [path.resolve(".local"), root, dbPath]) {
+  throw new Error("Fixture solo para desarrollo aislado");
+async function verifyLocation(location) {
   try {
+    const [metadata, canonical] = await Promise.all([
+      lstat(location),
+      realpath(location),
+    ]);
     if (
-      (await lstat(location)).isSymbolicLink() ||
-      (await realpath(location)).toLowerCase() !== location.toLowerCase()
+      metadata.isSymbolicLink() ||
+      canonical.toLowerCase() !== location.toLowerCase()
     )
-      throw Error("Fixture no admite enlaces o redirecciones");
+      throw new Error("Fixture no admite enlaces o redirecciones");
   } catch (error) {
     if (error.code !== "ENOENT") throw error;
   }
 }
+await Promise.all([path.resolve(".local"), root, dbPath].map(verifyLocation));
 if (
   !dbPath.startsWith(path.resolve(".local") + path.sep) ||
   /demo|inventory_demo/.test(dbPath)
 )
-  throw Error("DB no aislada");
+  throw new Error("DB no aislada");
 await new Promise((resolve, reject) => {
   const probe = createProbe();
   probe.once("error", reject);
@@ -37,7 +42,7 @@ await new Promise((resolve, reject) => {
 const cert = await readFile(path.join(root, "localhost.pem"));
 const x509 = new X509Certificate(cert);
 if (x509.publicKey.asymmetricKeyDetails.modulusLength < 2048)
-  throw Error("Certificado de fixture insuficiente; conservar y corregir");
+  throw new Error("Certificado de fixture insuficiente; conservar y corregir");
 let config;
 try {
   config = JSON.parse(await readFile(path.join(root, "config.json"), "utf8"));
@@ -62,7 +67,7 @@ if (
   config.TEST_PASSWORD.length < 12 ||
   !/^[a-f0-9]{64}$/.test(config.FIXTURE_KEY)
 )
-  throw Error("Configuracion privada del fixture no valida");
+  throw new Error("Configuracion privada del fixture no valida");
 const db = await connectDatabase({
   DB_MODE: "pglite",
   PGLITE_DATA_DIR: dbPath,

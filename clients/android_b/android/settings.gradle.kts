@@ -23,4 +23,5 @@ plugins {
     id("org.jetbrains.kotlin.android") version "2.4.20" apply false
 }
 
+rootProject.name = "trazabilidad_android_b"
 include(":app")

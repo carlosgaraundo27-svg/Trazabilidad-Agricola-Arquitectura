@@ -37,6 +37,16 @@ Noveno caso nativo aprobado: los métodos reales del adaptador confirman captura
 
 ## Límites que permanecen
 
+## Revisión Sonar de la publicación inicial
+
+db913b6 falló Sonar con17 avisos nuevos, incluidos S7204 y S2068; el resultado se conserva, no se traslada su estado a una cabeza posterior. S7204 no reconocía la activación implícita de R8 por FlutterPlugin: se explicitó minify/shrink/optimize y además se retiró la firma de debug de release. S2068 marcaba el literal que contenía el generador PowerShell de una clave PFX aleatoria; no había contraseña fija. Ahora Node genera32bytes criptográficos fuera del texto y los entrega únicamente por entorno al hijo, nunca por argumentos o logs. La exportación PFX2048/SANlocalhost/loopback se verificó con clave correcta y rechazo de otra clave, sin tocar el certificado existente.
+
+Los demás avisos nuevos se corrigieron únicamente en plantilla/auxiliares B: nombre/grupo/descripción Gradle, comentarios de código XML sin uso, constructores Error y lecturas independientes concurrentes. Sin supresiones, perfiles, QualityGate o pruebas debilitadas. Comprobar el SHA posterior y sus checks antes de afirmar cierre de los17; los avisos de main/PR11/PR12 permanecen separados.
+
+Release compila con R8 y ofuscación Dart, sin credenciales/CA de fixture ni firma debug; no se instala o publica ese APK sin firma de producción. R8 genera mapping y optimiza/renombra metodos del vault. El SDK avisa DWARF nativo sin ofuscar: se conserva como pendiente antes de una distribución release, sin atribuir protección total por ofuscar. Los nueve casos nativos corresponden al mismo núcleo Dart/Kotlin; estas correcciones posteriores afectan configuración release y auxiliares, no cambian la sesión/SQLite que pasó en el HONOR.
+
+## Límites adicionales de aceptación
+
 No se declara implementado todo offline ni cubiertos en su totalidad NA-01–08/SB-01–06 del diseño. No se probaron restauración/transferencia real entre dispositivos, pérdida de clave física Keystore, respaldo ante pérdida del teléfono o garantías de corte de energía del hardware. El rechazo de archivo cifrado ilegible sí se probó. Los adaptadores B saveDraft/confirm/recordAck se ejercitaron realmente en Android: rollback ante trigger de fallo en outbox/ACK, confirmación repetida, recibo igual idempotente/distinto rechazado y lease antiguo tras cambiar A→B. El cuerpo v1 conserva las reglas del servidor y decimales como texto; no incorpora reglas agrícolas nuevas. UI/worker/replay/políticas O5 de C siguen pendientes: estos puertos no equivalen a captura/sincronización implementada. No aplicar008 a la demo para ampliarlos.
 
 B aporta sesión Android y persistencia privada verificadas en este dispositivo; la aceptación del alcance offline completo y las políticas agrícolas siguen separadas. Antes de ampliar C, revisar este incremento y sus límites. No fusionar PR en esta tarea.

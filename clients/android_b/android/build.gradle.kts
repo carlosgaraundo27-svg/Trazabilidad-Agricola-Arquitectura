@@ -20,5 +20,7 @@ subprojects {
 }
 
 tasks.register<Delete>("clean") {
+    group = "build"
+    description = "Remove generated Android build outputs."
     delete(rootProject.layout.buildDirectory)
 }
